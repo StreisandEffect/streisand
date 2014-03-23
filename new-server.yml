@@ -1,0 +1,22 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
+
+  vars_prompt:
+    do_region: "Region that the server should be located in. '1' for New York 1, '2' for Amsterdam 1, '3' for San Francisco, '4' for New York 2, '5' for Amsterdam 2, and '6' for Singapore."
+    do_server_name: "Server name"
+    do_api_key: "DigitalOcean API key. This can be generated in the API section of the control panel."
+    do_client_id: "DigitalOcean Client ID. This can be found in the API section of the control panel."
+
+  roles:
+    - genesis-digitalocean
+
+
+- hosts: streisand-host
+
+  user: root
+
+  tasks:
+    - name: Test task
+      debug: msg={{ ansible_default_ipv4.gateway }}
