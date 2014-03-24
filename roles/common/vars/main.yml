@@ -1,0 +1,2 @@
+---
+streisand_local_directory: "~/streisand/{{ ansible_default_ipv4.address }}"
