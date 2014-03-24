@@ -1,30 +1,26 @@
 ---
 - name: Get the default SSH key
-  local_action: command cat ~/.ssh/id_rsa.pub
+  command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
 
 - name: Add the SSH key to DigitalOcean
-  local_action: >
-    digital_ocean
-      command=ssh
-      name=streisand
-      ssh_pub_key="{{ ssh_key.stdout }}"
-      client_id="{{ do_client_id }}"
-      api_key="{{ do_api_key }}"
+  digital_ocean: command=ssh
+                 name=streisand
+                 ssh_pub_key="{{ ssh_key.stdout }}"
+                 client_id="{{ do_client_id }}"
+                 api_key="{{ do_api_key }}"
   register: do_ssh_key
 
 - name: Create the server
-  local_action: >
-    digital_ocean
-      command=droplet
-      name={{ do_server_name }}
-      ssh_key_ids={{ do_ssh_key.ssh_key.id }}
-      client_id="{{ do_client_id }}"
-      api_key="{{ do_api_key }}"
-      size_id={{ do_small_droplet_size_id }}
-      region_id={{ do_region }}
-      image_id={{ do_debian7_x64_image_id }}
-      unique_name=yes
+  digital_ocean: command=droplet
+                 name={{ do_server_name }}
+                 ssh_key_ids={{ do_ssh_key.ssh_key.id }}
+                 client_id="{{ do_client_id }}"
+                 api_key="{{ do_api_key }}"
+                 size_id={{ do_small_droplet_size_id }}
+                 region_id={{ do_region }}
+                 image_id={{ do_debian7_x64_image_id }}
+                 unique_name=yes
   register: streisand_server
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
