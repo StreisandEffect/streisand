@@ -27,6 +27,10 @@
       unique_name=yes
   register: streisand_server
 
+- name: Wait until the server has finished booting and OpenSSH is accepting connections
+  wait_for: host={{ streisand_server.droplet.ip_address }}
+            port=22
+
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.droplet.ip_address }}
             groups=streisand-host
