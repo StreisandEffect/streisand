@@ -1,0 +1,8 @@
+---
+shadowsocks_dependencies:
+  - python-gevent
+  - python-m2crypto
+  - python-pip
+  - qrencode
+
+shadowsocks_location: "/home/shadowsocks"

@@ -1,0 +1,37 @@
+#! /bin/sh
+#  /etc/init.d/shadowsocks
+
+### BEGIN INIT INFO
+# Provides:          shadowsocks
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts shadowsocks
+# Description:       Shadowsocks is a secured socks5 proxy, designed to protect your internet traffic.
+### END INIT INFO
+
+PIDFILE=/var/run/shadowsocks.pid
+
+case "$1" in
+  start)
+    echo "Starting Shadowsocks"
+    start-stop-daemon --start --chuid shadowsocks --chdir {{ shadowsocks_location }} --background --make-pidfile --pidfile $PIDFILE --exec /usr/local/bin/ssserver -- > /dev/null
+    ;;
+  stop)
+    echo "Stopping Shadowsocks"
+    start-stop-daemon --stop --pidfile $PIDFILE
+    ;;
+  restart)
+    echo "Restarting Shadowsocks"
+    start-stop-daemon --stop --pidfile $PIDFILE
+    sleep 5
+    start-stop-daemon --start --chuid shadowsocks --chdir {{ shadowsocks_location }} --background --make-pidfile --pidfile $PIDFILE --exec /usr/local/bin/ssserver -- > /dev/null
+    ;;
+  *)
+    echo "Usage: /etc/init.d/shadowsocks {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

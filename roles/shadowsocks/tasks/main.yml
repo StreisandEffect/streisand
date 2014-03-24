@@ -1,0 +1,63 @@
+---
+- name: Install Shadowsocks dependencies
+  apt: pkg={{ item }}
+  with_items: shadowsocks_dependencies
+
+- name: Add the Shadowsocks user
+  user: name=shadowsocks
+        home={{ shadowsocks_location }}
+        shell=/usr/sbin/nologin
+        comment="Shadowsocks User"
+
+- name: Generate a random Shadowsocks password
+  shell: openssl rand -base64 48 > ss-password.txt
+         chdir={{ shadowsocks_location }}
+         creates={{ shadowsocks_location }}/ss-password.txt
+
+- name: Register Shadowsocks password
+  command: cat ss-password.txt
+           chdir={{ shadowsocks_location }}
+  register: shadowsocks_password
+
+- name: Install Shadowsocks
+  pip: name=shadowsocks
+
+- name: Generate Shadowsocks config file
+  template: src=config.json.j2
+            dest={{ shadowsocks_location }}/config.json
+            owner=shadowsocks
+            group=shadowsocks
+            mode=640
+  notify: Restart Shadowsocks
+
+- name: Generate Shadowsocks init script
+  template: src=shadowsocks-init.j2
+            dest=/etc/init.d/shadowsocks
+            owner=root
+            group=root
+            mode=755
+
+- name: Enable the Shadowsocks init script so the service will start at boot
+  command: update-rc.d shadowsocks defaults
+           creates=/etc/rc0.d/K01shadowsocks
+
+- name: Generate the Shadowsocks QR code
+  # The ss:// URI format is documented here:
+  #   http://shadowsocks.org/1.4/config/quick-guide.html
+  shell: echo -n '{{ shadowsocks_encryption_method }}:{{ shadowsocks_password.stdout }}@{{ ansible_default_ipv4.address }}:{{ shadowsocks_server_port }}' | base64 | sed 's/^/ss:\/\//' | qrencode -s 15 -o ss.png
+         chdir={{ shadowsocks_location }}
+         creates={{ shadowsocks_location }}/ss.png
+
+- name: Set permissions on the QR code image and Shadowsocks password file
+  file: path={{ shadowsocks_location }}/{{ item }}
+        owner=shadowsocks
+        group=shadowsocks
+        mode=640
+  with_items:
+    - ss.png
+    - ss-password.txt
+
+- name: Fetch the QR code image
+  fetch: dest={{ streisand_local_directory }}/shadowsocks/
+         src={{ shadowsocks_location }}/ss.png
+         flat=yes

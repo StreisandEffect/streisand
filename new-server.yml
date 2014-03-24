@@ -1,4 +1,6 @@
 ---
+# Provision the DigitalOcean Server
+# =================================
 - hosts: 127.0.0.1
   connection: local
   gather_facts: no
@@ -13,10 +15,12 @@
     - genesis-digitalocean
 
 
+# Configure the DigitalOcean Server and install required software
+# ===============================================================
 - hosts: streisand-host
 
   user: root
 
-  tasks:
-    - name: Test task
-      debug: msg={{ ansible_default_ipv4.gateway }}
+  roles:
+    - common
+    - shadowsocks
