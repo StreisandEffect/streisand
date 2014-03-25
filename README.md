@@ -5,8 +5,10 @@
 
 TODO: 
 - Document other dependencies, including initial Ansible setup
+- Set up server reboot and playbook to watch for its return. This will ensure all of the latest software is running after setup completes.
+- Final confirmation prompt explaining the ~/streisand directory and providing further instructions
 - Ensure that none of the software (e.g. Shadowsocks and OpenVPN) are configured to log IP addresses
-- Look into configuring OpenVPN so multiple clients can connect with the same certificate
+- Stunnel setup for an alternate OpenVPN connection method running on port 993 that defeats DPI
 
 
 
@@ -16,4 +18,12 @@ TODO:
 
 
 # Possible help text for Shadowsocks (taken from my original standalone role)
-A custom QR code that can be used to automatically configure your Shadowsocks clients has been downloaded to /tmp/shadowsocks-qr-code/ss.png. Simply scan this image to get up and running quickly. Look for the option when creating a new profile in the iOS and Android applications. Press any key to continue...
+A custom QR code that can be used to automatically configure your Shadowsocks clients has been downloaded to /tmp/shadowsocks-qr-code/ss.png. Simply scan this image to get up and running quickly. Look for the option when creating a new profile in the iOS and Android applications.
+
+
+Features
+--------
+* OpenVPN with DNS resolution handled via Dnsmasq
+* Shadowsocks
+* Tor
+* Obfsproxy

@@ -1,0 +1,6 @@
+Instructions will eventually go here.
+
+For now, here is the bridge information for the new server. This is in the same format that BridgeDB (https://bridges.torproject.org/) returns:
+
+    obfs2 {{ ansible_default_ipv4.address }}:{{ obfs_ports.results[0].stdout }} {{ tor_fingerprint.stdout|lower }}
+    obfs3 {{ ansible_default_ipv4.address }}:{{ obfs_ports.results[1].stdout }} {{ tor_fingerprint.stdout|lower }}

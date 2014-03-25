@@ -33,8 +33,14 @@
 
   user: root
 
+  vars_prompt:
+    - name: "tor_bridge_nickname"
+      prompt: "Tor bridge nickname. This can be anything you'd like, but it should be relatively short and can't contain any spaces."
+      private: no
+
   roles:
     - common
     - shadowsocks
     - openvpn
+    - tor-bridge
     - rc-local

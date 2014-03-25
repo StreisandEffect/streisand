@@ -1,0 +1,8 @@
+SocksPort 0
+ORPort 443
+BridgeRelay 1
+ExitPolicy reject *:*
+
+Nickname {{ tor_bridge_nickname }}
+
+ServerTransportPlugin obfs2,obfs3 exec /usr/bin/obfsproxy managed

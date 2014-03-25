@@ -1,0 +1,34 @@
+---
+- name: Install obsfproxy and Tor
+  apt: pkg={{ item }}
+  with_items:
+    - obfsproxy
+    - tor
+
+- name: Generate the bridge config file
+  template: src=torrc.j2
+            dest=/etc/tor/torrc
+            owner=root
+            group=root
+            mode=644
+  notify: Restart Tor
+
+# Tor must restart before the obfs ports and fingerprint will
+# be available
+- meta: flush_handlers
+
+- name: Discover the randomly chosen obfs ports
+  shell: grep {{ item }} /var/lib/tor/state | sed -e 's/^.*://'
+  register: obfs_ports
+  with_items:
+    - obfs2
+    - obfs3
+
+- name: Discover the server fingerprint
+  command: awk '{ print $2 }' /var/lib/tor/fingerprint
+  register: tor_fingerprint
+
+- name: Generate the Tor bridge instructions
+  local_action: >
+    template src=tor-bridge-instructions.txt.j2
+             dest={{ streisand_local_directory }}/tor-bridge-instructions.txt

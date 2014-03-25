@@ -6,3 +6,6 @@
 
 - name: Install NTP to make sure the server's clock is set properly
   apt: pkg=ntp
+
+- name: Install the python-software-properties package that the apt_repository module requires
+  apt: pkg=python-software-properties
