@@ -1,0 +1,12 @@
+---
+# Installs the OpenVPN virtual private network server.
+# ref: https://library.linode.com/networking/openvpn/debian-6-squeeze
+
+
+- name: Retrieve the files that clients will need in order to connect to the OpenVPN server
+  fetch: src={{ openvpn_path }}/{{ item[0] }}/{{ item[1] }}
+         dest={{ streisand_local_directory }}/openvpn/{{ item[0] }}/
+         flat=yes
+  with_nested:
+    - openvpn_clients
+    - ["client.crt", "client.key", "ca.crt", "ta.key", "{{ openvpn_server }}.ovpn"]

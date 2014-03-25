@@ -1,0 +1,66 @@
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+
+dir = {{ openvpn_path }}
+certs = $dir
+crl_dir = $dir
+database = $dir/index.txt
+new_certs_dir = $dir
+
+certificate = {{ openvpn_ca }}.crt
+serial = $dir/serial
+crl = $dir/crl.pem
+private_key = {{ openvpn_ca }}.key
+RANDFILE = $dir/.rand
+
+x509_extensions = server
+
+default_days = {{ openvpn_days_valid }}
+default_crl_days= 30
+default_md = sha256
+preserve = no
+
+policy = policy_anything
+
+[ policy_anything ]
+countryName = optional
+stateOrProvinceName = optional
+localityName = optional
+organizationName = optional
+organizationalUnitName = optional
+commonName = supplied
+name = optional
+emailAddress = optional
+
+[ req ]
+distinguished_name = req_distinguished_name
+
+[ req_distinguished_name ]
+countryName = Country Name (2 letter code)
+countryName_default = {{ openvpn_key_country }}
+
+stateOrProvinceName = State or Province Name (full name)
+stateOrProvinceName_default = {{ openvpn_key_province }}
+
+localityName = Locality Name (eg, city)
+localityName_default = {{ openvpn_key_city }}
+
+0.organizationName = Organization Name (eg, company)
+0.organizationName_default = {{ openvpn_key_org }}
+
+organizationalUnitName = Organizational Unit Name (eg, section)
+organizationalUnitName_default = {{ openvpn_key_ou }}
+
+commonName = Common Name (eg, your name or your server\'s hostname)
+commonName_default = server
+
+[ server ]
+basicConstraints=CA:FALSE
+nsCertType = server
+nsComment = "Ansible Generated Server Certificate"
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer:always
+extendedKeyUsage=serverAuth
+keyUsage = digitalSignature, keyEncipherment

@@ -1,0 +1,11 @@
+---
+openvpn_key_country:  "US"
+openvpn_key_province: "California"
+openvpn_key_city: "Beverly Hills"
+openvpn_key_org: "ACME CORPORATION"
+openvpn_key_ou: "Anvil Department"
+openvpn_clients:
+  - client-1
+  - client-2
+  - client-3
+  - client-4
