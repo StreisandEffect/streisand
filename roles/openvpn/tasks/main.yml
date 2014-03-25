@@ -2,6 +2,124 @@
 # Installs the OpenVPN virtual private network server.
 # ref: https://library.linode.com/networking/openvpn/debian-6-squeeze
 
+- name: Install OpenVPN and dependencies from apt
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - openvpn
+    - udev
+    - dnsmasq
+
+- name: Generate RSA keys for the CA and Server
+  command: openssl genrsa -out {{ item }}.key {{ openvpn_key_size }}
+           chdir={{ openvpn_path }}
+           creates={{ item }}.key
+  with_items:
+    - ca
+    - server
+
+- name: Create directories for clients
+  file: path={{ openvpn_path}}/{{ item }} state=directory
+  with_items: openvpn_clients
+
+- name: Generate RSA keys for the clients
+  command: openssl genrsa -out client.key {{ openvpn_key_size }}
+           chdir={{ openvpn_path }}/{{ item }}
+           creates=client.key
+  with_items: openvpn_clients
+
+- name: Set the proper permissions on all RSA keys
+  file: path={{ openvpn_path }}
+        recurse=yes
+        state=directory
+        owner=root
+        group=root
+        mode=600
+
+- name: Generate CA certificate
+  command: openssl req -nodes -batch -new -x509 -key {{ openvpn_ca }}.key -out {{ openvpn_ca }}.crt -days {{ openvpn_days_valid }} -subj "{{ openssl_request_subject }}/CN=ca-certificate"
+           creates={{ openvpn_ca }}.crt
+
+- name: Generate the OpenSSL configuration that will be used for the Server certificate's req and ca commands
+  # Properly sets the attributes that are described here:
+  # openvpn.net/index.php/open-source/documentation/howto.html#mitm
+  #
+  # This is required in order for the 'ns-cert-type server' option to
+  # work, which is enabled by default in most standard client.conf
+  # files.
+  template: src=openssl-server-certificate.cnf.j2
+            dest={{ openvpn_path }}/openssl-server-certificate.cnf
+
+- name: Seed a blank database file that will be used when generating the Server's certificate
+  command: touch {{ openvpn_path }}/index.txt
+           creates={{ openvpn_path }}/index.txt
+
+- name: Seed a serial file that will be used when generating the Server's certificate
+  shell: echo 01 > {{ openvpn_path }}/serial
+         creates={{ openvpn_path }}/serial
+
+- name: Generate CSR for the Server
+  command: openssl req -batch -extensions server -new -key server.key -out server.csr -config {{ openvpn_path }}/openssl-server-certificate.cnf
+           chdir={{ openvpn_path }}
+           creates=server.csr
+
+- name: Generate certificate for the Server
+  command: openssl ca -batch -extensions server -in server.csr -out server.crt -config openssl-server-certificate.cnf
+           chdir={{ openvpn_path }}
+           creates=server.crt
+
+- name: Generate CSRs for the clients
+  command: openssl req -new -key client.key -out client.csr -subj "{{ openssl_request_subject }}/CN={{ item }}"
+           chdir={{ openvpn_path }}/{{ item }}
+           creates=client.csr
+  with_items: openvpn_clients
+
+- name: Generate certificates for the clients
+  command: openssl x509 -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt
+           chdir={{ openvpn_path }}/{{ item }}
+           creates=client.crt
+  with_items: openvpn_clients
+
+- name: Create the client configs
+  template: src=client.cnf.j2
+            dest={{ openvpn_path }}/{{ item }}/{{ openvpn_server }}.ovpn
+  with_items: openvpn_clients
+
+- name: Generate HMAC firewall key
+  command: openvpn --genkey --secret {{ openvpn_hmac_firewall }}
+           creates={{ openvpn_hmac_firewall }}
+
+- name: Generate Diffie-Hellman parameters (this will take a while)
+  command: openssl dhparam -out {{ openvpn_dhparam }} {{ openvpn_key_size }}
+           creates={{ openvpn_dhparam }}
+
+- name: Enable IPv4 traffic forwarding
+  sysctl: name=net.ipv4.ip_forward value=1
+
+- name: Allow OpenVPN through the firewall
+  command: "{{ item }}"
+  with_items:
+    - iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+    - iptables -A FORWARD -s 10.8.0.0/24 -j ACCEPT
+    - iptables -A FORWARD -j REJECT
+    - iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
+
+- name: Copy OpenVPN configuration file into place
+  template: src=etc_openvpn_server.conf.j2 dest=/etc/openvpn/server.conf
+  notify: Restart OpenVPN
+
+# OpenVPN must restart first so the 10.8.0.0 interface is available
+# to dnsmasq
+- meta: flush_handlers
+
+- name: Copy dnsmasq configuration file into place
+  copy: src=etc_dnsmasq.conf dest=/etc/dnsmasq.conf
+  notify: Restart dnsmasq
+
+- name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server
+  command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0] }}
+  with_nested:
+    - openvpn_clients
+    - ["ca.crt", "ta.key"]
 
 - name: Retrieve the files that clients will need in order to connect to the OpenVPN server
   fetch: src={{ openvpn_path }}/{{ item[0] }}/{{ item[1] }}
