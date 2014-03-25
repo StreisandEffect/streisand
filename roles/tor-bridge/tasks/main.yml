@@ -17,6 +17,9 @@
 # be available
 - meta: flush_handlers
 
+- name: Wait sixty seconds for Tor to finish bootstrapping
+  pause: seconds=60
+
 - name: Discover the randomly chosen obfs ports
   shell: grep {{ item }} /var/lib/tor/state | sed -e 's/^.*://'
   register: obfs_ports
