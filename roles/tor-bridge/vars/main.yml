@@ -1,0 +1,4 @@
+---
+obfs_transports:
+  - obfs2
+  - obfs3
