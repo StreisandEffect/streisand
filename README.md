@@ -7,7 +7,7 @@ TODO:
 - Document other dependencies, including initial Ansible setup
 - Set up server reboot and playbook to watch for its return. This will ensure all of the latest software is running after setup completes.
 - Final confirmation prompt explaining the ~/streisand directory and providing further instructions
-- Ensure that none of the software (e.g. Shadowsocks and OpenVPN) are configured to log IP addresses
+- Ensure that none of the software (e.g. Shadowsocks and OpenVPN) are configured to log IP addresses. Check /var/log/syslog in particular.
 - Stunnel setup for an alternate OpenVPN connection method running on port 993 that defeats DPI
 
 
