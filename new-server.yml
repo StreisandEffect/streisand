@@ -40,7 +40,8 @@
 
   roles:
     - common
-    - shadowsocks
     - openvpn
+    - shadowsocks
+    - stunnel
     - tor-bridge
     - rc-local

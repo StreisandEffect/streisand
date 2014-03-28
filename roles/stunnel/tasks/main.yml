@@ -1,0 +1,23 @@
+---
+- name: Install stunnel
+  apt: pkg=stunnel4
+
+- name: Generate stunnel certificate and private key
+  command: openssl req -new -nodes -x509 -out {{ stunnel_pem }} -keyout {{ stunnel_pem }} -days {{ stunnel_days_valid }} -subj "{{ stunnel_request_subject }}/CN=stunnel"
+           creates={{ stunnel_pem }}
+
+- name: Set the proper permissions on the stunnel PEM file
+  file: path={{ stunnel_pem }}
+        owner=root
+        group=root
+        mode=600
+
+- name: Generate stunnel configuration
+  template: src=stunnel.conf.j2
+            dest={{ stunnel_path }}/stunnel.conf
+  notify: Restart stunnel
+
+- name: Configure stunnel to start at boot
+  lineinfile: dest=/etc/default/stunnel4
+              regexp="^ENABLED"
+              line="ENABLED=1"
