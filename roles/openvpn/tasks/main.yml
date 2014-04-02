@@ -79,14 +79,39 @@
            creates=client.crt
   with_items: openvpn_clients
 
-- name: Create the client configs
-  template: src=client.cnf.j2
-            dest={{ openvpn_path }}/{{ item }}/{{ openvpn_server }}.ovpn
-  with_items: openvpn_clients
-
 - name: Generate HMAC firewall key
   command: openvpn --genkey --secret {{ openvpn_hmac_firewall }}
            creates={{ openvpn_hmac_firewall }}
+
+- name: Register CA certificate contents
+  command: cat ca.crt
+           chdir={{ openvpn_path }}
+  register: openvpn_ca_contents
+
+- name: Register client certificate contents
+  command: cat client.crt
+           chdir={{ openvpn_path }}/{{ item }}
+  with_items: openvpn_clients
+  register: openvpn_client_certificates
+
+- name: Register client key contents
+  command: cat client.key
+           chdir={{ openvpn_path }}/{{ item }}
+  with_items: openvpn_clients
+  register: openvpn_client_keys
+
+- name: Register HMAC firewall contents
+  command: cat ta.key
+           chdir={{ openvpn_path }}
+  register: openvpn_hmac_firewall_contents
+
+- name: Create the client configs
+  template: src=client.cnf.j2
+            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_server }}.ovpn
+  with_together:
+    - openvpn_clients
+    - openvpn_client_certificates.results
+    - openvpn_client_keys.results
 
 - name: Generate Diffie-Hellman parameters (this will take a while)
   command: openssl dhparam -out {{ openvpn_dhparam }} {{ openvpn_key_size }}
