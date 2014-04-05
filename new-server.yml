@@ -41,7 +41,9 @@
   roles:
     - common
     - openvpn
-    - shadowsocks
+    - dante
     - stunnel
+    - shadowsocks
     - tor-bridge
     - rc-local
+    - ssh
