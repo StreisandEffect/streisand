@@ -10,7 +10,7 @@
         generate_ssh_key=yes
         ssh_key_comment=streisand
         home={{ forward_location }}
-        shell=/usr/sbin/nologin
+        shell=/bin/bash
         comment="SSH Forwarding User"
 
 - name: Register the forwarding user's public SSH key
