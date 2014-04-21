@@ -1,2 +1,8 @@
 ---
 streisand_local_directory: "~/streisand/{{ ansible_default_ipv4.address }}"
+
+streisand_directory_structure:
+  - "{{ streisand_local_directory }}/openvpn"
+  - "{{ streisand_local_directory }}/shadowsocks"
+  - "{{ streisand_local_directory }}/ssh"
+  - "{{ streisand_local_directory }}/tor"
