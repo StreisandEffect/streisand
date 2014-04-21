@@ -33,5 +33,5 @@
 
 - name: Generate the Tor bridge instructions
   local_action: >
-    template src=tor-bridge-instructions.txt.j2
-             dest={{ streisand_local_directory }}/tor-bridge-instructions.txt
+    template src=instructions.txt.j2
+             dest={{ streisand_local_directory }}/tor/instructions.txt
