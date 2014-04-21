@@ -45,5 +45,4 @@
     - stunnel
     - shadowsocks
     - tor-bridge
-    - rc-local
     - ssh

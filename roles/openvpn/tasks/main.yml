@@ -3,7 +3,7 @@
 # ref: https://library.linode.com/networking/openvpn/debian-6-squeeze
 
 - name: Install OpenVPN and dependencies from apt
-  apt: pkg={{ item }} state=installed
+  apt: pkg={{ item }}
   with_items:
     - openvpn
     - udev
@@ -18,7 +18,8 @@
     - server
 
 - name: Create directories for clients
-  file: path={{ openvpn_path}}/{{ item }} state=directory
+  file: path={{ openvpn_path}}/{{ item }}
+        state=directory
   with_items: openvpn_clients
 
 - name: Generate RSA keys for the clients
@@ -117,8 +118,16 @@
   command: openssl dhparam -out {{ openvpn_dhparam }} {{ openvpn_key_size }}
            creates={{ openvpn_dhparam }}
 
+- name: Generate rc.local with Firewall and dnsmasq settings
+  template: src=rc.local.j2
+            dest=/etc/rc.local
+            owner=root
+            group=root
+            mode=755
+
 - name: Enable IPv4 traffic forwarding
-  sysctl: name=net.ipv4.ip_forward value=1
+  sysctl: name=net.ipv4.ip_forward
+          value=1
 
 - name: Allow OpenVPN through the firewall
   command: "{{ item }}"
@@ -129,7 +138,8 @@
     - iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
 
 - name: Copy OpenVPN configuration file into place
-  template: src=etc_openvpn_server.conf.j2 dest=/etc/openvpn/server.conf
+  template: src=etc_openvpn_server.conf.j2
+            dest=/etc/openvpn/server.conf
   notify: Restart OpenVPN
 
 # OpenVPN must restart first so the 10.8.0.0 interface is available
@@ -137,7 +147,8 @@
 - meta: flush_handlers
 
 - name: Copy dnsmasq configuration file into place
-  copy: src=etc_dnsmasq.conf dest=/etc/dnsmasq.conf
+  copy: src=etc_dnsmasq.conf
+        dest=/etc/dnsmasq.conf
   notify: Restart dnsmasq
 
 - name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server
