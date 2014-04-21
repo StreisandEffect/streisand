@@ -29,3 +29,4 @@ Features
 * Shadowsocks
 * Tor
 * Obfsproxy to evade DPI that blocks Tor
+* SSH forwarding user for (sshuttle)[https://github.com/apenwarr/sshuttle] and `ssh -D` support
