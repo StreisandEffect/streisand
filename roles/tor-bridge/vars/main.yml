@@ -1,4 +1,5 @@
 ---
+tor_bridge_nickname_file: "/etc/tor/bridge_nickname"
 tor_obfs_transports:
   - obfs2
   - obfs3
