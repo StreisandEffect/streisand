@@ -22,6 +22,11 @@
                   key="{{ forward_ssh_key.stdout }}"
 
 - name: Fetch the SSH private key that can be used to connect as the forward user
-  fetch: dest={{ streisand_local_directory }}/ssh/
+  fetch: dest={{ streisand_local_directory }}/ssh/streisand_rsa
          src={{ forward_location }}/.ssh/id_rsa
          flat=yes
+
+- name: Generate the SSH instructions
+  local_action: >
+    template src=instructions.md.j2
+             dest={{ streisand_local_directory }}/ssh/instructions.md
