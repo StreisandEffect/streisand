@@ -25,14 +25,14 @@ Linux and OS X
 1. Add a new entry to your .ssh/config file. It should look like this. Be sure to adjust the location of the IdentityFile (if necessary):
 
          Host {{ ansible_hostname }}
-           User     forward
-           Port     22
-           HostName {{ ansible_default_ipv4.address }}
+           User         forward
+           Port         22
+           HostName     {{ ansible_default_ipv4.address }}
            IdentityFile {{ streisand_local_directory }}/ssh/streisand_rsa
 
 2. Download [sshuttle](https://github.com/apenwarr/sshuttle) by running the following command in the directory of your choice:
 
-  `git clone git://github.com/apenwarr/sshuttle`
+  `git clone https://github.com/apenwarr/sshuttle.git`
 
 3. Enter the directory
 
@@ -51,9 +51,9 @@ Sshuttle offers significantly faster performance and is easier to set up, but th
 1. Add a new entry to your .ssh/config file. It should look like this. Be sure to adjust the location of the IdentityFile (if necessary):
 
          Host {{ ansible_hostname }}
-           User     forward
-           Port     22
-           HostName {{ ansible_default_ipv4.address }}
+           User         forward
+           Port         22
+           HostName     {{ ansible_default_ipv4.address }}
            IdentityFile {{ streisand_local_directory }}/ssh/streisand_rsa
 
 2. SSH into the server and forward a dynamic SOCKS port
