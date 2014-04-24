@@ -1,4 +1,4 @@
 ---
-obfs_transports:
+tor_obfs_transports:
   - obfs2
   - obfs3

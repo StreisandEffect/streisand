@@ -5,6 +5,16 @@
     - obfsproxy
     - tor
 
+- name: Generate a random Nickname for the bridge
+  shell: grep -v "'" /usr/share/dict/american-english | sort -R | tail -n 2 | xargs | sed -e 's/ //' > bridge_nickname
+         creates=bridge_nickname
+         chdir=/etc/tor
+
+- name: Register the bridge's random Nickname
+  command: cat bridge_nickname
+           chdir=/etc/tor
+  register: tor_bridge_nickname
+
 - name: Generate the bridge config file
   template: src=torrc.j2
             dest=/etc/tor/torrc
@@ -20,12 +30,12 @@
 - name: Wait until obfsproxy information has shown up in the state file
   wait_for: path=/var/lib/tor/state
             search_regex={{ item }}
-  with_items: obfs_transports
+  with_items: tor_obfs_transports
 
 - name: Discover the randomly chosen obfs ports
   shell: grep {{ item }} /var/lib/tor/state | sed -e 's/^.*://'
-  register: obfs_ports
-  with_items: obfs_transports
+  register: tor_obfs_ports
+  with_items: tor_obfs_transports
 
 - name: Discover the server fingerprint
   command: awk '{ print $2 }' /var/lib/tor/fingerprint
