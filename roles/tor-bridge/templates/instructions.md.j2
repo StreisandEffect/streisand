@@ -1,0 +1,24 @@
+Tor Bridge
+----------
+1. Download the beta version of the [Tor Browser Bundle](https://www.torproject.org/projects/torbrowser.html.en#downloads-beta). The beta version includes the obfsproxy pluggable transports. Obfsproxy will let you use the Tor network even if your ISP is actively performing Deep Packet Inspection in an attempt to block all Tor traffic.
+
+   If your ISP is blocking your ability to download the Tor Browser Bundle from the official website, you can try the [EFF mirror](https://s.eff.org/tor-mirror/projects/torbrowser.html.en) or the [torservers.net mirror](https://s.eff.org/tor-mirror/projects/torbrowser.html.en).
+   
+   If you cannot access any of the mirrors either, you can receive a copy via email by sending a blank message to 'gettor@torproject.org'.
+
+2. Launch the Tor Browser Bundle
+
+3. Click the 'Configure' button underneath the text that says "I need to configure bridge, firewall, or proxy settings."
+
+4. Answer 'Yes' or 'No' to these questions, depending on your setup: "Does this computer need to use a proxy..." and "Does this computer's Internet connection go through a firewall..." In most cases the answer to both will be 'No.'
+
+5. Answer 'Yes' to "Does your Internet Service Provider (ISP) block or otherwise censor connections to the Tor Network?"
+
+6. Choose the 'Enter custom bridges' option, and paste the following information into the text box:
+
+         obfs2 {{ ansible_default_ipv4.address }}:{{ tor_obfs_ports.results[0].stdout }} {{ tor_fingerprint.stdout|lower }}
+         obfs3 {{ ansible_default_ipv4.address }}:{{ tor_obfs_ports.results[1].stdout }} {{ tor_fingerprint.stdout|lower }}
+
+7. Click 'Connect'
+
+8. You are ready to go! Tor has connected to the '{{ tor_bridge_nickname.stdout }}' bridge server, and your encrypted Tor traffic is completely obscured by obfsproxy so it doesn't look like Tor traffic at all!
