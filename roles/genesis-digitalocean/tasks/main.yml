@@ -4,11 +4,10 @@
   register: ssh_key
 
 - name: Add the SSH key to DigitalOcean
-  digital_ocean: command=ssh
-                 name=streisand
-                 ssh_pub_key="{{ ssh_key.stdout }}"
-                 client_id="{{ do_client_id }}"
-                 api_key="{{ do_api_key }}"
+  digital_ocean_sshkey: name=streisand
+                        ssh_pub_key="{{ ssh_key.stdout }}"
+                        client_id="{{ do_client_id }}"
+                        api_key="{{ do_api_key }}"
   register: do_ssh_key
 
 - name: Create the server
