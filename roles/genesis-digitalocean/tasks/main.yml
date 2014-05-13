@@ -10,6 +10,10 @@
                         api_key="{{ do_api_key }}"
   register: do_ssh_key
 
+- name: Get the latest 'Debian 7.0 x64' image ID from the Digital Ocean API
+  shell: curl -s 'https://api.digitalocean.com/images/?client_id={{ do_client_id }}&api_key={{ do_api_key }}' | ruby -e 'require "json"; api_response=JSON.parse(ARGF.read); target_image = api_response["images"].select { |image| image["name"] == "Debian 7.0 x64" }.first; puts target_image["id"]'
+  register: do_debian7_x64_image_id
+
 - name: Create the server
   digital_ocean: command=droplet
                  name={{ do_server_name }}
@@ -18,7 +22,7 @@
                  api_key="{{ do_api_key }}"
                  size_id={{ do_small_droplet_size_id }}
                  region_id={{ do_region }}
-                 image_id={{ do_debian7_x64_image_id }}
+                 image_id={{ do_debian7_x64_image_id.stdout }}
                  unique_name=yes
   register: streisand_server
 
