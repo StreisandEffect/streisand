@@ -1,0 +1,22 @@
+Shadowsocks
+===========
+
+Android
+-------
+1. Download [Shadowsocks](https://play.google.com/store/apps/details?id=com.github.shadowsocks) and launch it
+2. Tap the menu icon in the top-left of the screen
+3. Tap 'Add Profile'
+4. Select 'Scan QR code'
+5. Open the shadowsocks-qr-code.png image file that is located in the same folder as these instructions, and scan it
+6. Uncheck the 'CHN Route' option
+7. Slide the switch to 'On'
+8. Accept the Android VPN connection warning
+
+Linux, Mac OS X, Windows
+------------------------
+The [Shadowsocks website](http://shadowsocks.org/en/download/clients.html) has several clients available for these platforms. Here is the configuration information that you'll need:
+
+         Server: {{ ansible_default_ipv4.address }}
+         Port: {{ shadowsocks_server_port }}
+         Password: {{ shadowsocks_password.stdout }}
+         Encryption Method: {{ shadowsocks_encryption_method }}

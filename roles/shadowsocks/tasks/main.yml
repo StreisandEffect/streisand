@@ -58,3 +58,8 @@
   fetch: dest={{ streisand_local_directory }}/shadowsocks/
          src={{ shadowsocks_qr_code }}
          flat=yes
+
+- name: Generate the Shadowsocks instructions
+  local_action: >
+    template src=instructions.md.j2
+             dest={{ streisand_local_directory }}/shadowsocks/instructions.md
