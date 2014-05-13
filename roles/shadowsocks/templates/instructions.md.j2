@@ -1,17 +1,6 @@
 Shadowsocks
 ===========
 
-Android
--------
-1. Download [Shadowsocks](https://play.google.com/store/apps/details?id=com.github.shadowsocks) and launch it
-2. Tap the menu icon in the top-left of the screen
-3. Tap 'Add Profile'
-4. Select 'Scan QR code'
-5. Open the shadowsocks-qr-code.png image file that is located in the same folder as these instructions, and scan it
-6. Uncheck the 'CHN Route' option
-7. Slide the switch to 'On'
-8. Accept the Android VPN connection warning
-
 Linux, Mac OS X, Windows
 ------------------------
 The [Shadowsocks website](http://shadowsocks.org/en/download/clients.html) has several clients available for these platforms. Here is the configuration information that you'll need:
@@ -20,3 +9,37 @@ The [Shadowsocks website](http://shadowsocks.org/en/download/clients.html) has s
          Port: {{ shadowsocks_server_port }}
          Password: {{ shadowsocks_password.stdout }}
          Encryption Method: {{ shadowsocks_encryption_method }}
+
+Android
+-------
+1. Download [Shadowsocks for Android](https://play.google.com/store/apps/details?id=com.github.shadowsocks) and launch it
+2. Tap the menu icon in the top-left of the screen
+3. Tap 'Add Profile'
+4. Select 'Scan QR code'
+5. Open the shadowsocks-qr-code.png image file that is located in the same folder as these instructions, and scan it
+6. Uncheck the 'CHN Route' option
+7. Slide the switch to 'On'
+8. Accept the Android VPN connection warning
+
+iOS
+---
+Shadowsocks for iOS also supports configuration via QR code, but this functionality is currently broken in the latest version of iOS. The steps below will get you up and running until the bug is fixed.
+
+1. Download [Shadowsocks for iOS](https://itunes.apple.com/tc/app/shadowsocks/id665729974) and launch it
+2. Tap the menu icon in the top-right of the screen
+3. Tap 'Settings'
+4. Select the 'Custom' tab
+5. Enter the following information
+
+         IP: {{ ansible_default_ipv4.address }}
+         Port: {{ shadowsocks_server_port }}
+         Password: {{ shadowsocks_password.stdout }}
+         Method: {{ shadowsocks_encryption_method }}
+         Proxy Mode: Global
+
+6. Tap the 'Done' button in the upper-right
+7. Double click the home button, and slide Shadowsocks off the top of the screen to close it
+8. Press the home button, and relaunch the application
+9. Visit https://check.torproject.org. Your IP address should be listed as '{{ ansible_default_ipv4.address }}'.
+
+Now that Shadowsocks is properly configured, you can can launch it anytime and use the integrated browser to visit any blocked site. You can also route traffic from other iOS applications through the encrypted proxy. Instructions on how to do this (and details on its limitations) are available on the [Shadowsocks iOS Wiki](https://github.com/shadowsocks/shadowsocks-iOS/wiki/Help).

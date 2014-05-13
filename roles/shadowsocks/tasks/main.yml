@@ -10,7 +10,7 @@
         comment="Shadowsocks User"
 
 - name: Generate a random Shadowsocks password
-  shell: openssl rand -base64 48 > {{ shadowsocks_password_file }}
+  shell: openssl rand -base64 24 > {{ shadowsocks_password_file }}
          creates={{ shadowsocks_password_file }}
 
 - name: Register Shadowsocks password
