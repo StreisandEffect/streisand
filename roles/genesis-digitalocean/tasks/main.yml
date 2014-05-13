@@ -10,7 +10,7 @@
                         api_key="{{ do_api_key }}"
   register: do_ssh_key
 
-- name: Get the latest 'Debian 7.0 x64' image ID from the Digital Ocean API
+- name: Get the latest 'Debian 7.0 x64' image ID from the DigitalOcean API
   shell: curl -s 'https://api.digitalocean.com/images/?client_id={{ do_client_id }}&api_key={{ do_api_key }}' | ruby -e 'require "json"; api_response=JSON.parse(ARGF.read); target_image = api_response["images"].select { |image| image["name"] == "Debian 7.0 x64" }.first; puts target_image["id"]'
   register: do_debian7_x64_image_id
 

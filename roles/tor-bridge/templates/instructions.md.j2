@@ -1,5 +1,8 @@
 Tor Bridge
-----------
+==========
+
+Linux, OS X, Windows
+--------------------
 1. Download the beta version of the [Tor Browser Bundle](https://www.torproject.org/projects/torbrowser.html.en#downloads-beta). The beta version includes the obfsproxy pluggable transports. Obfsproxy will let you use the Tor network even if your ISP is actively performing Deep Packet Inspection in an attempt to block all Tor traffic.
 
    If your ISP is blocking your ability to download the Tor Browser Bundle from the official website, you can try the [EFF mirror](https://s.eff.org/tor-mirror/projects/torbrowser.html.en) or the [torservers.net mirror](https://s.eff.org/tor-mirror/projects/torbrowser.html.en).
@@ -21,4 +24,49 @@ Tor Bridge
 
 7. Click 'Connect'
 
-8. You are ready to go! Tor has connected to the '{{ tor_bridge_nickname.stdout }}' bridge server, and your encrypted Tor traffic is completely obscured by obfsproxy so it doesn't look like Tor traffic at all!
+You are ready to go! Tor has connected to the '{{ tor_bridge_nickname.stdout }}' bridge server, and your encrypted Tor traffic is completely obscured by obfsproxy so it doesn't look like Tor traffic at all!
+
+Android
+-------
+1. Download [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android) and launch it
+
+2. Tap the Settings icon
+
+3. Scroll to the Bridges section
+
+4. Check the 'Use Bridges' and 'Obfuscated Bridges' checkboxes
+
+5. Tap 'Bridges' and enter the following:
+
+         {{ ansible_default_ipv4.address }}:{{ tor_obfs_ports.results[0].stdout }}
+
+6. Go back, then long press on the power button to activate Orbot.
+
+7. Tap the 'Log' button on the bottom of the screen. The fingerprint for the bridge should match the following (look for a line that begins with "NOTICE: Learned fingerprint"):
+
+         {{ tor_fingerprint.stdout }}
+
+Great! Orbot has connected to the '{{ tor_bridge_nickname.stdout }}' bridge server, and your encrypted Tor traffic is completely obscured by obfsproxy so it doesn't look like Tor traffic at all!
+
+You are now ready to configure Twitter and Firefox to route their traffic through Orbot.
+
+Configuring Twitter for Android to use Orbot
+--------------------------------------------
+1. Open Twitter
+2. Tap the three dots in the upper-right of the screen to open the menu
+3. Choose 'Settings'
+4. Tap 'General'
+5. Tap 'Proxy'
+6. Check the 'Enable HTTP Proxy' checkbox
+7. Tap 'Proxy Host' and enter '127.0.0.1'
+8. Tap 'Proxy Port' and enter '8118'
+
+Configuring Firefox for Android to use Orbot
+--------------------------------------------
+1. Open Firefox
+2. Type "about:config" into the address bar and tap the 'Go' button on your keyboard
+3. Type "proxy" into the search box
+4. Set the value of 'network.proxy.socks' to '127.0.0.1'
+5. Set the value of 'network.proxy.socks_port' to '9050'
+6. Set the value of 'network.proxy.socks_remote_dns' to 'true'
+7. Set the value of 'network.proxy.type' to '1'
