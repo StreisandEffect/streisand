@@ -1,5 +1,5 @@
-SSH
-===
+SSH Tunnel
+==========
 
 Windows
 -------
@@ -18,7 +18,21 @@ Windows
 13. Enter '{{ ansible_hostname }}' in the first Saved Sessions box and click the 'Save' button. The next time you launch PuTTY you can choose the session and click 'Load' to restore all of these settings.
 14. Click 'Open' to connect!
 
-You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through SSH. The next step is to configure your web browser to use it. Skip to the "Configuring Firefox to connect through a SOCKS proxy" section for instructions on how to do this.
+You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through SSH. The next step is to configure your web browser to use it.
+
+### Configuring Firefox to connect through a SOCKS proxy ###
+1. Go to Edit --> Preferences
+2. Click the Advanced icon
+3. Go to the Network tab
+4. Click the 'Settings' button to "Configure how Firefox connects to the Internet"
+5. Choose 'Manual proxy configuration'
+6. Enter '127.0.0.1' and Port '{{ ssh_default_socks_port }}' on the SOCKS Host line
+7. Click 'OK'
+8. Close the Firefox preferences window. Now we need to configure Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
+9.  Type 'about:config' into the address bar and hit Enter
+10. You should see a screen that says "This might void your warranty!" Click the 'I'll be careful, I promise!' button.
+11. Search for 'socks_remote_dns' and double click on the value that is returned. It will change from 'false' to 'true'.
+12. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should show "Your IP address appears to be: {{ ansible_default_ipv4.address }}".
 
 Linux and OS X
 --------------
@@ -60,19 +74,40 @@ Sshuttle offers significantly faster performance and is easier to set up, but th
 
    `ssh -D {{ ssh_default_socks_port }} forward@{{ ansible_hostname }}`
 
-3. You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through SSH. The next step is to configure your web browser to use it.
+3. You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through SSH. The next step is to configure your web browser to use it. You can follow the same instructions contained in the Windows section above to configure Firefox to route its traffic through the SOCKS proxy.
 
-Configuring Firefox to connect through a SOCKS proxy
-----------------------------------------------------
-1. Go to Edit --> Preferences
-2. Click the Advanced icon
-3. Go to the Network tab
-4. Click the 'Settings' button to "Configure how Firefox connects to the Internet"
-5. Choose 'Manual proxy configuration'
-6. Enter '127.0.0.1' and Port '{{ ssh_default_socks_port }}' on the SOCKS Host line
-7. Click 'OK'
-8. Close the Firefox preferences window. Now we need to configure Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
-9.  Type 'about:config' into the address bar and hit Enter
-10. You should see a screen that says "This might void your warranty!" Click the 'I'll be careful, I promise!' button.
-11. Search for 'socks_remote_dns' and double click on the value that is returned. It will change from 'false' to 'true'.
-12. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should show "Your IP address appears to be: {{ ansible_default_ipv4.address }}".
+Android
+-------
+1. Install [SSH persistent tunnels](https://play.google.com/store/apps/details?id=org.ayal.SPT) by Shai Ayal. This application makes it easy to forward multiple ports through an SSH tunnel, and it does a decent job of ensuring that the tunnels remain active even when you switch back and forth regularly between LTE, 3G, and WiFi. The app is [open source](https://code.google.com/p/ssh-persistent-tunnel/) and can be compiled for free, but the Play Store version costs $1.50.
+2. Copy the 'streisand_rsa' file to the root directory of your phone. This file is located in the same folder as these instructions.
+3. Start the application. It will be listed as 'SPT' in your launcher, and its icon looks like a train tunnel.
+4. Tap the menu icon in the lower-right of your screen
+5. Tap 'Settings'
+6. Tap 'Host name' and enter '{{ ansible_default_ipv4.address }}'
+7. Tap 'User Name' and enter 'forward'
+8. Tap 'Port' and enter '22'
+9. Tap 'Private Key File' and select the 'streisand_rsa' file that you copied to your phone in step 2
+10. Tap 'Dynamic Forward Port' and enter '1080'
+11. Tap 'Forwards' and enter 'L8888=localhost:8888'
+12. Go back and tap the 'Connect Tunnel' button
+
+You are now ready to configure Twitter and Firefox to route their traffic through the SSH tunnel provided by SPT.
+
+### Configuring Twitter for Android to use SPT ###
+1. Open Twitter
+2. Tap the three dots in the upper-right of the screen to open the menu
+3. Choose 'Settings'
+4. Tap 'General'
+5. Tap 'Proxy'
+6. Check the 'Enable HTTP Proxy' checkbox
+7. Tap 'Proxy Host' and enter '127.0.0.1'
+8. Tap 'Proxy Port' and enter '8888'
+
+### Configuring Firefox for Android to use SPT ###
+1. Open Firefox
+2. Type "about:config" into the address bar and tap the 'Go' button on your keyboard
+3. Type "proxy" into the search box
+4. Set the value of 'network.proxy.socks' to '127.0.0.1'
+5. Set the value of 'network.proxy.socks_port' to '1080'
+6. Set the value of 'network.proxy.socks\_remote\_dns' to 'true'
+7. Set the value of 'network.proxy.type' to '1'

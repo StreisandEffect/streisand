@@ -12,15 +12,15 @@
       private: no
 
     - name: "do_server_name"
-      prompt: "Server name. This will be the name of the droplet in the DigitalOcean control panel and is also the hostname for the new server."
-      private: no
-
-    - name: "do_api_key"
-      prompt: "DigitalOcean API key. This can be generated in the API section of the control panel."
+      prompt: "Server name. This will be the name of the droplet in the DigitalOcean control panel and the hostname for the new server."
       private: no
 
     - name: "do_client_id"
       prompt: "DigitalOcean Client ID. This can be found in the API section of the control panel."
+      private: no
+
+    - name: "do_api_key"
+      prompt: "DigitalOcean API key. This can be generated in the API section of the control panel."
       private: no
 
   roles:
@@ -39,5 +39,6 @@
     - dante
     - stunnel
     - shadowsocks
-    - tor-bridge
     - ssh
+    - tinyproxy
+    - tor-bridge
