@@ -91,7 +91,22 @@ Android
 11. Tap 'Forwards' and enter 'L8888=localhost:8888'
 12. Go back and tap the 'Connect Tunnel' button
 
-You are now ready to configure Twitter and Firefox to route their traffic through the SSH tunnel provided by SPT.
+You are now ready to configure your applications to route their traffic through the SSH tunnel provided by SPT.
+
+### Configuring Android to route most of its traffic through SPT ###
+These steps will only work when you are connected via WiFi. They also must be applied individually to every WiFi network you connect to. Most applications will respect these settings, including the default browser, Chrome, YouTube, and many more.
+
+1. Open your phone's Settings
+2. Tap 'Wi-Fi' in the 'Wireless & Networks' section
+3. Long-press on the WiFi network you are currently connected to. A pop-up menu will appear.
+4. Tap 'Modify network'
+5. Tap 'Show advanced options'
+6. Select 'Manual' in the Proxy section
+7. Tap 'Proxy hostname' and enter '127.0.0.1'
+8. Tap 'Proxy port' and enter '8888'
+9. Tap 'Save'
+
+Some applications allow you to make these settings persistent for all networks. Twitter for Android and Firefox for Android can route their traffic through the SPT SSH tunnel regardless of your current connection (WiFi, 3G, HSPA+, LTE, etc.).
 
 ### Configuring Twitter for Android to use SPT ###
 1. Open Twitter
