@@ -1,5 +1,5 @@
 cert = {{ stunnel_pem }}
  
 [stunnel]
-accept = {{ stunnel_port }}
+accept = {{ stunnel_remote_port }}
 connect = {{ openvpn_port }}

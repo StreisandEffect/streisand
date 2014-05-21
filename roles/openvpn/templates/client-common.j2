@@ -1,4 +1,3 @@
-client
 dev tun
 proto {{ openvpn_protocol }}
 cipher {{ openvpn_cipher }}
@@ -12,14 +11,6 @@ comp-lzo
 key-direction 1
 verb 3
 route {{ ansible_default_ipv4.address }} 255.255.255.255 net_gateway
-
-# Use this remote line if you are connecting to OpenVPN directly
-# --
-remote {{ openvpn_server }} {{ openvpn_port }}
-
-# Use this remote line if you are routing OpenVPN through stunnel
-# --
-#remote 127.0.0.1 41194
 
 <ca>
 {{ openvpn_ca_contents.stdout }}

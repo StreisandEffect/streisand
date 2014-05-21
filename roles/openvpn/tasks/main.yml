@@ -106,9 +106,17 @@
            chdir={{ openvpn_path }}
   register: openvpn_hmac_firewall_contents
 
-- name: Create the client configs
-  template: src=client.cnf.j2
-            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_server }}.ovpn
+- name: Create the client configuration profiles that will be used when connecting directly
+  template: src=client-direct.ovpn.j2
+            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_server }}-direct.ovpn
+  with_together:
+    - openvpn_clients
+    - openvpn_client_certificates.results
+    - openvpn_client_keys.results
+
+- name: Create the client configuration profiles that will be used when connecting via stunnel
+  template: src=client-stunnel.ovpn.j2
+            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_server }}-stunnel.ovpn
   with_together:
     - openvpn_clients
     - openvpn_client_certificates.results
@@ -163,4 +171,4 @@
          flat=yes
   with_nested:
     - openvpn_clients
-    - ["client.crt", "client.key", "ca.crt", "ta.key", "{{ openvpn_server }}.ovpn"]
+    - ["client.crt", "client.key", "ca.crt", "ta.key", "{{ openvpn_server }}-direct.ovpn", "{{ openvpn_server }}-stunnel.ovpn"]
