@@ -6,11 +6,18 @@
   command: openssl req -new -nodes -x509 -out {{ stunnel_pem }} -keyout {{ stunnel_pem }} -days {{ stunnel_days_valid }} -subj "{{ stunnel_request_subject }}/CN=stunnel"
            creates={{ stunnel_pem }}
 
-- name: Set the proper permissions on the stunnel PEM file
-  file: path={{ stunnel_pem }}
+- name: "Export the PEM file in PKCS #12 format"
+  command: "openssl pkcs12 -export -in {{ stunnel_pem }} -out {{ stunnel_pkcs12 }} -password pass:
+           creates={{ stunnel_pkcs12 }}"
+
+- name: "Set the proper permissions on the stunnel PEM and PKCS #12 files"
+  file: path={{ item }}
         owner=root
         group=root
         mode=600
+  with_items:
+    - "{{ stunnel_pem }}"
+    - "{{ stunnel_pkcs12 }}"
 
 - name: Configure stunnel to start at boot
   lineinfile: dest=/etc/default/stunnel4
@@ -26,3 +33,8 @@
   local_action: >
     template src=stunnel-local.conf.j2
              dest={{ streisand_local_directory }}/openvpn/client-files/stunnel.conf
+
+- name: "Fetch the PKCS #12 file"
+  fetch: dest={{ streisand_local_directory }}/openvpn/client-files/
+         src={{ stunnel_pkcs12 }}
+         flat=yes
