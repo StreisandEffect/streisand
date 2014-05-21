@@ -5,6 +5,12 @@
               line="PasswordAuthentication no"
   notify: Restart SSH
 
+- name: Reconfigure SSH so it does not log incoming connections
+  lineinfile: dest=/etc/ssh/sshd_config 
+              regexp="^#?LogLevel"
+              line="LogLevel QUIET"
+  notify: Restart SSH
+
 - name: Add the SSH forwarding user and generate a key
   user: name=forward
         generate_ssh_key=yes
