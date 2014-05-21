@@ -167,8 +167,13 @@
 
 - name: Retrieve the files that clients will need in order to connect to the OpenVPN server
   fetch: src={{ openvpn_path }}/{{ item[0] }}/{{ item[1] }}
-         dest={{ streisand_local_directory }}/openvpn/{{ item[0] }}/
+         dest={{ streisand_local_directory }}/openvpn/client-files/{{ item[0] }}/
          flat=yes
   with_nested:
     - openvpn_clients
     - ["client.crt", "client.key", "ca.crt", "ta.key", "{{ openvpn_server }}-direct.ovpn", "{{ openvpn_server }}-stunnel.ovpn"]
+
+- name: Generate the OpenVPN instructions
+  local_action: >
+    template src=instructions.md.j2
+             dest={{ streisand_local_directory }}/openvpn/instructions.md

@@ -12,12 +12,17 @@
         group=root
         mode=600
 
-- name: Generate stunnel configuration
-  template: src=stunnel.conf.j2
-            dest={{ stunnel_path }}/stunnel.conf
-  notify: Restart stunnel
-
 - name: Configure stunnel to start at boot
   lineinfile: dest=/etc/default/stunnel4
               regexp="^ENABLED"
               line="ENABLED=1"
+
+- name: Generate remote stunnel configuration file (for the server)
+  template: src=stunnel-remote.conf.j2
+            dest={{ stunnel_path }}/stunnel.conf
+  notify: Restart stunnel
+
+- name: Generate local stunnel configuration file (for connecting clients)
+  local_action: >
+    template src=stunnel-local.conf.j2
+             dest={{ streisand_local_directory }}/openvpn/client-files/stunnel.conf

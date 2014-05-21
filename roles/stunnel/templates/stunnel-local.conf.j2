@@ -1,0 +1,5 @@
+client = yes
+
+[stunnel]
+accept = localhost:{{ stunnel_local_port }}
+connect = {{ ansible_default_ipv4.address }}:{{ stunnel_remote_port }}
