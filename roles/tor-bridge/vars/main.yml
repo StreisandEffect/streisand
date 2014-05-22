@@ -1,5 +1,11 @@
 ---
 tor_bridge_nickname_file: "/etc/tor/bridge_nickname"
 tor_obfs_transports:
-  - obfs2
   - obfs3
+  - scramblesuit
+
+tor_standard_connection_details: "{{ ansible_default_ipv4.address }}:{{ tor_orport }}"
+tor_obfs3_connection_details:    "{{ ansible_default_ipv4.address }}:{{ tor_obfs_ports.results[0].stdout }}"
+
+# Scramblesuit connection details will be added to the instructions once this bug is resolved:
+# https://trac.torproject.org/projects/tor/ticket/10887
