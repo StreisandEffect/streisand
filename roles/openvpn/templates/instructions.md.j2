@@ -20,7 +20,7 @@ Windows
 9. Go to the 'Compatibility' tab and click the 'Run this program as an administrator' checkbox in the 'Privilege Level' section
 10. Double-click the OpenVPN GUI desktop icon to launch the application
 11. Open the 'config' directory that is located in the Destination Folder. For most users, this will either be in C:\Program Files\OpenVPN\config or C:\Program Files (x86)\OpenVPN\config. You will see a single README file in this directory.
-12. Drag and drop a '{{ openvpn_server }}-direct.ovpn' file from one of the client-files folders to this location alongside the README. The client-files folders are located in the same directory as these instructions.
+12. Drag and drop a '{{ openvpn_direct_profile_filename }}' file from one of the client-files folders to this location alongside the README. The client-files folders are located in the same directory as these instructions.
 13. Right-click on the OpenVPN icon in your taskbar and choose 'Connect'
 14. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP
 15. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
@@ -32,7 +32,7 @@ OS X
 3. Click 'Launch' after the installation is finished
 4. Enter your password and click 'OK' if Tunnelblick asks to 'repair ownership/permissions'
 5. Click the 'Open configuration folder' button on the 'Welcome to Tunnelblick' screen
-6. Drag and drop a '{{ openvpn_server }}-direct.ovpn' file from one of the client-files folders to the folder that was opened. The client-files folders are located in the same directory as these instructions. You may need to enter your password in order to authorize Finder to copy the file to this location.
+6. Drag and drop a '{{ openvpn_direct_profile_filename }}' file from one of the client-files folders to the folder that was opened. The client-files folders are located in the same directory as these instructions. You may need to enter your password in order to authorize Finder to copy the file to this location.
 7. Look for the Tunnelblick icon in your menu bar. Click on it, and choose 'Connect'. You will see an animation while the connection is being established. You can also click on the icon and choose 'Details' to see a log of what is happening.
 8. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
 
@@ -41,10 +41,10 @@ Linux
 1. Install OpenVPN
 
    `sudo apt-get install openvpn` OR `sudo yum install openvpn` OR `esoteric-package-manager hipster openvpn`
-2. Copy a '{{ openvpn_server }}-direct.ovpn' file from one of the client-files folders to the location of your choice. /etc/openvpn/ is a decent option.
+2. Copy a '{{ openvpn_direct_profile_filename }}' file from one of the client-files folders to the location of your choice. /etc/openvpn/ is a decent option.
 3. Execute OpenVPN, and pass it the .ovpn profile as an option.
 
-   `sudo openvpn {{ openvpn_server }}-direct.ovpn`
+   `sudo openvpn {{ openvpn_direct_profile_filename }}`
 4. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
 
 Linux (Ubuntu)
@@ -85,10 +85,10 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 Android
 -------
 1. Install [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn)
-2. Copy a '{{ openvpn_server }}-direct.ovpn' file from one of the client-files folders to your phone. The client-files folders are located in the same directory as these instructions.
+2. Copy a '{{ openvpn_direct_profile_filename }}' file from one of the client-files folders to your phone. The client-files folders are located in the same directory as these instructions.
 3. Launch OpenVPN for Android
 4. Tap the folder icon in the lower-right of the screen
-5. Select the '{{ openvpn_server }}-direct.ovpn' profile that you copied to your phone
+5. Select the '{{ openvpn_direct_profile_filename }}' profile that you copied to your phone
 6. Tap the save icon (floppy disk) in the lower-right of the screen after the import is complete
 7. Tap the profile
 8. Accept the Android VPN connection warning
@@ -99,7 +99,7 @@ iOS
 1. Download [OpenVPN Connect](https://itunes.apple.com/us/app/openvpn-connect/id590379981) and launch it
 2. Open iTunes on your computer and connect your phone
 3. Select your phone, click on the Apps tab, and find OpenVPN under the File Sharing section
-4. Drag and drop a '{{ openvpn_server }}-direct.ovpn' file from one of the client-files folders into the file sharing window. The client-files folders are located in the same directory as these instructions.
+4. Drag and drop a '{{ openvpn_direct_profile_filename }}' file from one of the client-files folders into the file sharing window. The client-files folders are located in the same directory as these instructions.
 5. OpenVPN on your phone will say that '1 new OpenVPN profile is available for import.'
 6. Tap the green '+' button to import the profile
 7. Tap the slider to connect to the OpenVPN server

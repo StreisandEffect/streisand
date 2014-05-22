@@ -105,7 +105,7 @@
 
 - name: Create the client configuration profiles that will be used when connecting directly
   template: src=client-direct.ovpn.j2
-            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_server }}-direct.ovpn
+            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_profile_filename }}
   with_together:
     - openvpn_clients
     - openvpn_client_certificates.results
@@ -113,7 +113,7 @@
 
 - name: Create the client configuration profiles that will be used when connecting via stunnel
   template: src=client-stunnel.ovpn.j2
-            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_server }}-stunnel.ovpn
+            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_stunnel_profile_filename }}
   with_together:
     - openvpn_clients
     - openvpn_client_certificates.results
@@ -168,7 +168,7 @@
          flat=yes
   with_nested:
     - openvpn_clients
-    - ["client.crt", "client.key", "ca.crt", "ta.key", "{{ openvpn_server }}-direct.ovpn", "{{ openvpn_server }}-stunnel.ovpn"]
+    - ["client.crt", "client.key", "ca.crt", "ta.key", "{{ openvpn_direct_profile_filename }}", "{{ openvpn_stunnel_profile_filename }}"]
 
 - name: Generate the OpenVPN instructions
   local_action: >
