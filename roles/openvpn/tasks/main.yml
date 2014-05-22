@@ -1,7 +1,4 @@
 ---
-# Installs the OpenVPN virtual private network server.
-# ref: https://library.linode.com/networking/openvpn/debian-6-squeeze
-
 - name: Install OpenVPN and dependencies from apt
   apt: pkg={{ item }}
   with_items:
@@ -175,5 +172,8 @@
 
 - name: Generate the OpenVPN instructions
   local_action: >
-    template src=instructions.md.j2
-             dest={{ streisand_local_directory }}/openvpn/instructions.md
+    template src={{ item }}.j2
+             dest={{ streisand_local_directory }}/openvpn/{{ item }}
+  with_items:
+    - instructions.md
+    - stunnel-instructions.md
