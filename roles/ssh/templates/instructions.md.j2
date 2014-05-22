@@ -32,7 +32,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 9.  Type 'about:config' into the address bar and hit Enter
 10. You should see a screen that says "This might void your warranty!" Click the 'I'll be careful, I promise!' button.
 11. Search for 'socks_remote_dns' and double click on the value that is returned. It will change from 'false' to 'true'.
-12. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should show "Your IP address appears to be: {{ ansible_default_ipv4.address }}".
+12. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
 
 Linux and OS X
 --------------
@@ -56,7 +56,7 @@ Linux and OS X
 
    `sshuttle --dns -r forward@{{ ansible_hostname }} 0/0 -vv`
 
-5. All of your traffic, including DNS, is now being transparently forwarded through an encrypted SSH connection. You can verify that everything is working properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should show "Your IP address appears to be: {{ ansible_default_ipv4.address }}".
+5. All of your traffic, including DNS, is now being transparently forwarded through an encrypted SSH connection. You can verify that everything is working properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
 
 Linux and OS X (alternate)
 --------------------------
