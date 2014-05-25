@@ -1,5 +1,5 @@
 ---
-- name: Install obsfproxy and Tor
+- name: Install obfsproxy and Tor
   apt: pkg={{ item }}
   with_items:
     - obfsproxy
