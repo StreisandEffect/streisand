@@ -1,0 +1,20 @@
+L2TP/IPsec
+----------
+
+Server Address: {{ ansible_default_ipv4.address }}
+
+IPsec pre-shared key: {{ ipsec_preshared_key.stdout }}
+
+CHAP user: streisand
+CHAP pass: {{ chap_password.stdout }}
+
+
+iOS
+---
+1. Settings -> General -> VPN
+2. Tap 'Add VPN Configuration'
+3. Select the L2TP tab
+4. Tap 'Server' and enter '{{ ansible_default_ipv4.address }}'
+5. Tap 'Account' and enter 'streisand'
+6. Tap 'Password' and enter '{{ chap_password.stdout }}'
+7. Tap 'Secret' and enter '{{ ipsec_preshared_key.stdout }}'

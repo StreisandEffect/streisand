@@ -14,3 +14,9 @@ openvpn_protocol: "tcp"
 
 openvpn_direct_profile_filename: "{{ openvpn_server }}-direct.ovpn"
 openvpn_stunnel_profile_filename: "{{ openvpn_server }}-stunnel.ovpn"
+
+openvpn_firewall_rules:
+  - iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+  - iptables -A FORWARD -s 10.8.0.0/24 -j ACCEPT
+  - iptables -A FORWARD -j REJECT
+  - iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE

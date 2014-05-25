@@ -1,0 +1,32 @@
+version 2.0
+config setup
+    protostack=netkey
+    nat_traversal=yes
+    virtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:25.0.0.0/8,%v6:fd00::/8,%v6:fe80::/10,%v4:!10.8.8.0/24,%v4:!10.9.9.0/24
+    oe=off
+
+conn PUBLIC-PSK-PRIVATE-NAT
+    rightsubnet=vhost:%priv
+    also=PUBLIC-PSK-PRIVATE
+
+conn PUBLIC-PSK-PRIVATE
+    forceencaps=yes
+    authby=secret
+    pfs=no
+    auto=add
+    keyingtries=3
+    rekey=no
+    ikelifetime=8h
+    keylife=1h
+    salifetime=10m
+    type=transport
+    left={{ ansible_default_ipv4.address }}
+    leftprotoport=17/1701
+    right=%any
+    rightprotoport=17/%any
+    dpddelay=10
+    dpdtimeout=90
+    dpdaction=clear
+    #ike=aes256-sha1;modp1024!
+    #phase2alg=aes256-sha1;modp1024
+    #esp=aes-sha1;modp1024

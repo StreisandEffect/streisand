@@ -10,12 +10,19 @@
 # bits.
 #
 
-iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -s 10.8.0.0/24 -j ACCEPT
-iptables -A FORWARD -j REJECT
-iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
+# OpenVPN
+{% for rule in openvpn_firewall_rules %}
+{{ rule }}
+{% endfor %}
 
-/etc/init.d/dnsmasq restart
+# L2TP/IPsec
+{% for rule in l2tp_ipsec_firewall_rules %}
+{{ rule }}
+{% endfor %}
+
+/etc/init.d/dnsmasq start
 /etc/init.d/danted start
+/etc/init.d/ipsec start
 
+echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
 exit 0

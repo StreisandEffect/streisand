@@ -123,24 +123,13 @@
   command: openssl dhparam -out {{ openvpn_dhparam }} {{ openvpn_key_size }}
            creates={{ openvpn_dhparam }}
 
-- name: Generate rc.local with Firewall and dnsmasq settings
-  template: src=rc.local.j2
-            dest=/etc/rc.local
-            owner=root
-            group=root
-            mode=755
-
 - name: Enable IPv4 traffic forwarding
   sysctl: name=net.ipv4.ip_forward
           value=1
 
 - name: Allow OpenVPN through the firewall
   command: "{{ item }}"
-  with_items:
-    - iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-    - iptables -A FORWARD -s 10.8.0.0/24 -j ACCEPT
-    - iptables -A FORWARD -j REJECT
-    - iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
+  with_items: openvpn_firewall_rules
 
 - name: Copy OpenVPN configuration file into place
   template: src=etc_openvpn_server.conf.j2

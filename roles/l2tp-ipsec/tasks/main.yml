@@ -1,0 +1,104 @@
+---
+- name: Install Openswan
+  # This particular version needs to be installed to work around a
+  # Debian regression:
+  #   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=744717
+  apt: pkg=openswan=1:2.6.37-3
+
+- name: Install xl2tpd
+  apt: pkg=xl2tpd
+
+- name: Enable IPv4 traffic forwarding
+  sysctl: name=net.ipv4.ip_forward
+          value=1
+
+- name: Disable IPv4 redirects
+  sysctl: name={{ item }}
+          value=0
+  with_items:
+    - net.ipv4.conf.all.accept_redirects
+    - net.ipv4.conf.all.send_redirects
+
+- name: Ensure redirects are disabled immediately
+  shell: echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
+
+- name: Generate IPsec configuration file
+  template: src=ipsec.conf.j2
+            dest=/etc/ipsec.conf
+            owner=root
+            group=root
+            mode=644
+  notify: Restart Openswan
+
+- name: Generate a random IPsec pre-shared key
+  shell: grep -v "'" /usr/share/dict/american-english | sort -R | tail -n 4 | xargs | sed -e 's/ /-/g' > {{ ipsec_preshared_key_file }}
+         creates={{ ipsec_preshared_key_file }}
+
+- name: Set permissions on the IPsec pre-shared key
+  file: path={{ ipsec_preshared_key_file }}
+        owner=root
+        group=root
+        mode=600
+
+- name: Register the IPsec pre-shared key
+  command: cat {{ ipsec_preshared_key_file }}
+  register: ipsec_preshared_key
+
+- name: Generate IPsec secrets file
+  template: src=ipsec.secrets.j2
+            dest=/etc/ipsec.secrets
+            owner=root
+            group=root
+            mode=600
+
+- name: Generate xl2tpd configuration file
+  template: src=xl2tpd.conf.j2
+            dest=/etc/xl2tpd/xl2tpd.conf
+            owner=root
+            group=root
+            mode=644
+  notify: Restart xl2tpd
+
+- name: Copy xl2tpd secrets file
+  copy: src=l2tp-secrets
+        dest=/etc/xl2tpd/l2tp-secrets
+        owner=root
+        group=root
+        mode=600
+
+- name: Copy PPP options file
+  copy: src=options
+        dest=/etc/ppp/options
+        owner=root
+        group=root
+        mode=644
+
+- name: Generate a random CHAP password
+  shell: grep -v "'" /usr/share/dict/american-english | sort -R | tail -n 2 | xargs | sed -e 's/ /-/g' > {{ chap_password_file }}
+         creates={{ chap_password_file }}
+
+- name: Set permissions on the CHAP password
+  file: path={{ chap_password_file }}
+        owner=root
+        group=root
+        mode=600
+
+- name: Register the CHAP password
+  command: cat {{ chap_password_file }}
+  register: chap_password
+
+- name: Generate CHAP secrets file
+  template: src=chap-secrets.j2
+            dest=/etc/ppp/chap-secrets
+            owner=root
+            group=root
+            mode=600
+
+- name: Allow L2TP/IPsec through the firewall
+  command: "{{ item }}"
+  with_items: l2tp_ipsec_firewall_rules
+
+- name: Generate the L2TP/IPsec instructions
+  local_action: >
+    template src=instructions.md.j2
+             dest={{ streisand_local_directory }}/l2tp-ipsec/instructions.md

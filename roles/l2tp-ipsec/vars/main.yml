@@ -1,0 +1,8 @@
+---
+chap_password_file: "/etc/ppp/chap-password"
+ipsec_preshared_key_file: "/etc/ipsec.preshared-key"
+
+l2tp_ipsec_firewall_rules:
+  - iptables -I INPUT -s 10.9.9.0/24 -j ACCEPT
+  - iptables -t nat -I POSTROUTING -s 10.9.9.0/24 -j SNAT --to-source {{ ansible_default_ipv4.address }} -o {{ ansible_default_ipv4.interface }}
+  - iptables -t nat -I POSTROUTING -s 10.9.9.0/24 -j MASQUERADE
