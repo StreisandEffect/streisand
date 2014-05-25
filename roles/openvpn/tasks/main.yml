@@ -136,9 +136,8 @@
             dest=/etc/openvpn/server.conf
   notify: Restart OpenVPN
 
-# OpenVPN must restart first so the 10.8.0.0 interface is available
-# to dnsmasq
-- meta: flush_handlers
+- name: Restart OpenVPN so the 10.8.0.0 interface is available to dnsmasq
+  command: service openvpn restart
 
 - name: Copy dnsmasq configuration file into place
   copy: src=etc_dnsmasq.conf

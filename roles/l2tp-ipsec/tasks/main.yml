@@ -1,12 +1,9 @@
 ---
-- name: Install Openswan
-  # This particular version needs to be installed to work around a
-  # Debian regression:
-  #   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=744717
-  apt: pkg=openswan=1:2.6.37-3
-
-- name: Install xl2tpd
-  apt: pkg=xl2tpd
+- name: Install strongSwan and xl2tpd
+  apt: pkg={{ item }}
+  with_items:
+    - strongswan
+    - xl2tpd
 
 - name: Enable IPv4 traffic forwarding
   sysctl: name=net.ipv4.ip_forward
@@ -28,7 +25,7 @@
             owner=root
             group=root
             mode=644
-  notify: Restart Openswan
+  notify: Restart strongSwan
 
 - name: Generate a random IPsec pre-shared key
   shell: grep -v "'" /usr/share/dict/american-english | sort -R | tail -n 4 | xargs | sed -e 's/ /-/g' > {{ ipsec_preshared_key_file }}

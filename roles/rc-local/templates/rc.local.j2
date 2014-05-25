@@ -10,6 +10,9 @@
 # bits.
 #
 
+# Flush all other rules
+iptables -F
+
 # OpenVPN
 {% for rule in openvpn_firewall_rules %}
 {{ rule }}
@@ -22,7 +25,7 @@
 
 /etc/init.d/dnsmasq start
 /etc/init.d/danted start
-/etc/init.d/ipsec start
+/etc/init.d/ipsec restart
 
 echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
 exit 0
