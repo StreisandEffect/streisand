@@ -9,7 +9,7 @@ openvpn_ca: "{{ openvpn_path }}/ca"
 openvpn_dhparam: "{{ openvpn_path }}/dh{{ openvpn_key_size }}.pem"
 openvpn_hmac_firewall: "{{ openvpn_path }}/ta.key"
 openvpn_server: "{{ ansible_default_ipv4.address }}"
-openvpn_port: "1194"
+openvpn_port: "636"
 openvpn_protocol: "tcp"
 
 openvpn_direct_profile_filename: "{{ openvpn_server }}-direct.ovpn"
