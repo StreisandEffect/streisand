@@ -94,6 +94,17 @@ Android
 8. Accept the Android VPN connection warning
 9. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
 
+Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) that affects VPN users who are running Android 4.4. The following workaround ensures that lookups can be performed successfully, even if you remain connected to the OpenVPN server for an extended period of time.
+
+### Configuring Firefox for Android to use the Dante SOCKS server ###
+1. Open Firefox
+2. Type "about:config" into the address bar and tap the 'Go' button on your keyboard
+3. Type "proxy" into the search box
+4. Set the value of 'network.proxy.socks' to '10.8.0.1'
+5. Set the value of 'network.proxy.socks_port' to '1080'
+6. Set the value of 'network.proxy.socks\_remote\_dns' to 'true'
+7. Set the value of 'network.proxy.type' to '1'
+
 iOS
 ---
 1. Download [OpenVPN Connect](https://itunes.apple.com/us/app/openvpn-connect/id590379981) and launch it
