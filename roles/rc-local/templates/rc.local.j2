@@ -10,9 +10,6 @@
 # bits.
 #
 
-# Flush all other rules
-iptables -F
-
 # OpenVPN
 {% for rule in openvpn_firewall_rules %}
 {{ rule }}

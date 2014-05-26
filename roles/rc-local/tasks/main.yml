@@ -1,7 +1,4 @@
 ---
-- name: Flush all Firewall rules
-  command: iptables -F
-
 - name: Generate rc.local with Firewall and dnsmasq settings for OpenVPN and L2TP/IPsec
   template: src=rc.local.j2
             dest=/etc/rc.local
