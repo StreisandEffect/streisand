@@ -1,0 +1,16 @@
+# Configure the Server and install required software
+# ===============================================================
+- hosts: streisand-host
+
+  user: root
+
+  roles:
+    - common
+    - l2tp-ipsec
+    - openvpn
+    - dante
+    - stunnel
+    - shadowsocks
+    - ssh
+    - tinyproxy
+    - tor-bridge

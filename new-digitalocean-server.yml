@@ -1,7 +1,7 @@
 ---
 # Provision the DigitalOcean Server
 # =================================
-- hosts: 127.0.0.1
+- hosts: localhost
   connection: local
   gather_facts: no
 
@@ -26,20 +26,4 @@
   roles:
     - genesis-digitalocean
 
-
-# Configure the DigitalOcean Server and install required software
-# ===============================================================
-- hosts: streisand-host
-
-  user: root
-
-  roles:
-    - common
-    - l2tp-ipsec
-    - openvpn
-    - dante
-    - stunnel
-    - shadowsocks
-    - ssh
-    - tinyproxy
-    - tor-bridge
+- include: streisand.yml

@@ -1,2 +1,12 @@
 [localhost]
 127.0.0.1
+
+# Uncomment the following lines and update the IP address if you would
+# like to use Streisand to configure a server that is already running
+# (e.g. a server at a provider not natively supported by Streisand).
+#
+# Multiple servers can be configured simultaneously if multiple IP
+# addresses are defined.
+#
+# [streisand-host]
+# 255.255.255.255
