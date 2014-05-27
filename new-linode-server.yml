@@ -1,0 +1,25 @@
+---
+# Provision the Linode Server
+# =================================
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_prompt:
+    - name: "linode_datacenter"
+      prompt: "Region that the server should be located in. '2' for Dallas, '3' for Fremont, '4' for Atlanta, '6' for Newark, '7' for London, and '8' for Tokyo."
+      default: "8"
+      private: no
+
+    - name: "linode_server_name"
+      prompt: "Server name. This will be the hostname for the new server and will also be used as the second half of the server's identi."
+      private: no
+
+    - name: "linode_api_key"
+      prompt: "Linode API key. A new key can be generated from the API Keys tab in the 'My Profile' section of the control panel."
+      private: no
+
+  roles:
+    - genesis-linode
+
+- include: streisand.yml
