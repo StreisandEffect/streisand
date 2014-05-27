@@ -12,7 +12,7 @@
       private: no
 
     - name: "linode_server_name"
-      prompt: "Server name. This will be the hostname for the new server and will also be used as the second half of the server's identi."
+      prompt: "Server name. This will be used to identify the server in the control panel."
       private: no
 
     - name: "linode_api_key"
