@@ -1,0 +1,4 @@
+---
+ike_port: 500
+ipsec_port: 4500
+l2tp_port: 1701

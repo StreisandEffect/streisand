@@ -4,3 +4,6 @@ stunnel_key_province: "Berkshire"
 stunnel_key_city: "Slough"
 stunnel_key_org: "Wernham Hogg Paper Company"
 stunnel_key_ou: "Gareth Keenan Investigations"
+
+stunnel_remote_port: "993"
+stunnel_local_port: "41194"

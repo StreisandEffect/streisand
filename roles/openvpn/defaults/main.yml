@@ -10,3 +10,6 @@ openvpn_clients:
   - client-3
   - client-4
   - client-5
+
+openvpn_port: "636"
+openvpn_protocol: "tcp"
