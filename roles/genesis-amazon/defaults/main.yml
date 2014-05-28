@@ -1,0 +1,11 @@
+---
+aws_debian7_california_ami_id: "ami-b69da6f3"
+aws_debian7_ireland_ami_id: "ami-1d61a76a"
+aws_debian7_oregon_ami_id: "ami-bf1e688f"
+aws_debian7_sao_paulo_ami_id: "ami-5f3d9042"
+aws_debian7_signapore_ami_id: "ami-5287d500"
+aws_debian7_sydney_ami_id: "ami-b740db8d"
+aws_debian7_tokyo_ami_id: "ami-3d286e3c"
+aws_debian7_virginia_ami_id: "ami-78b45610"
+
+aws_instance_type: "t1.micro"

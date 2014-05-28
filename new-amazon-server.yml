@@ -1,0 +1,58 @@
+---
+# Provision the EC2 Server
+# =================================
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  # These variables are included for the sake of the EC2 Security
+  # Group task (which must allow various open ports)
+  vars_files:
+    - roles/l2tp-ipsec/defaults/main.yml
+    - roles/openvpn/defaults/main.yml
+    - roles/shadowsocks/defaults/main.yml
+    - roles/ssh/defaults/main.yml
+    - roles/stunnel/defaults/main.yml
+    - roles/tor-bridge/defaults/main.yml
+
+  vars_prompt:
+    - name: "aws_region"
+      prompt: "Region that the server should be located in. 'ap-northeast-1' for Asia Pacific (Tokyo), 'ap-southeast-1' for Asia Pacific (Singapore), 'ap-southeast-2' for Asia Pacific (Sydney), 'eu-west-1' for EU (Ireland), 'sa-east-1' for South America (Sao Paulo), 'us-east-1' for US East (Northern Virginia), 'us-west-1' for US West (Northern California), and 'us-west-2' for US West (Oregon)."
+      #default: "ap-southeast-1"
+      default: "us-west-2"
+      private: no
+
+    - name: "aws_instance_name"
+      prompt: "Server name. This the Name tag that will be applied to the AWS instance."
+      private: no
+
+    - name: "aws_access_key"
+      prompt: "AWS Access Key"
+      private: no
+
+    - name: "aws_secret_key"
+      prompt: "AWS Secret Key"
+      private: no
+
+  roles:
+    - genesis-amazon
+
+# Configure the Server and install required software
+# ===============================================================
+- hosts: streisand-host
+
+  # The standard streisand.yml is not included because the Debian AMI
+  # uses 'admin' instead of 'root'
+  remote_user: admin
+  sudo: yes
+
+  roles:
+    - common
+    - l2tp-ipsec
+    - openvpn
+    - dante
+    - stunnel
+    - shadowsocks
+    - ssh
+    - tinyproxy
+    - tor-bridge

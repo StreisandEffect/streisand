@@ -1,0 +1,41 @@
+---
+- name: Get the default SSH key
+  command: cat ~/.ssh/id_rsa.pub
+  register: ssh_key
+
+- name: Add the SSH key to Amazon under the name of 'streisand-ssh'
+  ec2_key: name=streisand-ssh
+           key_material="{{ ssh_key.stdout }}"
+           aws_access_key="{{ aws_access_key }}"
+           aws_secret_key="{{ aws_secret_key }}"
+           region="{{ aws_region }}"
+           wait=yes
+
+# Create the 'streisand-security' EC2 security group
+- include: ec2-security-group.yml
+
+# Determine which AMI should be used based on the chosen region
+- include: determine-ami-id.yml
+
+- name: Create the EC2 instance
+  local_action:
+    module: ec2
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    instance_type: "{{ aws_instance_type }}"
+    image: "{{ aws_ami_id }}"
+    region: "{{ aws_region }}"
+    key_name: streisand-ssh
+    group: streisand-security
+    instance_tags:
+      Name: "{{ aws_instance_name }}"
+    wait: yes
+  register: streisand_server
+
+- name: Wait until the server has finished booting and OpenSSH is accepting connections
+  wait_for: host={{ streisand_server.instances[0].public_ip }}
+            port=22
+
+- name: Create the in-memory inventory group
+  add_host: name={{ streisand_server.instances[0].public_ip }}
+            groups=streisand-host

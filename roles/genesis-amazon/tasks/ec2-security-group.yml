@@ -1,0 +1,68 @@
+---
+- name: Create the 'streisand-security' EC2 security group
+  local_action:
+    module: ec2_group
+    name: streisand-security
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    ec2_secret_key: "{{ aws_secret_key }}"
+    ec2_access_key: "{{ aws_access_key }}"
+
+- name: Open all of the necessary ports
+  local_action:
+    module: ec2_group
+    name: streisand-security
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    ec2_secret_key: "{{ aws_secret_key }}"
+    ec2_access_key: "{{ aws_access_key }}"
+    rules:
+      # L2TP/IPsec
+      # ---
+      - proto: udp
+        from_port: "{{ ike_port }}"
+        to_port: "{{ ike_port }}"
+        cidr_ip: 0.0.0.0/0
+      - proto: udp
+        from_port: "{{ ipsec_port }}"
+        to_port: "{{ ipsec_port }}"
+        cidr_ip: 0.0.0.0/0
+      - proto: udp
+        from_port: "{{ l2tp_port }}"
+        to_port: "{{ l2tp_port }}"
+        cidr_ip: 0.0.0.0/0
+      # OpenVPN
+      # ---
+      - proto: "{{ openvpn_protocol }}"
+        from_port: "{{ openvpn_port }}"
+        to_port: "{{ openvpn_port }}"
+        cidr_ip: 0.0.0.0/0
+      # Shadowsocks
+      # ---
+      - proto: tcp
+        from_port: "{{ shadowsocks_server_port }}"
+        to_port: "{{ shadowsocks_server_port }}"
+        cidr_ip: 0.0.0.0/0
+      # SSH
+      # ---
+      - proto: tcp
+        from_port: "{{ ssh_port }}"
+        to_port: "{{ ssh_port }}"
+        cidr_ip: 0.0.0.0/0
+      # Stunnel
+      # ---
+      - proto: tcp
+        from_port: "{{ stunnel_remote_port }}"
+        to_port: "{{ stunnel_remote_port }}"
+        cidr_ip: 0.0.0.0/0
+      # Tor
+      # ---
+      - proto: tcp
+        from_port: "{{ tor_orport }}"
+        to_port: "{{ tor_orport }}"
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        from_port: 1
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0

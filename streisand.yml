@@ -2,7 +2,7 @@
 # ===============================================================
 - hosts: streisand-host
 
-  user: root
+  remote_user: root
 
   roles:
     - common
