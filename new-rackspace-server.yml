@@ -1,0 +1,29 @@
+---
+# Provision the Rackspace Server
+# =================================
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_prompt:
+    - name: "rackspace_region"
+      prompt: "Region that the server should be located in. 'IAD' for Northern Virginia, 'ORD' for Chicago, 'DFW' for Dallas, 'HKG' for Hong Kong, and 'SYD' for Sydney."
+      default: "HKG"
+      private: no
+
+    - name: "rackspace_server_name"
+      prompt: "Server name. This will be the hostname for the new server and its name in the Rackspace control panel."
+      private: no
+
+    - name: "rackspace_username"
+      prompt: "Rackspace username. This is the username you use when you log into the Rackspace control panel."
+      private: no
+
+    - name: "rackspace_api_key"
+      prompt: "Rackspace API key. You can find this in your 'Account Settings' in the Rackspace control panel."
+      private: no
+
+  roles:
+    - genesis-rackspace
+
+- include: streisand.yml

@@ -1,0 +1,22 @@
+---
+- name: Create the server
+  local_action:
+    module: rax
+    api_key: "{{ rackspace_api_key }}"
+    username: "{{ rackspace_username }}"
+    name: "{{ rackspace_server_name }}"
+    flavor: "{{ rackspace_flavor }}"
+    image: "{{ rackspace_image }}"
+    region: "{{ rackspace_region }}"
+    files:
+      /root/.ssh/authorized_keys: ~/.ssh/id_rsa.pub
+    wait: yes
+  register: streisand_server
+
+- name: Wait until the server has finished booting and OpenSSH is accepting connections
+  wait_for: host={{ streisand_server.instances[0].rax_accessipv4 }}
+            port=22
+
+- name: Create the in-memory inventory group
+  add_host: name={{ streisand_server.instances[0].rax_accessipv4 }}
+            groups=streisand-host

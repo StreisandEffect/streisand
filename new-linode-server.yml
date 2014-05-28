@@ -12,11 +12,11 @@
       private: no
 
     - name: "linode_server_name"
-      prompt: "Server name. This will be used to identify the server in the control panel."
+      prompt: "Server name. This will be used to identify the server in the Linode control panel."
       private: no
 
     - name: "linode_api_key"
-      prompt: "Linode API key. A new key can be generated from the API Keys tab in the 'My Profile' section of the control panel."
+      prompt: "Linode API key. A new key can be generated from the API Keys tab in the 'My Profile' section of the Linode control panel."
       private: no
 
   roles:
