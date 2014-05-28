@@ -16,3 +16,4 @@
          mode=750
          state=directory
   with_items: streisand_directory_structure
+  sudo: no

@@ -33,6 +33,7 @@
   local_action: >
     template src=stunnel-local.conf.j2
              dest={{ streisand_local_directory }}/openvpn/client-files/stunnel.conf
+  sudo: no
 
 - name: "Fetch the PKCS #12 file"
   fetch: dest={{ streisand_local_directory }}/openvpn/client-files/

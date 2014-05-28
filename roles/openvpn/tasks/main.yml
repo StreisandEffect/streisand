@@ -165,3 +165,4 @@
   with_items:
     - instructions.md
     - stunnel-instructions.md
+  sudo: no
