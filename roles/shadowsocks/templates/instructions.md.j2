@@ -5,7 +5,7 @@ Linux, Mac OS X, Windows
 ------------------------
 The [Shadowsocks website](http://shadowsocks.org/en/download/clients.html) has several clients available for these platforms. Here is the configuration information that you'll need:
 
-         Server: {{ ansible_default_ipv4.address }}
+         Server: {{ streisand_ipv4_address }}
          Port: {{ shadowsocks_server_port }}
          Password: {{ shadowsocks_password.stdout }}
          Encryption Method: {{ shadowsocks_encryption_method }}
@@ -20,7 +20,7 @@ Android
 6. Uncheck the 'CHN Route' option
 7. Slide the switch to 'On'
 8. Accept the Android VPN connection warning
-9. Visit http://curlmyip.com or http://ip4.me in your browser. Your IP address should be listed as '{{ ansible_default_ipv4.address }}'.
+9. Visit http://curlmyip.com or http://ip4.me in your browser. Your IP address should be listed as '{{ streisand_ipv4_address }}'.
 
 iOS
 ---
@@ -35,6 +35,6 @@ iOS
 9. Go back, and tap the 'Done' button in the upper-right
 10. Double click the home button, and slide Shadowsocks off the top of the screen to close it
 11. Press the home button, and relaunch the application
-12. Visit http://curlmyip.com or http://ip4.me in the Shadowsocks browser. Your IP address should be listed as '{{ ansible_default_ipv4.address }}'.
+12. Visit http://curlmyip.com or http://ip4.me in the Shadowsocks browser. Your IP address should be listed as '{{ streisand_ipv4_address }}'.
 
 Now that Shadowsocks is properly configured, you can can launch it anytime and use its integrated browser to visit any blocked site. You can also route traffic from other iOS applications through the encrypted proxy. Instructions for this functionality (and details on its limitations) are available on the [Shadowsocks iOS Wiki](https://github.com/shadowsocks/shadowsocks-iOS/wiki/Help).

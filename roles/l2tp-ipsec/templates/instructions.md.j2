@@ -9,8 +9,8 @@ Windows
 4. Click 'Set up a new connection or network'
 5. Select 'Connect to a workplace' and click 'Next'
 6. Click 'Use my Internet connection (VPN)'
-7. Enter '{{ ansible_default_ipv4.address }}' in the 'Internet address' field
-8. Enter '{{ ansible_hostname }}' in the 'Destination name' field
+7. Enter '{{ streisand_ipv4_address }}' in the 'Internet address' field
+8. Enter '{{ streisand_server_name }}' in the 'Destination name' field
 9. Check the 'Don't connect now; just set it up so I can connect later' checkbox
 10. Click 'Next'
 11. Enter 'streisand' in the 'User name' field
@@ -18,16 +18,16 @@ Windows
 13. Check the 'Remember this password' checkbox
 14. Click 'Connect', then click the 'Close' button
 15. Return to the Control Panel's 'Network and Internet' section and click on the 'Connect to a network' option
-16. Right-click on the new '{{ ansible_hostname }}' connection and choose 'Properties'
+16. Right-click on the new '{{ streisand_server_name }}' connection and choose 'Properties'
 17. Click the 'Options' tab and uncheck 'Include Windows logon domain'
 18. Click the 'Security' tab and select 'Layer 2 Tunneling Protocol with IPsec (L2TP/IPSec)' from the 'Type of VPN' drop-down menu
 19. Click the 'Advanced settings' button
 20. Select 'Use preshared key for authentication' and enter '{{ ipsec_preshared_key.stdout }}' for the 'Key'
 21. Click 'OK' to close the 'Advanced settings'
 22. Click 'OK' to save the VPN connection details
-23. To connect to the VPN, simply right-click on the wireless/network icon in your system tray, select '{{ ansible_hostname }}', and click 'Connect'.\
+23. To connect to the VPN, simply right-click on the wireless/network icon in your system tray, select '{{ streisand_server_name }}', and click 'Connect'.\
 
-You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 OS X
 ----
@@ -35,9 +35,9 @@ OS X
 2. Click the '+' button in the lower-left corner of the window
 3. Select 'VPN' from the 'Interface' drop-down menu
 4. Select 'L2TP over IPSec' from the 'VPN Type' drop-down menu
-5. Enter '{{ ansible_hostname }}' for the 'Service Name'
+5. Enter '{{ streisand_server_name }}' for the 'Service Name'
 6. Click 'Create'
-7. Enter '{{ ansible_default_ipv4.address }}' for the 'Server Address'
+7. Enter '{{ streisand_ipv4_address }}' for the 'Server Address'
 8. Enter 'streisand' for the 'Account Name'
 9. Click the 'Authentication Settings' button
 10. In the 'User Authentication' section, select the 'Password' radio button and enter '{{ chap_password.stdout }}' as its value
@@ -47,13 +47,13 @@ OS X
 14. Click the 'Advanced' button and make sure the 'Send all traffic over VPN connection' checkbox is selected
 15. Click 'OK' to close the Advanced settings, and then click 'Apply' to save the VPN connection information
 
-You can connect to the VPN using the VPN icon in the menu bar, or by selecting the VPN in the Network section of System Preferences and choosing 'Connect'. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+You can connect to the VPN using the VPN icon in the menu bar, or by selecting the VPN in the Network section of System Preferences and choosing 'Connect'. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 Linux
 -----
 L2TP/IPsec connections are not supported out-of-the-box on most Linux distributions without requiring the installation of additional software. This nullifies one of the biggest appeals of L2TP/IPsec (i.e. its painless client-side configuration). It is recommended to use another connection method such as OpenVPN instead, but if you would like to configure L2TP/IPsec on your Linux desktop, here are the settings you will need: 
 
-    Server Address: {{ ansible_default_ipv4.address }}
+    Server Address: {{ streisand_ipv4_address }}
 
     IPsec pre-shared key: {{ ipsec_preshared_key.stdout }}
 
@@ -66,28 +66,28 @@ Android
 2. Tap 'More...' in the 'Wireless & Networks' section
 3. Tap 'VPN'
 4. Tap the '+' icon in the top-right of the screen
-5. Enter '{{ ansible_hostname }}' in the 'Name' field
+5. Enter '{{ streisand_server_name }}' in the 'Name' field
 6. Select 'L2Tp/IPSec PSK' in the 'Type' drop-down menu
-7. Enter '{{ ansible_default_ipv4.address }}' in the 'Server address' field
+7. Enter '{{ streisand_ipv4_address }}' in the 'Server address' field
 8. Enter '{{ ipsec_preshared_key.stdout }}' in the 'IPSec pre-shared key' field
 9. Tap 'Save'
-10. Tap the '{{ ansible_hostname }}' connection
+10. Tap the '{{ streisand_server_name }}' connection
 11. Enter 'streisand' in the 'Username' field
 12. Enter '{{ chap_password.stdout }}' in the 'Password' field
 13. Check the 'Save account information' checkbox
 14. Tap 'Connect'
-15. Once connected, you will see a VPN icon in the notification bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+15. Once connected, you will see a VPN icon in the notification bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 iOS
 ---
 1. Go to Settings -> General -> VPN
 2. Tap 'Add VPN Configuration'
 3. Select the L2TP tab
-4. Tap 'Description' and enter '{{ ansible_hostname }}'
-5. Tap 'Server' and enter '{{ ansible_default_ipv4.address }}'
+4. Tap 'Description' and enter '{{ streisand_server_name }}'
+5. Tap 'Server' and enter '{{ streisand_ipv4_address }}'
 6. Tap 'Account' and enter 'streisand'
 7. Tap 'Password' and enter '{{ chap_password.stdout }}'
 8. Tap 'Secret' and enter '{{ ipsec_preshared_key.stdout }}'
 9. Tap 'Save'
 10. Slide the 'VPN' switch on
-11. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+11. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.

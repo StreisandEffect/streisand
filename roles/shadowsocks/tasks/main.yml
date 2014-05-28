@@ -42,7 +42,7 @@
 - name: Generate the Shadowsocks QR code
   # The ss:// URI format is documented here:
   #   http://shadowsocks.org/en/config/quick-guide.html
-  shell: echo -n '{{ shadowsocks_encryption_method }}:{{ shadowsocks_password.stdout }}@{{ ansible_default_ipv4.address }}:{{ shadowsocks_server_port }}' | base64 --wrap=0 | sed 's/^/ss:\/\//' | qrencode -s 15 -o {{ shadowsocks_qr_code }}
+  shell: echo -n '{{ shadowsocks_encryption_method }}:{{ shadowsocks_password.stdout }}@{{ streisand_ipv4_address }}:{{ shadowsocks_server_port }}' | base64 --wrap=0 | sed 's/^/ss:\/\//' | qrencode -s 15 -o {{ shadowsocks_qr_code }}
          creates={{ shadowsocks_qr_code }}
 
 - name: Set permissions on the QR code image and Shadowsocks password file

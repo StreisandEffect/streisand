@@ -1,0 +1,34 @@
+---
+# Some providers (e.g. Amazon EC2) assign internal 172.x.x.x IP
+# addresses to their virtual machines. It's important to use the real
+# public IP in the instructions Streisand generates, because the
+# internal addresses are not publicly accessible.
+#
+# Some providers (e.g. Amazon EC2 and Linode) do not use the name that
+# is provided in the API call as the server's hostname. It's important
+# to use the friendly name in the instructions rather than an ugly,
+# randomly generated hostname.
+#
+# Each 'genesis' role for the providers that Streisand natively supports
+# sets the streisand_ipv4_address and streisand_server_name variables in
+# an attempt to correct the limitations laid out above. However, it is
+# also necessary to fall back to default sane values if users choose to
+# run Streisand on their own servers or against other cloud providers.
+#
+# These conditionals are here for that very reason :)
+
+- name: Set the streisand_ipv4_address variable to the value provided by a 'genesis' role if one is defined
+  set_fact: streisand_ipv4_address="{{ hostvars['127.0.0.1']['streisand_ipv4_address'] }}"
+  when: hostvars['127.0.0.1']['streisand_ipv4_address'] is defined
+
+- name: Set the streisand_ipv4_address variable to the default value if it doesn't already have one
+  set_fact: streisand_ipv4_address="{{ ansible_default_ipv4.address }}"
+  when: streisand_ipv4_address is not defined
+
+- name: Set the streisand_server_name variable to the value provided by a 'genesis' role if one is defined
+  set_fact: streisand_server_name="{{ hostvars['127.0.0.1']['streisand_server_name'] }}"
+  when: hostvars['127.0.0.1']['streisand_server_name'] is defined
+
+- name: Set the streisand_server_name variable to the default value if it doesn't already have one
+  set_fact: streisand_server_name="{{ ansible_default_ipv4.address }}"
+  when: streisand_server_name is not defined

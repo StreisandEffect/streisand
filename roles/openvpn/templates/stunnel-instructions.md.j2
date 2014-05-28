@@ -34,7 +34,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 12. Drag and drop a '{{ openvpn_stunnel_profile_filename }}' file from one of the client-files folders to this location alongside the README. The client-files folders are located in the same directory as these instructions.
 13. Right-click on the OpenVPN icon in your taskbar and choose 'Connect'
 14. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP
-15. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+15. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 OS X
 ----
@@ -60,7 +60,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 5. Click the 'Open configuration folder' button on the 'Welcome to Tunnelblick' screen
 6. Drag and drop a '{{ openvpn_stunnel_profile_filename }}' file from one of the client-files folders to the folder that was opened. The client-files folders are located in the same directory as these instructions. You may need to enter your password in order to authorize Finder to copy the file to this location.
 7. Look for the Tunnelblick icon in your menu bar. Click on it, and choose 'Connect'. You will see an animation while the connection is being established. You can also click on the icon and choose 'Details' to see a log of what is happening.
-8. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+8. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 Linux
 ----
@@ -85,7 +85,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 3. Execute OpenVPN, and pass it the .ovpn profile as an option.
 
    `sudo openvpn {{ openvpn_stunnel_profile_filename }}`
-4. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+4. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 The OpenVPN plugin for NetworkManager appears to become very confused as to how it should route traffic when you connect to an OpenVPN server through a wrapped stunnel connection. Manually adding route information does not seem to help. Therefore, unlike in the non-stunnel instructions, the steps above are the recommended connection method for Ubuntu as well.
 
@@ -96,7 +96,7 @@ Android
 2. Install [SSLDroid](https://play.google.com/store/apps/details?id=hu.blint.ssldroid) and launch it
 3. Tap the menu button in the lower-right corner of the screen
 4. Tap 'Add tunnel'
-5. Tap 'Tunnel name' and enter '{{ ansible_hostname }}'
+5. Tap 'Tunnel name' and enter '{{ streisand_server_name }}'
 6. Tap 'Local port' and enter '{{ stunnel_local_port }}'
 7. Tap 'Remote host' and enter '{{ openvpn_server }}'
 8. Tap 'Remote port' and enter '{{ stunnel_remote_port }}'
@@ -114,7 +114,7 @@ Now you are ready to install OpenVPN for Android and configure it to route its t
 6. Tap the save icon (floppy disk) in the lower-right of the screen after the import is complete
 7. Tap the profile
 8. Accept the Android VPN connection warning
-9. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+9. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) that affects VPN users who are running Android 4.4. The following workaround ensures that lookups can be performed successfully, even if you remain connected to the OpenVPN server for an extended period of time.
 

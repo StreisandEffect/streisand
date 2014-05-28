@@ -5,7 +5,7 @@ Windows
 -------
 1. Download [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and run it
 2. Go to the Session section
-3. Enter '{{ ansible_default_ipv4.address }}' in the Host Name field and '22' in the Port field
+3. Enter '{{ streisand_ipv4_address }}' in the Host Name field and '22' in the Port field
 4. Go to Connection --> Data
 5. Enter 'forward' in the Auto-login username field
 6. Go to Connection --> SSH --> Tunnels
@@ -15,7 +15,7 @@ Windows
 10. Go to Connection --> SSH --> Auth
 11. Click the 'Browse' button and select the 'streisand_rsa' file that is located in the same folder as these instructions
 12. Go back to Session (the very first item in the left-hand menu)
-13. Enter '{{ ansible_hostname }}' in the first Saved Sessions box and click the 'Save' button. The next time you launch PuTTY you can choose the session and click 'Load' to restore all of these settings.
+13. Enter '{{ streisand_server_name }}' in the first Saved Sessions box and click the 'Save' button. The next time you launch PuTTY you can choose the session and click 'Load' to restore all of these settings.
 14. Click 'Open' to connect!
 
 You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through SSH. The next step is to configure your web browser to use it.
@@ -32,16 +32,16 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 9.  Type 'about:config' into the address bar and hit Enter
 10. You should see a screen that says "This might void your warranty!" Click the 'I'll be careful, I promise!' button.
 11. Search for 'socks_remote_dns' and double click on the value that is returned. It will change from 'false' to 'true'.
-12. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+12. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 Linux and OS X
 --------------
 1. Add a new entry to your .ssh/config file. It should look like this. Be sure to adjust the location of the IdentityFile (if necessary):
 
-         Host {{ ansible_hostname }}
+         Host {{ streisand_server_name }}
            User         forward
            Port         22
-           HostName     {{ ansible_default_ipv4.address }}
+           HostName     {{ streisand_ipv4_address }}
            IdentityFile {{ streisand_local_directory }}/ssh/streisand_rsa
 
 2. Download [sshuttle](https://github.com/apenwarr/sshuttle) by running the following command in the directory of your choice:
@@ -54,9 +54,9 @@ Linux and OS X
 
 4. Run sshuttle and connect to the server
 
-   `sshuttle --dns -r forward@{{ ansible_hostname }} 0/0 -vv`
+   `sshuttle --dns -r forward@{{ streisand_server_name }} 0/0 -vv`
 
-5. All of your traffic, including DNS, is now being transparently forwarded through an encrypted SSH connection. You can verify that everything is working properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+5. All of your traffic, including DNS, is now being transparently forwarded through an encrypted SSH connection. You can verify that everything is working properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 Linux and OS X (alternate)
 --------------------------
@@ -64,15 +64,15 @@ Sshuttle offers significantly faster performance and is easier to set up, but th
 
 1. Add a new entry to your .ssh/config file. It should look like this. Be sure to adjust the location of the IdentityFile (if necessary):
 
-         Host {{ ansible_hostname }}
+         Host {{ streisand_server_name }}
            User         forward
            Port         22
-           HostName     {{ ansible_default_ipv4.address }}
+           HostName     {{ streisand_ipv4_address }}
            IdentityFile {{ streisand_local_directory }}/ssh/streisand_rsa
 
 2. SSH into the server and forward a dynamic SOCKS port
 
-   `ssh -D {{ ssh_default_socks_port }} forward@{{ ansible_hostname }}`
+   `ssh -D {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
 
 3. You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through SSH. The next step is to configure your web browser to use it. You can follow the same instructions contained in the Windows section above to configure Firefox to route its traffic through the SOCKS proxy.
 
@@ -83,7 +83,7 @@ Android
 3. Start the application. It will be listed as 'SPT' in your launcher, and its icon looks like a train tunnel.
 4. Tap the menu icon in the lower-right of your screen
 5. Tap 'Settings'
-6. Tap 'Host name' and enter '{{ ansible_default_ipv4.address }}'
+6. Tap 'Host name' and enter '{{ streisand_ipv4_address }}'
 7. Tap 'User Name' and enter 'forward'
 8. Tap 'Port' and enter '22'
 9. Tap 'Private Key File' and select the 'streisand_rsa' file that you copied to your phone in step 2

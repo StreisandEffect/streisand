@@ -10,7 +10,7 @@ ns-cert-type server
 comp-lzo
 key-direction 1
 verb 3
-route {{ ansible_default_ipv4.address }} 255.255.255.255 net_gateway
+route {{ streisand_ipv4_address }} 255.255.255.255 net_gateway
 
 <ca>
 {{ openvpn_ca_contents.stdout }}

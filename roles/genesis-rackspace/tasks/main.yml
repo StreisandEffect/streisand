@@ -20,3 +20,9 @@
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.instances[0].rax_accessipv4 }}
             groups=streisand-host
+
+- name: Set the streisand_ipv4_address variable
+  set_fact: streisand_ipv4_address="{{ streisand_server.instances[0].rax_accessipv4 }}"
+
+- name: Set the streisand_server_name variable
+  set_fact: streisand_server_name="{{ rackspace_server_name }}"

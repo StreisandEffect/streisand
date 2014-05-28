@@ -1,5 +1,5 @@
 ---
-streisand_local_directory: "~/streisand/{{ ansible_default_ipv4.address }}"
+streisand_local_directory: "~/streisand/{{ streisand_ipv4_address }}"
 
 streisand_directory_structure:
   - "{{ streisand_local_directory }}/l2tp-ipsec"

@@ -23,7 +23,7 @@ Windows
 12. Drag and drop a '{{ openvpn_direct_profile_filename }}' file from one of the client-files folders to this location alongside the README. The client-files folders are located in the same directory as these instructions.
 13. Right-click on the OpenVPN icon in your taskbar and choose 'Connect'
 14. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP
-15. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+15. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 OS X
 ----
@@ -34,7 +34,7 @@ OS X
 5. Click the 'Open configuration folder' button on the 'Welcome to Tunnelblick' screen
 6. Drag and drop a '{{ openvpn_direct_profile_filename }}' file from one of the client-files folders to the folder that was opened. The client-files folders are located in the same directory as these instructions. You may need to enter your password in order to authorize Finder to copy the file to this location.
 7. Look for the Tunnelblick icon in your menu bar. Click on it, and choose 'Connect'. You will see an animation while the connection is being established. You can also click on the icon and choose 'Details' to see a log of what is happening.
-8. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+8. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 Linux
 -----
@@ -45,7 +45,7 @@ Linux
 3. Execute OpenVPN, and pass it the .ovpn profile as an option.
 
    `sudo openvpn {{ openvpn_direct_profile_filename }}`
-4. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+4. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 Linux (Ubuntu)
 --------------
@@ -59,7 +59,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 4. Click the '+' button in the lower-left of the window
 5. Select 'VPN' from the Interface drop-down and click 'Create'
 6. Select 'OpenVPN' and click 'Create'
-7. Enter '{{ ansible_hostname }}' for the 'Connection name'
+7. Enter '{{ streisand_server_name }}' for the 'Connection name'
 8. Enter '{{ openvpn_server }}' for the 'Gateway'
 9. Make sure 'Certificates (TLS)' is selected for the 'Type'
 10. Select 'client.crt' from the client-files directory of your choice for the 'User Certificate'
@@ -81,7 +81,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
     * Click 'OK'
 18. Click 'Save...'
 19. Select the VPN in the left-hand menu, and flip the switch to 'ON'. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to 'VPN Connections', and clicking on its name.
-20. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+20. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 Android
 -------
@@ -93,7 +93,7 @@ Android
 6. Tap the save icon (floppy disk) in the lower-right of the screen after the import is complete
 7. Tap the profile
 8. Accept the Android VPN connection warning
-9. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+9. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) that affects VPN users who are running Android 4.4. The following workaround ensures that lookups can be performed successfully, even if you remain connected to the OpenVPN server for an extended period of time.
 
@@ -115,4 +115,4 @@ iOS
 5. OpenVPN on your phone will say that '1 new OpenVPN profile is available for import.'
 6. Tap the green '+' button to import the profile
 7. Tap the slider to connect to the OpenVPN server
-8. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ ansible_default_ipv4.address }}'.
+8. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.

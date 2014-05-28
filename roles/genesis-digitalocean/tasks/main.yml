@@ -33,3 +33,9 @@
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.droplet.ip_address }}
             groups=streisand-host
+
+- name: Set the streisand_ipv4_address variable
+  set_fact: streisand_ipv4_address="{{ streisand_server.droplet.ip_address }}"
+
+- name: Set the streisand_server_name variable
+  set_fact: streisand_server_name="{{ do_server_name }}"
