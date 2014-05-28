@@ -13,6 +13,9 @@
 - name: Install the python-software-properties package that the apt_repository module requires
   apt: pkg=python-software-properties
 
+- name: Install the Word List package that is used by several roles to generate random (yet typeable!) passphrases
+  apt: pkg=wamerican
+
 - name: Create the basic directory structure for retrieved files and generated documentation
   local_action: >
     file path={{ item }}
