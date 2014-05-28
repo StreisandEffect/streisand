@@ -30,5 +30,5 @@
   when: hostvars['127.0.0.1']['streisand_server_name'] is defined
 
 - name: Set the streisand_server_name variable to the default value if it doesn't already have one
-  set_fact: streisand_server_name="{{ ansible_default_ipv4.address }}"
+  set_fact: streisand_server_name="{{ ansible_hostname }}"
   when: streisand_server_name is not defined
