@@ -3,9 +3,9 @@ config setup
     charonstart=yes
     plutostart=yes
     nat_traversal=yes
-    plutodebug=all
-    plutostderrlog=/var/log/pluto.log
-    charondebug=4
+    plutodebug=none
+    plutostderrlog=/dev/null
+    charondebug=0
 
 conn L2TP
     authby=psk
@@ -13,6 +13,7 @@ conn L2TP
     pfs=no
     rekey=no
     type=tunnel
+    forceencaps=yes
     esp=aes128-sha1
     ike=aes128-sha-modp1024
     left={{ ansible_default_ipv4.address }}
