@@ -21,9 +21,8 @@
             mode=644
   notify: Restart Tor
 
-# Tor must restart before the obfsproxy ports and server fingerprint
-# will be available
-- meta: flush_handlers
+- name: Restart Tor so the obfsproxy ports and server fingerprint will be available in the state file
+  command: service tor restart
 
 - name: Wait until obfsproxy information has shown up in the state file
   wait_for: path=/var/lib/tor/state
