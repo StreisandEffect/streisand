@@ -17,20 +17,6 @@
     ec2_secret_key: "{{ aws_secret_key }}"
     ec2_access_key: "{{ aws_access_key }}"
     rules:
-      # L2TP/IPsec
-      # ---
-      - proto: udp
-        from_port: "{{ ike_port }}"
-        to_port: "{{ ike_port }}"
-        cidr_ip: 0.0.0.0/0
-      - proto: udp
-        from_port: "{{ ipsec_port }}"
-        to_port: "{{ ipsec_port }}"
-        cidr_ip: 0.0.0.0/0
-      - proto: udp
-        from_port: "{{ l2tp_port }}"
-        to_port: "{{ l2tp_port }}"
-        cidr_ip: 0.0.0.0/0
       # OpenVPN
       # ---
       - proto: "{{ openvpn_protocol }}"

@@ -8,7 +8,6 @@
   # These variables are included for the sake of the EC2 Security
   # Group task (which must open various ports)
   vars_files:
-    - roles/l2tp-ipsec/defaults/main.yml
     - roles/openvpn/defaults/main.yml
     - roles/shadowsocks/defaults/main.yml
     - roles/ssh/defaults/main.yml
@@ -45,9 +44,17 @@
   remote_user: admin
   sudo: yes
 
+  vars:
+    # The rc-local role normally expects to configure firewall rules for
+    # L2TP/IPsec. Streisand does not install L2TP/IPsec on EC2 servers
+    # by default because the instances cannot bind directly to their
+    # public IP addresses which makes IPsec routing nearly impossible.
+    #
+    # This variable is therefore set to an empty value.
+    l2tp_ipsec_firewall_rules: ""
+
   roles:
     - common
-    - l2tp-ipsec
     - openvpn
     - dante
     - stunnel
