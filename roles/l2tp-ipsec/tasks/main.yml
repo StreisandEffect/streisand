@@ -100,3 +100,11 @@
     template src=instructions.md.j2
              dest={{ streisand_local_directory }}/l2tp-ipsec/instructions.md
   sudo: no
+
+- name: Disable daemon logging in Rsyslog to prevent xl2tpd from logging incoming connections
+  lineinfile: dest=/etc/rsyslog.conf
+              regexp="daemon.log"
+              line="#daemon.*                       -/var/log/daemon.log"
+
+- name: Restart Rsyslog
+  command: service rsyslog restart
