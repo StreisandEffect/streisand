@@ -1,4 +1,10 @@
 ---
+- name: Remove 'streisand' SSH key from DigitalOcean if it already exists
+  digital_ocean_sshkey: name=streisand
+                        state=absent
+                        client_id="{{ do_client_id }}"
+                        api_key="{{ do_api_key }}"
+
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
