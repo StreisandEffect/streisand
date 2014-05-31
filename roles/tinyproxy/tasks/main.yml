@@ -1,6 +1,6 @@
 ---
 - name: Install Tinyproxy
-  apt: pkg=tinyproxy
+  apt: name=tinyproxy
 
 - name: Reconfigure Tinyproxy to bind to localhost
   lineinfile: dest=/etc/tinyproxy.conf

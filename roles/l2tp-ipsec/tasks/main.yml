@@ -1,6 +1,6 @@
 ---
 - name: Install strongSwan and xl2tpd
-  apt: pkg={{ item }}
+  apt: name={{ item }}
   with_items:
     - strongswan
     - xl2tpd

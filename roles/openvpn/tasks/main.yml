@@ -1,6 +1,6 @@
 ---
 - name: Install OpenVPN and dependencies from apt
-  apt: pkg={{ item }}
+  apt: name={{ item }}
   with_items:
     - openvpn
     - udev

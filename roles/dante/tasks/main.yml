@@ -1,6 +1,6 @@
 ---
 - name: Install Dante
-  apt: pkg=dante-server
+  apt: name=dante-server
 
 - name: Copy Dante configuration file
   copy: src=danted.conf

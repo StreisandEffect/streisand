@@ -8,13 +8,13 @@
        cache_valid_time=3600
 
 - name: Install NTP to make sure the server's clock is set properly
-  apt: pkg=ntp
+  apt: name=ntp
 
 - name: Install the python-software-properties package that the apt_repository module requires
-  apt: pkg=python-software-properties
+  apt: name=python-software-properties
 
 - name: Install the Word List package that is used by several roles to generate random (yet typeable!) passphrases
-  apt: pkg=wamerican
+  apt: name=wamerican
 
 - name: Create the basic directory structure for retrieved files and generated documentation
   local_action: >

@@ -8,4 +8,4 @@
   apt_repository: repo='deb http://deb.torproject.org/torproject.org {{ ansible_lsb.codename }} main'
 
 - name: Install the package to keep the Tor signing key current
-  apt: pkg=deb.torproject.org-keyring
+  apt: name=deb.torproject.org-keyring

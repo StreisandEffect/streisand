@@ -1,6 +1,6 @@
 ---
 - name: Install Shadowsocks dependencies
-  apt: pkg={{ item }}
+  apt: name={{ item }}
   with_items: shadowsocks_dependencies
 
 - name: Add the Shadowsocks user

@@ -1,6 +1,6 @@
 ---
 - name: Install stunnel
-  apt: pkg=stunnel4
+  apt: name=stunnel4
 
 - name: Generate stunnel certificate and private key
   command: openssl req -new -nodes -x509 -out {{ stunnel_pem }} -keyout {{ stunnel_pem }} -days {{ stunnel_days_valid }} -subj "{{ stunnel_request_subject }}/CN=stunnel"
