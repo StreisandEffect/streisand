@@ -1,4 +1,12 @@
 ---
+- name: Remove 'streisand' SSH key from Amazon if it already exists
+  ec2_key: name=streisand-ssh
+           state=absent
+           aws_access_key="{{ aws_access_key }}"
+           aws_secret_key="{{ aws_secret_key }}"
+           region="{{ aws_region }}"
+           wait=yes
+
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
