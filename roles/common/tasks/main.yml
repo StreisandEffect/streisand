@@ -7,14 +7,9 @@
        update_cache=yes
        cache_valid_time=3600
 
-- name: Install NTP to make sure the server's clock is set properly
-  apt: name=ntp
-
-- name: Install the python-software-properties package that the apt_repository module requires
-  apt: name=python-software-properties
-
-- name: Install the Word List package that is used by several roles to generate random (yet typeable!) passphrases
-  apt: name=wamerican
+- name: Install Streisand common packages
+  apt: name={{ item }}
+  with_items: streisand_common_packages
 
 - name: Create the basic directory structure for retrieved files and generated documentation
   local_action: >

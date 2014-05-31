@@ -1,4 +1,15 @@
 ---
+streisand_common_packages:
+  # Used for documentation generation
+  - markdown
+  # Ensures the server's clock is set properly
+  - ntp
+  # Required for the apt_repository module
+  - python-software-properties
+  # Word List dictionary used by several roles to generate random
+  # (yet typeable!) passphrases
+  - wamerican
+
 streisand_local_directory: "~/streisand/{{ streisand_ipv4_address }}"
 
 streisand_directory_structure:
