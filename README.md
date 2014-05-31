@@ -101,7 +101,7 @@ Installation
 
       `ansible-playbook new-digitalocean-server.yml`
 3. Follow the customized prompts to choose a region for the server and its name. You will also be asked to enter API information for your chosen provider.
-4. Wait for the setup to complete (this usually takes around five minutes) and look for the ~/streisand folder in your home directory. The instructions, files, and keys for the new server will be located there. You are all done!
+4. Wait for the setup to complete (this usually takes around five minutes) and look for the 'generated-docs' folder in the Streisand repository directory. The instructions, files, and keys for the new server will be located there. You are all done!
 
 You can also run Streisand on any number of new Debian 7 servers. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do this, simply edit the 'inventory' file and uncomment the final two lines. Replace the sample IP with the address (or addresses) of the servers you wish to configure. Then run the Streisand playbook directly:
 

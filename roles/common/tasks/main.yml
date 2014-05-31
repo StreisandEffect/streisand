@@ -16,5 +16,5 @@
     file path={{ item }}
          mode=750
          state=directory
-  with_items: streisand_directory_structure
+  with_items: streisand_local_directory_structure
   sudo: no

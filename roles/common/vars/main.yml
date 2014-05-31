@@ -10,9 +10,9 @@ streisand_common_packages:
   # (yet typeable!) passphrases
   - wamerican
 
-streisand_local_directory: "~/streisand/{{ streisand_ipv4_address }}"
+streisand_local_directory: "generated-docs/{{ streisand_ipv4_address }}"
 
-streisand_directory_structure:
+streisand_local_directory_structure:
   - "{{ streisand_local_directory }}/l2tp-ipsec"
   - "{{ streisand_local_directory }}/openvpn"
   - "{{ streisand_local_directory }}/openvpn/client-files"
