@@ -32,8 +32,19 @@
          src={{ forward_location }}/.ssh/id_rsa
          flat=yes
 
-- name: Generate the SSH instructions
-  local_action: >
-    template src=instructions.md.j2
-             dest={{ streisand_local_directory }}/ssh/instructions.md
-  sudo: no
+- name: Create the SSH documentation directory
+  file: path={{ ssh_doc_location }}
+        mode=750
+        state=directory
+
+- name: Generate the Markdown SSH instructions
+  template: src=instructions.md.j2
+            dest={{ ssh_markdown_instructions }}
+
+- name: Convert the Markdown SSH instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ ssh_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ ssh_html_instructions }}
+
+- name: Fetch the SSH HTML instructions
+  fetch: dest={{ streisand_local_directory }}/ssh/
+         src={{ ssh_html_instructions }}
+         flat=yes

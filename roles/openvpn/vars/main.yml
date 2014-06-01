@@ -17,3 +17,11 @@ openvpn_firewall_rules:
   - iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
   - iptables -A FORWARD -s 10.8.0.0/24 -j ACCEPT
   - iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
+
+openvpn_doc_location: "{{ streisand_documentation_directory }}/openvpn"
+
+openvpn_markdown_instructions: "{{ openvpn_doc_location }}/instructions.md"
+openvpn_html_instructions: "{{ openvpn_doc_location }}/instructions.html"
+
+openvpn_stunnel_markdown_instructions: "{{ openvpn_doc_location }}/stunnel-instructions.md"
+openvpn_stunnel_html_instructions: "{{ openvpn_doc_location }}/stunnel-instructions.html"

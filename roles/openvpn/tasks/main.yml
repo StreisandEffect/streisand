@@ -158,11 +158,28 @@
     - openvpn_clients
     - ["client.crt", "client.key", "ca.crt", "ta.key", "{{ openvpn_direct_profile_filename }}", "{{ openvpn_stunnel_profile_filename }}"]
 
-- name: Generate the OpenVPN instructions
-  local_action: >
-    template src={{ item }}.j2
-             dest={{ streisand_local_directory }}/openvpn/{{ item }}
+- name: Create the OpenVPN documentation directory
+  file: path={{ openvpn_doc_location }}
+        mode=750
+        state=directory
+
+- name: Generate the Markdown OpenVPN instructions
+  template: src={{ item[0] }}
+            dest={{ item[1] }}
+  with_together:
+    - [ instructions.md.j2, stunnel-instructions.md.j2 ]
+    - [ "{{ openvpn_markdown_instructions }}", "{{ openvpn_stunnel_markdown_instructions }}" ]
+
+- name: Convert the Markdown OpenVPN instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ item[0] }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ item[1] }}
+  with_together:
+    - [ "{{ openvpn_markdown_instructions }}", "{{ openvpn_stunnel_markdown_instructions }}" ]
+    - [ "{{ openvpn_html_instructions }}", "{{ openvpn_stunnel_html_instructions }}" ]
+
+- name: Fetch the OpenVPN HTML instructions
+  fetch: dest={{ streisand_local_directory }}/openvpn/
+         src={{ item }}
+         flat=yes
   with_items:
-    - instructions.md
-    - stunnel-instructions.md
-  sudo: no
+    - "{{ openvpn_html_instructions }}"
+    - "{{ openvpn_stunnel_html_instructions }}"

@@ -1,2 +1,7 @@
 ---
 forward_location: "/home/forward"
+
+ssh_doc_location: "{{ streisand_documentation_directory }}/ssh"
+
+ssh_markdown_instructions: "{{ ssh_doc_location }}/instructions.md"
+ssh_html_instructions: "{{ ssh_doc_location }}/instructions.html"

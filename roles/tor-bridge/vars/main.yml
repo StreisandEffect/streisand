@@ -9,3 +9,8 @@ tor_obfs3_connection_details:    "{{ streisand_ipv4_address }}:{{ tor_obfs_ports
 
 # Scramblesuit connection details will be added to the instructions once this bug is resolved:
 # https://trac.torproject.org/projects/tor/ticket/10887
+
+tor_doc_location: "{{ streisand_documentation_directory }}/tor"
+
+tor_markdown_instructions: "{{ tor_doc_location }}/instructions.md"
+tor_html_instructions: "{{ tor_doc_location }}/instructions.html"

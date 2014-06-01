@@ -38,8 +38,19 @@
   command: awk '{ print $2 }' /var/lib/tor/fingerprint
   register: tor_fingerprint
 
-- name: Generate the Tor bridge instructions
-  local_action: >
-    template src=instructions.md.j2
-             dest={{ streisand_local_directory }}/tor/instructions.md
-  sudo: no
+- name: Create the Tor documentation directory
+  file: path={{ tor_doc_location }}
+        mode=750
+        state=directory
+
+- name: Generate the Markdown Tor instructions
+  template: src=instructions.md.j2
+            dest={{ tor_markdown_instructions }}
+
+- name: Convert the Markdown Tor instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ tor_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ tor_html_instructions }}
+
+- name: Fetch the Tor HTML instructions
+  fetch: dest={{ streisand_local_directory }}/tor/
+         src={{ tor_html_instructions }}
+         flat=yes

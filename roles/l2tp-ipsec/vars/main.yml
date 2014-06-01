@@ -6,3 +6,8 @@ l2tp_ipsec_firewall_rules:
   - iptables -I INPUT -s 10.9.9.0/24 -j ACCEPT
   - iptables -t nat -I POSTROUTING -s 10.9.9.0/24 -j SNAT --to-source {{ ansible_default_ipv4.address }} -o {{ ansible_default_ipv4.interface }}
   - iptables -t nat -I POSTROUTING -s 10.9.9.0/24 -j MASQUERADE
+
+l2tp_ipsec_doc_location: "{{ streisand_documentation_directory }}/l2tp-ipsec"
+
+l2tp_ipsec_markdown_instructions: "{{ l2tp_ipsec_doc_location }}/instructions.md"
+l2tp_ipsec_html_instructions: "{{ l2tp_ipsec_doc_location }}/instructions.html"

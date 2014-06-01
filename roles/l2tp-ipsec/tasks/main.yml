@@ -95,12 +95,6 @@
   command: "{{ item }}"
   with_items: l2tp_ipsec_firewall_rules
 
-- name: Generate the L2TP/IPsec instructions
-  local_action: >
-    template src=instructions.md.j2
-             dest={{ streisand_local_directory }}/l2tp-ipsec/instructions.md
-  sudo: no
-
 - name: Disable daemon logging in rsyslog to prevent xl2tpd from logging incoming connections
   lineinfile: dest=/etc/rsyslog.conf
               regexp="daemon.log"
@@ -108,3 +102,20 @@
 
 - name: Restart rsyslog
   command: service rsyslog restart
+
+- name: Create the L2TP/IPsec documentation directory
+  file: path={{ l2tp_ipsec_doc_location }}
+        mode=750
+        state=directory
+
+- name: Generate the Markdown L2TP/IPsec instructions
+  template: src=instructions.md.j2
+            dest={{ l2tp_ipsec_markdown_instructions }}
+
+- name: Convert the Markdown L2TP/IPsec instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ l2tp_ipsec_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ l2tp_ipsec_html_instructions }}
+
+- name: Fetch the L2TP/IPsec HTML instructions
+  fetch: dest={{ streisand_local_directory }}/l2tp-ipsec/
+         src={{ l2tp_ipsec_html_instructions }}
+         flat=yes
