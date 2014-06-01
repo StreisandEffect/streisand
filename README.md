@@ -65,41 +65,41 @@ Installation
 * The [pip](https://pip.pypa.io/en/latest/) package management system for Python should be installed
   * On Debian and Ubuntu
 
-      `sudo apt-get install python-pip`
+            sudo apt-get install python-pip
   * On Fedora
 
-      `sudo yum install python-pip`
+            sudo yum install python-pip
   * On OS X
 
-      `sudo easy_install pip`
+            sudo easy_install pip
 * [Ansible](http://www.ansible.com/home) should also be ready to go
   * On OS X Mavericks
 
-      `sudo CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install ansible`
+            sudo CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install ansible
   * On BSD, Linux, or earlier versions of OS X
 
-      `sudo pip install ansible`
+            sudo pip install ansible
 * Any necessary Python libraries for your chosen cloud provider must be present if you are going to take advantage of Streisand's ability to create new servers using a supported API
   * Amazon EC2
 
-      `sudo pip install boto`
+            sudo pip install boto
   * DigitalOcean
 
-      `sudo pip install dopy`
+            sudo pip install dopy
   * Linode
 
-      `sudo pip install linode-python`
+            sudo pip install linode-python
   * Rackspace Cloud
 
-      `sudo pip install pyrax`
+            sudo pip install pyrax
 
 ### Execution ###
 1. Clone this repository and enter the directory
 
-      `git clone https://github.com/jlund/streisand.git && cd streisand`
+        git clone https://github.com/jlund/streisand.git && cd streisand
 2. Execute the playbook for your chosen cloud provider. For example, the following command will create and configure a new DigitalOcean server:
 
-      `ansible-playbook new-digitalocean-server.yml`
+        ansible-playbook new-digitalocean-server.yml
 3. Follow the customized prompts to choose a region for the server and its name. You will also be asked to enter API information for your chosen provider.
 4. Wait for the setup to complete (this usually takes around five minutes) and look for the 'generated-docs' folder in the Streisand repository directory. The instructions, files, and keys for the new server will be located there. You are all done!
 
