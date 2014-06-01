@@ -97,9 +97,19 @@ Installation
 1. Clone this repository and enter the directory
 
         git clone https://github.com/jlund/streisand.git && cd streisand
-2. Execute the playbook for your chosen cloud provider. For example, the following command will create and configure a new DigitalOcean server:
+2. Execute the playbook for your chosen cloud provider
+   * Amazon EC2
 
-        ansible-playbook new-digitalocean-server.yml
+            ansible-playbook new-amazon-server.yml
+   * DigitalOcean
+
+            ansible-playbook new-digitalocean-server.yml
+   * Linode
+
+            ansible-playbook new-linode-server.yml
+   * Rackspace
+
+            ansible-playbook new-rackspace-server.yml
 3. Follow the customized prompts to choose a region for the server and its name. You will also be asked to enter API information for your chosen provider.
 4. Wait for the setup to complete (this usually takes around five minutes) and look for the 'generated-docs' folder in the Streisand repository directory. The instructions, files, and keys for the new server will be located there. You are all done!
 
