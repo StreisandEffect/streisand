@@ -6,6 +6,7 @@
 
   roles:
     - common
+    - streisand-mirror
     - l2tp-ipsec
     - openvpn
     - dante

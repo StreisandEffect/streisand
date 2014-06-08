@@ -1,0 +1,74 @@
+---
+streisand_mirror_location: "/var/www/streisand-mirror"
+
+# OpenVPN Download variables
+# --------------------------
+openvpn_mirror_location: "{{ streisand_mirror_location }}/openvpn"
+
+openvpn_samuli_seppanen_key_id: "0xC29D97ED198D22A3"
+openvpn_samuli_seppanen_expected_fingerprint: "0330 0E11 FED1 6F59 715F  9996 C29D 97ED 198D 22A3"
+
+# Windows
+openvpn_windows_installer_version: "2.3.4"
+openvpn_base_download_url: "http://swupdate.openvpn.org/community/releases"
+
+openvpn_windows32_installer_filename: "openvpn-install-{{ openvpn_windows_installer_version }}-I002-i686.exe"
+openvpn_windows32_installer_url: "{{ openvpn_base_download_url }}/{{ openvpn_windows32_installer_filename }}"
+openvpn_windows32_installer_sig_url: "{{ openvpn_windows32_installer_url }}.asc"
+
+openvpn_windows64_installer_filename: "openvpn-install-{{ openvpn_windows_installer_version }}-I002-x86_64.exe"
+openvpn_windows64_installer_url: "{{ openvpn_base_download_url }}/{{ openvpn_windows64_installer_filename }}"
+openvpn_windows64_installer_sig_url: "{{ openvpn_windows64_installer_url }}.asc"
+
+openvpn_installer_download_urls:
+  - "{{ openvpn_windows32_installer_url }}"
+  - "{{ openvpn_windows32_installer_sig_url }}"
+  - "{{ openvpn_windows64_installer_url }}"
+  - "{{ openvpn_windows64_installer_sig_url }}"
+
+# OS X
+tunnelblick_download_url: "http://freefr.dl.sourceforge.net/project/tunnelblick/All%20files/Tunnelblick_3.3.2.dmg"
+tunnelblick_checksum: "1e17563771a9536313e68d5a7ff4bddfebcc97a19704ed2a504517b9c7796026"
+
+tunnelblick_beta_download_url: "http://freefr.dl.sourceforge.net/project/tunnelblick/All%20files/Tunnelblick_3.4beta26.dmg"
+tunnelblick_beta_checksum: "fe622f9974f15cc5e3b66f70b1cdc3c3187620219236429809f49c4478a3106e"
+
+
+# Tor Download variables
+# ----------------------
+tor_mirror_location: "{{ streisand_mirror_location }}/tor"
+
+tor_erinn_clark_key_id: "0x416F061063FEE659"
+tor_erinn_clark_expected_fingerprint: "8738 A680 B84B 3031 A630  F2DB 416F 0610 63FE E659"
+
+tor_browser_bundle_version: "3.6.1"
+tor_base_download_url: "https://www.torproject.org/dist/torbrowser"
+
+# Windows
+tor_browser_bundle_windows_filename: "torbrowser-install-{{ tor_browser_bundle_version }}_en-US.exe"
+tor_browser_bundle_windows_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_windows_filename }}"
+tor_browser_bundle_windows_sig_url: "{{ tor_browser_bundle_windows_url }}.asc"
+
+# OS X
+tor_browser_bundle_osx_filename: "TorBrowser-{{ tor_browser_bundle_version }}-osx32_en-US.dmg"
+tor_browser_bundle_osx_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_osx_filename }}"
+tor_browser_bundle_osx_sig_url: "{{ tor_browser_bundle_osx_url }}.asc"
+
+# Linux
+tor_browser_bundle_linux32_filename: "tor-browser-linux32-{{ tor_browser_bundle_version }}_en-US.tar.xz"
+tor_browser_bundle_linux32_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux32_filename }}"
+tor_browser_bundle_linux32_sig_url: "{{ tor_browser_bundle_linux32_url }}.asc"
+
+tor_browser_bundle_linux64_filename: "tor-browser-linux64-{{ tor_browser_bundle_version }}_en-US.tar.xz"
+tor_browser_bundle_linux64_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux64_filename }}"
+tor_browser_bundle_linux64_sig_url: "{{ tor_browser_bundle_linux64_url }}.asc"
+
+tor_browser_bundle_urls:
+  - "{{ tor_browser_bundle_windows_url }}"
+  - "{{ tor_browser_bundle_windows_sig_url }}"
+  - "{{ tor_browser_bundle_osx_url }}"
+  - "{{ tor_browser_bundle_osx_sig_url }}"
+  - "{{ tor_browser_bundle_linux32_url }}"
+  - "{{ tor_browser_bundle_linux32_sig_url }}"
+  - "{{ tor_browser_bundle_linux64_url }}"
+  - "{{ tor_browser_bundle_linux64_sig_url }}"

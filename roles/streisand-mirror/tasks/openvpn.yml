@@ -1,0 +1,40 @@
+---
+- name: Make the directory where OpenVPN's mirrored files will be stored
+  file: path={{ openvpn_mirror_location }}
+        owner=www-data
+        group=www-data
+        mode=755
+        state=directory
+
+- name: Samuli Seppanen signs the OpenVPN Community downloads. Import the correct GPG key.
+  command: gpg --keyserver x-hkp://pool.sks-keyservers.net --recv-keys {{ openvpn_samuli_seppanen_key_id }}
+
+- name: Register the GPG Key fingerprint output
+  command: gpg --fingerprint {{ openvpn_samuli_seppanen_key_id }}
+  register: openvpn_samuli_seppanen_fingerprint
+
+- name: Make sure the retrieved fingerprint perfectly matches the expected fingerprint
+  assert: { that: "openvpn_samuli_seppanen_expected_fingerprint in openvpn_samuli_seppanen_fingerprint.stdout" }
+
+- name: Mirror the OpenVPN Windows Installers
+  get_url: url={{ item }}
+           dest={{ openvpn_mirror_location }}
+  with_items: openvpn_installer_download_urls
+
+- name: Register GPG signature verification results
+  shell: for file in *.asc; do gpg --verify $file; done
+         chdir={{ openvpn_mirror_location }}
+  register: openvpn_gpg_verification_results
+
+- name: Make sure the OpenVPN Windows Installers all passed GPG signature verfication
+  assert: { that: "'BAD signature' not in openvpn_gpg_verification_results.stderr" }
+
+- name: Mirror Tunnelblick Stable for OS X
+  get_url: url={{ tunnelblick_download_url }}
+           dest={{ openvpn_mirror_location }}
+           sha256sum={{ tunnelblick_checksum }}
+
+- name: Mirror Tunnelblick Beta for OS X (required for Mavericks users)
+  get_url: url={{ tunnelblick_beta_download_url }}
+           dest={{ openvpn_mirror_location }}
+           sha256sum={{ tunnelblick_beta_checksum }}

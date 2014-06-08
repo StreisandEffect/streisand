@@ -1,0 +1,10 @@
+server {
+  listen 80 default_server;
+
+  # Disable all logging
+  access_log /dev/null;
+  error_log  /dev/null crit;
+
+  root  {{ streisand_mirror_location }};
+  index index.html index.htm;
+}

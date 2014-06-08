@@ -1,0 +1,25 @@
+---
+- name: Make the directory where mirrored files will be stored
+  file: path={{ streisand_mirror_location }}
+        owner=www-data
+        group=www-data
+        mode=755
+        state=directory
+
+# Download and verify mirror files
+- include: openvpn.yml
+- include: tor.yml
+
+- name: Generate the virtual host and restart Nginx if it is updated
+  template: src=vhost.j2
+            dest=/etc/nginx/sites-available/streisand
+            owner=root
+            group=root
+            mode=644
+  notify: Restart Nginx
+
+- name: Enable the virtual host
+  file: path=/etc/nginx/sites-enabled/streisand
+        src=/etc/nginx/sites-available/streisand
+        state=link
+

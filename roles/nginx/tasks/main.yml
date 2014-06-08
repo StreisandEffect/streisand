@@ -1,0 +1,26 @@
+---
+- name: Add the official Nginx APT key
+  apt_key: id=7BD9BF62
+           data="{{ item }}"
+  with_file: nginx_signing.key
+
+- name: Add the official Nginx repository
+  apt_repository: repo="deb http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_lsb.codename }} nginx"
+
+- name: Install Nginx
+  apt: name=nginx
+
+- name: Update Nginx configuration
+  copy: src=nginx.conf
+        dest=/etc/nginx/nginx.conf
+        owner=root
+        group=root
+        mode=644
+  notify: Restart Nginx
+
+- name: Set up Nginx vhost directories
+  file: path=/etc/nginx/{{ item }}
+        state=directory
+  with_items:
+    - sites-available
+    - sites-enabled
