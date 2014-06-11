@@ -1,0 +1,32 @@
+---
+# OpenVPN Download variables
+# --------------------------
+openvpn_mirror_location: "{{ streisand_mirror_location }}/openvpn"
+
+openvpn_samuli_seppanen_key_id: "0xC29D97ED198D22A3"
+openvpn_samuli_seppanen_expected_fingerprint: "0330 0E11 FED1 6F59 715F  9996 C29D 97ED 198D 22A3"
+
+# Windows
+openvpn_windows_installer_version: "2.3.4"
+openvpn_base_download_url: "http://swupdate.openvpn.org/community/releases"
+
+openvpn_windows32_installer_filename: "openvpn-install-{{ openvpn_windows_installer_version }}-I002-i686.exe"
+openvpn_windows32_installer_url: "{{ openvpn_base_download_url }}/{{ openvpn_windows32_installer_filename }}"
+openvpn_windows32_installer_sig_url: "{{ openvpn_windows32_installer_url }}.asc"
+
+openvpn_windows64_installer_filename: "openvpn-install-{{ openvpn_windows_installer_version }}-I002-x86_64.exe"
+openvpn_windows64_installer_url: "{{ openvpn_base_download_url }}/{{ openvpn_windows64_installer_filename }}"
+openvpn_windows64_installer_sig_url: "{{ openvpn_windows64_installer_url }}.asc"
+
+openvpn_installer_download_urls:
+  - "{{ openvpn_windows32_installer_url }}"
+  - "{{ openvpn_windows32_installer_sig_url }}"
+  - "{{ openvpn_windows64_installer_url }}"
+  - "{{ openvpn_windows64_installer_sig_url }}"
+
+# OS X
+tunnelblick_download_url: "http://freefr.dl.sourceforge.net/project/tunnelblick/All%20files/Tunnelblick_3.3.2.dmg"
+tunnelblick_checksum: "1e17563771a9536313e68d5a7ff4bddfebcc97a19704ed2a504517b9c7796026"
+
+tunnelblick_beta_download_url: "http://freefr.dl.sourceforge.net/project/tunnelblick/All%20files/Tunnelblick_3.4beta26.dmg"
+tunnelblick_beta_checksum: "fe622f9974f15cc5e3b66f70b1cdc3c3187620219236429809f49c4478a3106e"

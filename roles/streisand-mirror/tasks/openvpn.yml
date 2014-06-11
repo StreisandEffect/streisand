@@ -1,4 +1,6 @@
 ---
+- include_vars: openvpn.yml
+
 - name: Make the directory where OpenVPN's mirrored files will be stored
   file: path={{ openvpn_mirror_location }}
         owner=www-data
