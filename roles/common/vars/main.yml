@@ -1,7 +1,7 @@
 ---
 streisand_common_packages:
   # Used to verify GPG signatures for mirrored packages
-  - gpg
+  - gnupg
   # Used for documentation generation
   - markdown
   # Ensures the server's clock is set properly
