@@ -21,4 +21,5 @@
 
 # Download and verify mirror files
 - include: openvpn.yml
+- include: stunnel.yml
 - include: tor.yml
