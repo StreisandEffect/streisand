@@ -18,7 +18,7 @@ openvpn_windows64_installer_filename: "openvpn-install-{{ openvpn_windows_instal
 openvpn_windows64_installer_url: "{{ openvpn_base_download_url }}/{{ openvpn_windows64_installer_filename }}"
 openvpn_windows64_installer_sig_url: "{{ openvpn_windows64_installer_url }}.asc"
 
-openvpn_installer_download_urls:
+openvpn_download_urls:
   - "{{ openvpn_windows32_installer_url }}"
   - "{{ openvpn_windows32_installer_sig_url }}"
   - "{{ openvpn_windows64_installer_url }}"

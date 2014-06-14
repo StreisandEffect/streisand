@@ -8,25 +8,10 @@
         mode=755
         state=directory
 
-- name: Michal Trojnara signs the stunnel downloads. Import the correct GPG key.
-  command: gpg --keyserver x-hkp://pool.sks-keyservers.net --recv-keys {{ stunnel_michal_trojnara_key_id }}
-
-- name: Register the GPG Key fingerprint output
-  command: gpg --fingerprint {{ stunnel_michal_trojnara_key_id }}
-  register: stunnel_michal_trojnara_fingerprint
-
-- name: Make sure the retrieved fingerprint perfectly matches the expected fingerprint
-  assert: { that: "stunnel_michal_trojnara_expected_fingerprint in stunnel_michal_trojnara_fingerprint.stdout" }
-
-- name: Mirror the stunnel installer, source, and signatures
-  get_url: url={{ item }}
-           dest={{ stunnel_mirror_location }}
-  with_items: stunnel_download_urls
-
-- name: Register GPG signature verification results
-  shell: for file in *.asc; do gpg --verify $file; done
-         chdir={{ stunnel_mirror_location }}
-  register: stunnel_gpg_verification_results
-
-- name: Make sure the stunnel downloads all passed GPG signature verfication
-  assert: { that: "'BAD signature' not in stunnel_gpg_verification_results.stderr" }
+- include: download-and-verify.yml
+           project_name="stunnel"
+           project_signer="Michal Trojnara"
+           project_signing_key="{{ stunnel_michal_trojnara_key_id }}"
+           project_expected_fingerprint="{{ stunnel_michal_trojnara_expected_fingerprint }}"
+           project_mirror_location="{{ stunnel_mirror_location }}"
+           project_download_urls="{{ stunnel_download_urls }}"

@@ -28,7 +28,7 @@ tor_browser_bundle_linux64_filename: "tor-browser-linux64-{{ tor_browser_bundle_
 tor_browser_bundle_linux64_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux64_filename }}"
 tor_browser_bundle_linux64_sig_url: "{{ tor_browser_bundle_linux64_url }}.asc"
 
-tor_browser_bundle_urls:
+tor_download_urls:
   - "{{ tor_browser_bundle_windows_url }}"
   - "{{ tor_browser_bundle_windows_sig_url }}"
   - "{{ tor_browser_bundle_osx_url }}"

@@ -8,25 +8,10 @@
         mode=755
         state=directory
 
-- name: Erinn Clark signs the Tor Browser Bundles. Import the correct GPG key.
-  command: gpg --keyserver x-hkp://pool.sks-keyservers.net --recv-keys {{ tor_erinn_clark_key_id }}
-
-- name: Register the GPG Key fingerprint output
-  command: gpg --fingerprint {{ tor_erinn_clark_key_id }}
-  register: tor_erinn_clark_fingerprint
-
-- name: Make sure the retrieved fingerprint perfectly matches the expected fingerprint
-  assert: { that: "tor_erinn_clark_expected_fingerprint in tor_erinn_clark_fingerprint.stdout" }
-
-- name: Mirror the Browser Bundles and signatures
-  get_url: url={{ item }}
-           dest={{ tor_mirror_location }}
-  with_items: tor_browser_bundle_urls
-
-- name: Register GPG signature verification results
-  shell: for file in *.asc; do gpg --verify $file; done
-         chdir={{ tor_mirror_location }}
-  register: tor_gpg_verification_results
-
-- name: Make sure the Browser Bundles all passed GPG signature verfication
-  assert: { that: "'BAD signature' not in tor_gpg_verification_results.stderr" }
+- include: download-and-verify.yml
+           project_name="Tor Browser Bundle"
+           project_signer="Erinn Clark"
+           project_signing_key="{{ tor_erinn_clark_key_id }}"
+           project_expected_fingerprint="{{ tor_erinn_clark_expected_fingerprint }}"
+           project_mirror_location="{{ tor_mirror_location }}"
+           project_download_urls="{{ tor_download_urls }}"
