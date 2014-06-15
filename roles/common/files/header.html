@@ -1,7 +1,261 @@
-<html>
-<head>
-  <title>Streisand</title>
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAMFBMVEUAAABYWFhra2tCQkK4uLj09PT///+NjY3p6enR0dHFxcUmJiacnJzd3d2qqqp9fX2xNhOVAAAAl0lEQVR42t2RUQ7EIAhEK6KCYvf+t12Jrdlkxx6g80XgGZjxeKMCUdxPI6c8lHjDlLxU0Jx8IqrZRQCo18vGo6gAGG2dVRp3YEDaPMbMANCdsODlowlh2yVxLpcaMEH1JhIdWO1z9km0h8ANZ1lU79VO/Pr86xIE4rqt+a3AB/vqbsbiRpGDnpcEZ2VypcBbk8H/iY736QuY2AVel91hIQAAAABJRU5ErkJggg==" rel="icon" />
+    <title>STREISAND</title>
 
-<body>
+    <style>
+    html {
+      font-size: 100%;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      text-rendering: optimizelegibility;
+    }
 
+    body {
+      color:#333;
+      font-family: Georgia, Palatino, 'Palatino Linotype', 'Times New Roman', serif;
+      font-size: 16px;
+      line-height: 1.6875;
+      background: #fff;
+      max-width: 44em;
+      margin: 1em auto;
+      padding: 1em;
+    }
+
+    a {
+      text-decoration:none;
+      color: black;
+    }
+
+    a:visited {
+      color: #0b0080;
+    }
+
+    a:hover {
+      color: #06e;
+    }
+
+    a:active {
+      color:#faa700;
+    }
+
+    a:focus {
+      outline: thin dotted;
+    }
+
+    a:hover,
+    a:active {
+      outline: 0;
+    }
+
+    p {
+      margin: 1em 0;
+    }
+
+    img{
+      max-width:100%;
+      border: 0;
+      -ms-interpolation-mode: bicubic;
+      vertical-align: middle;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: normal;
+      color: #111;
+      font-family: "Helvetica Neue", Helvetica, sans-serif;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    h4,
+    h5,
+    h6 {
+      font-weight: bold;
+    }
+    
+    h1 {
+      font-size: 3.157em;
+
+    }
+
+    h2 {
+      font-size:1.777em;
+    }
+
+    h3 {
+      font-size: 1.333em;
+    }
+
+    h4 {
+      font-size:1em;
+    }
+
+    h5 {
+      font-size:1em;
+    }
+
+    h6 {
+      font-size:0.9em;
+    }
+
+    b,
+    strong {
+      font-weight: bold;
+    }
+
+    blockquote{
+      color:#666666;
+      margin:0;
+      padding-left: 3em;
+      border-left: 0.5em #EEE solid;
+    }
+
+    hr {
+      display: block;
+      height: 2px;
+      border: 0;
+      border-top: 1px solid #aaa;
+      border-bottom: 1px solid #eee;
+      margin: 1em 0;
+      padding: 0;
+    }
+
+    pre,
+    code,
+    kbd,
+    samp { 
+      color: #000; 
+      font-family: Consolas, monaco, monospace;
+      font-size: 0.88em; 
+      background-color: rgba(0,0,0,0.1);
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      padding: 5px 12px;
+    }
+
+    pre code {
+      border: 0px !important;
+      padding: 0;
+    }
+
+    code {
+      padding: 4px 6px 3px;
+    }
+
+    dfn {
+      font-style: italic;
+    }
+
+    ins {
+      background: #ff9;
+      color: #000;
+      text-decoration: none;
+    }
+
+    mark {
+      background: #ff0;
+      color: #000;
+      font-style: italic;
+      font-weight: bold;
+    }
+
+    sub,
+    sup {
+      font-size: 75%;
+      line-height: 0;
+      position: relative;
+      vertical-align: baseline;
+    }
+    
+    sup {
+      top: -0.5em;
+    }
+    
+    sub {
+      bottom: -0.25em;
+    }
+
+    ul,
+    ol {
+      margin: 1em 0;
+      padding: 0 0 0 2em;
+    }
+
+    li p:last-child {
+      margin:0;
+    }
+
+    dd {
+      margin: 0 0 0 2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    
+    td {
+      vertical-align: top;
+    }
+
+    ::-moz-selection {
+      background: rgba(0,0,0,0.1);
+      color: black;
+    }
+
+    ::selection {
+      background: rgba(0,0,0,0.1);
+      color: black;
+    }
+
+    a::-moz-selection {
+      background: rgba(0,0,0,0.1);
+      color: black;
+    }
+
+    a::selection {
+      background: rgba(0,0,0,0.1);
+      color: black;
+    }
+
+    p em:only-child {
+      font-size: 1.333em;
+    }
+
+    h1 + p {
+      margin-top: -0.25em;
+    }
+
+    li + li {
+      margin-top: 1em;
+    }
+
+    .logo {
+      background-color: black;
+      color: white;
+      font-weight: bold;
+      font-family: "Helvetica Neue", Helvetica, sans-serif;
+      padding: 0.1em 0.5em;
+      text-transform: uppercase;
+      font-size: 2em;
+      display: inline-block;
+      letter-spacing: 1px;
+      margin-bottom: 0.5em;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div class='logo'>Streisand</div>
