@@ -11,3 +11,13 @@
   file: path=/etc/nginx/sites-enabled/streisand
         src=/etc/nginx/sites-available/streisand
         state=link
+
+- name: Generate self-signed SSL certificate and private key
+  command: openssl req -new -nodes -x509 -out {{ nginx_self_signed_certificate }} -keyout {{ nginx_private_key }} -days {{ nginx_days_valid }} -subj "{{ nginx_request_subject }}/CN={{ streisand_ipv4_address }}"
+           creates={{ nginx_private_key }}
+
+- name: Set permissions on the SSL private key
+  file: path={{ nginx_private_key }}
+        owner=root
+        group=root
+        mode=640

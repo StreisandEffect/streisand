@@ -1,0 +1,6 @@
+---
+nginx_key_country:  "US"
+nginx_key_province: "California"
+nginx_key_city: "Newport Beach"
+nginx_key_org: "Bluth's Original Frozen Banana"
+nginx_key_ou: "Mister Manager"
