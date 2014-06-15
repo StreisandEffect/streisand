@@ -171,10 +171,10 @@
     - [ "{{ openvpn_markdown_instructions }}", "{{ openvpn_stunnel_markdown_instructions }}" ]
 
 - name: Convert the Markdown OpenVPN instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ item[0] }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ item[1] }}
-  with_together:
-    - [ "{{ openvpn_markdown_instructions }}", "{{ openvpn_stunnel_markdown_instructions }}" ]
-    - [ "{{ openvpn_html_instructions }}", "{{ openvpn_stunnel_html_instructions }}" ]
+  shell: markdown {{ item.md }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ item.html }}
+  with_items:
+    - { md: "{{ openvpn_markdown_instructions }}",         html: "{{ openvpn_html_instructions }}" }
+    - { md: "{{ openvpn_stunnel_markdown_instructions }}", html: "{{ openvpn_stunnel_html_instructions }}" }
 
 - name: Fetch the OpenVPN HTML instructions
   fetch: dest={{ streisand_local_directory }}/openvpn/
