@@ -5,7 +5,7 @@ openvpn_mirror_location: "{{ streisand_mirror_location }}/openvpn"
 openvpn_mirror_href_base: "/mirror/openvpn"
 
 openvpn_samuli_seppanen_key_id: "0xC29D97ED198D22A3"
-openvpn_samuli_seppanen_expected_fingerprint: "0330 0E11 FED1 6F59 715F  9996 C29D 97ED 198D 22A3"
+openvpn_samuli_seppanen_expected_fingerprint: "Key fingerprint = 0330 0E11 FED1 6F59 715F  9996 C29D 97ED 198D 22A3"
 
 openvpn_version: "2.3.4"
 openvpn_base_download_url: "http://swupdate.openvpn.org/community/releases"
