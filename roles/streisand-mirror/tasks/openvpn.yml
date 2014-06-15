@@ -15,9 +15,7 @@
            owner=www-data
            group=www-data
            mode=644
-  with_items:
-    - { url: "{{ tunnelblick_download_url }}",      checksum: "{{ tunnelblick_checksum }}" }
-    - { url: "{{ tunnelblick_beta_download_url }}", checksum: "{{ tunnelblick_beta_checksum }}" }
+  with_items: tunnelblick_download_urls
 
 - include: download-and-verify.yml
            project_name="OpenVPN Community"
