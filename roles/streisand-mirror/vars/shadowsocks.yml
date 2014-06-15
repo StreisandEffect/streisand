@@ -2,20 +2,27 @@
 # Shadowsocks Download variables
 # ------------------------------
 shadowsocks_mirror_location: "{{ streisand_mirror_location }}/shadowsocks"
+shadowsocks_mirror_href_base: "/mirror/shadowsocks"
 
 # Windows
 shadowsocks_gui_version: "0.4.1"
-shadowsocks_gui_url: "http://iweb.dl.sourceforge.net/project/shadowsocksgui/dist/shadowsocks-gui-{{ shadowsocks_gui_version }}-win-ia32.7z"
+shadowsocks_gui_filename: "shadowsocks-gui-{{ shadowsocks_gui_version }}-win-ia32.7z"
+shadowsocks_gui_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_gui_filename }}"
+shadowsocks_gui_url: "http://iweb.dl.sourceforge.net/project/shadowsocksgui/dist/{{ shadowsocks_gui_filename }}"
 shadowsocks_gui_checksum: "b6f5ec6f21bf6a2ff5be75af8d3eb5fe599420b27d81139584c1309c34ade3ee"
 
 # OS X
 shadowsocks_x_version: "1.0.7"
-shadowsocks_x_url: "http://iweb.dl.sourceforge.net/project/shadowsocksgui/dist/ShadowsocksX-{{ shadowsocks_x_version }}.dmg"
+shadowsocks_x_filename: "ShadowsocksX-{{ shadowsocks_x_version }}.dmg"
+shadowsocks_x_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_filename }}"
+shadowsocks_x_url: "http://iweb.dl.sourceforge.net/project/shadowsocksgui/dist/{{ shadowsocks_x_filename }}"
 shadowsocks_x_checksum: "6d3b4a1d9caaa273d0d1d6771f6a09179bd7c7506578975692018dcdc6b07a14"
 
 # Linux
 shadowsocks_python_version: "2.0.4"
-shadowsocks_python_url: "https://pypi.python.org/packages/source/s/shadowsocks/shadowsocks-{{ shadowsocks_python_version }}.tar.gz"
+shadowsocks_python_filename: "shadowsocks-{{ shadowsocks_python_version }}.tar.gz"
+shadowsocks_python_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_python_filename }}"
+shadowsocks_python_url: "https://pypi.python.org/packages/source/s/shadowsocks/{{ shadowsocks_python_filename }}"
 shadowsocks_python_checksum: "7146d024b401f1cf227b1c372b352270930b59c54de5adf82ef855a1732c6c07"
 
 shadowsocks_download_urls:

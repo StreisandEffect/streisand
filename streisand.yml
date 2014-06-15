@@ -6,6 +6,7 @@
 
   roles:
     - common
+    - streisand-gateway
     - streisand-mirror
     - l2tp-ipsec
     - openvpn

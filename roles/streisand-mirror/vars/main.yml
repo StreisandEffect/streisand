@@ -1,2 +1,5 @@
 ---
-streisand_mirror_location: "/var/www/streisand-mirror"
+streisand_mirror_location: "{{ streisand_gateway_location }}/mirror"
+
+streisand_markdown_mirror_page: "{{ streisand_mirror_location }}/index.md"
+streisand_html_mirror_page: "{{ streisand_mirror_location }}/index.html"

@@ -6,22 +6,16 @@
         mode=755
         state=directory
 
-- name: Generate the virtual host and restart Nginx if it is updated
-  template: src=vhost.j2
-            dest=/etc/nginx/sites-available/streisand
-            owner=root
-            group=root
-            mode=644
-  notify: Restart Nginx
-
-- name: Enable the virtual host
-  file: path=/etc/nginx/sites-enabled/streisand
-        src=/etc/nginx/sites-available/streisand
-        state=link
-
 # Download and verify client files
 - include: openvpn.yml
 - include: shadowsocks.yml
 - include: ssh.yml
 - include: stunnel.yml
 - include: tor.yml
+
+- name: Generate the Markdown mirror page
+  template: src=mirror-index.md.j2
+            dest={{ streisand_markdown_mirror_page }}
+
+- name: Convert the Markdown mirror page into HTML
+  shell: markdown {{ streisand_markdown_mirror_page }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ streisand_html_mirror_page }}
