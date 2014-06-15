@@ -19,8 +19,9 @@
         src=/etc/nginx/sites-available/streisand
         state=link
 
-# Download and verify mirror files
+# Download and verify client files
 - include: openvpn.yml
 - include: shadowsocks.yml
+- include: ssh.yml
 - include: stunnel.yml
 - include: tor.yml

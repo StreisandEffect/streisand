@@ -1,0 +1,21 @@
+---
+# SSH Client Download variables
+# -----------------------------
+ssh_mirror_location: "{{ streisand_mirror_location }}/ssh"
+
+putty_key_id: "0xFECD6F3F08B0A90B"
+putty_expected_fingerprint: "00B1 1009 38E6 9800 6518  F0AB FECD 6F3F 08B0 A90B"
+
+putty_base_download_url: "http://the.earth.li/~sgtatham/putty/latest/x86"
+
+putty_filename: "putty.exe"
+putty_url: "{{ putty_base_download_url }}/{{ putty_filename }}"
+putty_sig_url: "{{ putty_url }}.DSA"
+
+putty_download_urls:
+  - "{{ putty_url }}"
+  - "{{ putty_sig_url }}"
+
+sshuttle_filename: "sshuttle-master.zip"
+sshuttle_url: "https://codeload.github.com/apenwarr/sshuttle/zip/master"
+sshuttle_checksum: "9eaf00cd179b82614e810d4266d58ae991d12c9a6baf9f8ba129da69c25dc674"

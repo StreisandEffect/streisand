@@ -1,0 +1,26 @@
+---
+- include_vars: ssh.yml
+
+- name: Make the directory where the SSH client mirrored files will be stored
+  file: path={{ ssh_mirror_location }}
+        owner=www-data
+        group=www-data
+        mode=755
+        state=directory
+
+- name: Mirror sshuttle
+  get_url: url={{ sshuttle_url }}
+           dest={{ ssh_mirror_location }}/{{ sshuttle_filename }}
+           sha256sum={{ sshuttle_checksum }}
+           owner=www-data
+           group=www-data
+           mode=644
+
+- include: download-and-verify.yml
+           project_name="PuTTY"
+           project_signer="PuTTY Releases (DSA)"
+           project_signing_key="{{ putty_key_id }}"
+           project_expected_fingerprint="{{ putty_expected_fingerprint }}"
+           project_mirror_location="{{ ssh_mirror_location }}"
+           project_download_urls="{{ putty_download_urls }}"
+           signature_extension="DSA"
