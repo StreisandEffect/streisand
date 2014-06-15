@@ -19,6 +19,6 @@ shadowsocks_python_url: "https://pypi.python.org/packages/source/s/shadowsocks/s
 shadowsocks_python_checksum: "7146d024b401f1cf227b1c372b352270930b59c54de5adf82ef855a1732c6c07"
 
 shadowsocks_download_urls:
-  - { url: "{{ shadowsocks_gui_url }}",    checksum: "{{ shadowsocks_gui_checksum }}" } 
-  - { url: "{{ shadowsocks_x_url }}",      checksum: "{{ shadowsocks_x_checksum }}" } 
-  - { url: "{{ shadowsocks_python_url }}", checksum: "{{ shadowsocks_python_checksum }}" } 
+  - { url: "{{ shadowsocks_gui_url }}",    checksum: "{{ shadowsocks_gui_checksum }}" }
+  - { url: "{{ shadowsocks_x_url }}",      checksum: "{{ shadowsocks_x_checksum }}" }
+  - { url: "{{ shadowsocks_python_url }}", checksum: "{{ shadowsocks_python_checksum }}" }
