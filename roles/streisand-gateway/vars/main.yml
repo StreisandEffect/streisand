@@ -13,3 +13,5 @@ nginx_request_subject: "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L
 
 nginx_self_signed_certificate: "/etc/ssl/certs/streisand.crt"
 nginx_private_key: "/etc/ssl/private/streisand.key"
+
+nginx_internal_hidden_service_address: "127.0.0.1:8181"

@@ -1,3 +1,4 @@
 ---
 dependencies:
   - { role: nginx }
+  - { role: tor-bridge }
