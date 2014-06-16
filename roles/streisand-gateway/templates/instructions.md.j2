@@ -7,3 +7,12 @@ Gateway
 username: {{ streisand_gateway_username }}
 
 password: {{ streisand_gateway_password.stdout }}
+
+*Real MITM mitigation explanation will be written soon*
+
+{{ ssl_certificate_serial_number.stdout }}
+
+{% for fingerprint in ssl_certificate_fingerprints.results %}
+{{ fingerprint.stdout }}
+
+{% endfor %}
