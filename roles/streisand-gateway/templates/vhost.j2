@@ -1,13 +1,16 @@
 server {
   listen 443 default_server ssl;
 
-  # Disable all logging
-  access_log /dev/null;
-  error_log  /dev/null crit;
-
   ssl_certificate      {{ nginx_self_signed_certificate }};
   ssl_certificate_key  {{ nginx_private_key }};
   add_header Strict-Transport-Security max-age=631138519;
+
+  auth_basic            "Authorization Required";
+  auth_basic_user_file  {{ streisand_gateway_htpasswd_file }};
+
+  # Disable all logging
+  access_log /dev/null;
+  error_log  /dev/null crit;
 
   root  {{ streisand_gateway_location }};
   index index.html index.htm;

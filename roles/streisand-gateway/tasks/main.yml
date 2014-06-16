@@ -1,4 +1,32 @@
 ---
+- name: Generate self-signed SSL certificate and private key
+  command: openssl req -new -nodes -x509 -out {{ nginx_self_signed_certificate }} -keyout {{ nginx_private_key }} -days {{ nginx_days_valid }} -subj "{{ nginx_request_subject }}/CN={{ streisand_ipv4_address }}"
+           creates={{ nginx_private_key }}
+
+- name: Generate a random Gateway password
+  shell: grep -v "'" /usr/share/dict/american-english | sort -R | tail -n 4 | xargs | sed -e 's/ /-/g' > {{ streisand_gateway_password_file }}
+         creates={{ streisand_gateway_password_file }}
+
+- name: Register the Gateway password
+  command: cat {{ streisand_gateway_password_file }}
+  register: streisand_gateway_password
+
+- name: Install the required package for the htpasswd command
+  apt: name=apache2-utils
+
+- name: Generate the htpasswd file
+  command: htpasswd -b -c {{ streisand_gateway_htpasswd_file }} {{ streisand_gateway_username }} {{ streisand_gateway_password.stdout }}
+           creates={{ streisand_gateway_htpasswd_file }}
+
+- name: Set permissions on the SSL private key and the unhashed Gateway password file
+  file: path={{ item }}
+        owner=root
+        group=root
+        mode=640
+  with_items:
+    - "{{ nginx_private_key }}"
+    - "{{ streisand_gateway_password_file }}"
+
 - name: Generate the virtual host and restart Nginx if it is updated
   template: src=vhost.j2
             dest=/etc/nginx/sites-available/streisand
@@ -12,12 +40,21 @@
         src=/etc/nginx/sites-available/streisand
         state=link
 
-- name: Generate self-signed SSL certificate and private key
-  command: openssl req -new -nodes -x509 -out {{ nginx_self_signed_certificate }} -keyout {{ nginx_private_key }} -days {{ nginx_days_valid }} -subj "{{ nginx_request_subject }}/CN={{ streisand_ipv4_address }}"
-           creates={{ nginx_private_key }}
+- name: Generate the Markdown Gateway instructions
+  template: src=instructions.md.j2
+            dest={{ streisand_gateway_markdown_instructions }}
 
-- name: Set permissions on the SSL private key
-  file: path={{ nginx_private_key }}
-        owner=root
-        group=root
-        mode=640
+- name: Convert the Markdown Gateway instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ streisand_gateway_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ streisand_gateway_html_instructions }}
+
+- name: Fetch the Gateway HTML instructions
+  fetch: dest={{ streisand_local_directory }}/
+         src={{ streisand_gateway_html_instructions }}
+         flat=yes
+
+- name: Clean up the temporary Gateway instruction files once they have been retrieved
+  file: path={{ item }}
+        state=absent
+  with_items:
+    - "{{ streisand_gateway_html_instructions }}"
+    - "{{ streisand_gateway_markdown_instructions }}"
