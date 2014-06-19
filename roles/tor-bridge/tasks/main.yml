@@ -19,10 +19,10 @@
             owner=root
             group=root
             mode=644
-  notify: Restart Tor
 
 - name: Restart Tor so the obfsproxy ports and server fingerprint will be available in the state file, and the hidden service for the Gateway will start running
-  command: service tor restart
+  service: name=tor
+           state=restarted
 
 - name: Wait until obfsproxy information has shown up in the state file
   wait_for: path=/var/lib/tor/state

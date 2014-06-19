@@ -101,7 +101,8 @@
               line="#daemon.*                       -/var/log/daemon.log"
 
 - name: Restart rsyslog
-  command: service rsyslog restart
+  service: name=rsyslog
+           state=restarted
 
 - name: Create the L2TP/IPsec documentation directory
   file: path={{ l2tp_ipsec_doc_location }}
