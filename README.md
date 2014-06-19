@@ -78,10 +78,13 @@ Installation
 
             sudo easy_install pip
 * [Ansible](http://www.ansible.com/home) should also be ready to go
-  * On OS X Mavericks
+  * On OS X (via [Homebrew](http://brew.sh/))
+
+            brew install ansible
+  * On OS X Mavericks (via pip)
 
             sudo CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install ansible
-  * On BSD, Linux, or earlier versions of OS X
+  * On BSD, Linux, or earlier versions of OS X (via pip)
 
             sudo pip install ansible
 * Any necessary Python libraries for your chosen cloud provider must be present if you are going to take advantage of Streisand's ability to create new servers using a supported API
