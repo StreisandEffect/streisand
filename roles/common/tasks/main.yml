@@ -11,10 +11,6 @@
   apt: name={{ item }}
   with_items: streisand_common_packages
 
-- name: Create the directory where individual roles will store their Markdown and HTML instructions for access via the Gateway
-  file: path={{ streisand_gateway_location }}
-        state=directory
-
 - name: Copy the HTML header and footer templates that are used during documentation generation
   copy: src={{ item.src }}
         dest={{ item.dest }}
