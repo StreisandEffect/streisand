@@ -74,3 +74,11 @@
   with_items:
     - "{{ streisand_gateway_html_instructions }}"
     - "{{ streisand_gateway_markdown_instructions }}"
+
+- name: Ensure that all of the files in the Gateway have the proper permissions
+  file: path={{ streisand_gateway_location }}
+        owner=www-data
+        group=www-data
+        mode=750
+        state=directory
+        recurse=yes

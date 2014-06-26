@@ -13,9 +13,6 @@
 
 - name: Create the directory where individual roles will store their Markdown and HTML instructions for access via the Gateway
   file: path={{ streisand_gateway_location }}
-        owner=www-data
-        group=www-data
-        mode=750
         state=directory
 
 - name: Copy the HTML header and footer templates that are used during documentation generation
