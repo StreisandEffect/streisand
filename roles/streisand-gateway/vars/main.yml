@@ -6,3 +6,14 @@ streisand_gateway_password_file: "/etc/nginx/gateway-password.txt"
 
 streisand_gateway_markdown_instructions: "/tmp/{{ streisand_server_name }}.md"
 streisand_gateway_html_instructions: "/tmp/{{ streisand_server_name }}.html"
+
+streisand_gateway_markdown_index: "{{ streisand_gateway_location }}/index.md"
+streisand_gateway_html_index: "{{ streisand_gateway_location }}/index.html"
+
+nginx_days_valid: "1825"
+nginx_request_subject: "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}"
+
+nginx_self_signed_certificate: "/etc/ssl/certs/streisand.crt"
+nginx_private_key: "/etc/ssl/private/streisand.key"
+
+nginx_internal_hidden_service_address: "127.0.0.1:8181"

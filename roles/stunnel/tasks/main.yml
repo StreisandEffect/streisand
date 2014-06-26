@@ -30,7 +30,6 @@
   notify: Restart stunnel
 
 - name: Generate local stunnel configuration file (for connecting clients)
-  local_action: >
-    template src=stunnel-local.conf.j2
-             dest={{ streisand_local_directory }}/openvpn/client-files/stunnel.conf
+  template: src=stunnel-local.conf.j2
+            dest={{ openvpn_gateway_location }}/stunnel.conf
   sudo: no

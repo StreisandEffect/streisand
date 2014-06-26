@@ -1,6 +1,4 @@
 ---
-- include_vars: nginx.yml
-
 - name: Generate self-signed SSL certificate and private key
   command: openssl req -new -nodes -x509 -out {{ nginx_self_signed_certificate }} -keyout {{ nginx_private_key }} -days {{ nginx_days_valid }} -subj "{{ nginx_request_subject }}/CN={{ streisand_ipv4_address }}"
            creates={{ nginx_private_key }}
@@ -58,12 +56,18 @@
         src=/etc/nginx/sites-available/streisand
         state=link
 
-- name: Generate the Markdown Gateway instructions
-  template: src=instructions.md.j2
-            dest={{ streisand_gateway_markdown_instructions }}
+- name: Generate the Markdown Gateway index and instructions
+  template: src={{ item.src }}
+            dest={{ item.dest }}
+  with_items:
+    - { src: "index.md.j2",        dest: "{{ streisand_gateway_markdown_index }}" }
+    - { src: "instructions.md.j2", dest: "{{ streisand_gateway_markdown_instructions }}" }
 
-- name: Convert the Markdown Gateway instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ streisand_gateway_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ streisand_gateway_html_instructions }}
+- name: Convert the Markdown Gateway index and instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ item.md }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ item.html }}
+  with_items:
+    - { md: "{{ streisand_gateway_markdown_index }}",        html: "{{ streisand_gateway_html_index }}" }
+    - { md: "{{ streisand_gateway_markdown_instructions }}", html: "{{ streisand_gateway_html_instructions }}" }
 
 - name: Fetch the Gateway HTML instructions
   fetch: dest={{ streisand_local_directory }}/
