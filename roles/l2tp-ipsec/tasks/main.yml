@@ -104,8 +104,10 @@
   service: name=rsyslog
            state=restarted
 
-- name: Create the L2TP/IPsec documentation directory
-  file: path={{ l2tp_ipsec_doc_location }}
+- name: Create the L2TP/IPsec Gateway directory
+  file: path={{ l2tp_ipsec_gateway_location }}
+        owner=www-data
+        group=www-data
         mode=750
         state=directory
 
@@ -115,8 +117,3 @@
 
 - name: Convert the Markdown L2TP/IPsec instructions into HTML and surround them with the header and footer template
   shell: markdown {{ l2tp_ipsec_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ l2tp_ipsec_html_instructions }}
-
-- name: Fetch the L2TP/IPsec HTML instructions
-  fetch: dest={{ streisand_local_directory }}/l2tp-ipsec/
-         src={{ l2tp_ipsec_html_instructions }}
-         flat=yes

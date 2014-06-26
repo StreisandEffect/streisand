@@ -11,24 +11,16 @@
   apt: name={{ item }}
   with_items: streisand_common_packages
 
-- name: Create the directory where individual roles will store their Markdown and HTML instructions
-  file: path={{ streisand_documentation_directory }}
-        owner=root
-        group=root
+- name: Create the directory where individual roles will store their Markdown and HTML instructions for access via the Gateway
+  file: path={{ streisand_gateway_location }}
+        owner=www-data
+        group=www-data
         mode=750
         state=directory
 
 - name: Copy the HTML header and footer templates that are used during documentation generation
-  copy: src={{ item[0] }}
-        dest={{ item[1] }}
-  with_together:
-    - [ header.html, footer.html ]
-    - [ "{{ streisand_header_template }}", "{{ streisand_footer_template }}" ]
-
-- name: Create the local directory structure for retrieved files and generated documentation
-  local_action: >
-    file path={{ item }}
-         mode=750
-         state=directory
-  with_items: streisand_local_directory_structure
-  sudo: no
+  copy: src={{ item.src }}
+        dest={{ item.dest }}
+  with_items:
+    - { src: "header.html", dest: "{{ streisand_header_template }}" }
+    - { src: "footer.html", dest: "{{ streisand_footer_template }}" }

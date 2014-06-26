@@ -39,6 +39,20 @@
   command: update-rc.d shadowsocks defaults
            creates=/etc/rc0.d/K01shadowsocks
 
+- name: Create the Shadowsocks Gateway directory
+  file: path={{ shadowsocks_gateway_location }}
+        owner=www-data
+        group=www-data
+        mode=750
+        state=directory
+
+- name: Generate the Markdown Shadowsocks instructions
+  template: src=instructions.md.j2
+            dest={{ shadowsocks_markdown_instructions }}
+
+- name: Convert the Markdown Shadowsocks instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ shadowsocks_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ shadowsocks_html_instructions }}
+
 - name: Generate the Shadowsocks QR code
   # The ss:// URI format is documented here:
   #   http://shadowsocks.org/en/config/quick-guide.html
@@ -53,25 +67,3 @@
   with_items:
     - "{{ shadowsocks_password_file }}"
     - "{{ shadowsocks_qr_code }}"
-
-- name: Fetch the QR code image
-  fetch: dest={{ streisand_local_directory }}/shadowsocks/
-         src={{ shadowsocks_qr_code }}
-         flat=yes
-
-- name: Create the Shadowsocks documentation directory
-  file: path={{ shadowsocks_doc_location }}
-        mode=750
-        state=directory
-
-- name: Generate the Markdown Shadowsocks instructions
-  template: src=instructions.md.j2
-            dest={{ shadowsocks_markdown_instructions }}
-
-- name: Convert the Markdown Shadowsocks instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ shadowsocks_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ shadowsocks_html_instructions }}
-
-- name: Fetch the Shadowsocks HTML instructions
-  fetch: dest={{ streisand_local_directory }}/shadowsocks/
-         src={{ shadowsocks_html_instructions }}
-         flat=yes

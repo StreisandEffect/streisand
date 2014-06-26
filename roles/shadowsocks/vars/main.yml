@@ -6,9 +6,10 @@ shadowsocks_dependencies:
 
 shadowsocks_location: "/home/shadowsocks"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
-shadowsocks_qr_code: "{{ shadowsocks_location }}/shadowsocks-qr-code.png"
 
-shadowsocks_doc_location: "{{ streisand_documentation_directory }}/shadowsocks"
+shadowsocks_gateway_location: "{{ streisand_gateway_location }}/shadowsocks"
 
-shadowsocks_markdown_instructions: "{{ shadowsocks_doc_location }}/instructions.md"
-shadowsocks_html_instructions: "{{ shadowsocks_doc_location }}/instructions.html"
+shadowsocks_markdown_instructions: "{{ shadowsocks_gateway_location }}/index.md"
+shadowsocks_html_instructions: "{{ shadowsocks_gateway_location }}/index.html"
+
+shadowsocks_qr_code: "{{ shadowsocks_gateway_location }}/shadowsocks-qr-code.png"

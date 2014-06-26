@@ -12,17 +12,9 @@ streisand_common_packages:
   # (yet typeable!) passphrases
   - wamerican
 
-streisand_local_directory: "generated-docs/{{ streisand_ipv4_address }}"
+streisand_gateway_location: "/var/www/streisand"
 
-streisand_local_directory_structure:
-  - "{{ streisand_local_directory }}/l2tp-ipsec"
-  - "{{ streisand_local_directory }}/openvpn"
-  - "{{ streisand_local_directory }}/openvpn/client-files"
-  - "{{ streisand_local_directory }}/shadowsocks"
-  - "{{ streisand_local_directory }}/ssh"
-  - "{{ streisand_local_directory }}/tor"
+streisand_local_directory: "generated-docs"
 
-streisand_documentation_directory: "/tmp/streisand-docs"
-
-streisand_header_template: "{{ streisand_documentation_directory }}/header.html"
-streisand_footer_template: "{{ streisand_documentation_directory }}/footer.html"
+streisand_header_template: "/tmp/header.html"
+streisand_footer_template: "/tmp/footer.html"

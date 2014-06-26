@@ -1,7 +1,9 @@
 ---
 forward_location: "/home/forward"
 
-ssh_doc_location: "{{ streisand_documentation_directory }}/ssh"
+ssh_gateway_location: "{{ streisand_gateway_location }}/ssh"
 
-ssh_markdown_instructions: "{{ ssh_doc_location }}/instructions.md"
-ssh_html_instructions: "{{ ssh_doc_location }}/instructions.html"
+ssh_markdown_instructions: "{{ ssh_gateway_location }}/index.md"
+ssh_html_instructions: "{{ ssh_gateway_location }}/index.html"
+
+ssh_rsa_key: "{{ ssh_gateway_location }}/streisand_rsa"

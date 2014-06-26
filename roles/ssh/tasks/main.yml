@@ -27,13 +27,10 @@
   authorized_key: user=forward
                   key="{{ forward_ssh_key.stdout }}"
 
-- name: Fetch the SSH private key that can be used to connect as the forward user
-  fetch: dest={{ streisand_local_directory }}/ssh/streisand_rsa
-         src={{ forward_location }}/.ssh/id_rsa
-         flat=yes
-
-- name: Create the SSH documentation directory
-  file: path={{ ssh_doc_location }}
+- name: Create the SSH Gateway directory
+  file: path={{ ssh_gateway_location }}
+        owner=www-data
+        group=www-data
         mode=750
         state=directory
 
@@ -44,7 +41,6 @@
 - name: Convert the Markdown SSH instructions into HTML and surround them with the header and footer template
   shell: markdown {{ ssh_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ ssh_html_instructions }}
 
-- name: Fetch the SSH HTML instructions
-  fetch: dest={{ streisand_local_directory }}/ssh/
-         src={{ ssh_html_instructions }}
-         flat=yes
+- name: Copy the SSH private key that can be used to connect as the 'forward' user to the SSH Gateway directory
+  command: cp {{ forward_location }}/.ssh/id_rsa {{ ssh_rsa_key }}
+           creates={{ ssh_rsa_key }}
