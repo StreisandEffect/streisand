@@ -59,11 +59,8 @@
   shell: echo -n '{{ shadowsocks_encryption_method }}:{{ shadowsocks_password.stdout }}@{{ streisand_ipv4_address }}:{{ shadowsocks_server_port }}' | base64 --wrap=0 | sed 's/^/ss:\/\//' | qrencode -s 15 -o {{ shadowsocks_qr_code }}
          creates={{ shadowsocks_qr_code }}
 
-- name: Set permissions on the QR code image and Shadowsocks password file
-  file: path={{ item }}
+- name: Set permissions on the Shadowsocks password file
+  file: path={{ shadowsocks_password_file }}
         owner=shadowsocks
         group=shadowsocks
         mode=640
-  with_items:
-    - "{{ shadowsocks_password_file }}"
-    - "{{ shadowsocks_qr_code }}"
