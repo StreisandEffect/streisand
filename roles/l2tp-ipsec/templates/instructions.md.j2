@@ -1,54 +1,54 @@
 L2TP/IPsec
 ==========
-*L2TP/IPsec is a great first choice. It is natively supported by Android, iOS, OS X, and Windows. There is no additional software to install and setup should only take a few minutes.*
+*L2TP/IPsec is a great first choice. It is natively supported by Android, iOS, OS X, and Windows. There is no additional software to install. Setup should only take a few minutes.*
 
 *If the connection appears to time out, first check to make sure the passwords were entered correctly. If you still can't connect then it's possible that your country or ISP is blocking the L2TP/IPsec protocol. But don't worry, the [OpenVPN (stunnel)](/openvpn/stunnel.html), [Shadowsocks](/shadowsocks/), [SSH](/ssh/), and [Tor](/tor/) connection methods should still work for you.*
 
 Windows
 -------
 1. Click on the Start Menu and go to the Control Panel
-2. Go to the 'Network and Internet' section
-3. Click 'View network status and tasks'
-4. Click 'Set up a new connection or network'
-5. Select 'Connect to a workplace' and click 'Next'
-6. Click 'Use my Internet connection (VPN)'
-7. Enter '{{ streisand_ipv4_address }}' in the 'Internet address' field
-8. Enter '{{ streisand_server_name }}' in the 'Destination name' field
-9. Check the 'Don't connect now; just set it up so I can connect later' checkbox
-10. Click 'Next'
-11. Enter 'streisand' in the 'User name' field
-12. Enter '{{ chap_password.stdout }} in the 'Password' field
-13. Check the 'Remember this password' checkbox
-14. Click 'Connect', then click the 'Close' button
-15. Return to the Control Panel's 'Network and Internet' section and click on the 'Connect to a network' option
-16. Right-click on the new '{{ streisand_server_name }}' connection and choose 'Properties'
-17. Click the 'Options' tab and uncheck 'Include Windows logon domain'
-18. Click the 'Security' tab and select 'Layer 2 Tunneling Protocol with IPsec (L2TP/IPSec)' from the 'Type of VPN' drop-down menu
-19. Click the 'Advanced settings' button
-20. Select 'Use preshared key for authentication' and enter '{{ ipsec_preshared_key.stdout }}' for the 'Key'
-21. Click 'OK' to close the 'Advanced settings'
-22. Click 'OK' to save the VPN connection details
-23. To connect to the VPN, simply right-click on the wireless/network icon in your system tray, select '{{ streisand_server_name }}', and click 'Connect'.\
+1. Go to the 'Network and Internet' section
+1. Click 'View network status and tasks'
+1. Click 'Set up a new connection or network'
+1. Select 'Connect to a workplace' and click 'Next'
+1. Click 'Use my Internet connection (VPN)'
+1. Enter '{{ streisand_ipv4_address }}' in the 'Internet address' field
+1. Enter '{{ streisand_server_name }}' in the 'Destination name' field
+1. Check the 'Don't connect now; just set it up so I can connect later' checkbox
+1. Click 'Next'
+1. Enter 'streisand' in the 'User name' field
+1. Enter '{{ chap_password.stdout }} in the 'Password' field
+1. Check the 'Remember this password' checkbox
+1. Click 'Connect', then click the 'Close' button
+1. Return to the Control Panel's 'Network and Internet' section and click on the 'Connect to a network' option
+1. Right-click on the new '{{ streisand_server_name }}' connection and choose 'Properties'
+1. Click the 'Options' tab and uncheck 'Include Windows logon domain'
+1. Click the 'Security' tab and select 'Layer 2 Tunneling Protocol with IPsec (L2TP/IPSec)' from the 'Type of VPN' drop-down menu
+1. Click the 'Advanced settings' button
+1. Select 'Use preshared key for authentication' and enter '{{ ipsec_preshared_key.stdout }}' for the 'Key'
+1. Click 'OK' to close the 'Advanced settings'
+1. Click 'OK' to save the VPN connection details
+1. To connect to the VPN, simply right-click on the wireless/network icon in your system tray, select '{{ streisand_server_name }}', and click 'Connect'.\
 
 You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 OS X
 ----
 1. Open System Preferences and go to the Network section
-2. Click the '+' button in the lower-left corner of the window
-3. Select 'VPN' from the 'Interface' drop-down menu
-4. Select 'L2TP over IPSec' from the 'VPN Type' drop-down menu
-5. Enter '{{ streisand_server_name }}' for the 'Service Name'
-6. Click 'Create'
-7. Enter '{{ streisand_ipv4_address }}' for the 'Server Address'
-8. Enter 'streisand' for the 'Account Name'
-9. Click the 'Authentication Settings' button
-10. In the 'User Authentication' section, select the 'Password' radio button and enter '{{ chap_password.stdout }}' as its value
-11. In the 'Machine Authentication' section, select the 'Shared Secret' radio button and enter '{{ ipsec_preshared_key.stdout }}' as its value
-12. Click 'OK'
-13. Check the 'Show VPN status in menu bar' checkbox
-14. Click the 'Advanced' button and make sure the 'Send all traffic over VPN connection' checkbox is selected
-15. Click 'OK' to close the Advanced settings, and then click 'Apply' to save the VPN connection information
+1. Click the '+' button in the lower-left corner of the window
+1. Select 'VPN' from the 'Interface' drop-down menu
+1. Select 'L2TP over IPSec' from the 'VPN Type' drop-down menu
+1. Enter '{{ streisand_server_name }}' for the 'Service Name'
+1. Click 'Create'
+1. Enter '{{ streisand_ipv4_address }}' for the 'Server Address'
+1. Enter 'streisand' for the 'Account Name'
+1. Click the 'Authentication Settings' button
+1. In the 'User Authentication' section, select the 'Password' radio button and enter '{{ chap_password.stdout }}' as its value
+1. In the 'Machine Authentication' section, select the 'Shared Secret' radio button and enter '{{ ipsec_preshared_key.stdout }}' as its value
+1. Click 'OK'
+1. Check the 'Show VPN status in menu bar' checkbox
+1. Click the 'Advanced' button and make sure the 'Send all traffic over VPN connection' checkbox is selected
+1. Click 'OK' to close the Advanced settings, and then click 'Apply' to save the VPN connection information
 
 You can connect to the VPN using the VPN icon in the menu bar, or by selecting the VPN in the Network section of System Preferences and choosing 'Connect'. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
@@ -66,31 +66,31 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 Android
 -------
 1. Launch the 'Settings' application
-2. Tap 'More...' in the 'Wireless & Networks' section
-3. Tap 'VPN'
-4. Tap the '+' icon in the top-right of the screen
-5. Enter '{{ streisand_server_name }}' in the 'Name' field
-6. Select 'L2TP/IPSec PSK' in the 'Type' drop-down menu
-7. Enter '{{ streisand_ipv4_address }}' in the 'Server address' field
-8. Enter '{{ ipsec_preshared_key.stdout }}' in the 'IPSec pre-shared key' field
-9. Tap 'Save'
-10. Tap the '{{ streisand_server_name }}' connection
-11. Enter 'streisand' in the 'Username' field
-12. Enter '{{ chap_password.stdout }}' in the 'Password' field
-13. Check the 'Save account information' checkbox
-14. Tap 'Connect'
-15. Once connected, you will see a VPN icon in the notification bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Tap 'More...' in the 'Wireless & Networks' section
+1. Tap 'VPN'
+1. Tap the '+' icon in the top-right of the screen
+1. Enter '{{ streisand_server_name }}' in the 'Name' field
+1. Select 'L2TP/IPSec PSK' in the 'Type' drop-down menu
+1. Enter '{{ streisand_ipv4_address }}' in the 'Server address' field
+1. Enter '{{ ipsec_preshared_key.stdout }}' in the 'IPSec pre-shared key' field
+1. Tap 'Save'
+1. Tap the '{{ streisand_server_name }}' connection
+1. Enter 'streisand' in the 'Username' field
+1. Enter '{{ chap_password.stdout }}' in the 'Password' field
+1. Check the 'Save account information' checkbox
+1. Tap 'Connect'
+1. Once connected, you will see a VPN icon in the notification bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
 iOS
 ---
 1. Go to Settings -> General -> VPN
-2. Tap 'Add VPN Configuration'
-3. Select the L2TP tab
-4. Tap 'Description' and enter '{{ streisand_server_name }}'
-5. Tap 'Server' and enter '{{ streisand_ipv4_address }}'
-6. Tap 'Account' and enter 'streisand'
-7. Tap 'Password' and enter '{{ chap_password.stdout }}'
-8. Tap 'Secret' and enter '{{ ipsec_preshared_key.stdout }}'
-9. Tap 'Save'
-10. Slide the 'VPN' switch on
-11. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Tap 'Add VPN Configuration'
+1. Select the L2TP tab
+1. Tap 'Description' and enter '{{ streisand_server_name }}'
+1. Tap 'Server' and enter '{{ streisand_ipv4_address }}'
+1. Tap 'Account' and enter 'streisand'
+1. Tap 'Password' and enter '{{ chap_password.stdout }}'
+1. Tap 'Secret' and enter '{{ ipsec_preshared_key.stdout }}'
+1. Tap 'Save'
+1. Slide the 'VPN' switch on
+1. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
