@@ -28,7 +28,7 @@
   notify: Restart strongSwan
 
 - name: Generate a random IPsec pre-shared key
-  shell: grep -v "'" /usr/share/dict/american-english | sort -R | tail -n 4 | xargs | sed -e 's/ /-/g' > {{ ipsec_preshared_key_file }}
+  shell: grep -v "'" /usr/share/dict/american-english | sort -R | tail -n 3 | xargs | sed -e 's/ /-/g' > {{ ipsec_preshared_key_file }}
          creates={{ ipsec_preshared_key_file }}
 
 - name: Set permissions on the IPsec pre-shared key
