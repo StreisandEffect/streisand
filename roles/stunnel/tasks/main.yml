@@ -10,14 +10,11 @@
   command: "openssl pkcs12 -export -in {{ stunnel_pem }} -out {{ stunnel_pkcs12 }} -password pass:
            creates={{ stunnel_pkcs12 }}"
 
-- name: "Set the proper permissions on the stunnel PEM and PKCS #12 files"
-  file: path={{ item }}
+- name: "Set the proper permissions on the stunnel PEM file"
+  file: path={{ stunnel_pem }}
         owner=root
         group=root
         mode=600
-  with_items:
-    - "{{ stunnel_pem }}"
-    - "{{ stunnel_pkcs12 }}"
 
 - name: Configure stunnel to start at boot
   lineinfile: dest=/etc/default/stunnel4
