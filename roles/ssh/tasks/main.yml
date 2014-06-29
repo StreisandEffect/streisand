@@ -27,6 +27,13 @@
   authorized_key: user=forward
                   key="{{ forward_ssh_key.stdout }}"
 
+- name: Register the server's SSH fingerprints
+  command: ssh-keygen -lf /etc/ssh/{{ item }}
+  register: ssh_server_fingerprints
+  with_items:
+    - ssh_host_ecdsa_key.pub
+    - ssh_host_rsa_key.pub
+
 - name: Create the SSH Gateway directory
   file: path={{ ssh_gateway_location }}
         owner=www-data
