@@ -1,40 +1,82 @@
 Shadowsocks
 ===========
 
-Linux, Mac OS X, Windows
-------------------------
-The [Shadowsocks website](http://shadowsocks.org/en/download/clients.html) has several clients available for these platforms. Here is the configuration information that you'll need:
+Windows
+-------
+1. Download [Shadowsocks for Windows](/mirror/)
+   * The Shadowsocks Windows GUI is compressed using the 7-Zip format. You can download an open source utility to extract the file from the [7-Zip home page](http://www.7-zip.org).
+1. Extract the archive, and double-click the shadowsocks.exe file
+1. Enter `{{ streisand_ipv4_address }}` as the 'Server IP'
+1. Enter `{{ shadowsocks_server_port }}` as the 'Server Port'
+1. Enter `{{ shadowsocks_password.stdout }}` as the 'Password'
+1. The 'SOCKS 5 Proxy Port' should be `{{ shadowsocks_local_port }}` and the 'Encryption Method' should be `{{ shadowsocks_encryption_method }}`.
+1. Click 'Save'
 
-         Server: {{ streisand_ipv4_address }}
-         Port: {{ shadowsocks_server_port }}
-         Password: {{ shadowsocks_password.stdout }}
-         Encryption Method: {{ shadowsocks_encryption_method }}
+You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through Shadowsocks. The next step is to configure your web browser to use it.
+
+### Configuring Firefox to connect through a SOCKS proxy ###
+1. Click the Menu button next to the Home icon to the right of the address bar
+1. Click 'Options'
+1. Click the Advanced icon
+1. Go to the Network tab
+1. Click the 'Settings' button to "Configure how Firefox connects to the Internet"
+1. Choose 'Manual proxy configuration'
+1. Enter '127.0.0.1' and Port '{{ shadowsocks_local_port }}' on the SOCKS Host line
+1. Click 'OK'
+1. Click 'OK' again to close the Firefox preferences window. Now we need to configure Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
+1.  Type 'about:config' into the address bar and hit Enter
+1. You should see a screen that says "This might void your warranty!" Click the 'I'll be careful, I promise!' button.
+1. Search for 'socks\_remote\_dns' and double click on the value that is returned. It will change from 'false' to 'true'.
+1. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+
+OS X
+----
+The ShadowsocksX client is extremely unreliable at the moment, and it does not work on OS X Mavericks or Yosemite. It is therefore recommended to use an alternate connection method until these issues are resolved. ShadowsocksX is still available via the [mirror](/mirror/) if you are interested in giving it a try.
+
+Linux
+-----
+Download and compile the Shadowsocks [source code](/mirror/), or install it via pip:
+
+   `pip install shadowsocks`
+   
+Here is the configuration information that you'll need:
+
+        Server: {{ streisand_ipv4_address }}
+        Port: {{ shadowsocks_server_port }}
+        Password: {{ shadowsocks_password.stdout }}
+        Encryption Method: {{ shadowsocks_encryption_method }}
+
+Once you have Shadowsocks running locally, you'll need to forward your browser traffic through the SOCKS proxy it provides. You can follow the Windows instructions above to configure Firefox to do this.
 
 Android
 -------
 1. Download [Shadowsocks for Android](https://play.google.com/store/apps/details?id=com.github.shadowsocks) and launch it
-2. Tap the menu icon in the top-left of the screen
-3. Tap 'Add Profile'
-4. Select 'Scan QR code'
-5. Open the shadowsocks-qr-code.png image file that is located in the same folder as these instructions, and use your phone to scan it off your screen
-6. Uncheck the 'CHN Route' option
-7. Slide the switch to 'On'
-8. Accept the Android VPN connection warning
-9. Visit http://curlmyip.com or http://ip4.me in your browser. Your IP address should be listed as '{{ streisand_ipv4_address }}'.
+1. Tap the menu icon in the top-left of the screen
+1. Tap 'Add Profile'
+1. Select 'Scan QR code'
+1. Use your phone to scan this image, or if you are using your phone _right now_ you can choose the 'Manual Settings' option and copy and paste the information from the Linux section above:
+  
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. Uncheck the 'CHN Route' option
+1. Slide the switch to 'On'
+1. Accept the Android VPN connection warning
+1. Visit http://curlmyip.com or http://ip4.me in your browser. Your IP address should be listed as '{{ streisand_ipv4_address }}'.
 
 iOS
 ---
 1. Download [Shadowsocks for iOS](https://itunes.apple.com/tc/app/shadowsocks/id665729974) and launch it
-2. Tap the menu icon in the top-right of the screen
-3. Tap 'Config via QRCode'
-4. Open the shadowsocks-qr-code.png image file that is located in the same folder as these instructions, and use your phone to scan it off your screen
-5. Tap 'OK' when the 'Use this server?' pop-up appears
-6. Tap the menu icon in the top-right of the screen
-7. Tap 'Settings'
-8. Tap 'Proxy Mode' and choose 'Global'
-9. Go back, and tap the 'Done' button in the upper-right
-10. Double click the home button, and slide Shadowsocks off the top of the screen to close it
-11. Press the home button, and relaunch the application
-12. Visit http://curlmyip.com or http://ip4.me in the Shadowsocks browser. Your IP address should be listed as '{{ streisand_ipv4_address }}'.
+1. Tap the menu icon in the top-right of the screen
+1. Tap 'Config via QRCode'
+1. Use your phone to scan this image, or if you are using your phone _right now_ you can do a manual configuration and copy and paste the information from the Linux section above:
+  
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. Tap 'OK' when the 'Use this server?' pop-up appears
+1. Tap the menu icon in the top-right of the screen
+1. Tap 'Settings'
+1. Tap 'Proxy Mode' and choose 'Global'
+1. Go back, and tap the 'Done' button in the upper-right
+1. Double click the home button, and slide Shadowsocks off the top of the screen to close it
+1. Press the home button, and relaunch the application
+1. Visit http://curlmyip.com or http://ip4.me in the Shadowsocks browser. Your IP address should be listed as '{{ streisand_ipv4_address }}'.
 
 Now that Shadowsocks is properly configured, you can can launch it anytime and use its integrated browser to visit any blocked site. You can also route traffic from other iOS applications through the encrypted proxy. Instructions for this functionality (and details on its limitations) are available on the [Shadowsocks iOS Wiki](https://github.com/shadowsocks/shadowsocks-iOS/wiki/Help).
