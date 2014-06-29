@@ -14,5 +14,5 @@
     - ssh
     - tinyproxy
     - tor-bridge
-    - streisand-gateway
     - streisand-mirror
+    - streisand-gateway
