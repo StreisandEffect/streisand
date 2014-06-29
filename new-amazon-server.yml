@@ -55,7 +55,6 @@
 
   roles:
     - common
-    - streisand-mirror
     - openvpn
     - dante
     - stunnel
