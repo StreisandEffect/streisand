@@ -1,5 +1,5 @@
 ---
-- name: Remove 'streisand' SSH key from Amazon if it already exists
+- name: Remove the 'streisand' SSH key from Amazon if it already exists. This is to prevent problems if two people with two different keys are sharing the same AWS account.
   ec2_key: name=streisand-ssh
            state=absent
            aws_access_key="{{ aws_access_key }}"
@@ -43,6 +43,7 @@
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for: host={{ streisand_server.instances[0].public_ip }}
             port=22
+            delay=10
 
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.instances[0].public_ip }}

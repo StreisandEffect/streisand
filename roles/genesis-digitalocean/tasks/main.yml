@@ -1,5 +1,5 @@
 ---
-- name: Remove 'streisand' SSH key from DigitalOcean if it already exists
+- name: Remove the 'streisand' SSH key from DigitalOcean if it already exists. This is to prevent problems if two people with two different keys are sharing the same DigitalOcean account.
   digital_ocean_sshkey: name=streisand
                         state=absent
                         client_id="{{ do_client_id }}"
@@ -35,6 +35,7 @@
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for: host={{ streisand_server.droplet.ip_address }}
             port=22
+            delay=10
 
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.droplet.ip_address }}
