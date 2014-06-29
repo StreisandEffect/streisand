@@ -1,10 +1,13 @@
 L2TP/IPsec
-----------
+==========
+*L2TP/IPsec is a great first choice. It is natively supported by Android, iOS, OS X, and Windows. There is no additional software to install and setup should only take a few minutes.*
+
+*If the connection appears to time out, first check to make sure the passwords were entered correctly. If you still can't connect then it's possible that your country or ISP is blocking the L2TP/IPsec protocol. But don't worry, the [OpenVPN (stunnel)](/openvpn/stunnel.html), [Shadowsocks](/shadowsocks/), [SSH](/ssh/), and [Tor](/tor/) connection methods should still work for you.*
 
 Windows
 -------
 1. Click on the Start Menu and go to the Control Panel
-2. Go to the 'Network and Internet' control panel
+2. Go to the 'Network and Internet' section
 3. Click 'View network status and tasks'
 4. Click 'Set up a new connection or network'
 5. Select 'Connect to a workplace' and click 'Next'
@@ -51,7 +54,7 @@ You can connect to the VPN using the VPN icon in the menu bar, or by selecting t
 
 Linux
 -----
-L2TP/IPsec connections are not supported out-of-the-box on most Linux distributions without requiring the installation of additional software. This nullifies one of the biggest appeals of L2TP/IPsec (i.e. its painless client-side configuration). It is recommended to use another connection method such as OpenVPN instead, but if you would like to configure L2TP/IPsec on your Linux desktop, here are the settings you will need: 
+L2TP/IPsec connections are not supported out-of-the-box on most Linux distributions without requiring the installation of additional software. This nullifies one of the biggest appeals of L2TP/IPsec (i.e. its native client-side support). It is recommended to use another connection method such as OpenVPN instead, but if you would like to configure L2TP/IPsec on your Linux desktop, here are the settings you will need: 
 
     Server Address: {{ streisand_ipv4_address }}
 
@@ -67,7 +70,7 @@ Android
 3. Tap 'VPN'
 4. Tap the '+' icon in the top-right of the screen
 5. Enter '{{ streisand_server_name }}' in the 'Name' field
-6. Select 'L2Tp/IPSec PSK' in the 'Type' drop-down menu
+6. Select 'L2TP/IPSec PSK' in the 'Type' drop-down menu
 7. Enter '{{ streisand_ipv4_address }}' in the 'Server address' field
 8. Enter '{{ ipsec_preshared_key.stdout }}' in the 'IPSec pre-shared key' field
 9. Tap 'Save'
