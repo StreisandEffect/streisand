@@ -7,7 +7,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 
 Windows
 -------
-1. Download and run the OpenVPN [Windows Installer](/mirror/)
+1. Download and run the OpenVPN [Windows Installer](/mirror/#openvpn)
 1. Click 'Next' and accept the license agreement by clicking 'I Agree'
 1. Click 'Next' on the 'Choose Components' screen. Leave all of the default options checked.
 1. Make note of the Destination Folder. This is where you will place the {{ openvpn_direct_profile_filename }} client configuration profile after installation. Click 'Install'.
@@ -29,7 +29,7 @@ Windows
 
 OS X
 ----
-1. Download and open [Tunnelblick](/mirror/).
+1. Download and open [Tunnelblick](/mirror/#openvpn).
    * **Mavericks and Yosemite users must install the latest Beta Release at this time**
 1. Click 'Install'
 1. Click 'Launch' after the installation is finished
@@ -49,7 +49,7 @@ Linux
 
    `sudo apt-get install openvpn` OR `sudo yum install openvpn` OR `esoteric-package-manager hipster openvpn`
 
-   * *If installing OpenVPN via your package manager is not an option, you can also download and compile the [OpenVPN source code](/mirror/)*
+   * *If installing OpenVPN via your package manager is not an option, you can also download and compile the [OpenVPN source code](/mirror/#openvpn)*
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
