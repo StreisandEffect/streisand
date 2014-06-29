@@ -19,13 +19,6 @@
         shell=/bin/bash
         comment="SSH Forwarding User"
 
-- name: Install the putty-tools package to facilitate converting the standard OpenSSH key into PuTTY's unique .ppk format
-  apt: name=putty-tools
-
-- name: Convert the OpenSSH key into a PuTTY .ppk
-  command: puttygen {{ forward_location }}/.ssh/id_rsa -o {{ ssh_putty_rsa_key }}
-           creates={{ ssh_putty_rsa_key }}
-
 - name: Register the forwarding user's public SSH key
   command: cat {{ forward_location }}/.ssh/id_rsa.pub
   register: ssh_forward_key
@@ -58,3 +51,10 @@
 - name: Copy the SSH private key that can be used to connect as the 'forward' user to the SSH Gateway directory
   command: cp {{ forward_location }}/.ssh/id_rsa {{ ssh_rsa_key }}
            creates={{ ssh_rsa_key }}
+
+- name: Install the putty-tools package to facilitate converting the standard OpenSSH key into PuTTY's unique .ppk format
+  apt: name=putty-tools
+
+- name: Convert the OpenSSH key into a PuTTY .ppk
+  command: puttygen {{ forward_location }}/.ssh/id_rsa -o {{ ssh_putty_rsa_key }}
+           creates={{ ssh_putty_rsa_key }}
