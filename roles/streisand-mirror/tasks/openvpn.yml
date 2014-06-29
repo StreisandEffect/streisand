@@ -8,7 +8,7 @@
         mode=755
         state=directory
 
-- name: Mirror Tunnelblick Stable and Beta clients for OS X. The Beta version is required for Mavericks users.
+- name: Mirror Tunnelblick Stable and Beta clients for OS X. The Beta version is required for Mavericks and Yosemite users.
   get_url: url={{ item.url }}
            dest={{ openvpn_mirror_location }}
            sha256sum={{ item.checksum }}
