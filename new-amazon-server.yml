@@ -1,6 +1,6 @@
 ---
 # Provision the EC2 Server
-# =================================
+# ========================
 - hosts: localhost
   connection: local
   gather_facts: no
@@ -16,27 +16,27 @@
 
   vars_prompt:
     - name: "aws_region"
-      prompt: "Region that the server should be located in. 'ap-northeast-1' for Asia Pacific (Tokyo), 'ap-southeast-1' for Asia Pacific (Singapore), 'ap-southeast-2' for Asia Pacific (Sydney), 'eu-west-1' for EU (Ireland), 'sa-east-1' for South America (Sao Paulo), 'us-east-1' for US East (Northern Virginia), 'us-west-1' for US West (Northern California), and 'us-west-2' for US West (Oregon)."
+      prompt: "What region should the server be located in? Enter 'ap-northeast-1' for Asia Pacific (Tokyo), 'ap-southeast-1' for Asia Pacific (Singapore), 'ap-southeast-2' for Asia Pacific (Sydney), 'eu-west-1' for EU (Ireland), 'sa-east-1' for South America (Sao Paulo), 'us-east-1' for US East (Northern Virginia), 'us-west-1' for US West (Northern California), or 'us-west-2' for US West (Oregon)."
       default: "ap-southeast-1"
       private: no
 
     - name: "aws_instance_name"
-      prompt: "Server name. This the Name tag that will be applied to the AWS instance."
+      prompt: "What should the server be called? This will be the name of the instance in the AWS Management Console and the server's hostname."
       private: no
 
     - name: "aws_access_key"
-      prompt: "AWS Access Key"
+      prompt: "What is your AWS Access Key?"
       private: no
 
     - name: "aws_secret_key"
-      prompt: "AWS Secret Key"
+      prompt: "What is your AWS Secret Key?"
       private: no
 
   roles:
     - genesis-amazon
 
 # Configure the Server and install required software
-# ===============================================================
+# ==================================================
 - hosts: streisand-host
 
   # The standard streisand.yml is not included because the Debian AMI

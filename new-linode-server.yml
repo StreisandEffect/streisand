@@ -1,22 +1,22 @@
 ---
 # Provision the Linode Server
-# =================================
+# ===========================
 - hosts: localhost
   connection: local
   gather_facts: no
 
   vars_prompt:
     - name: "linode_datacenter"
-      prompt: "Region that the server should be located in. '2' for Dallas, '3' for Fremont, '4' for Atlanta, '6' for Newark, '7' for London, and '8' for Tokyo."
+      prompt: "What region should the server be located in? Enter '4' for Atlanta, '2' for Dallas, '3' for Fremont, '7' for London, '6' for Newark, and '8' for Tokyo."
       default: "8"
       private: no
 
     - name: "linode_server_name"
-      prompt: "Server name. This will be used to identify the server in the Linode control panel."
+      prompt: "What should the server be called? This will be the name of the instance in the Linode Control Panel and the server's hostname."
       private: no
 
     - name: "linode_api_key"
-      prompt: "Linode API key. A new key can be generated from the API Keys tab in the 'My Profile' section of the Linode control panel."
+      prompt: "What is your Linode API key? A new key can be generated from the API Keys tab in the 'My Profile' section of the Linode Control Panel."
       private: no
 
   roles:
