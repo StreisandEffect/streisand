@@ -19,6 +19,13 @@
         shell=/bin/bash
         comment="SSH Forwarding User"
 
+- name: Install the putty-tools package to facilitate converting the standard OpenSSH key into PuTTY's unique .ppk format
+  apt: name=putty-tools
+
+- name: Convert the OpenSSH key into a PuTTY .ppk
+  command: puttygen {{ forward_location }}/.ssh/id_rsa -o {{ ssh_putty_rsa_key }}
+           creates={{ ssh_putty_rsa_key }}
+
 - name: Register the forwarding user's public SSH key
   command: cat {{ forward_location }}/.ssh/id_rsa.pub
   register: forward_ssh_key
