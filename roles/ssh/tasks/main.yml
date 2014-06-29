@@ -28,11 +28,11 @@
 
 - name: Register the forwarding user's public SSH key
   command: cat {{ forward_location }}/.ssh/id_rsa.pub
-  register: forward_ssh_key
+  register: ssh_forward_key
 
 - name: Authorize the key for access
   authorized_key: user=forward
-                  key="{{ forward_ssh_key.stdout }}"
+                  key="{{ ssh_forward_key.stdout }}"
 
 - name: Register the server's SSH fingerprints
   command: ssh-keygen -lf /etc/ssh/{{ item }}
