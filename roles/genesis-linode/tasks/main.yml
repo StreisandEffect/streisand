@@ -18,9 +18,10 @@
   register: streisand_server
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
-  wait_for: host={{ streisand_server.instance.ipv4 }}
-            port=22
-            delay=10
+  shell: curl --silent --max-time 5 {{ streisand_server.instance.ipv4 }}:22 | grep 'SSH'
+  register: connection_attempt
+  until: connection_attempt | success
+  retries: 20
 
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.instance.ipv4 }}
