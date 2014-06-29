@@ -18,7 +18,7 @@ Features
   * Streisand mirrors local copies of all necessary client software and it is made available for download directly from the Gateway, rendering any attempted censorship of the default client download locations completely ineffective. The integrity of mirrored software is ensured using SHA-256 checksums, or by verifying GPG signatures if the project provides them. This protects users from downloading corrupted files.
   * All ancillary files, such as OpenVPN configuration profiles, are also available via the Gateway
   * The Gateway can be accessed as a Tor hidden service for users who wish to anonymously download configuration instructions on someone else's behalf. Current Tor users can also benefit from the additional anti-censorship utilities Streisand sets up to transfer large files or to handle other traffic (e.g. BitTorrent) that isn't appropriate for the Tor network.
-  * A unique password, SSL certificate, and SSL private key are generated for each Streisand Gateway. The custom Gateway connection instructions contain the random Gateway password, SSL serial number, and complete SSL fingerprints for the Gateway certificate so users can be sure they are connecting to the right location. These Gateway instructions are transferred via SSH at the conclusion of Streisand's execution, and they can be given to friends, family, fellow activists, or even total strangers.
+  * A unique password, SSL certificate, and SSL private key are generated for each Streisand Gateway. The custom Gateway connection instructions contain the random Gateway password, SSL serial number, and complete SSL fingerprints for the Gateway certificate so users can be sure they are connecting to the right location. These Gateway instructions are transferred via SSH at the conclusion of Streisand's execution, and they can be given to friends, family, and fellow activists.
 * Rapid creation and configuration of new servers. Several providers are supported directly:
   * [Amazon EC2](http://aws.amazon.com/ec2/)
   * [DigitalOcean](https://www.digitalocean.com/)
@@ -40,10 +40,10 @@ Services Provided
 -----------------
 * L2TP/IPsec using [strongSwan](http://strongswan.org/) and [xl2tpd](http://www.xelerance.com/software/xl2tpd/)
   * A randomly chosen pre-shared key and password are generated
-  * Windows, OS X, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software  
+  * Windows, OS X, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software
   * *Note: Streisand does not install L2TP/IPsec on Amazon EC2 servers by default because the instances cannot bind directly to their public IP addresses which makes IPsec routing nearly impossible.*
 * [OpenSSH](http://www.openssh.com/)
-  * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/apenwarr/sshuttle) and SOCKS capabilities. Windows and Android SSH tunnels are also supported.
+  * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/apenwarr/sshuttle) and SOCKS capabilities. Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
   * [Tinyproxy](https://banu.com/tinyproxy/) is installed and bound to localhost. It can be accessed over an SSH tunnel by programs that do not natively support SOCKS and that require an HTTP proxy, such as Twitter for Android.
 * [OpenVPN](https://openvpn.net/index.php/open-source.html)
   * Self-contained "unified" .ovpn profiles are generated for easy client configuration using only a single file
