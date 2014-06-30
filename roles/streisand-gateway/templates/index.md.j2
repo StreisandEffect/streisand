@@ -4,7 +4,10 @@ You have arrived
 
 Connection Instructions
 -----------------------
+{# L2TP/IPsec is not installed on Amazon servers #}
+{% if l2tp_ipsec_gateway_location %}
 * [L2TP/IPsec](/l2tp-ipsec/)
+{% endif %}
 * [OpenVPN (direct)](/openvpn/)
 * [OpenVPN (stunnel)](/openvpn/stunnel.html)
 * [Shadowsocks](/shadowsocks/)

@@ -54,6 +54,10 @@
     # This variable is therefore set to an empty value.
     l2tp_ipsec_firewall_rules: ""
 
+    # Similarly, we don't want to display a link to nonexistent
+    # L2TP/IPsec information on the Gateway index page
+    l2tp_ipsec_gateway_location: ""
+
   roles:
     - common
     - openvpn
