@@ -11,6 +11,7 @@
     - roles/openvpn/defaults/main.yml
     - roles/shadowsocks/defaults/main.yml
     - roles/ssh/defaults/main.yml
+    - roles/streisand-gateway/defaults/main.yml
     - roles/stunnel/defaults/main.yml
     - roles/tor-bridge/defaults/main.yml
 

@@ -17,6 +17,12 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     rules:
+      # Nginx
+      # ---
+      - proto: tcp
+        from_port: "{{ nginx_port }}"
+        to_port: "{{ nginx_port }}"
+        cidr_ip: 0.0.0.0/0
       # OpenVPN
       # ---
       - proto: "{{ openvpn_protocol }}"

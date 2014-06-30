@@ -5,4 +5,6 @@ nginx_key_city: "Newport Beach"
 nginx_key_org: "Bluth's Original Frozen Banana"
 nginx_key_ou: "Mister Manager"
 
+nginx_port: "443"
+
 streisand_gateway_username: "streisand"
