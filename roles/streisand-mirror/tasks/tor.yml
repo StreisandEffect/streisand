@@ -1,5 +1,6 @@
 ---
-- include_vars: tor.yml
+- name: Include the Tor mirror variables
+  include_vars: tor.yml
 
 - name: Make the directory where the Tor Project's mirrored files will be stored
   file: path={{ tor_mirror_location }}

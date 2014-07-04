@@ -1,5 +1,6 @@
 ---
-- include_vars: ssh.yml
+- name: Include the SSH mirror variables
+  include_vars: ssh.yml
 
 - name: Make the directory where the SSH client mirrored files will be stored
   file: path={{ ssh_mirror_location }}

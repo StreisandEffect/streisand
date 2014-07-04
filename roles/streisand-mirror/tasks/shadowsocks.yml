@@ -1,5 +1,6 @@
 ---
-- include_vars: shadowsocks.yml
+- name: Include the Shadowsocks mirror variables
+  include_vars: shadowsocks.yml
 
 - name: Make the directory where the Shadowsocks mirrored files will be stored
   file: path={{ shadowsocks_mirror_location }}

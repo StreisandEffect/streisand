@@ -1,5 +1,6 @@
 ---
-- include_vars: stunnel.yml
+- name: Include the stunnel mirror variables
+  include_vars: stunnel.yml
 
 - name: Make the directory where the stunnel mirrored files will be stored
   file: path={{ stunnel_mirror_location }}
