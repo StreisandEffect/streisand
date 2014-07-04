@@ -8,7 +8,29 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
 
-- name: Open all of the necessary ports
+- name: Open the SSH port
+  local_action:
+    module: ec2_group
+    name: streisand-security
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    rules:
+      # SSH
+      # ---
+      - proto: tcp
+        from_port: "{{ ssh_port }}"
+        to_port: "{{ ssh_port }}"
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        from_port: 1
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0
+  when: open_ssh_port_only
+
+- name: Open all of the necessary ports across every service
   local_action:
     module: ec2_group
     name: streisand-security
@@ -53,8 +75,21 @@
         from_port: "{{ tor_orport }}"
         to_port: "{{ tor_orport }}"
         cidr_ip: 0.0.0.0/0
+      # Tor obfs3 port
+      # ---
+      - proto: tcp
+        from_port: "{{ tor_obfs3_port }}"
+        to_port: "{{ tor_obfs3_port }}"
+        cidr_ip: 0.0.0.0/0
+      # Tor ScrambleSuit port
+      # ---
+      - proto: tcp
+        from_port: "{{ tor_scramblesuit_port }}"
+        to_port: "{{ tor_scramblesuit_port }}"
+        cidr_ip: 0.0.0.0/0
     rules_egress:
       - proto: all
         from_port: 1
         to_port: 65535
         cidr_ip: 0.0.0.0/0
+  when: open_all_service_ports

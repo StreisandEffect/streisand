@@ -48,6 +48,12 @@
   register: tor_obfs_ports
   with_items: tor_obfs_transports
 
+- name: Set the obfs3 port fact
+  set_fact: tor_obfs3_port={{ tor_obfs_ports.results[0].stdout }}
+
+- name: Set the ScrambleSuit port fact
+  set_fact: tor_scramblesuit_port={{ tor_obfs_ports.results[1].stdout }}
+
 - name: Discover the server fingerprint
   command: awk '{ print $2 }' /var/lib/tor/fingerprint
   register: tor_fingerprint

@@ -5,18 +5,13 @@
   connection: local
   gather_facts: no
 
-  # These variables are included for the sake of the EC2 Security
-  # Group task (which must open various ports)
+  # This variable file is included so the ec2-security-group role knows
+  # which port to open for SSH
   vars_files:
-    - roles/openvpn/defaults/main.yml
-    - roles/shadowsocks/defaults/main.yml
     - roles/ssh/defaults/main.yml
-    - roles/streisand-gateway/defaults/main.yml
-    - roles/stunnel/defaults/main.yml
-    - roles/tor-bridge/defaults/main.yml
 
   vars_prompt:
-    - name: "aws_region"
+    - name: "aws_region_var"
       prompt: "What region should the server be located in? Enter 'ap-northeast-1' for Asia Pacific (Tokyo), 'ap-southeast-1' for Asia Pacific (Singapore), 'ap-southeast-2' for Asia Pacific (Sydney), 'eu-west-1' for EU (Ireland), 'sa-east-1' for South America (Sao Paulo), 'us-east-1' for US East (Northern Virginia), 'us-west-1' for US West (Northern California), or 'us-west-2' for US West (Oregon)."
       default: "ap-southeast-1"
       private: no
@@ -25,16 +20,33 @@
       prompt: "What should the server be called? This will be the name of the instance in the AWS Management Console and the server's hostname."
       private: no
 
-    - name: "aws_access_key"
+    - name: "aws_access_key_var"
       prompt: "What is your AWS Access Key?"
       private: no
 
-    - name: "aws_secret_key"
+    - name: "aws_secret_key_var"
       prompt: "What is your AWS Secret Key?"
       private: no
 
+  # Facts persist across plays, and these facts will be used in the
+  # final step to make an API call to open all of the necessary ports in
+  # the EC2 security group. This is necessary because Tor chooses two
+  # random ports for the obfsproxy pluggable transports (one for obfs3
+  # and one for ScrambleSuit) and therefore the ports cannot be opened
+  # in advance before Tor is up and running.
+  pre_tasks:
+    - name: Set the AWS Region fact
+      set_fact: aws_region={{ aws_region_var }}
+
+    - name: Set the AWS Access Key fact
+      set_fact: aws_access_key={{ aws_access_key_var }}
+
+    - name: Set the AWS Secret Key fact
+      set_fact: aws_secret_key={{ aws_secret_key_var }}
+
   roles:
     - genesis-amazon
+
 
 # Configure the Server and install required software
 # ==================================================
@@ -69,3 +81,37 @@
     - tor-bridge
     - streisand-mirror
     - streisand-gateway
+
+
+# Open all service ports
+# ======================
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  # These variable files are included so the ec2-security-group role
+  # knows which ports to open
+  vars_files:
+    - roles/openvpn/defaults/main.yml
+    - roles/shadowsocks/defaults/main.yml
+    - roles/ssh/defaults/main.yml
+    - roles/streisand-gateway/defaults/main.yml
+    - roles/stunnel/defaults/main.yml
+    - roles/tor-bridge/defaults/main.yml
+
+  pre_tasks:
+    - name: Set the streisand_host fact to the value of the new server. This fact will be used to retrieve the obfsproxy port values.
+      set_fact: "streisand_host={{ groups['streisand-host'][0] }}"
+
+    - name: Retrieve the randomly chosen Tor obfs3 port
+      set_fact: "tor_obfs3_port={{ hostvars[streisand_host]['tor_obfs3_port'] }}"
+
+    - name: Retrieve the randomly chosen Tor ScrambleSuit port
+      set_fact: "tor_scramblesuit_port={{ hostvars[streisand_host]['tor_scramblesuit_port'] }}"
+
+  roles:
+    # We can modify the EC2 security group now that we know which
+    # obfsproxy ports Tor is using
+    - { role: ec2-security-group,
+        open_ssh_port_only:     false,
+        open_all_service_ports: true }

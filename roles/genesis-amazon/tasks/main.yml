@@ -19,9 +19,6 @@
            region="{{ aws_region }}"
            wait=yes
 
-# Create the 'streisand-security' EC2 security group
-- include: ec2-security-group.yml
-
 # Determine which AMI should be used based on the chosen region
 - include: determine-ami-id.yml
 
@@ -45,6 +42,7 @@
   register: connection_attempt
   until: connection_attempt | success
   retries: 20
+  delay: 15
 
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.instances[0].public_ip }}
