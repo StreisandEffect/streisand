@@ -1,6 +1,6 @@
-# Configure the Server and install required software
-# ===============================================================
-- hosts: streisand-host
+- name: Configure the Server and install required software
+# ========================================================
+  hosts: streisand-host
 
   remote_user: root
 

@@ -1,7 +1,7 @@
 ---
-# Provision the Rackspace Server
-# ==============================
-- hosts: localhost
+- name: Provision the Rackspace Server
+# ====================================
+  hosts: localhost
   connection: local
   gather_facts: no
 

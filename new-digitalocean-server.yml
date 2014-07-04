@@ -1,7 +1,7 @@
 ---
-# Provision the DigitalOcean Server
-# =================================
-- hosts: localhost
+- name: Provision the DigitalOcean Server
+# =======================================
+  hosts: localhost
   connection: local
   gather_facts: no
 

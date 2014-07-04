@@ -1,7 +1,7 @@
 ---
-# Provision the EC2 Server
-# ========================
-- hosts: localhost
+- name: Provision the EC2 Server
+# ==============================
+  hosts: localhost
   connection: local
   gather_facts: no
 
@@ -48,9 +48,9 @@
     - genesis-amazon
 
 
-# Configure the Server and install required software
-# ==================================================
-- hosts: streisand-host
+- name: Configure the Server and install required software
+# ========================================================
+  hosts: streisand-host
 
   # The standard streisand.yml is not included because the Debian AMI
   # uses 'admin' instead of 'root'
@@ -83,9 +83,9 @@
     - streisand-gateway
 
 
-# Open all service ports
-# ======================
-- hosts: localhost
+- name: Open all service ports
+# ============================
+  hosts: localhost
   connection: local
   gather_facts: no
 
