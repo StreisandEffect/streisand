@@ -1,17 +1,17 @@
 ---
-- name: Create the 'streisand-security' EC2 security group
+- name: Create the EC2 security group
   local_action:
     module: ec2_group
-    name: streisand-security
+    name: "{{ aws_security_group }}"
     description: Security group for Streisand
     region: "{{ aws_region }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
 
-- name: Open the SSH port
+- name: Open the SSH port in the EC2 security group
   local_action:
     module: ec2_group
-    name: streisand-security
+    name: "{{ aws_security_group }}"
     description: Security group for Streisand
     region: "{{ aws_region }}"
     aws_access_key: "{{ aws_access_key }}"
@@ -30,10 +30,10 @@
         cidr_ip: 0.0.0.0/0
   when: open_ssh_port_only
 
-- name: Open all of the necessary ports across every service
+- name: Open all of the necessary ports across every service in the EC2 security group
   local_action:
     module: ec2_group
-    name: streisand-security
+    name: "{{ aws_security_group }}"
     description: Security group for Streisand
     region: "{{ aws_region }}"
     aws_access_key: "{{ aws_access_key }}"

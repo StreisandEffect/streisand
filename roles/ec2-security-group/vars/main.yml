@@ -1,0 +1,2 @@
+---
+aws_security_group: "streisand-{{ aws_instance_name }}"

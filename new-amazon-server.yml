@@ -16,7 +16,7 @@
       default: "ap-southeast-1"
       private: no
 
-    - name: "aws_instance_name"
+    - name: "aws_instance_name_var"
       prompt: "What should the server be called? This will be the name of the instance in the AWS Management Console and the server's hostname."
       private: no
 
@@ -37,6 +37,9 @@
   pre_tasks:
     - name: Set the AWS Region fact
       set_fact: aws_region={{ aws_region_var }}
+
+    - name: Set the AWS Instance Name fact
+      set_fact: aws_instance_name={{ aws_instance_name_var }}
 
     - name: Set the AWS Access Key fact
       set_fact: aws_access_key={{ aws_access_key_var }}

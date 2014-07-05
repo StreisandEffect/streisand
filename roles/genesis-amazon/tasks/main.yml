@@ -31,7 +31,7 @@
     image: "{{ aws_ami_id }}"
     region: "{{ aws_region }}"
     key_name: streisand-ssh
-    group: streisand-security
+    group: "{{ aws_security_group }}"
     instance_tags:
       Name: "{{ aws_instance_name }}"
     wait: yes
