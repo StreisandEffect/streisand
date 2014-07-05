@@ -121,11 +121,11 @@ Installation
 3. Follow the customized prompts to choose the physical region for the server and its name. You will also be asked to enter API information for your chosen provider.
 4. Wait for the setup to complete (this usually takes around five minutes) and look for the corresponding HTML file in the 'generated-docs' folder in the Streisand repository directory. This file will explain how to connect to the Gateway (over SSL or via Tor) and all instructions, files, mirrored clients, and keys for the new server will be located there. You are all done!
 
-You can also run Streisand on any number of new Debian 7 servers. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do this, simply edit the 'inventory' file and uncomment the final two lines. Replace the sample IP with the address (or addresses) of the servers you wish to configure. Then run the Streisand playbook directly:
+You can also run Streisand on any number of new Debian 7 servers. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do this, simply edit the 'inventory' file and uncomment the final two lines. Replace the sample IP with the address (or addresses) of the servers you wish to configure. Make sure you read through all of the documentation in the inventory file and update the ansible.cfg file if necessary. Then run the Streisand playbook directly:
 
     ansible-playbook streisand.yml
 
-The servers should be accessible using SSH keys, and 'root' is used as the connecting user by default (though this is simple to change in the streisand.yml file, if necessary).
+The servers should be accessible using SSH keys, and 'root' is used as the connecting user by default (though this is simple to change by updating the streisand.yml file or ansible.cfg file).
 
 Acknowledgements
 ----------------

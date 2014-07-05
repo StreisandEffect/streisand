@@ -8,5 +8,10 @@
 # Multiple servers can be configured simultaneously if multiple IP
 # addresses are defined.
 #
+# If you already have SSH fingerprints for the hosts you are configuring
+# (e.g. using `ssh-keyscan`) then you should also comment out the
+# 'host_key_checking = False' line in the ansible.cfg file. That setting
+# is only sensible and convenient when connecting to a brand-new host.
+#
 # [streisand-host]
 # 255.255.255.255
