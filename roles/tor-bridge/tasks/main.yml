@@ -43,6 +43,10 @@
 - name: Wait until the hidden service is online
   wait_for: path={{ tor_hidden_service_directory }}/hostname
 
+- name: Register the Tor Hidden Service hostname
+  command: cat {{ tor_hidden_service_directory }}/hostname
+  register: tor_hidden_service_hostname
+
 - name: Discover the randomly chosen obfs ports
   shell: grep {{ item }} /var/lib/tor/state | sed -e 's/^.*://'
   register: tor_obfs_ports

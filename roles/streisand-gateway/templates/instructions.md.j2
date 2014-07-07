@@ -1,22 +1,44 @@
-Gateway
-=======
-*Real instructions will be written soon*
+Almost there
+============
+The Streisand Gateway contains step-by-step instructions and mirrors of all necessary client software. You'll be back online soon.
+
+There are two available connection methods you can use to reach the Gateway:
+
+* [SSL](#ssl)
+* [Tor hidden service](#tor).
+
+<a name="ssl"></a>
+SSL
+---
+***Note:** Streisand has generated a unique SSL certificate for the Gateway. Your connection to the server will be encrypted, however the certificate is self-signed so your browser will display a warning. The [SSL Verification](#verification) section will explain how you can validate that you have connected to the right server and that no man-in-the-middle attack has taken place.*
 
 [{{ streisand_gateway_url }}]({{ streisand_gateway_url }})
 
-username: {{ streisand_gateway_username }}
+username: `{{ streisand_gateway_username }}`
 
-password: {{ streisand_gateway_password.stdout }}
+password: `{{ streisand_gateway_password.stdout }}`
 
-*Real MITM mitigation explanation will be written soon*
+<a name="verification"></a>
+SSL Verification
+----------------
+You can view the Gateway certificate details in your browser and ensure that the following information matches:
 
-{{ ssl_certificate_serial_number.stdout }}
+**Serial Number:** `{{ ssl_certificate_serial_number.stdout }}`
+
+**Fingerprints:**
 
 {% for fingerprint in ssl_certificate_fingerprints.results %}
-{{ fingerprint.stdout }}
+`{{ fingerprint.stdout }}`
 
 {% endfor %}
 
-*Real Tor Hidden Service explanation will be written soon*
+<a name="tor"></a>
+Tor Hidden Service
+------------------
+***Note:** All connections to Tor hidden services are fully encrypted.*
 
-{{ streisand_hidden_service_hostname.stdout }}
+[{{ tor_hidden_service_url }}]({{ tor_hidden_service_url }})
+
+username: `{{ streisand_gateway_username }}`
+
+password: `{{ streisand_gateway_password.stdout }}`

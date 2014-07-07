@@ -39,10 +39,6 @@
     - md5
   register: ssl_certificate_fingerprints
 
-- name: Register Tor Hidden Service hostname
-  command: cat {{ tor_hidden_service_directory }}/hostname
-  register: streisand_hidden_service_hostname
-
 - name: Generate the virtual host and restart Nginx if it is updated
   template: src=vhost.j2
             dest=/etc/nginx/sites-available/streisand

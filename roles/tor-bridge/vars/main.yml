@@ -11,6 +11,7 @@ tor_obfs3_connection_details:    "{{ streisand_ipv4_address }}:{{ tor_obfs3_port
 # https://trac.torproject.org/projects/tor/ticket/10887
 
 tor_hidden_service_directory: "/var/lib/tor/hidden_service/"
+tor_hidden_service_url: "http://{{ tor_hidden_service_hostname.stdout }}"
 
 tor_gateway_location: "{{ streisand_gateway_location }}/tor"
 
