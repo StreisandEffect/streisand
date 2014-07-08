@@ -2,25 +2,93 @@ Almost there
 ============
 The Streisand Gateway contains step-by-step instructions and mirrors of all necessary client software. You'll be back online soon.
 
-There are two available connection methods you can use to reach the Gateway:
+The Gateway can be accessed over standard SSL or via a Tor Hidden Service.
 
-* [SSL](#ssl)
-* [Tor hidden service](#tor).
+* SSL
+  * [Windows](#windows)
+  * [OS X](#osx)
+  * [Android](#android)
+  * [Chromium](#chromium)
+  * [Firefox](#firefox)
+  * [Manual Certificate Verification](#verification)
+* [Tor Hidden Service](#tor).
 
-<a name="ssl"></a>
-SSL
----
-***Note:** Streisand has generated a unique SSL certificate for the Gateway. Your connection to the server will be encrypted, however the certificate is self-signed so your browser will display a warning. The [SSL Verification](#verification) section will explain how you can validate that you have connected to the right server and that no man-in-the-middle attack has taken place.*
+<a name="windows"></a>
+SSL Setup (Windows)
+-------------------
+These instructions will work for Chrome and Internet Explorer. Firefox uses its own internal Certificate Manager, but it's [easy to configure](#firefox) too.
 
-[{{ streisand_gateway_url }}]({{ streisand_gateway_url }})
+1. Double-click the {{ streisand_certificate_filename }} file. The certificate file is located in the same directory as these instructions.
+1. Click the 'Install Certificate...' button
+1. The Certificate Import Wizard will start. Click 'Next'.
+1. Select "Place all certificates in the following store" and click the 'Browse' button
+1. Select 'Trusted Root Certification Authorities' and click 'OK'
+1. Click 'Next' and then click 'Finish'
+1. Confirm that you would like to install the certificate by choosing 'Yes'
+1. Close your browser and launch it again
+1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
-username: `{{ streisand_gateway_username }}`
+<a name="osx"></a>
+SSL Setup (OS X)
+----------------
+These instructions will work for Chrome and Safari. Firefox uses its own internal Certificate Manager, but it's [easy to configure](#firefox) too.
 
-password: `{{ streisand_gateway_password.stdout }}`
+1. Go to Applications -> Utilities and launch Keychain Access
+1. Drag the {{ streisand_certificate_filename }} file into the login keychain section. The certificate file is located in the same directory as these instructions.
+1. A window will appear asking if you want to trust the certificate. Click 'Always Trust'.
+1. Enter your password when you are prompted to do so, and click 'Update Settings'
+1. Right-click on the imported certificate and select 'Get Info'
+1. Click the arrow next to 'Trust' and more options will appear
+1. Choose 'Always Trust' next to the "Secure Sockets Layer (SSL)" option
+1. Close the certificate window and enter your password again
+1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
+
+<a name="android"></a>
+SSL Setup (Android)
+-------------------
+These instructions will work for Chrome. Firefox for Android uses its own internal Certificate Manager but does not provide an interface for importing certificates yet. Chrome is therefore the recommended way to connect to the Streisand Gateway.
+
+1. Connect the Android device to your computer
+1. Drag the {{ streisand_certificate_filename }} file to the root of the filesystem
+1. Launch the Settings application
+1. Scroll to the Personal section and tap 'Security'
+1. Scroll to the Credential Storage section and tap 'Install from storage'
+1. Select the {{ streisand_certificate_filename }} file that you copied to your phone
+1. Enter `{{ streisand_server_name }}` for the "Certificate name", and make sure 'VPN and apps' is selected for the "Credential use" value
+1. Tap 'OK'
+1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
+
+<a name="chromium"></a>
+SSL Setup (Chromium)
+--------------------
+1. Click the Menu button and go to 'Settings'
+1. Scroll to the bottom of the window and click 'Show advanced settings...'
+1. Scroll to the HTTPS/SSL section and click the 'Manage certificates...' button
+1. Go the Authorities tab
+1. Click 'Import...', select the {{ streisand_certificate_filename }} file, and click 'Open'. The certificate file is located in the same directory as these instructions.
+1. A popup will appear. Check the box next to "Trust this certificate for identifying websites" and click "OK".
+1. Click 'Done'
+1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
+
+<a name="firefox"></a>
+SSL Setup (Firefox)
+-------------------
+1. Launch Firefox
+1. Open the Options/Preferences panel
+1. Click on the Advanced icon
+1. Go to the Certificates tab
+1. Click 'View Certificates'
+1. A window will appear. Click on the 'Authorities' tab.
+1. Click 'Import...', select the {{ streisand_certificate_filename }} file, and click 'Open'. The certificate file is located in the same directory as these instructions.
+1. A popup will appear. Check the box next to "Trust this CA to identify websites" and click "OK".
+1. Click 'OK' to close the certificate manager, and then close the Preferences panel
+1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
 <a name="verification"></a>
-SSL Verification
-----------------
+Manual SSL Verification
+-----------------------
+***Note:** The manual certificate verification option is significantly less secure than installing the certificate using one of the methods above. Your browser will display a warning message, and you are more vulnerable to man-in-the-middle attacks because the fingerprints must be verified on every connection attempt. It should be used with great care, and only as a last resort.*
+
 You can view the Gateway certificate details in your browser and ensure that the following information matches:
 
 **Serial Number:** `{{ ssl_certificate_serial_number.stdout }}`
@@ -32,9 +100,20 @@ You can view the Gateway certificate details in your browser and ensure that the
 
 {% endfor %}
 
+If everything checks out, you are ready to connect and you can skip to the [SSL](#ssl) section.
+
+<a name="ssl"></a>
+SSL Connection Details
+----------------------
+[{{ streisand_gateway_url }}]({{ streisand_gateway_url }})
+
+username: `{{ streisand_gateway_username }}`
+
+password: `{{ streisand_gateway_password.stdout }}`
+
 <a name="tor"></a>
-Tor Hidden Service
-------------------
+Tor Hidden Service Connection Details
+-------------------------------------
 ***Note:** All connections to Tor hidden services are fully encrypted.*
 
 [{{ tor_hidden_service_url }}]({{ tor_hidden_service_url }})
