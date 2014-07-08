@@ -16,11 +16,11 @@
       private: no
 
     - name: "do_client_id"
-      prompt: "What is your DigitalOcean Client ID? This can be found in the API section of the control panel."
+      prompt: "What is your DigitalOcean Client ID? This can be found on the API 1.0 page in the control panel."
       private: no
 
     - name: "do_api_key"
-      prompt: "What is your DigitalOcean API key? This can be generated in the API section of the control panel."
+      prompt: "What is your DigitalOcean API key? This can be generated on the API 1.0 page in the control panel."
       private: no
 
   roles:
