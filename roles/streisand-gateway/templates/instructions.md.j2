@@ -4,10 +4,11 @@ The Streisand Gateway contains step-by-step instructions and mirrors of all nece
 
 The Gateway can be accessed over standard SSL or via a Tor Hidden Service.
 
-* SSL
+* [SSL](#ssl)
   * [Windows](#windows)
   * [OS X](#osx)
   * [Android](#android)
+  * [iOS](#ios)
   * [Chromium](#chromium)
   * [Firefox](#firefox)
   * [Manual Certificate Verification](#verification)
@@ -48,6 +49,14 @@ SSL Setup (Android)
 -------------------
 These instructions will work for Chrome. Firefox for Android uses its own internal Certificate Manager but does not provide an interface for importing certificates yet. Chrome is therefore the recommended way to connect to the Streisand Gateway.
 
+### Less secure, but easy ###
+1. Email the {{ streisand_certificate_filename }} file to an account that can be accessed from the Android device
+1. Open the email and tap the attachment
+1. A popup will appear. Enter `{{ streisand_server_name }}` for the "Certificate name", and make sure 'VPN and apps' is selected for the "Credential use" value
+1. Tap 'OK'
+1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
+
+### More secure ###
 1. Connect the Android device to your computer
 1. Drag the {{ streisand_certificate_filename }} file to the root of the filesystem
 1. Launch the Settings application
@@ -56,6 +65,37 @@ These instructions will work for Chrome. Firefox for Android uses its own intern
 1. Select the {{ streisand_certificate_filename }} file that you copied to your phone
 1. Enter `{{ streisand_server_name }}` for the "Certificate name", and make sure 'VPN and apps' is selected for the "Credential use" value
 1. Tap 'OK'
+1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
+
+<a name="ios"></a>
+SSL Setup (iOS)
+-------------------
+### Less secure, but easy ###
+1. Email the {{ streisand_certificate_filename }} file to an account that can be accessed from the iOS device
+1. Open the email, and tap the attachment
+1. The "Install Profile" screen will appear. You can view the certificate details and make sure they match the information from the [SSL Verification](#verification) section. Tap the 'Install' button.
+1. Tap the 'Install' button again when the warning appears
+1. Tap the 'Done' button
+1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
+
+### More secure ###
+1. Connect the iOS device to your OS X computer
+1. Tap the 'Trust' button if the "Trust This Computer?" popup appears
+1. Install the [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12) utility from the Mac App Store
+1. Launch the Apple Configurator utility and agree to the license
+1. Click the 'Start Preparing Devices' button
+1. Click the 'Install Profiles...' button
+1. Turn the phone on, and unlock it
+1. Click 'Next'
+1. Click 'New...' and enter `{{ streisand_server_name }}` in the Name field in the General section
+1. Scroll down to the Certificates section
+1. Click 'Configure', select the {{ streisand_certificate_filename }} file, and click 'Open'
+1. Click 'Save'
+1. Check the checkbox next to the `{{ streisand_server_name }}` profile you just created
+1. Click the 'Next' button
+1. The Install Profile screen will appear on your iOS device. Tap the 'Install' button.
+1. Tap the 'Install' button again when the warning appears
+1. Tap the 'Done' button
 1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
 <a name="chromium"></a>
@@ -89,7 +129,7 @@ Manual SSL Verification
 -----------------------
 ***Note:** The manual certificate verification option is significantly less secure than installing the certificate using one of the methods above. Your browser will display a warning message, and you are more vulnerable to man-in-the-middle attacks because the fingerprints must be verified on every connection attempt. It should be used with great care, and only as a last resort.*
 
-You can view the Gateway certificate details in your browser and ensure that the following information matches:
+The certificate details should match the following information:
 
 **Serial Number:** `{{ ssl_certificate_serial_number.stdout }}`
 
