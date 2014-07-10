@@ -65,9 +65,12 @@ Installation
 ------------
 
 ### Prerequisites ###
-* The Streisand playbook should be run on a BSD, Linux, or OS X system
-* You must have an SSH key present in ~/.ssh/id_rsa.pub
-* The [pip](https://pip.pypa.io/en/latest/) package management system for Python should be installed
+* Streisand requires a BSD, Linux, or OS X system. All of the following commands should be run inside a Terminal session.
+* Make sure an SSH key is present in ~/.ssh/id_rsa.pub
+  * If you do not have an SSH key, you can generate one by using this command and following the defaults
+
+            ssh-keygen
+* Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python
   * On Debian and Ubuntu
 
             sudo apt-get install python-pip
@@ -77,7 +80,7 @@ Installation
   * On OS X
 
             sudo easy_install pip
-* [Ansible](http://www.ansible.com/home) should also be ready to go
+* Install [Ansible](http://www.ansible.com/home)
   * On OS X (via [Homebrew](http://brew.sh/))
 
             brew install ansible
@@ -87,7 +90,7 @@ Installation
   * On BSD, Linux, or earlier versions of OS X (via pip)
 
             sudo pip install ansible
-* Any necessary Python libraries for your chosen cloud provider must be present if you are going to take advantage of Streisand's ability to create new servers using a supported API
+* Install the necessary Python libraries for your chosen cloud provider if you are going to take advantage of Streisand's ability to create new servers using a supported API
   * Amazon EC2
 
             sudo pip install boto
