@@ -40,17 +40,17 @@ openvpn_download_urls:
   - "{{ openvpn_windows64_installer_sig_url }}"
 
 # OS X
-tunnelblick_version: "3.3.2"
+tunnelblick_version: "3.3.4"
 tunnelblick_filename: "Tunnelblick_{{ tunnelblick_version }}.dmg"
 tunnelblick_href: "{{ openvpn_mirror_href_base }}/{{ tunnelblick_filename }}"
-tunnelblick_url: "http://freefr.dl.sourceforge.net/project/tunnelblick/All%20files/{{ tunnelblick_filename }}"
-tunnelblick_checksum: "1e17563771a9536313e68d5a7ff4bddfebcc97a19704ed2a504517b9c7796026"
+tunnelblick_url: "http://softlayer-ams.dl.sourceforge.net/project/tunnelblick/All%20files/{{ tunnelblick_filename }}"
+tunnelblick_checksum: "c14e4b2d4e30679851de7701c8a0b3167158c5ce029c59b49e49eb58946de913"
 
-tunnelblick_beta_version: "3.4beta26"
+tunnelblick_beta_version: "3.4beta30"
 tunnelblick_beta_filename: "Tunnelblick_{{ tunnelblick_beta_version }}.dmg"
 tunnelblick_beta_href: "{{ openvpn_mirror_href_base }}/{{ tunnelblick_beta_filename }}"
-tunnelblick_beta_url: "http://freefr.dl.sourceforge.net/project/tunnelblick/All%20files/{{ tunnelblick_beta_filename }}"
-tunnelblick_beta_checksum: "fe622f9974f15cc5e3b66f70b1cdc3c3187620219236429809f49c4478a3106e"
+tunnelblick_beta_url: "http://softlayer-ams.dl.sourceforge.net/project/tunnelblick/All%20files/{{ tunnelblick_beta_filename }}"
+tunnelblick_beta_checksum: "dbd8df4c29b7ec742dde4bfee9ba8be8c2ac4fb5ff2ab7ac7f40e6b7214677ff"
 
 tunnelblick_download_urls:
   - { url: "{{ tunnelblick_url }}",      checksum: "{{ tunnelblick_checksum }}" }
