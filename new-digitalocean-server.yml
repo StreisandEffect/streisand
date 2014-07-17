@@ -7,20 +7,21 @@
 
   vars_prompt:
     - name: "do_region"
-      prompt: "What region should the server be located in? Enter '2' for Amsterdam 1, '5' for Amsterdam 2, '7' for London, '1' for New York 1, '4' for New York 2, '3' for San Francisco, or '6' for Singapore."
+      prompt: "Enter the number of the region where the server will be located:\n  1. New York (one)\n  2. Amsterdam (one)\n  3. San Francisco\n  4. New York (two)\n  5. Amsterdam (two)\n  6. Singapore\n  7. London\n"
       default: "5"
       private: no
 
     - name: "do_server_name"
-      prompt: "What should the server be called? This will be the name of the droplet in the DigitalOcean control panel and the server's hostname."
+      prompt: "\nWhat should the server be named?\n"
+      default: "streisand"
       private: no
 
     - name: "do_client_id"
-      prompt: "What is your DigitalOcean Client ID? This can be found on the API 1.0 page in the control panel."
+      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/api_access\n\nWhat is your DigitalOcean Client ID?\n"
       private: no
 
     - name: "do_api_key"
-      prompt: "What is your DigitalOcean API key? This can be generated on the API 1.0 page in the control panel."
+      prompt: "\nWhat is your DigitalOcean API key?\n"
       private: no
 
   roles:
