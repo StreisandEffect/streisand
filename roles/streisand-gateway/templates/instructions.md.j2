@@ -14,9 +14,12 @@ The Gateway can be accessed over standard SSL or via a Tor Hidden Service.
   * [Manual Certificate Verification](#verification)
 * [Tor Hidden Service](#tor).
 
+SSL
+---
+**
+
 <a name="windows"></a>
-SSL Setup (Windows)
--------------------
+### Windows ###
 These instructions will work for Chrome and Internet Explorer. Firefox uses its own internal Certificate Manager, but it's [easy to configure](#firefox) too.
 
 1. Double-click the {{ streisand_certificate_filename }} file. The certificate file is located in the same directory as these instructions.
@@ -30,8 +33,7 @@ These instructions will work for Chrome and Internet Explorer. Firefox uses its 
 1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
 <a name="osx"></a>
-SSL Setup (OS X)
-----------------
+### OS X ###
 These instructions will work for Chrome and Safari. Firefox uses its own internal Certificate Manager, but it's [easy to configure](#firefox) too.
 
 1. Go to Applications -> Utilities and launch Keychain Access
@@ -45,18 +47,17 @@ These instructions will work for Chrome and Safari. Firefox uses its own interna
 1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
 <a name="android"></a>
-SSL Setup (Android)
--------------------
+### Android ###
 These instructions will work for Chrome. Firefox for Android uses its own internal Certificate Manager but does not provide an interface for importing certificates yet. Chrome is therefore the recommended way to connect to the Streisand Gateway.
 
-### Less secure, but easy ###
+#### Less secure, but easy ####
 1. Email the {{ streisand_certificate_filename }} file to an account that can be accessed from the Android device
 1. Open the email and tap the attachment
 1. A popup will appear. Enter `{{ streisand_server_name }}` for the "Certificate name", and make sure 'VPN and apps' is selected for the "Credential use" value
 1. Tap 'OK'
 1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
-### More secure ###
+#### More secure ####
 1. Connect the Android device to your computer
 1. Drag the {{ streisand_certificate_filename }} file to the root of the filesystem
 1. Launch the Settings application
@@ -68,9 +69,8 @@ These instructions will work for Chrome. Firefox for Android uses its own intern
 1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
 <a name="ios"></a>
-SSL Setup (iOS)
--------------------
-### Less secure, but easy ###
+### iOS ###
+#### Less secure, but easy ####
 1. Email the {{ streisand_certificate_filename }} file to an account that can be accessed from the iOS device
 1. Open the email, and tap the attachment
 1. The "Install Profile" screen will appear. You can view the certificate details and make sure they match the information from the [SSL Verification](#verification) section. Tap the 'Install' button.
@@ -78,7 +78,7 @@ SSL Setup (iOS)
 1. Tap the 'Done' button
 1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
-### More secure ###
+#### More secure ####
 1. Connect the iOS device to your OS X computer
 1. Tap the 'Trust' button if the "Trust This Computer?" popup appears
 1. Install the [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12) utility from the Mac App Store
@@ -99,8 +99,7 @@ SSL Setup (iOS)
 1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
 <a name="chromium"></a>
-SSL Setup (Chromium)
---------------------
+### Chromium ###
 1. Click the Menu button and go to 'Settings'
 1. Scroll to the bottom of the window and click 'Show advanced settings...'
 1. Scroll to the HTTPS/SSL section and click the 'Manage certificates...' button
@@ -111,8 +110,7 @@ SSL Setup (Chromium)
 1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
 <a name="firefox"></a>
-SSL Setup (Firefox)
--------------------
+### Firefox ###
 1. Launch Firefox
 1. Open the Options/Preferences panel
 1. Click on the Advanced icon
@@ -125,8 +123,7 @@ SSL Setup (Firefox)
 1. You are ready to connect. Skip to the [SSL Connection Details](#ssl) section.
 
 <a name="verification"></a>
-Manual SSL Verification
------------------------
+### Manual SSL Verification ###
 ***Note:** The manual certificate verification option is significantly less secure than installing the certificate using one of the methods above. Your browser will display a warning message, and you are more vulnerable to man-in-the-middle attacks because the fingerprints must be verified on every connection attempt. It should be used with great care, and only as a last resort.*
 
 The certificate details should match the following information:
@@ -142,9 +139,11 @@ The certificate details should match the following information:
 
 If everything checks out, you are ready to connect and you can skip to the [SSL](#ssl) section.
 
+Connecting to Streisand
+-----------------------
+
 <a name="ssl"></a>
-SSL Connection Details
-----------------------
+### SSL ###
 [{{ streisand_gateway_url }}]({{ streisand_gateway_url }})
 
 username: `{{ streisand_gateway_username }}`
@@ -152,8 +151,7 @@ username: `{{ streisand_gateway_username }}`
 password: `{{ streisand_gateway_password.stdout }}`
 
 <a name="tor"></a>
-Tor Hidden Service Connection Details
--------------------------------------
+### Tor ###
 ***Note:** All connections to Tor hidden services are fully encrypted.*
 
 [{{ tor_hidden_service_url }}]({{ tor_hidden_service_url }})
