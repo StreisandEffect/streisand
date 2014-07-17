@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo
-echo -e "\033[1;97;100m  S T R E I S A N D  \033[0m"
+echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m"
 echo
 
 echo -n "Which provider are you using?
