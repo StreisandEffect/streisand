@@ -7,7 +7,16 @@
 
   vars_prompt:
     - name: "do_region"
-      prompt: "Enter the number of the region where the server will be located:\n  1. New York (one)\n  2. Amsterdam (one)\n  3. San Francisco\n  4. New York (two)\n  5. Amsterdam (two)\n  6. Singapore\n  7. London\n"
+      prompt: >
+        Enter the number of the region where the server will be located:
+          1. New York (one)
+          2. Amsterdam (one)
+          3. San Francisco
+          4. New York (two)
+          5. Amsterdam (two)
+          6. Singapore
+          7. London
+          
       default: "5"
       private: no
 
