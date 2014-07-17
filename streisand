@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+echo
+echo -e "\033[1;97;100m  S T R E I S A N D  \033[0m"
+echo
+
+echo -n "Which provider are you using?
+  1. Amazon
+  2. DigitalOcean
+  3. Linode
+  4. Rackspace
+: "
+
+read reply
+
+case "$reply" in
+  1) echo; echo; ansible-playbook new-amazon-server.yml;;
+  2) echo; echo; ansible-playbook new-digitalocean-server.yml;;
+  3) echo; echo; ansible-playbook new-linode-server.yml;;
+  4) echo; echo; ansible-playbook new-rackspace-server.yml;;
+esac
