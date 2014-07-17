@@ -129,24 +129,26 @@
       outline: 0;
     }
 
-    ::-moz-selection {
-      background: rgba(0,0,0,0.1);
-      color: black;
-    }
-
-    ::selection {
-      background: rgba(0,0,0,0.1);
-      color: black;
-    }
-
-    a::-moz-selection {
-      background: rgba(0,0,0,0.1);
-      color: black;
-    }
-
+    ::selection,
     a::selection {
-      background: rgba(0,0,0,0.1);
-      color: black;
+      background: rgba(0,0,0,0.85);
+      color: #222;
+    }
+
+    ::-moz-selection,
+    a::-moz-selection {
+      background: rgba(0,0,0,0.85);
+      color: #222;
+    }
+
+    code::-moz-selection {
+      background: rgba(0,0,0,0.8);
+      color: #ccc;
+    }
+
+    code::selection {
+      background: rgba(0,0,0,0.8);
+      color: #ccc;
     }
 
 
