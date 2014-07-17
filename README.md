@@ -3,39 +3,38 @@
 Streisand
 =========
 
-**Silence censorhip. Automate the [effect](http://en.wikipedia.org/wiki/Streisand_effect).**
+**Silence censorship. Automate the [effect](http://en.wikipedia.org/wiki/Streisand_effect).**
 
-Streisand is an advanced anti-censorship toolkit built on the [Ansible](http://www.ansible.com/home) open source automation platform that does the following:
+The Internet can be a little unfair. It's way too easy for ISPs, cellphone providers, politicians, and corporations to block access to the sites and information that you care about. But breaking through these restrictions is tough. Well, it was...
 
-* Makes it possible for individuals and organizations to quickly provision new servers running the latest version of [Debian](https://www.debian.org/) and a wide variety of VPN and encrypted networking software
-* Helps users configure their computers and mobile devices to securely route their Internet traffic through these servers and evade blocking attempts
-* Removes the pain involved for both groups
+Introducing Streisand
+---------------------
+* A single command is all that's required to set up a brand new server running a [wide variety of anti-censorship software](#services-provided) that can completely mask and encrypt all of your Internet traffic.
+* Streisand natively supports the creation of new servers at [Amazon EC2](http://aws.amazon.com/ec2/), [DigitalOcean](https://www.digitalocean.com/), [Linode](https://www.linode.com/), and [Rackspace](http://www.rackspace.com/). It can also run on any Debian 7 server regardless of provider, and **hundreds** of instances can be configured simultaneously using this method.
+* The process is completely automated and only takes about ten minutes, which is pretty awesome when you consider that it would require the average system administrator several days of frustration to set up even a small subset of what Streisand offers in its out-of-the-box configuration.
+* Once your Streisand server is running, you can give the custom connection instructions to friends, family members, and fellow activists. Each server is entirely self-contained and comes with absolutely everything that users need to get started, including cryptographically verified mirrors of all common clients. This renders any attempted censorship of default download locations completely ineffective. 
+* But wait, there's more...
 
-Features
---------
-* Nginx powers a password-protected and encrypted Gateway that serves as the starting point for new users. The Gateway is accessible over SSL, or as a Tor [hidden service](https://www.torproject.org/docs/hidden-services.html.en). Each Streisand server is entirely self-contained, and includes absolutely everything that users need in order to get back online as quickly as possible without any external dependencies.
+<a name="features"></a>
+More Features
+-------------
+* Nginx powers a password-protected and encrypted Gateway that serves as the starting point for new users. The Gateway is accessible over SSL, or as a Tor [hidden service](https://www.torproject.org/docs/hidden-services.html.en).
   * Beautiful, custom, step-by-step client configuration instructions are generated for each new server that Streisand creates. Users can quickly access these instructions through any web browser. The instructions are responsive and look fantastic on mobile phones.
-  * Streisand mirrors local copies of all necessary client software and it is made available for download directly from the Gateway, rendering any attempted censorship of the default client download locations completely ineffective. The integrity of mirrored software is ensured using SHA-256 checksums, or by verifying GPG signatures if the project provides them. This protects users from downloading corrupted files.
+  * The integrity of mirrored software is ensured using SHA-256 checksums, or by verifying GPG signatures if the project provides them. This protects users from downloading corrupted files.
   * All ancillary files, such as OpenVPN configuration profiles, are also available via the Gateway
   * The Gateway can be accessed as a Tor hidden service for users who wish to anonymously download configuration instructions on someone else's behalf. Current Tor users can also benefit from the additional anti-censorship utilities Streisand sets up to transfer large files or to handle other traffic (e.g. BitTorrent) that isn't appropriate for the Tor network.
-  * A unique password, SSL certificate, and SSL private key are generated for each Streisand Gateway. The custom Gateway connection instructions contain the random Gateway password, SSL serial number, and complete SSL fingerprints for the Gateway certificate so users can be sure they are connecting to the right location. These Gateway instructions are transferred via SSH at the conclusion of Streisand's execution, and they can be given to friends, family, and fellow activists.
-* Rapid creation and configuration of new servers. Several providers are supported directly:
-  * [Amazon EC2](http://aws.amazon.com/ec2/)
-  * [DigitalOcean](https://www.digitalocean.com/)
-  * [Linode](https://www.linode.com/)
-  * [Rackspace](http://www.rackspace.com/)
-
-  Streisand can also run on any new fleet of Debian 7 servers regardless of provider, and **hundreds** of instances can be configured simultaneously using this method.
+  * A unique password, SSL certificate, and SSL private key are generated for each Streisand Gateway. The Gateway instructions and certificate are transferred via SSH at the conclusion of Streisand's execution.
 * Distinct services and multiple daemons provide an enormous amount of flexibility. If one connection method gets blocked there are numerous options available, most of which are resistant to Deep Packet Inspection.
 
   * All of the connection methods (including L2TP/IPsec and direct OpenVPN connections) are effective against the type of blocking Turkey has been experimenting with
   * OpenSSH, OpenVPN (wrapped in stunnel), Shadowsocks, and Tor (with obfsproxy and the obfs3 or ScrambleSuit pluggable transports) are all currently effective against China's Great Firewall
 
-* Server setup is completely automated. There are no manual steps whatsoever. Every task has also been thoroughly documented and given a detailed description. Streisand is simultaneously the most complete HOWTO in existence for the setup of all of the software it installs, and also the antidote for ever having to do any of this by hand again.
+* Every task has been thoroughly documented and given a detailed description. Streisand is simultaneously the most complete HOWTO in existence for the setup of all of the software it installs, and also the antidote for ever having to do any of this by hand again.
 * All software runs on ports that have been deliberately chosen to make simplistic port blocking unrealistic without causing massive collateral damage. OpenVPN, for example, does not run on its default port of 1194, but instead uses port 636, the standard port for LDAP/SSL connections that are beloved by companies worldwide.
   * *L2TP/IPsec is a notable exception to this rule because the ports cannot be changed without breaking client compatibility*
 * The IP addresses of connecting clients are never logged. There's nothing to find if a server gets seized or shut down.
 
+<a name="services-provided"></a>
 Services Provided
 -----------------
 * L2TP/IPsec using [strongSwan](http://strongswan.org/) and [xl2tpd](http://www.xelerance.com/software/xl2tpd/)
@@ -66,7 +65,7 @@ Installation
 
 ### Prerequisites ###
 * Streisand requires a BSD, Linux, or OS X system. All of the following commands should be run inside a Terminal session.
-* Make sure an SSH key is present in ~/.ssh/id_rsa.pub
+* Make sure an SSH key is present in ~/.ssh/id\_rsa.pub
   * If you do not have an SSH key, you can generate one by using this command and following the defaults
 
             ssh-keygen
@@ -122,7 +121,7 @@ Installation
 
             ansible-playbook new-rackspace-server.yml
 3. Follow the customized prompts to choose the physical region for the server and its name. You will also be asked to enter API information for your chosen provider.
-4. Wait for the setup to complete (this usually takes around five minutes) and look for the corresponding HTML file in the 'generated-docs' folder in the Streisand repository directory. This file will explain how to connect to the Gateway (over SSL or via Tor) and all instructions, files, mirrored clients, and keys for the new server will be located there. You are all done!
+4. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding HTML and certificate files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL using the provided certificate, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can be found on the Gateway. You are all done!
 
 You can also run Streisand on any number of new Debian 7 servers. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do this, simply edit the 'inventory' file and uncomment the final two lines. Replace the sample IP with the address (or addresses) of the servers you wish to configure. Make sure you read through all of the documentation in the inventory file and update the ansible.cfg file if necessary. Then run the Streisand playbook directly:
 
