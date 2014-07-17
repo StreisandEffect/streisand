@@ -105,6 +105,7 @@ Installation
 
         git clone https://github.com/jlund/streisand.git && cd streisand
 2. Execute the Streisand script
+
         ./streisand
 3. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
 4. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding HTML and certificate files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL using the provided certificate, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can be found on the Gateway. You are all done!
