@@ -217,9 +217,11 @@
     }
 
     .logo {
+      position: relative;
       display: inline-block;
-      margin-bottom: 0.5em;
-      padding: 0.1em 0.5em;
+      margin: 0 0 0.5em 0 !important;
+      padding: 0.1em 0.5em !important;
+      -webkit-font-smoothing: auto !important;
       background-color: black;
       color: white;
       font-weight: bold;
@@ -232,7 +234,20 @@
 
     .logo:hover {
       border: 0;
-      color: white;
+      background-color: white;
+      color: black;
+    }
+
+    .logo:hover hr {
+      display: inline-block;
+      position: absolute;
+      height: 30%;
+      left: 0.4em;
+      right: 0.4em;
+      top: 9%;
+      border: 0;
+      background-color: black;
+      background-color: rgba(0,0,0,0.9);
     }
 
     hr + ul {
@@ -299,4 +314,4 @@
     </script>
   </head>
   <body>
-    <a href='/' class='logo'>Streisand</a>
+    <a href='/' class='logo'>Streisand<hr/></a>
