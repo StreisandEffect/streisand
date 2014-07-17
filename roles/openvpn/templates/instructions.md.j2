@@ -5,6 +5,14 @@ OpenVPN
 ### A note on client files ###
 For security reasons, OpenVPN clients typically have their own unique certificate and private key. The server you will be connecting to has been configured to allow clients to share the same certificate and private key, but you may still wish to give your phone and laptop different keys, for example.
 
+* [Windows](#windows)
+* [OS X](#osx)
+* [Linux](#linux)
+* [Linux (Ubuntu)](#linux-ubuntu)
+* [Android](#android)
+* [iOS](#ios)
+
+<a name="windows"></a>
 Windows
 -------
 1. Download and run the OpenVPN [Windows Installer](/mirror/#openvpn)
@@ -27,6 +35,7 @@ Windows
 1. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP
 1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="osx"></a>
 OS X
 ----
 1. Download and open [Tunnelblick](/mirror/#openvpn).
@@ -43,6 +52,7 @@ OS X
 1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose 'Connect'. You will see an animation while the connection is being established. You can also click on the icon and choose 'Details' to see a log of what is happening.
 1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="linux"></a>
 Linux
 -----
 1. Install OpenVPN
@@ -60,6 +70,7 @@ Linux
    `sudo openvpn {{ openvpn_direct_profile_filename }}`
 1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="linux-ubuntu"></a>
 Linux (Ubuntu)
 --------------
 It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager. This gives you a nice little interface for connecting, and it properly handles the necessary DNS changes when you connect/disconnect. Unfortunately, the plugin does not support .ovpn profiles, so the list of steps is a little more involved.
@@ -100,6 +111,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 1. Select the VPN in the left-hand menu, and flip the switch to 'ON'. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to 'VPN Connections', and clicking on its name.
 1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="android"></a>
 Android
 -------
 1. Install [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn)
@@ -127,6 +139,7 @@ Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show
 1. Set the value of 'network.proxy.socks\_remote\_dns' to 'true'
 1. Set the value of 'network.proxy.type' to '1'
 
+<a name="ios"></a>
 iOS
 ---
 1. Download [OpenVPN Connect](https://itunes.apple.com/us/app/openvpn-connect/id590379981) and launch it

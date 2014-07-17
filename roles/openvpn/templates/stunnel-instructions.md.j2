@@ -7,6 +7,13 @@ OpenVPN (wrapped in stunnel)
 ### A note on client files ###
 For security reasons, OpenVPN clients typically have their own unique certificate and private key. The server you will be connecting to has been configured to allow clients to share the same certificate and private key, but you may still wish to give your phone and laptop different keys, for example.
 
+* [Windows](#windows)
+* [OS X](#osx)
+* [Linux](#linux)
+* [Android](#android)
+* [iOS](#ios)
+
+<a name="windows"></a>
 Windows
 -------
 ### Stunnel Setup ###
@@ -40,6 +47,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP
 1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="osx"></a>
 OS X
 ----
 ### Stunnel Setup ###
@@ -75,6 +83,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose 'Connect'. You will see an animation while the connection is being established. You can also click on the icon and choose 'Details' to see a log of what is happening.
 1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="linux"></a>
 Linux
 ----
 ### Stunnel Setup ###
@@ -112,6 +121,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 
 The OpenVPN plugin for NetworkManager appears to become very confused as to how it should route traffic when you connect to an OpenVPN server through a wrapped stunnel connection. Manually adding route information does not seem to help. Therefore, unlike in the [non-stunnel instructions](/openvpn), the steps above are the recommended connection method for Ubuntu as well.
 
+<a name="android"></a>
 Android
 ----
 ### SSLDroid Setup ###
@@ -156,6 +166,7 @@ Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show
 1. Set the value of 'network.proxy.socks\_remote\_dns' to 'true'
 1. Set the value of 'network.proxy.type' to '1'
 
+<a name="ios"></a>
 iOS
 ---
 There are no stunnel-compatible tunneling applications available in the App Store at this time.

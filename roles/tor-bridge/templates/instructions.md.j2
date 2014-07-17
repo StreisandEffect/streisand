@@ -1,8 +1,13 @@
 Tor Bridge
 ==========
 
-Linux, OS X, Windows
---------------------
+* [Desktops](#desktops)
+* [Android](#android)
+* [iOS](#ios)
+
+<a name="desktops"></a>
+Desktops
+--------
 1. Download the [Tor Browser Bundle](/mirror/#tor) for your platform of choice. The Obfsproxy obfs3 pluggable transport that it includes will let you use the Tor network even if your ISP is actively performing Deep Packet Inspection in an attempt to block all Tor traffic.
 1. Launch the Tor Browser Bundle
 1. Click the 'Configure' button underneath the text that says "I need to configure bridge, firewall, or proxy settings."
@@ -15,6 +20,7 @@ Linux, OS X, Windows
 
 You are ready to go! Tor has connected to the '{{ tor_bridge_nickname.stdout }}' bridge server, and your encrypted Tor traffic is completely obscured by obfsproxy so it doesn't look like Tor traffic at all!
 
+<a name="android"></a>
 Android
 -------
 1. Download [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android) and launch it
@@ -54,6 +60,7 @@ You are now ready to configure Twitter and Firefox to route their traffic throug
 1. Set the value of 'network.proxy.socks\_remote\_dns' to `true`
 1. Set the value of 'network.proxy.type' to `1`
 
+<a name="ios"></a>
 iOS
 ---
 1. Download [Onion Browser](https://itunes.apple.com/us/app/onion-browser/id519296448?mt=8) and launch it

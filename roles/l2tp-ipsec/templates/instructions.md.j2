@@ -4,6 +4,13 @@ L2TP/IPsec
 
 *If the connection appears to time out, first check to make sure the passwords were entered correctly. If you still can't connect then it's possible that your country or ISP is blocking the L2TP/IPsec protocol. But don't worry, the [OpenVPN (stunnel)](/openvpn/stunnel.html), [Shadowsocks](/shadowsocks/), [SSH](/ssh/), and [Tor](/tor/) connection methods should still work for you.*
 
+* [Windows](#windows)
+* [OS X](#osx)
+* [Linux](#linux)
+* [Android](#android)
+* [iOS](#ios)
+
+<a name="windows"></a>
 Windows
 -------
 1. Click on the Start Menu and go to the Control Panel
@@ -32,6 +39,7 @@ Windows
 
 You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="osx"></a>
 OS X
 ----
 1. Open System Preferences and go to the Network section
@@ -52,6 +60,7 @@ OS X
 
 You can connect to the VPN using the VPN icon in the menu bar, or by selecting the VPN in the Network section of System Preferences and choosing 'Connect'. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="linux"></a>
 Linux
 -----
 L2TP/IPsec connections are not supported out-of-the-box on most Linux distributions without requiring the installation of additional software. This nullifies one of the biggest appeals of L2TP/IPsec (i.e. its native client-side support). It is recommended to use another connection method such as OpenVPN instead, but if you would like to configure L2TP/IPsec on your Linux desktop, here are the settings you will need: 
@@ -63,6 +72,7 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
     CHAP user: streisand
     CHAP pass: {{ chap_password.stdout }}
 
+<a name="android"></a>
 Android
 -------
 1. Launch the 'Settings' application
@@ -81,6 +91,7 @@ Android
 1. Tap 'Connect'
 1. Once connected, you will see a VPN icon in the notification bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="ios"></a>
 iOS
 ---
 1. Go to Settings -> General -> VPN

@@ -1,6 +1,13 @@
 Shadowsocks
 ===========
 
+* [Windows](#windows)
+* [OS X](#osx)
+* [Linux](#linux)
+* [Android](#android)
+* [iOS](#ios)
+
+<a name="windows"></a>
 Windows
 -------
 1. Download [Shadowsocks for Windows](/mirror/#shadowsocks)
@@ -26,13 +33,15 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Click 'OK' again to close the Firefox preferences window. Now we need to configure Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
 1.  Type 'about:config' into the address bar and hit Enter
 1. You should see a screen that says "This might void your warranty!" Click the 'I'll be careful, I promise!' button.
-1. Search for 'socks\_remote\_dns' and double click on the value that is returned. It will change from 'false' to 'true'.
+1. Search for `socks\_remote\_dns` and double click on the value that is returned. It will change from 'false' to 'true'.
 1. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="osx"></a>
 OS X
 ----
 The ShadowsocksX client is extremely unreliable at the moment, and it does not work on OS X Mavericks or Yosemite. It is therefore recommended to use an alternate connection method until these issues are resolved. ShadowsocksX is still available via the [mirror](/mirror/#shadowsocks) if you are interested in giving it a try.
 
+<a name="linux"></a>
 Linux
 -----
 Download and compile the Shadowsocks [source code](/mirror/#shadowsocks), or install it via pip:
@@ -48,6 +57,7 @@ Here is the configuration information that you'll need:
 
 Once you have Shadowsocks running locally, you'll need to forward your browser traffic through the SOCKS proxy it provides. You can follow the Windows instructions above to configure Firefox to do this.
 
+<a name="android"></a>
 Android
 -------
 1. Download [Shadowsocks for Android](https://play.google.com/store/apps/details?id=com.github.shadowsocks) and launch it
@@ -62,6 +72,7 @@ Android
 1. Accept the Android VPN connection warning
 1. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
 
+<a name="ios"></a>
 iOS
 ---
 1. Download [Shadowsocks for iOS](https://itunes.apple.com/tc/app/shadowsocks/id665729974) and launch it
