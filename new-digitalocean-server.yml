@@ -9,14 +9,13 @@
     - name: "do_region"
       prompt: >
         Enter the number of the region where the server will be located:
-          1. New York (one)
-          2. Amsterdam (one)
-          3. San Francisco
-          4. New York (two)
-          5. Amsterdam (two)
-          6. Singapore
-          7. London
-          
+          1 = New York (one)
+          2 = Amsterdam (one)
+          3 = San Francisco
+          4 = New York (two)
+          5 = Amsterdam (two)
+          6 = Singapore
+          7 = London
       default: "5"
       private: no
 
@@ -32,6 +31,9 @@
     - name: "do_api_key"
       prompt: "\nWhat is your DigitalOcean API key?\n"
       private: no
+
+    - name: "confirmation"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press any key to continue...\n"
 
   roles:
     - genesis-digitalocean

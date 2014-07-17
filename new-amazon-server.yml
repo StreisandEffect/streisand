@@ -12,21 +12,34 @@
 
   vars_prompt:
     - name: "aws_region_var"
-      prompt: "What region should the server be located in? Enter 'ap-northeast-1' for Asia Pacific (Tokyo), 'ap-southeast-1' for Asia Pacific (Singapore), 'ap-southeast-2' for Asia Pacific (Sydney), 'eu-west-1' for EU (Ireland), 'sa-east-1' for South America (Sao Paulo), 'us-east-1' for US East (Northern Virginia), 'us-west-1' for US West (Northern California), or 'us-west-2' for US West (Oregon)."
-      default: "ap-southeast-1"
+      prompt: >
+        What region should the server be located in?
+          ap-northeast-1 = Asia Pacific (Tokyo)
+          ap-southeast-1 = Asia Pacific (Singapore)
+          ap-southeast-2 = Asia Pacific (Sydney)
+          eu-west-1      = EU (Ireland)
+          sa-east-1      = South America (Sao Paulo)
+          us-east-1      = US East (Northern Virginia)
+          us-west-1      = US West (Northern California)
+          us-west-2      = US West (Oregon)
+j     default: "ap-southeast-1"
       private: no
 
     - name: "aws_instance_name_var"
-      prompt: "What should the server be called? This will be the name of the instance in the AWS Management Console and the server's hostname."
+      prompt: "\nWhat should the server be named?\n"
+      default: "streisand"
       private: no
 
     - name: "aws_access_key_var"
-      prompt: "What is your AWS Access Key?"
+      prompt: "\n\nThe following information can be found in the IAM Management Console.\nhttps://console.aws.amazon.com/iam/home?#security_credential\n\nWhat is your AWS Access Key?\n"
       private: no
 
     - name: "aws_secret_key_var"
-      prompt: "What is your AWS Secret Key?"
+      prompt: "\nWhat is your AWS Secret Key?\n"
       private: no
+
+    - name: "confirmation"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press any key to continue...\n"
 
   # Facts persist across plays, and these facts will be used in the
   # final step to make an API call to open all of the necessary ports in

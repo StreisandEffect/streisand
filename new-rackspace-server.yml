@@ -7,21 +7,30 @@
 
   vars_prompt:
     - name: "rackspace_region"
-      prompt: "What region should the server be located in? Enter 'DFW' for Dallas, 'HKG' for Hong Kong, 'ORD' for Chicago, 'SYD' for Sydney, or 'IAD' for Northern Virginia."
+      prompt: >
+        What region should the server be located in?
+          DFW = Dallas
+          HKG = Hong Kong
+          ORD = Chicago
+          SYD = Sydney
+          IAD = Northern Virginia
       default: "HKG"
       private: no
 
     - name: "rackspace_server_name"
-      prompt: "What should the server be called? This will be the name of the instance in the Rackspace Control Panel and the server's hostname."
+      prompt: "\nWhat should the server be named?\n"
       private: no
 
     - name: "rackspace_username"
-      prompt: "What is your Rackspace username?"
+      prompt: "\nWhat is your Rackspace username?\n"
       private: no
 
     - name: "rackspace_api_key"
-      prompt: "What is your Rackspace API key? You can find this in your 'Account Settings' in the Rackspace Control Panel."
+      prompt: "\n\nThe following information can be found in the Rackspace Cloud Control Panel.\nhttps://mycloud.rackspace.com/\n\nWhat is your Rackspace API key?\n"
       private: no
+
+    - name: "confirmation"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press any key to continue...\n"
 
   roles:
     - genesis-rackspace
