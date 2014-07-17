@@ -14,8 +14,8 @@ echo -n "Which provider are you using?
 read reply
 
 case "$reply" in
-  1) echo; echo; ansible-playbook new-amazon-server.yml;;
-  2) echo; echo; ansible-playbook new-digitalocean-server.yml;;
-  3) echo; echo; ansible-playbook new-linode-server.yml;;
-  4) echo; echo; ansible-playbook new-rackspace-server.yml;;
+  1) echo; echo; ansible-playbook playbooks/amazon.yml;;
+  2) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
+  3) echo; echo; ansible-playbook playbooks/linode.yml;;
+  4) echo; echo; ansible-playbook playbooks/rackspace.yml;;
 esac
