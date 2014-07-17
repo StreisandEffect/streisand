@@ -8,6 +8,9 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
 
+- name: Pause for fifteen seconds to ensure the EC2 security group has been created
+  pause: seconds=15
+
 - name: Open the SSH port in the EC2 security group
   local_action:
     module: ec2_group
