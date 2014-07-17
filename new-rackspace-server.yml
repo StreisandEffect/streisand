@@ -5,21 +5,30 @@
   connection: local
   gather_facts: no
 
+  vars:
+    regions:
+      "1": "ORD"
+      "2": "DFW"
+      "3": "HKG"
+      "4": "IAD"
+      "5": "SYD"
+
   vars_prompt:
     - name: "rackspace_region"
       prompt: >
         What region should the server be located in?
-          DFW = Dallas
-          HKG = Hong Kong
-          ORD = Chicago
-          SYD = Sydney
-          IAD = Northern Virginia
-      default: "HKG"
+          1. Chicago
+          2. Dallas
+          3. Hong Kong
+          4. Northern Virginia
+          5. Sydney
+      default: "3"
       private: no
 
     - name: "rackspace_server_name"
       prompt: "\nWhat should the server be named?\n"
       private: no
+      default: "streisand"
 
     - name: "rackspace_username"
       prompt: "\nWhat is your Rackspace username?\n"

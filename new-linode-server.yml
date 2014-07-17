@@ -5,17 +5,26 @@
   connection: local
   gather_facts: no
 
+  vars:
+    regions:
+      "1": 4
+      "2": 2
+      "3": 3
+      "4": 7
+      "5": 6
+      "6": 8
+
   vars_prompt:
     - name: "linode_datacenter"
       prompt: >
         Enter the number of the region where the server will be located:
-          2 = Dallas
-          3 = Fremont
-          4 = Atlanta
-          6 = Newark
-          7 = London
-          8 = Tokyo
-      default: "8"
+          1. Atlanta
+          2. Dallas
+          3. Fremont
+          4. London
+          5. Newark
+          6. Tokyo
+      default: "6"
       private: no
 
     - name: "linode_server_name"

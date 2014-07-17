@@ -11,7 +11,7 @@
   linode: api_key="{{ linode_api_key }}"
           name="{{ linode_server_name }}"
           plan="{{ linode_plan_id }}"
-          datacenter="{{ linode_datacenter }}"
+          datacenter="{{ regions[linode_datacenter] }}"
           distribution="{{ linode_debian7_x64_distribution_id.stdout }}"
           ssh_pub_key="{{ ssh_key.stdout }}"
           wait=yes

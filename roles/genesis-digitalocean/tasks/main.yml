@@ -27,7 +27,7 @@
                  client_id="{{ do_client_id }}"
                  api_key="{{ do_api_key }}"
                  size_id={{ do_small_droplet_size_id }}
-                 region_id={{ do_region }}
+                 region_id={{ regions[do_region] }}
                  image_id={{ do_debian7_x64_image_id.stdout }}
                  unique_name=yes
   register: streisand_server

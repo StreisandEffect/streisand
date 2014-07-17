@@ -5,18 +5,28 @@
   connection: local
   gather_facts: no
 
+  vars:
+    regions:
+      "1": 2
+      "2": 5
+      "3": 7
+      "4": 1
+      "5": 4
+      "6": 3
+      "7": 6
+
   vars_prompt:
     - name: "do_region"
       prompt: >
         Enter the number of the region where the server will be located:
-          1 = New York (one)
-          2 = Amsterdam (one)
-          3 = San Francisco
-          4 = New York (two)
-          5 = Amsterdam (two)
-          6 = Singapore
-          7 = London
-      default: "5"
+          1. Amsterdam (one)
+          2. Amsterdam (two)
+          3. London
+          4. New York (one)
+          5. New York (two)
+          6. San Francisco
+          7. Singapore
+      default: "2"
       private: no
 
     - name: "do_server_name"
