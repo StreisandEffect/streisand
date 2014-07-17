@@ -129,28 +129,17 @@
       outline: 0;
     }
 
-    ::selection,
-    a::selection {
-      background: rgba(0,0,0,0.85);
-      color: #222;
-    }
-
     ::-moz-selection,
     a::-moz-selection {
-      background: rgba(0,0,0,0.85);
-      color: #222;
+      background: rgba(0,0,0,0.1);
+      color: black;
     }
 
-    code::-moz-selection {
-      background: rgba(0,0,0,0.8);
-      color: #ccc;
+    ::selection,
+    a::selection {
+      background: rgba(0,0,0,0.1);
+      color: black;
     }
-
-    code::selection {
-      background: rgba(0,0,0,0.8);
-      color: #ccc;
-    }
-
 
     img {
       max-width:100%;
