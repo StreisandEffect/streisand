@@ -5,7 +5,7 @@ Streisand
 
 **Silence censorship. Automate the [effect](http://en.wikipedia.org/wiki/Streisand_effect).**
 
-The Internet can be a little unfair. It's way too easy for ISPs, cellphone providers, politicians, and corporations to block access to the sites and information that you care about. But breaking through these restrictions is tough. Well, it was...
+The Internet can be a little unfair. It's way too easy for ISPs, cellphone providers, politicians, and corporations to block access to the sites and information that you care about. But breaking through these restrictions is tough. Or is it?
 
 Introducing Streisand
 ---------------------
@@ -15,7 +15,6 @@ Introducing Streisand
 * Once your Streisand server is running, you can give the custom connection instructions to friends, family members, and fellow activists. Each server is entirely self-contained and comes with absolutely everything that users need to get started, including cryptographically verified mirrors of all common clients. This renders any attempted censorship of default download locations completely ineffective. 
 * But wait, there's more...
 
-<a name="features"></a>
 More Features
 -------------
 * Nginx powers a password-protected and encrypted Gateway that serves as the starting point for new users. The Gateway is accessible over SSL, or as a Tor [hidden service](https://www.torproject.org/docs/hidden-services.html.en).
@@ -25,10 +24,8 @@ More Features
   * The Gateway can be accessed as a Tor hidden service for users who wish to anonymously download configuration instructions on someone else's behalf. Current Tor users can also benefit from the additional anti-censorship utilities Streisand sets up to transfer large files or to handle other traffic (e.g. BitTorrent) that isn't appropriate for the Tor network.
   * A unique password, SSL certificate, and SSL private key are generated for each Streisand Gateway. The Gateway instructions and certificate are transferred via SSH at the conclusion of Streisand's execution.
 * Distinct services and multiple daemons provide an enormous amount of flexibility. If one connection method gets blocked there are numerous options available, most of which are resistant to Deep Packet Inspection.
-
   * All of the connection methods (including L2TP/IPsec and direct OpenVPN connections) are effective against the type of blocking Turkey has been experimenting with
   * OpenSSH, OpenVPN (wrapped in stunnel), Shadowsocks, and Tor (with obfsproxy and the obfs3 or ScrambleSuit pluggable transports) are all currently effective against China's Great Firewall
-
 * Every task has been thoroughly documented and given a detailed description. Streisand is simultaneously the most complete HOWTO in existence for the setup of all of the software it installs, and also the antidote for ever having to do any of this by hand again.
 * All software runs on ports that have been deliberately chosen to make simplistic port blocking unrealistic without causing massive collateral damage. OpenVPN, for example, does not run on its default port of 1194, but instead uses port 636, the standard port for LDAP/SSL connections that are beloved by companies worldwide.
   * *L2TP/IPsec is a notable exception to this rule because the ports cannot be changed without breaking client compatibility*
@@ -131,9 +128,10 @@ The servers should be accessible using SSH keys, and 'root' is used as the conne
 
 Acknowledgements
 ----------------
+I cannot thank [Trevor Smith](https://github.com/trevorsmith) enough for his massive contributions to the project. He suggested the Gateway approach, provided tons of invaluable feedback, made *everything* look better, and developed the HTML template that served as the inspiration to take things to the next level before Streisand's public release. I also appreciated the frequent use of his iPhone while testing various clients.
+
 Huge thanks to [Paul Wouters](https://nohats.ca/) of [The Libreswan Project](https://libreswan.org/) for his generous help troubleshooting the L2TP/IPsec setup.
 
-A massive round of applause to [Trevor Smith](https://github.com/trevorsmith) for his major contributions to the project. He suggested the Gateway approach and developed the HTML template that inspired me to take things to the next level before Streisand's public release. I also appreciated the frequent use of his iPhone while testing various clients.
 
 [Corban Raun](https://github.com/CorbanR) was kind enough to lend me a Windows laptop that let me test and refine the instructions for that plaform, and he was a big supporter of the project from the very beginning.
 
