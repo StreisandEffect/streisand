@@ -1,9 +1,8 @@
-You have arrived
-================
-*Welcome to the '{{ streisand_server_name }}' [Streisand](https://github.com/jlund/streisand) Gateway server. You are only moments away from an uncensored connection to the Internet.*
+Welcome to the *{{ streisand_server_name }}* [Streisand](https://github.com/jlund/streisand) Gateway server. You are only moments away from an uncensored connection to the Internet.
 
 Connection Instructions
 -----------------------
+---
 {# L2TP/IPsec is not installed on Amazon servers #}
 {% if l2tp_ipsec_gateway_location %}
 * [L2TP/IPsec](/l2tp-ipsec/)
@@ -16,6 +15,7 @@ Connection Instructions
 
 Client Mirrors
 --------------
+---
 * [OpenVPN](/mirror/#openvpn)
 * [Shadowsocks](/mirror/#shadowsocks)
 * [SSH](/mirror/#ssh)
