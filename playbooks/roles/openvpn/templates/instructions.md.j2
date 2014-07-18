@@ -1,156 +1,152 @@
 OpenVPN
-=======
-*If OpenVPN connections are being blocked in your country, please refer to the [OpenVPN (stunnel)](/openvpn/stunnel.html) instructions instead which will help you wrap your OpenVPN traffic in an encrypted tunnel so it looks like standard SSL traffic.*
+-------
+If OpenVPN connections are being blocked in your country, please refer to the [OpenVPN (stunnel)](/openvpn/stunnel.html) instructions instead which will help you wrap your OpenVPN traffic in an encrypted tunnel so it looks like standard SSL traffic.
 
-### A note on client files ###
+#### A note on client files ####
 For security reasons, OpenVPN clients typically have their own unique certificate and private key. The server you will be connecting to has been configured to allow clients to share the same certificate and private key, but you may still wish to give your phone and laptop different keys, for example.
 
-* [Windows](#windows)
-* [OS X](#osx)
-* [Linux](#linux)
-* [Linux (Ubuntu)](#linux-ubuntu)
-* [Android](#android)
-* [iOS](#ios)
+---
+* Platforms
+  * [Windows](#windows)
+  * [OS X](#osx)
+  * [Linux](#linux)
+  * [Linux (Ubuntu)](#linux-ubuntu)
+  * [Android](#android)
+  * [iOS](#ios)
 
 <a name="windows"></a>
-Windows
--------
-1. Download and run the OpenVPN [Windows Installer](/mirror/#openvpn)
-1. Click 'Next' and accept the license agreement by clicking 'I Agree'
-1. Click 'Next' on the 'Choose Components' screen. Leave all of the default options checked.
-1. Make note of the Destination Folder. This is where you will place the {{ openvpn_direct_profile_filename }} client configuration profile after installation. Click 'Install'.
-1. A Windows Security notice will appear and ask 'Would you like to install this device software?'. Click 'Install'.
-1. Click 'Next' on the 'Installation Complete' screen
-1. Uncheck 'Show Readme' and click 'Finish'
-1. Right-click on the OpenVPN GUI desktop icon and choose 'Properties'
-1. Go to the 'Compatibility' tab and click the 'Run this program as an administrator' checkbox in the 'Privilege Level' section
-1. Double-click the OpenVPN GUI desktop icon to launch the application
+### Windows ###
+1. Download and run the OpenVPN [Windows Installer](/mirror/#openvpn).
+1. Click *Next* and accept the license agreement by selecting *I Agree*.
+1. Click *Next* on the *Choose Components* screen. Leave all of the default options checked.
+1. Make note of the Destination Folder. This is where you will place the `{{ openvpn_direct_profile_filename }}` client configuration profile after installation. Click *Install*.
+1. A Windows Security notice will appear and ask *Would you like to install this device software?*. Click *Install*.
+1. Click *Next* on the *Installation Complete* screen.
+1. Uncheck *Show Readme* and click *Finish*.
+1. Right-click on the OpenVPN GUI desktop icon and choose *Properties*.
+1. Go to the *Compatibility* tab and click the *Run this program as an administrator* checkbox in the *Privilege Level* section.
+1. Double-click the OpenVPN GUI desktop icon to launch the application.
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-1. Open the 'config' directory that is located in the Destination Folder. For most users, this will either be in C:\Program Files\OpenVPN\config or C:\Program Files (x86)\OpenVPN\config. You will see a single README file in this directory.
-1. Drag and drop the downloaded '{{ openvpn_direct_profile_filename }}' file to this location alongside the README.
-1. Right-click on the OpenVPN icon in your taskbar and choose 'Connect'
-1. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Open the *config* directory that is located in the Destination Folder. For most users, this will either be in *C:\Program Files\OpenVPN\config* or *C:\Program Files (x86)\OpenVPN\config*. You will see a single README file in this directory.
+1. Drag and drop the downloaded `{{ openvpn_direct_profile_filename }}` file to this location alongside the README.
+1. Right-click on the OpenVPN icon in your taskbar and choose *Connect*.
+1. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 <a name="osx"></a>
-OS X
-----
+### OS X ###
 1. Download and open [Tunnelblick](/mirror/#openvpn).
    * **Mavericks and Yosemite users must install the latest Beta Release at this time**
-1. Click 'Install'
-1. Click 'Launch' after the installation is finished
-1. Enter your password and click 'OK' if Tunnelblick asks to 'repair ownership/permissions'
+1. Click *Install*.
+1. Click *Launch* after the installation is finished.
+1. Enter your password and click *OK* if Tunnelblick asks to *Repair ownership/permissions*.
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-1. Click the 'Open configuration folder' button on the 'Welcome to Tunnelblick' screen
-1. Drag and drop the downloaded '{{ openvpn_direct_profile_filename }}' file to the folder that was opened. You may need to enter your password in order to authorize Finder to copy the file to this location.
-1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose 'Connect'. You will see an animation while the connection is being established. You can also click on the icon and choose 'Details' to see a log of what is happening.
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Click the *Open configuration folder* button on the *Welcome to Tunnelblick* screen.
+1. Drag and drop the downloaded `{{ openvpn_direct_profile_filename }}` file to the folder that was opened. You may need to enter your password in order to authorize Finder to copy the file to this location.
+1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose *Connect*. You will see an animation while the connection is being established. You can also click on the icon and choose *Details* to see a log of what is happening.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
-Linux
------
-1. Install OpenVPN
+### Linux ###
+1. Install OpenVPN:
 
    `sudo apt-get install openvpn` OR `sudo yum install openvpn` OR `esoteric-package-manager hipster openvpn`
 
-   * *If installing OpenVPN via your package manager is not an option, you can also download and compile the [OpenVPN source code](/mirror/#openvpn)*
+   * If installing OpenVPN via your package manager is not an option, you can also download and compile the [OpenVPN source code](/mirror/#openvpn).
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-1. Copy the downloaded '{{ openvpn_direct_profile_filename }}' file to the location of your choice. /etc/openvpn/ is a decent option.
+1. Copy the downloaded `{{ openvpn_direct_profile_filename }}` file to the location of your choice. */etc/openvpn/* is a decent option.
 1. Execute OpenVPN, and pass it the .ovpn profile as an option.
 
    `sudo openvpn {{ openvpn_direct_profile_filename }}`
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 <a name="linux-ubuntu"></a>
-Linux (Ubuntu)
---------------
+### Linux (Ubuntu) ###
 It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager. This gives you a nice little interface for connecting, and it properly handles the necessary DNS changes when you connect/disconnect. Unfortunately, the plugin does not support .ovpn profiles, so the list of steps is a little more involved.
 
 1. First, download all of the .crt and .key files from one of these directories:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }})
 {% endfor %}
-1. Install the OpenVPN plugin for NetworkManager
+1. Install the OpenVPN plugin for NetworkManager.
 
    `sudo apt-get install network-manager-openvpn`
-1. Open your System Settings
-1. Click the Network icon
-1. Click the '+' button in the lower-left of the window
-1. Select 'VPN' from the Interface drop-down and click 'Create'
-1. Select 'OpenVPN' and click 'Create'
-1. Enter '{{ streisand_server_name }}' for the 'Connection name'
-1. Enter '{{ openvpn_server }}' for the 'Gateway'
-1. Make sure 'Certificates (TLS)' is selected for the 'Type'
-1. Select 'client.crt' from the client-files directory of your choice for the 'User Certificate'
-1. Select 'ca.crt' from the same client-files directory for the 'CA Certificate'
-1. Select 'client.key' from the same client-files directory for the 'Private Key'
-1. Click the 'Advanced' button
-1. Go to the General tab
-   * Check 'Use custom gateway port' and enter '{{ openvpn_port }}' as its value
-   * Check 'Use LZO data compression'
-   * Check 'Use a TCP connection'
-1. Go to the Security tab
-   * Select '{{ openvpn_cipher }}' as the Cipher
-   * Select '{{ openvpn_auth_digest }}' as the HMAC Authentication
-1. Go to the TLS Authentication tab
-   * Check 'Verify peer (server) certificate usage signature'
-   * Check 'Use additional TLS authentication'
-     * Select 'ta.key' from the client-files directory for the 'Key File'
-     * Select '1' as the 'Key Direction'
-   * Click 'OK'
-1. Click 'Save...'
-1. Select the VPN in the left-hand menu, and flip the switch to 'ON'. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to 'VPN Connections', and clicking on its name.
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Open your *System Settings*.
+1. Click the *Network* icon.
+1. Click the *+* button in the lower-left of the window.
+1. Select *VPN* from the Interface drop-down and click *Create*.
+1. Select *OpenVPN* and click *Create*.
+1. Enter `{{ streisand_server_name }}` for the *Connection name*.
+1. Enter `{{ openvpn_server }}` for the *Gateway*.
+1. Make sure *Certificates (TLS)* is selected for the *Type*.
+1. Select `client.crt` from the client-files directory of your choice for the *User Certificate*.
+1. Select `ca.crt` from the same client-files directory for the *CA Certificate*.
+1. Select `client.key` from the same client-files directory for the *Private Key*.
+1. Click the *Advanced* button.
+1. Go to the *General* tab.
+   * Check *Use custom gateway port* and enter `{{ openvpn_port }}` as its value.
+   * Check *Use LZO data compression*.
+   * Check *Use a TCP connection*.
+1. Go to the *Security* tab.
+   * Select `{{ openvpn_cipher }}` as the *Cipher*.
+   * Select `{{ openvpn_auth_digest }}` as the *HMAC Authentication*.
+1. Go to the *TLS Authentication* tab.
+   * Check *Verify peer (server) certificate usage signature*.
+   * Check *Use additional TLS authentication*.
+     * Select the `ta.key` from the client-files directory for the *Key File*.
+     * Select `1` as the *Key Direction*.
+   * Click *OK*.
+1. Click *Save...*
+1. Select the VPN in the left-hand menu, and flip the switch to *ON*. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to *VPN Connections*, and clicking on its name.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 <a name="android"></a>
-Android
--------
-1. Install [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn)
+### Android ###
+1. Install [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn).
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-1. Copy the '{{ openvpn_direct_profile_filename }}' file to your phone
-1. Launch OpenVPN for Android
-1. Tap the folder icon in the lower-right of the screen
-1. Select the '{{ openvpn_direct_profile_filename }}' profile that you copied to your phone
-1. Tap the save icon (floppy disk) in the lower-right of the screen after the import is complete
-1. Tap the profile
-1. Accept the Android VPN connection warning
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Copy the `{{ openvpn_direct_profile_filename }}` file to your phone.
+1. Launch OpenVPN for Android.
+1. Tap the folder icon in the lower-right of the screen.
+1. Select the `{{ openvpn_direct_profile_filename }}` profile that you copied to your phone.
+1. Tap the save icon (floppy disk) in the lower-right of the screen after the import is complete.
+1. Tap the profile.
+1. Accept the Android VPN connection warning.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) that affects VPN users who are running Android 4.4. The following workaround ensures that lookups can be performed successfully, even if you remain connected to the OpenVPN server for an extended period of time.
 
-### Configuring Firefox for Android to use the Dante SOCKS server ###
-1. Open Firefox
-1. Type "about:config" into the address bar and tap the 'Go' button on your keyboard
-1. Type "proxy" into the search box
-1. Set the value of 'network.proxy.socks' to '10.8.0.1'
-1. Set the value of 'network.proxy.socks_port' to '1080'
-1. Set the value of 'network.proxy.socks\_remote\_dns' to 'true'
-1. Set the value of 'network.proxy.type' to '1'
+#### Configuring Firefox for Android to use the Dante SOCKS server ####
+1. Open Firefox.
+1. Type `about:config` into the address bar and tap the *Go* button on your keyboard.
+1. Type `proxy` into the search box.
+1. Set the value of *network.proxy.socks* to `10.8.0.1`.
+1. Set the value of *network.proxy.socks\_port* to `1080`.
+1. Set the value of *network.proxy.socks\_remote\_dns* to `true`.
+1. Set the value of *network.proxy.type* to `1`.
 
 <a name="ios"></a>
-iOS
----
-1. Download [OpenVPN Connect](https://itunes.apple.com/us/app/openvpn-connect/id590379981) and launch it
+### iOS ###
+1. Download [OpenVPN Connect](https://itunes.apple.com/us/app/openvpn-connect/id590379981) and launch it.
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-1. Open iTunes on your computer and connect your phone
-1. Select your phone, click on the Apps tab, and find OpenVPN under the File Sharing section
-1. Drag and drop the downloaded '{{ openvpn_direct_profile_filename }}' file into the file sharing window
-1. OpenVPN on your phone will say that '1 new OpenVPN profile is available for import.'
-1. Tap the green '+' button to import the profile
-1. Tap the slider to connect to the OpenVPN server
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Open iTunes on your computer and connect your phone.
+1. Select your phone, click on the *Apps* tab, and find OpenVPN under the *File Sharing* section.
+1. Drag and drop the downloaded `{{ openvpn_direct_profile_filename }}` file into the file sharing window.
+1. OpenVPN on your phone will say that *1 new OpenVPN profile is available for import*.
+1. Tap the green *+* button to import the profile.
+1. Tap the slider to connect to the OpenVPN server.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.

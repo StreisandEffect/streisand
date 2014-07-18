@@ -1,170 +1,168 @@
 OpenVPN (wrapped in stunnel)
-============================
-*Note: These instructions should only be used if OpenVPN connections are being actively blocked in your country or by your ISP. Performance will be better if you are able to connect directly, but certain countries (notably China and Iran) employ Deep Packet Inspection to detect and thwart OpenVPN connections. Some companies do the same. If you do not fall into this category, please refer to the standard [OpenVPN instructions](/openvpn/) instead.*
+----------------------------
+These instructions should only be used if OpenVPN connections are being actively blocked in your country or by your ISP. Performance will be better if you are able to connect directly, but certain countries (notably China and Iran) employ Deep Packet Inspection to detect and thwart OpenVPN connections. Some companies do the same. If you do not fall into this category, please refer to the standard [OpenVPN instructions](/openvpn/) instead.
 
-*Following these steps will wrap your OpenVPN traffic in an encrypted tunnel so it looks like standard SSL traffic being directed to a port where this type of traffic would be expected. This prevents DPI from identifying the true nature of the packets, thereby allowing you to freely use OpenVPN.*
+Following these steps will wrap your OpenVPN traffic in an encrypted tunnel so it looks like standard SSL traffic being directed to a port where this type of traffic would be expected. This prevents DPI from identifying the true nature of the packets, thereby allowing you to freely use OpenVPN.
 
-### A note on client files ###
+#### A note on client files ####
 For security reasons, OpenVPN clients typically have their own unique certificate and private key. The server you will be connecting to has been configured to allow clients to share the same certificate and private key, but you may still wish to give your phone and laptop different keys, for example.
 
-* [Windows](#windows)
-* [OS X](#osx)
-* [Linux](#linux)
-* [Android](#android)
-* [iOS](#ios)
+---
+* Platforms
+  * [Windows](#windows)
+  * [OS X](#osx)
+  * [Linux](#linux)
+  * [Android](#android)
+  * [iOS](#ios)
 
 <a name="windows"></a>
-Windows
--------
-### Stunnel Setup ###
-1. Download and run the [stunnel installer](/mirror/#stunnel)
-1. Download the stunnel.conf file that has been customized to work with this server:
+### Windows ###
+#### Stunnel Setup ####
+1. Download and run the [stunnel installer](/mirror/#stunnel).
+1. Download the `stunnel.conf` file that has been customized to work with this server:
    * [stunnel.conf](/openvpn/stunnel.conf)
-1. Open the directory where you installed stunnel. For most users, this will either be in C:\Program Files\stunnel or C:\Program Files (x86)\stunnel.
-1. Drag and drop the downloaded stunnel.conf file into this directory
-1. Double click stunnel.exe in the installation directory to start the service.
+1. Open the directory where you installed stunnel. For most users, this will either be in *C:\Program Files\stunnel* or *C:\Program Files (x86)\stunnel*.
+1. Drag and drop the downloaded `stunnel.conf` file into this directory.
+1. Double click *stunnel.exe* in the installation directory to start the service.
 
-Now you are ready to install OpenVPN and configure it to route its traffic through stunnel. A custom .ovpn profile that is preconfigured to work alongside the stunnel.conf file will make this easy.
+Now you are ready to install OpenVPN and configure it to route its traffic through stunnel. A custom .ovpn profile that is preconfigured to work alongside the `stunnel.conf` file will make this easy.
 
-### OpenVPN Setup ###
-1. Download and run the OpenVPN [Windows Installer](/mirror/#openvpn)
-1. Click 'Next' and accept the license agreement by clicking 'I Agree'
-1. Click 'Next' on the 'Choose Components' screen. Leave all of the default options checked.
-1. Make note of the Destination Folder. This is where you will place the {{ openvpn_stunnel_profile_filename }} client configuration profile after installation. Click 'Install'.
-1. A Windows Security notice will appear and ask 'Would you like to install this device software?'. Click 'Install'.
-1. Click 'Next' on the 'Installation Complete' screen
-1. Uncheck 'Show Readme' and click 'Finish'
-1. Right-click on the OpenVPN GUI desktop icon and choose 'Properties'
-1. Go to the 'Compatibility' tab and click the 'Run this program as an administrator' checkbox in the 'Privilege Level' section
-1. Double-click the OpenVPN GUI desktop icon to launch the application
+#### OpenVPN Setup ####
+1. Download and run the OpenVPN [Windows Installer](/mirror/#openvpn).
+1. Click *Next* and accept the license agreement by clicking *I Agree*.
+1. Click *Next* on the *Choose Components* screen. Leave all of the default options checked.
+1. Make note of the Destination Folder. This is where you will place the `{{ openvpn_stunnel_profile_filename }}` client configuration profile after installation. Click *Install*.
+1. A Windows Security notice will appear and ask *Would you like to install this device software?*. Click *Install*.
+1. Click *Next* on the *Installation Complete* screen.
+1. Uncheck *Show Readme* and click *Finish*.
+1. Right-click on the OpenVPN GUI desktop icon and choose *Properties*.
+1. Go to the *Compatibility* tab and click the *Run this program as an administrator* checkbox in the *Privilege Level* section.
+1. Double-click the OpenVPN GUI desktop icon to launch the application.
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
-1. Open the 'config' directory that is located in the Destination Folder. For most users, this will either be in C:\Program Files\OpenVPN\config or C:\Program Files (x86)\OpenVPN\config. You will see a single README file in this directory.
-1. Drag and drop the downloaded '{{ openvpn_stunnel_profile_filename }}' file to this location alongside the README.
-1. Right-click on the OpenVPN icon in your taskbar and choose 'Connect'
-1. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Open the *config* directory that is located in the Destination Folder. For most users, this will either be in *C:\Program Files\OpenVPN\config* or *C:\Program Files (x86)\OpenVPN\config*. You will see a single README file in this directory.
+1. Drag and drop the downloaded `{{ openvpn_stunnel_profile_filename }}` file to this location alongside the README.
+1. Right-click on the OpenVPN icon in your taskbar and choose *Connect*.
+1. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 <a name="osx"></a>
-OS X
-----
-### Stunnel Setup ###
-1. Install [Homebrew](http://brew.sh/), if you haven't already
-1. Install stunnel using Homebrew
+### OS X ###
+#### Stunnel Setup ####
+1. Install [Homebrew](http://brew.sh/), if you haven't already.
+1. Install stunnel using Homebrew:
 
    `brew install stunnel`
 
-   * *If installing Homebrew is not an option, you can also download and compile the [stunnel source code](/mirror/#stunnel)*
-1. Download the stunnel.conf file that has been customized to work with this server:
+   * If installing Homebrew is not an option, you can also download and compile the [stunnel source code](/mirror/#stunnel).
+1. Download the `stunnel.conf` file that has been customized to work with this server:
    * [stunnel.conf](/openvpn/stunnel.conf)
-1. Replace the default stunnel.conf file with the customized version. Be sure to update the source location if you downloaded the file to a different location.
+1. Replace the default stunnel.conf file with the customized version. Be sure to update the source location if you downloaded the file to a different directory.
 
    `cp ~/Downloads/stunnel.conf /usr/local/etc/stunnel/`
-1. Start stunnel
+1. Start stunnel:
 
    `stunnel`
 
-Now you are ready to install OpenVPN and configure it to route its traffic through stunnel. A custom .ovpn profile that is preconfigured to work alongside the stunnel.conf file will make this easy.
+Now you are ready to install OpenVPN and configure it to route its traffic through stunnel. A custom .ovpn profile that is preconfigured to work alongside the `stunnel.conf` file will make this easy.
 
-### OpenVPN Setup ###
+#### OpenVPN Setup ####
 1. Download and open [Tunnelblick](/mirror/#openvpn).
    * **Mavericks and Yosemite users must install the latest Beta Release at this time**
-1. Click 'Install'
-1. Click 'Launch' after the installation is finished
-1. Enter your password and click 'OK' if Tunnelblick asks to 'repair ownership/permissions'
+1. Click *Install*.
+1. Click *Launch* after the installation is finished.
+1. Enter your password and click *OK* if Tunnelblick asks to *Repair ownership/permissions*.
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
-1. Click the 'Open configuration folder' button on the 'Welcome to Tunnelblick' screen
-1. Drag and drop the downloaded '{{ openvpn_stunnel_profile_filename }}' file to the folder that was opened. You may need to enter your password in order to authorize Finder to copy the file to this location.
-1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose 'Connect'. You will see an animation while the connection is being established. You can also click on the icon and choose 'Details' to see a log of what is happening.
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Click the *Open configuration folder* button on the *Welcome to Tunnelblick* screen
+1. Drag and drop the downloaded `{{ openvpn_stunnel_profile_filename }}` file to the folder that was opened. You may need to enter your password in order to authorize Finder to copy the file to this location.
+1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose *Connect*. You will see an animation while the connection is being established. You can also click on the icon and choose *Details* to see a log of what is happening.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
-Linux
-----
-### Stunnel Setup ###
-1. Make sure stunnel is installed
+### Linux ###
+#### Stunnel Setup ####
+1. Make sure stunnel is installed:
 
    `sudo apt-get install stunnel` OR `sudo yum install stunnel` OR `esoteric-package-manager hipster stunnel`
 
-   * *If installing stunnel via your package manager is not an option, you can also download and compile the [stunnel source code](/mirror/#stunnel)*
-1. Download the stunnel.conf file that has been customized to work with this server:
+   * If installing stunnel via your package manager is not an option, you can also download and compile the [stunnel source code](/mirror/#stunnel).
+1. Download the `stunnel.conf` file that has been customized to work with this server:
    * [stunnel.conf](/openvpn/stunnel.conf)
-1. Copy stunnel.conf to the right destination. Be sure to update the source location if you have moved the directory elsewhere.
+1. Copy `stunnel.conf` to the right destination. Be sure to update the source location if you have moved the directory elsewhere.
 
    `cp ~/Downloads/stunnel.conf /etc/stunnel/`
-3. Restart the stunnel service
+3. Restart the stunnel service:
 
    `sudo service stunnel4 restart` OR `sudo service stunnel restart`
 
-Now you are ready to install OpenVPN and configure it to route its traffic through stunnel. A custom .ovpn profile that is preconfigured to work alongside the stunnel.conf file will make this easy.
+Now you are ready to install OpenVPN and configure it to route its traffic through stunnel. A custom .ovpn profile that is preconfigured to work alongside the `stunnel.conf` file will make this easy.
 
-### OpenVPN Setup ###
-1. Install OpenVPN
+#### OpenVPN Setup ####
+1. Install OpenVPN:
 
    `sudo apt-get install openvpn` OR `sudo yum install openvpn` OR `esoteric-package-manager hipster openvpn`
 
-   * *If installing OpenVPN via your package manager is not an option, you can also download and compile the [OpenVPN source code](/mirror/#openvpn)*
+   * If installing OpenVPN via your package manager is not an option, you can also download and compile the [OpenVPN source code](/mirror/#openvpn).
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
-1. Copy the downloaded '{{ openvpn_stunnel_profile_filename }}' file to the location of your choice. /etc/openvpn/ is a decent option.
-1. Execute OpenVPN, and pass it the .ovpn profile as an option.
+1. Copy the downloaded `{{ openvpn_stunnel_profile_filename }}` file to the location of your choice. */etc/openvpn/* is a decent option.
+1. Execute OpenVPN, and pass it the .ovpn profile as an option:
 
    `sudo openvpn {{ openvpn_stunnel_profile_filename }}`
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 The OpenVPN plugin for NetworkManager appears to become very confused as to how it should route traffic when you connect to an OpenVPN server through a wrapped stunnel connection. Manually adding route information does not seem to help. Therefore, unlike in the [non-stunnel instructions](/openvpn), the steps above are the recommended connection method for Ubuntu as well.
 
 <a name="android"></a>
-Android
-----
-### SSLDroid Setup ###
-1. Download the stunnel PKCS #12 formatted key
+### Android ###
+#### SSLDroid Setup ####
+1. Download the stunnel PKCS #12 formatted key:
    * [stunnel.p12](/openvpn/stunnel.p12)
-1. Copy the 'stunnel.p12' file to your phone
-1. Install [SSLDroid](https://play.google.com/store/apps/details?id=hu.blint.ssldroid) and launch it
-1. Tap the menu button in the lower-right corner of the screen
-1. Tap 'Add tunnel'
-1. Tap 'Tunnel name' and enter '{{ streisand_server_name }}'
-1. Tap 'Local port' and enter '{{ stunnel_local_port }}'
-1. Tap 'Remote host' and enter '{{ openvpn_server }}'
-1. Tap 'Remote port' and enter '{{ stunnel_remote_port }}'
-1. Tap the browse button next to 'PKCS12 file' and select the 'stunnel.p12' file that you copied to your phone during the first step. You can leave the 'PKCS12 pass' field blank.
-1. Tap 'Apply'
+1. Copy the `stunnel.p12` file to your phone.
+1. Install [SSLDroid](https://play.google.com/store/apps/details?id=hu.blint.ssldroid) and launch it.
+1. Tap the menu button.
+1. Tap *Add tunnel*.
+1. Tap *Tunnel name* and enter `{{ streisand_server_name }}`.
+1. Tap *Local port* and enter `{{ stunnel_local_port }}`.
+1. Tap *Remote host* and enter `{{ openvpn_server }}`.
+1. Tap *Remote port* and enter `{{ stunnel_remote_port }}`.
+1. Tap the browse button next to *PKCS12 file* and select the `stunnel.p12` file that you copied to your phone during the first step. You can leave the *PKCS12 pass* field blank.
+1. Tap *Apply*.
 
 Now you are ready to install OpenVPN for Android and configure it to route its traffic through SSLDroid, which is connected to the stunnel port on the remote server. A custom .ovpn profile that is preconfigured to work alongside SSLDroid will make this easy.
 
-### OpenVPN Setup ###
-1. Install [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn)
+#### OpenVPN Setup ####
+1. Install [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn).
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
-1. Copy the '{{ openvpn_stunnel_profile_filename }}' file to your phone
-1. Launch OpenVPN for Android
-1. Tap the folder icon in the lower-right of the screen
-1. Select the '{{ openvpn_stunnel_profile_filename }}' profile that you copied to your phone
-1. Tap the save icon (floppy disk) in the lower-right of the screen after the import is complete
-1. Tap the profile
-1. Accept the Android VPN connection warning
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say 'Your IP address appears to be: {{ streisand_ipv4_address }}'.
+1. Copy the `{{ openvpn_stunnel_profile_filename }}` file to your phone.
+1. Launch OpenVPN for Android.
+1. Tap the folder icon in the lower-right of the screen.
+1. Select the `{{ openvpn_stunnel_profile_filename }}` profile that you copied to your phone.
+1. Tap the save icon (floppy disk) in the lower-right of the screen after the import is complete.
+1. Tap the profile.
+1. Accept the Android VPN connection warning.
+1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) that affects VPN users who are running Android 4.4. The following workaround ensures that lookups can be performed successfully, even if you remain connected to the OpenVPN server for an extended period of time.
 
 #### Configuring Firefox for Android to use the Dante SOCKS server ####
-1. Open Firefox
-1. Type "about:config" into the address bar and tap the 'Go' button on your keyboard
-1. Type "proxy" into the search box
-1. Set the value of 'network.proxy.socks' to '10.8.0.1'
-1. Set the value of 'network.proxy.socks_port' to '1080'
-1. Set the value of 'network.proxy.socks\_remote\_dns' to 'true'
-1. Set the value of 'network.proxy.type' to '1'
+1. Open Firefox.
+1. Type `about:config` into the address bar and tap the *Go* button on your keyboard.
+1. Type `proxy` into the search box.
+1. Set the value of *network.proxy.socks* to `10.8.0.1`.
+1. Set the value of *network.proxy.socks\_port* to `1080`.
+1. Set the value of *network.proxy.socks\_remote\_dns* to `true`.
+1. Set the value of *network.proxy.type* to `1`.
 
 <a name="ios"></a>
 iOS
