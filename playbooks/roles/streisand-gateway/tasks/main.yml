@@ -52,6 +52,10 @@
         src=/etc/nginx/sites-available/streisand
         state=link
 
+- name: Convert the self-signed SSL certificate into the right format for a data uri
+  command: base64 --wrap=0 {{ nginx_self_signed_certificate }}
+  register: streisand_certificate_data_uri
+
 - name: Generate the Markdown Gateway index and instructions
   template: src={{ item.src }}
             dest={{ item.dest }}
