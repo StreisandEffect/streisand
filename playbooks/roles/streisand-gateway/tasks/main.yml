@@ -1,7 +1,43 @@
 ---
-- name: Generate self-signed SSL certificate and private key
-  command: openssl req -new -nodes -x509 -out {{ nginx_self_signed_certificate }} -keyout {{ nginx_private_key }} -days {{ nginx_days_valid }} -subj "{{ nginx_request_subject }}/CN={{ streisand_ipv4_address }}"
-           creates={{ nginx_private_key }}
+- name: Make the necessary directories for the certificate authority
+  file: path={{ item }}
+        owner=root
+        group=root
+        mode=750
+        state=directory
+  with_items:
+    - "{{ openssl_ca_base }}"
+    - "{{ openssl_ca_private_dir }}"
+    - "{{ openssl_ca_newcerts_dir }}"
+
+- name: Create a certificate authority key and certificate
+  command: openssl req -new -nodes -x509 -days {{ nginx_days_valid }} -extensions v3_ca -keyout {{ openssl_ca_key }} -out {{ openssl_ca_certificate }} -subj "{{ nginx_request_subject }}"
+           creates={{ openssl_ca_certificate }}
+
+- name: Create the certificate request
+  command: openssl req -new -nodes -days {{ nginx_days_valid }} -keyout {{ nginx_private_key }} -out {{ nginx_self_signed_certificate_request }} -subj "{{ nginx_request_subject }}/CN={{ streisand_ipv4_address }}"
+           creates={{ nginx_self_signed_certificate_request }}
+
+- name: Seed a blank database file that will be used when generating the self-signed certificate
+  file: path={{ openssl_ca_base }}/index.txt
+        state=touch
+
+- name: Seed a serial file that will be used when generating the self-signed certificate
+  copy: content="01"
+        dest={{ openssl_ca_base }}/serial
+
+- name: Change where OpenSSL looks for CA material
+  lineinfile: dest=/usr/lib/ssl/openssl.cnf
+              regexp="Where everything is kept"
+              line="dir             = {{ openssl_ca_base }}"
+  
+- name: Generate the self-signed SSL certificate
+  command: openssl ca -batch -days {{ nginx_days_valid }} -in {{ nginx_self_signed_certificate_request }} -out {{ nginx_self_signed_certificate }}
+           creates={{ nginx_self_signed_certificate }}
+
+- name: Remove the CA private key. It has signed its first and last certificate.
+  file: path={{ openssl_ca_key }}
+        state=absent
 
 - name: Generate a random Gateway password
   shell: grep -v "'" /usr/share/dict/american-english | sort -R | tail -n 4 | xargs | sed -e 's/ /-/g' > {{ streisand_gateway_password_file }}
@@ -52,8 +88,8 @@
         src=/etc/nginx/sites-available/streisand
         state=link
 
-- name: Convert the self-signed SSL certificate into the right format for a data uri
-  command: base64 --wrap=0 {{ nginx_self_signed_certificate }}
+- name: Convert the CA certificate into the right format for a data uri
+  command: base64 --wrap=0 {{ openssl_ca_certificate }}
   register: streisand_certificate_data_uri
 
 - name: Generate the Markdown Gateway index and instructions
