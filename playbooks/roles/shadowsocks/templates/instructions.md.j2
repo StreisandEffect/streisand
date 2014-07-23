@@ -34,7 +34,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Click *OK* again to close the Firefox preferences window. Now we need to configure Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
 1.  Type `about:config` into the address bar and hit Enter.
 1. You should see a screen that says *This might void your warranty!* Click *I'll be careful, I promise!*.
-1. Search for `socks\_remote\_dns` and double click on the value that is returned. It will change from *false* to *true*.
+1. Search for `socks_remote_dns` and double click on the value that is returned. It will change from *false* to *true*.
 1. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 <a name="osx"></a>
@@ -49,9 +49,9 @@ Download and compile the Shadowsocks [source code](/mirror/#shadowsocks), or ins
    
 Here is the configuration information that you'll need:
 
-        Server: {{ streisand_ipv4_address }}
-        Port: {{ shadowsocks_server_port }}
-        Password: {{ shadowsocks_password.stdout }}
+        Server: {{ streisand_ipv4_address }}<br />
+        Port: {{ shadowsocks_server_port }}<br />
+        Password: {{ shadowsocks_password.stdout }}<br />
         Encryption Method: {{ shadowsocks_encryption_method }}
 
 Once you have Shadowsocks running locally, you'll need to forward your browser traffic through the SOCKS proxy it provides. You can follow the Windows instructions above to configure Firefox to do this.

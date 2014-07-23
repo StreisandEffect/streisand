@@ -21,11 +21,11 @@ SSH Tunnel
 1. Make sure the `Auto` and `Dynamic` radio buttons are selected.
 1. Click *Add* to add the tunnel. You should see `D{{ ssh_default_socks_port }}` in the Forwarded ports box.
 1. Go to Connection --> SSH --> Auth.
-1. Download the `streisand\_rsa.ppk` private key that is used to authenticate the SSH connection. Right-click; Save target as...
+1. Download the `streisand_rsa.ppk` private key that is used to authenticate the SSH connection. Right-click; Save target as...
    * [streisand\_rsa.ppk](/ssh/streisand_rsa.ppk)
 1. Click the *Browse* button.
 1. Click the *PuTTY Private Key Files* drop down next to the *File name* field and choose *All Files*.
-1. Select the downloaded `streisand\_rsa.ppk` file and click *Open*.
+1. Select the downloaded `streisand_rsa.ppk` file and click *Open*.
 1. Go back to *Session* (the very first item in the left-hand menu).
 1. Enter `{{ streisand_server_name }}` in the first *Saved Sessions* box and click the *Save* button. The next time you launch PuTTY you can choose the session and click *Load* to restore all of these settings.
 1. Click *Open* to connect! PuTTY will ask you to confirm the fingerprint. Make sure it matches one of these:
@@ -49,21 +49,21 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Click *OK* again to close the Firefox preferences window. Now we need to configure Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
 1.  Type `about:config` into the address bar and hit Enter.
 1. You should see a screen that says *This might void your warranty!* Click *I'll be careful, I promise!*.
-1. Search for `socks\_remote\_dns` and double click on the value that is returned. It will change from *false* to *true*.
+1. Search for `socks_remote_dns` and double click on the value that is returned. It will change from *false* to *true*.
 1. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 <a name="linux-and-osx"></a>
 ### Linux and OS X ###
-1. Download the `streisand\_rsa` private key that is used to authenticate the SSH connection:
+1. Download the `streisand_rsa` private key that is used to authenticate the SSH connection:
    * [streisand\_rsa](/ssh/streisand_rsa)
-1. Copy the `streisand\_rsa` file to the directory of your choice.
+1. Copy the `streisand_rsa` file to the directory of your choice.
 1. Add a new entry to your `.ssh/config` file. It should look like this. Be sure to adjust the location of the IdentityFile:
 
-         Host {{ streisand_server_name }}
-           User         forward
-           Port         22
-           HostName     {{ streisand_ipv4_address }}
-           IdentityFile ~/.ssh/streisand\_rsa
+         Host {{ streisand_server_name }}<br />
+           User         forward<br />
+           Port         22<br />
+           HostName     {{ streisand_ipv4_address }}<br />
+           IdentityFile ~/.ssh/streisand_rsa
 
 1. Download [sshuttle](https://github.com/apenwarr/sshuttle) by running the following command in the directory of your choice:
 
@@ -88,16 +88,16 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 ### Linux and OS X (alternate) ###
 Sshuttle offers significantly faster performance and is easier to set up, but the following instructions will also work if you are in a situation where you cannot install it.
 
-1. Download the `streisand\_rsa` private key that is used to authenticate the SSH connection:
+1. Download the `streisand_rsa` private key that is used to authenticate the SSH connection:
    * [streisand\_rsa](/ssh/streisand_rsa)
-1. Copy the `streisand\_rsa` file to the directory of your choice.
+1. Copy the `streisand_rsa` file to the directory of your choice.
 1. Add a new entry to your `.ssh/config` file. It should look like this. Be sure to adjust the location of the IdentityFile:
 
-         Host {{ streisand_server_name }}
-           User         forward
-           Port         22
-           HostName     {{ streisand_ipv4_address }}
-           IdentityFile ~/.ssh/streisand\_rsa
+         Host {{ streisand_server_name }}<br />
+           User         forward<br />
+           Port         22<br />
+           HostName     {{ streisand_ipv4_address }}<br />
+           IdentityFile ~/.ssh/streisand_rsa
 
 1. SSH into the server and forward a dynamic SOCKS port:
 
@@ -112,9 +112,9 @@ Sshuttle offers significantly faster performance and is easier to set up, but th
 <a name="android"></a>
 ### Android ###
 1. Install [SSH persistent tunnels](https://play.google.com/store/apps/details?id=org.ayal.SPT) by Shai Ayal. This application makes it easy to forward multiple ports through an SSH tunnel, and it does a decent job of ensuring that the tunnels remain active even when you switch back and forth regularly between LTE, 3G, and WiFi. The app is [open source](https://code.google.com/p/ssh-persistent-tunnel/) and can be compiled for free, but the Play Store version costs $1.50.
-1. Download the `streisand\_rsa` private key that is used to authenticate the SSH connection:
+1. Download the `streisand_rsa` private key that is used to authenticate the SSH connection:
    * [streisand\_rsa](/ssh/streisand_rsa)
-1. Copy the `streisand\_rsa` file to the root directory of your phone.
+1. Copy the `streisand_rsa` file to the root directory of your phone.
 1. Start the application. It will be listed as *SPT* in your launcher, and its icon looks like a train tunnel.
 1. Tap the menu icon in the lower-right of your screen.
 1. Tap *Settings*.
