@@ -22,17 +22,13 @@
   file: path={{ openssl_ca_base }}/index.txt
         state=touch
 
-- name: Seed a serial file that will be used when generating the self-signed certificate
-  copy: content="01"
-        dest={{ openssl_ca_base }}/serial
-
 - name: Change where OpenSSL looks for CA material
   lineinfile: dest=/usr/lib/ssl/openssl.cnf
               regexp="Where everything is kept"
               line="dir             = {{ openssl_ca_base }}"
   
 - name: Generate the self-signed SSL certificate
-  command: openssl ca -batch -days {{ nginx_days_valid }} -in {{ nginx_self_signed_certificate_request }} -out {{ nginx_self_signed_certificate }}
+  command: openssl ca -batch -create_serial -days {{ nginx_days_valid }} -in {{ nginx_self_signed_certificate_request }} -out {{ nginx_self_signed_certificate }}
            creates={{ nginx_self_signed_certificate }}
 
 - name: Remove the CA private key. It has signed its first and last certificate.
