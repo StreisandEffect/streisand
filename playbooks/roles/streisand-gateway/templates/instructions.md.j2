@@ -17,7 +17,7 @@ Your Streisand Gateway contains step-by-step instructions and mirrors of all nec
 <a name="ssl"></a>
 SSL Certificate Installation
 ----------------------------
-You must install the Gateway's SSL certificate so your browser can automatically verify the integrity of the connection. This prevents anyone from tampering with your traffic and also protects your login credentials. The certificate has been embedded directly into this file, and you can download it here:
+You should install the Gateway's SSL certificate so your browser can automatically verify the integrity of the connection. This prevents anyone from tampering with your traffic and also protects your login credentials. The certificate has been embedded directly into this HTML file, and you can download it here:
 <p><a download="streisand.crt" id="download" href="data:application/x-x509-ca-cert;base64,{{ streisand_certificate_data_uri.stdout }}">Download Certificate</a></p>
 
 
@@ -150,7 +150,7 @@ The certificate details should match the following information:
 
 ##### Fingerprints #####
 {% for fingerprint in ssl_certificate_fingerprints.results %}
-    {{ fingerprint.stdout }}
+    {{ fingerprint.stdout }}<br />
 {% endfor %}
 
 If everything checks out, you are ready to connect. See [Connecting to your Streisand Gateway](#connecting-ssl).
