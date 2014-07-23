@@ -92,6 +92,8 @@
         state=directory
         recurse=yes
 
+- meta: flush_handlers
+
 - name: Success!
   pause: prompt="Server setup is complete. The `{{ streisand_server_name }}.html` instructions file in the generated-docs folder is ready to give to family, friends, and fellow activists. Press Enter to open these instructions."
 
