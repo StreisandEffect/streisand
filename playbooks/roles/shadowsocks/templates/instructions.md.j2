@@ -49,9 +49,9 @@ Download and compile the Shadowsocks [source code](/mirror/#shadowsocks), or ins
    
 Here is the configuration information that you'll need:
 
-        Server: {{ streisand_ipv4_address }}<br />
-        Port: {{ shadowsocks_server_port }}<br />
-        Password: {{ shadowsocks_password.stdout }}<br />
+        Server: {{ streisand_ipv4_address }}
+        Port: {{ shadowsocks_server_port }}
+        Password: {{ shadowsocks_password.stdout }}
         Encryption Method: {{ shadowsocks_encryption_method }}
 
 Once you have Shadowsocks running locally, you'll need to forward your browser traffic through the SOCKS proxy it provides. You can follow the Windows instructions above to configure Firefox to do this.

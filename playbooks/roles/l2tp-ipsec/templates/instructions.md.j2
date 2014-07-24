@@ -64,11 +64,11 @@ You can connect to the VPN using the VPN icon in the menu bar, or by selecting t
 ### Linux ###
 L2TP/IPsec connections are not supported out-of-the-box on most Linux distributions without requiring the installation of additional software. This nullifies one of the biggest appeals of L2TP/IPsec (i.e. its native client-side support). It is recommended to use another connection method like OpenVPN instead, but if you would like to configure L2TP/IPsec on your Linux desktop, here are the settings you will need: 
 
-    Server Address: {{ streisand_ipv4_address }}<br /><br />
+    Server Address: {{ streisand_ipv4_address }}
 
-    IPsec pre-shared key: {{ ipsec_preshared_key.stdout }}<br /><br />
+    IPsec pre-shared key: {{ ipsec_preshared_key.stdout }}
 
-    CHAP user: streisand<br />
+    CHAP user: streisand
     CHAP pass: {{ chap_password.stdout }}
 
 <a name="android"></a>
