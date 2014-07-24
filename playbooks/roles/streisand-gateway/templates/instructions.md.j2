@@ -150,7 +150,7 @@ The certificate details should match the following information:
 
 ##### Fingerprints #####
 {% for fingerprint in ssl_certificate_fingerprints.results %}
-    {{ fingerprint.stdout }}<br />
+    {{ fingerprint.stdout }}
 {% endfor %}
 
 If everything checks out, you are ready to connect. See [Connecting to your Streisand Gateway](#connecting-ssl).
