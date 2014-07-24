@@ -10,7 +10,7 @@ The Internet can be a little unfair. It's way too easy for ISPs, telecoms, polit
 Introducing Streisand
 ---------------------
 * A single command sets up a brand new server running a [wide variety of anti-censorship software](#services-provided) that can completely mask and encrypt all of your Internet traffic.
-* Streisand natively supports the creation of new servers at [Amazon EC2](http://aws.amazon.com/ec2/), [DigitalOcean](https://www.digitalocean.com/), [Linode](https://www.linode.com/), and [Rackspace](http://www.rackspace.com/). It can also run on any Debian 7 server regardless of provider, and **hundreds** of instances can be configured simultaneously using this method.
+* Streisand natively supports the creation of new servers at [Amazon EC2](http://aws.amazon.com/ec2/), [DigitalOcean](https://www.digitalocean.com/), [Linode](https://www.linode.com/), and [Rackspace](http://www.rackspace.com/)--with more providers coming soon! It also runs on any Debian 7 server regardless of provider, and **hundreds** of instances can be configured simultaneously using this method.
 * The process is completely automated and only takes about ten minutes, which is pretty awesome when you consider that it would require the average system administrator several days of frustration to set up even a small subset of what Streisand offers in its out-of-the-box configuration.
 * Once your Streisand server is running, you can give the custom connection instructions to friends, family members, and fellow activists. The connection instructions contain an embedded copy of the server's unique SSL certificate, so you only have to send them a single file.
 * Each server is entirely self-contained and comes with absolutely everything that users need to get started, including cryptographically verified mirrors of all common clients. This renders any attempted censorship of default download locations completely ineffective.
@@ -19,7 +19,9 @@ Introducing Streisand
 More Features
 -------------
 * Nginx powers a password-protected and encrypted Gateway that serves as the starting point for new users. The Gateway is accessible over SSL, or as a Tor [hidden service](https://www.torproject.org/docs/hidden-services.html.en).
-  * Beautiful, custom, step-by-step client configuration instructions are generated for each new server that Streisand creates. Users can quickly access these instructions through any web browser. The instructions are responsive and look fantastic on mobile phones.
+  * Beautiful, custom, step-by-step client configuration instructions are generated for each new server that Streisand creates. Users can quickly access these instructions through any web browser. The instructions are responsive and look fantastic on mobile phones:
+
+    ![Streisand Screenshot](https://missingm.co/streisand-mobile-screenshot.png "Gateway")
   * The integrity of mirrored software is ensured using SHA-256 checksums, or by verifying GPG signatures if the project provides them. This protects users from downloading corrupted files.
   * All ancillary files, such as OpenVPN configuration profiles, are also available via the Gateway.
   * Current Tor users can take advantage of the additional services Streisand sets up in order to transfer large files or to handle other traffic (e.g. BitTorrent) that isn't appropriate for the Tor network.
@@ -49,11 +51,11 @@ Services Provided
   * TLS Authentication is enabled which helps protect against active probing attacks. Traffic that does not have the proper HMAC is simply dropped.
   * The [Dante](http://www.inet.no/dante/) proxy server is set up as a workaround for a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) in Firefox for Android.
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
-  * A QR code is generated that allows the Android and iOS clients to be automatically configured by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
+  * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
 * [Stunnel](https://www.stunnel.org/index.html)
   * Listens for and wraps OpenVPN connections. This makes them look like standard SSL traffic and allows OpenVPN clients to successfully establish tunnels even in the presence of Deep Packet Inspection.
   * Unified profiles for stunnel-wrapped OpenVPN connections are generated alongside the direct connection profiles. Detailed instructions are also generated.
-  * The stunnel certificate and key are exported in PKCS #12 format so they are compatible with other SSL tunneling applications. Notably, this allows [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn) to tunnel its traffic through [SSLDroid](https://play.google.com/store/apps/details?id=hu.blint.ssldroid). OpenVPN in China on a mobile device? Yes!
+  * The stunnel certificate and key are exported in PKCS #12 format so they are compatible with other SSL tunneling applications. Notably, this enables [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn) to tunnel its traffic through [SSLDroid](https://play.google.com/store/apps/details?id=hu.blint.ssldroid). OpenVPN in China on a mobile device? Yes!
 * [Tor](https://www.torproject.org/)
   * A [bridge relay](https://www.torproject.org/docs/bridges) is set up with a random nickname.
   * [Obfsproxy](https://www.torproject.org/projects/obfsproxy.html.en) is installed and configured, including support for the obfs3 and [ScrambleSuit](http://www.cs.kau.se/philwint/scramblesuit/) pluggable transports.
