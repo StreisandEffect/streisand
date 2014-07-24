@@ -11,11 +11,11 @@
     - "{{ openssl_ca_newcerts_dir }}"
 
 - name: Create a certificate authority key and certificate
-  command: openssl req -new -nodes -x509 -days {{ nginx_days_valid }} -extensions v3_ca -keyout {{ openssl_ca_key }} -out {{ openssl_ca_certificate }} -subj "{{ nginx_request_subject }}"
+  command: openssl req -new -nodes -x509 -days {{ nginx_days_valid }} -extensions v3_ca -keyout {{ openssl_ca_key }} -out {{ openssl_ca_certificate }} -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}"
            creates={{ openssl_ca_certificate }}
 
 - name: Create the certificate request
-  command: openssl req -new -nodes -days {{ nginx_days_valid }} -keyout {{ nginx_private_key }} -out {{ nginx_self_signed_certificate_request }} -subj "{{ nginx_request_subject }}/CN={{ streisand_ipv4_address }}"
+  command: openssl req -new -nodes -days {{ nginx_days_valid }} -keyout {{ nginx_private_key }} -out {{ nginx_self_signed_certificate_request }} -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}/CN={{ streisand_ipv4_address }}"
            creates={{ nginx_self_signed_certificate_request }}
 
 - name: Seed a blank database file that will be used when generating the self-signed certificate

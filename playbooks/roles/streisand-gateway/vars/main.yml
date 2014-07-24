@@ -19,7 +19,6 @@ openssl_ca_certificate: "{{ openssl_ca_base }}/cacert.pem"
 
 
 nginx_days_valid: "1825"
-nginx_request_subject: "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}"
 
 nginx_self_signed_certificate: "/etc/ssl/certs/{{ streisand_server_name }}.crt"
 nginx_self_signed_certificate_request: "/etc/ssl/certs/{{ streisand_server_name }}.csr"
