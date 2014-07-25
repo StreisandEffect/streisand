@@ -69,9 +69,6 @@ Installation
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
 
             ssh-keygen
-* Verify that Ruby 1.9.3 or higher is installed.
-
-            ruby -v
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
   * On Debian and Ubuntu
 
