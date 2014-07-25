@@ -88,7 +88,7 @@ Installation
             sudo CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install ansible
   * On BSD, Linux, or earlier versions of OS X (via pip)
 
-            sudo pip install ansible
+            sudo pip install ansible markupsafe
 * Install the necessary Python libraries for your chosen cloud provider if you are going to take advantage of Streisand's ability to create new servers using a supported API.
   * Amazon EC2
 
@@ -102,6 +102,10 @@ Installation
   * Rackspace Cloud
 
             sudo pip install pyrax
+  * If you are using a Homebrew-installed version of Python you should also run these commands to make sure it can find the necessary libraries:
+
+            mkdir -p ~/Library/Python/2.7/lib/python/site-packages
+            echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
 
 ### Execution ###
 1. Clone the Streisand repository and enter the directory.
