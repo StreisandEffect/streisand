@@ -37,7 +37,7 @@
       private: no
 
     - name: "confirmation"
-      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press any key to continue...\n"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to continue...\n"
 
   roles:
     - genesis-linode

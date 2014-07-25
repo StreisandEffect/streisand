@@ -50,7 +50,7 @@
       private: no
 
     - name: "confirmation"
-      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press any key to continue...\n"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to continue...\n"
 
   # Facts persist across plays, and these facts will be used in the
   # final step to make an API call to open all of the necessary ports in
