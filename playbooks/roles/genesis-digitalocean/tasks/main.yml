@@ -17,7 +17,7 @@
   register: do_ssh_key
 
 - name: Get the latest 'Debian 7.0 x64' image ID from the DigitalOcean API
-  shell: curl -s 'https://api.digitalocean.com/images/?client_id={{ do_client_id }}&api_key={{ do_api_key }}' | ruby -e 'require "json"; puts JSON.parse(ARGF.read)["images"].select { |image| image["name"] == "Debian 7.0 x64" }.first["id"]'
+  shell: curl -s 'https://api.digitalocean.com/images/?client_id={{ do_client_id }}&api_key={{ do_api_key }}' | python -c 'import json; import sys; j = json.loads(sys.stdin.read()); print [img for img in j["images"] if img["slug"]=="debian-7-0-x64"][0]["id"]'
   register: do_debian7_x64_image_id
 
 - name: Create the server
