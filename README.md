@@ -9,6 +9,9 @@ The Internet can be a little unfair. It's way too easy for ISPs, telecoms, polit
 
 Introducing Streisand
 ---------------------
+Streisand sets up a new server running L2TP/IPsec, OpenSSH, OpenVPN, Shadowsocks, Stunnel, and a Tor bridge. It also generates custom configuration instructions for all of these services. At completion, you are given an HTML file with instructions that can be shared with non-technical friends, family members, or fellow activists that will help them connect to the new server easily, circumventing censoring authorities.
+
+Specifically:
 * A single command sets up a brand new server running a [wide variety of anti-censorship software](#services-provided) that can completely mask and encrypt all of your Internet traffic.
 * Streisand natively supports the creation of new servers at [Amazon EC2](http://aws.amazon.com/ec2/), [DigitalOcean](https://www.digitalocean.com/), [Linode](https://www.linode.com/), and [Rackspace](http://www.rackspace.com/)&mdash;with more providers coming soon! It also runs on any Debian 7 server regardless of provider, and **hundreds** of instances can be configured simultaneously using this method.
 * The process is completely automated and only takes about ten minutes, which is pretty awesome when you consider that it would require the average system administrator several days of frustration to set up even a small subset of what Streisand offers in its out-of-the-box configuration.
