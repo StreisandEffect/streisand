@@ -4,12 +4,6 @@ echo
 echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m"
 echo
 
-if [[ "$(ansible --version | grep -oe '1.\d.\d')" < "1.6" ]]
-then
-    echo "Ansible version 1.6+ is required."
-    exit -1;
-fi
-
 echo -n "Which provider are you using?
   1. Amazon
   2. DigitalOcean
