@@ -70,7 +70,7 @@ Installation
 
             ssh-keygen
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
-  * On Debian and Ubuntu (also install dependencies to build ansible)
+  * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible)
 
             sudo apt-get install python-pip python-dev build-essential
   * On Fedora
