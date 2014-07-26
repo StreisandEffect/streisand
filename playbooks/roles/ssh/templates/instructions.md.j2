@@ -76,7 +76,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
    `cd sshuttle`
 1. Run sshuttle and connect to the server:
 
-   `sshuttle --dns -r forward@{{ streisand_server_name }} 0/0 -vv`
+   `./sshuttle --dns -r forward@{{ streisand_server_name }} 0/0 -vv`
 1. Verify that the fingerprint matches one of these:
 
    `{{ ssh_server_fingerprints.results[0].stdout }}`
