@@ -1,16 +1,10 @@
 ---
-- name: Remove the 'streisand' SSH key from DigitalOcean if it already exists. This is to prevent problems if two people with two different keys are sharing the same DigitalOcean account.
-  digital_ocean_sshkey: name=streisand
-                        state=absent
-                        client_id="{{ do_client_id }}"
-                        api_key="{{ do_api_key }}"
-
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
 
-- name: Add the SSH key to DigitalOcean
-  digital_ocean_sshkey: name=streisand
+- name: Add the SSH key to DigitalOcean if it doesn't already exist
+  digital_ocean_sshkey: name={{ do_ssh_name }}
                         ssh_pub_key="{{ ssh_key.stdout }}"
                         client_id="{{ do_client_id }}"
                         api_key="{{ do_api_key }}"

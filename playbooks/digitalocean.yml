@@ -42,6 +42,11 @@
       prompt: "\nWhat is your DigitalOcean API key?\n"
       private: no
 
+    - name: "do_ssh_name"
+      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/ssh_keys\n\nWhat is the name of the SSH key you would like to use?\n  * If you have never uploaded an SSH key to DigitalOcean then the default\n    value will work!\n  * This key should match your .ssh/id_rsa.pub file.\n\  * DigitalOcean requires SSH keys to be unique. You cannot upload multiple\n    keys that have the same value under different names.\n\n    If you see an error that says 'SSH Key failed to be created' once the setup\n    process starts, then this is the problem. You can retry the setup process\n    using the name of the existing SSH key that matches the contents of your\n    RSA public key.\n"
+      default: "streisand"
+      private: no
+
     - name: "confirmation"
       prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to continue...\n"
 
