@@ -10,7 +10,7 @@ streisand_common_packages:
   - python-software-properties
   # Word List dictionary used by several roles to generate random
   # (yet typeable!) passphrases
-  - wamerican
+  - wamerican-huge
 
 streisand_gateway_location: "/var/www/streisand"
 
