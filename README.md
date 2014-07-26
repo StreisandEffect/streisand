@@ -79,12 +79,6 @@ Installation
   * On OS X (via [Homebrew](http://brew.sh/))
 
             brew install git
-* Install [Ansible](http://www.ansible.com/home). If you have an existing installation note that Ansible version 1.6+ is required.
-  * On OS X (via [Homebrew](http://brew.sh/))
-
-            brew install ansible 
-
-
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
   * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible)
 
