@@ -69,6 +69,22 @@ Installation
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
 
             ssh-keygen
+* Install git 
+  * On Debian and Ubuntu
+
+            sudo apt-get install git
+  * On Fedora
+
+            sudo yum install git
+  * On OS X (via [Homebrew](http://brew.sh/))
+
+            brew install git
+* Install [Ansible](http://www.ansible.com/home). If you have an existing installation note that Ansible version 1.6+ is required.
+  * On OS X (via [Homebrew](http://brew.sh/))
+
+            brew install ansible 
+
+
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
   * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible)
 
