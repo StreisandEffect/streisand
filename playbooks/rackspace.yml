@@ -22,11 +22,12 @@
           3. Hong Kong
           4. Northern Virginia
           5. Sydney
+        Please choose the number of your region. Press enter for default (#3) region.
       default: "3"
       private: no
 
     - name: "rackspace_server_name"
-      prompt: "\nWhat should the server be named?\n"
+      prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
       private: no
       default: "streisand"
 
@@ -39,7 +40,7 @@
       private: no
 
     - name: "confirmation"
-      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to continue...\n"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 
   roles:
     - genesis-rackspace

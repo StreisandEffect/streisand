@@ -25,19 +25,20 @@
     - name: "aws_region_var"
       prompt: >
         What region should the server be located in?
-          1. Asia Pacific (Tokyo)
-          2. Asia Pacific (Singapore)
-          3. Asia Pacific (Sydney)
-          4. EU (Ireland)
-          5. South America (Sao Paulo)
-          6. US East (Northern Virginia)
-          7. US West (Northern California)
-          8. US West (Oregon)
+          1. Asia Pacific     (Tokyo)
+          2. Asia Pacific     (Singapore)
+          3. Asia Pacific     (Sydney)
+          4. EU               (Ireland)
+          5. South America    (Sao Paulo)
+          6. US East          (Northern Virginia)
+          7. US West          (Northern California)
+          8. US West          (Oregon)
+        Please choose the number of your region. Press enter for default (#2) region.
       default: "2"
       private: no
 
     - name: "aws_instance_name_var"
-      prompt: "\nWhat should the server be named?\n"
+      prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
       default: "streisand"
       private: no
 
@@ -50,7 +51,7 @@
       private: no
 
     - name: "confirmation"
-      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to continue...\n"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 
   # Facts persist across plays, and these facts will be used in the
   # final step to make an API call to open all of the necessary ports in
