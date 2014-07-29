@@ -53,7 +53,9 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
 
 <a name="linux-and-osx"></a>
-### Linux and OS X ###
+### Linux and OS X (sshuttle) ###
+Sshuttle is a simple VPN tunnelling solution that operates over the SSH transport. It's fast, easy to set up, and offers great performance. Linux users should definitely try it first. However, sshuttle has not been updated since August 2012 and there are known bugs when running it on OS X Mavericks (10.9). In particular, some Mavericks users experience a connection hang and are not able to properly tunnel traffic. If you fall into this category, the [alternate SSH instructions](#linux-and-osx-alternate) will work for you.
+
 1. Download the `streisand_rsa` private key that is used to authenticate the SSH connection:
    * [streisand\_rsa](/ssh/streisand_rsa)
 1. Copy the `streisand_rsa` file to the directory of your choice.
@@ -86,7 +88,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 
 <a name="linux-and-osx-alternate"></a>
 ### Linux and OS X (alternate) ###
-Sshuttle offers significantly faster performance and is easier to set up, but the following instructions will also work if you are in a situation where you cannot install it.
+Sshuttle offers significantly faster performance and is easier to set up, but the following instructions will also get you connected if you are in a situation where you cannot install sshuttle or it isn't working correctly due to an operating system incompatibility.
 
 1. Download the `streisand_rsa` private key that is used to authenticate the SSH connection:
    * [streisand\_rsa](/ssh/streisand_rsa)
