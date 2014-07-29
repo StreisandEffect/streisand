@@ -65,6 +65,7 @@ Installation
 
 ### Prerequisites ###
 * Streisand requires a BSD, Linux, or OS X system. All of the following commands should be run inside a Terminal session.
+* Python 2.7 is required. This comes standard on OS X, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
 
