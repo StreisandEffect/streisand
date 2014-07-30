@@ -11,6 +11,7 @@ If the connection appears to time out, first check to make sure the passwords we
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
+  * [Chromebook](#chromebook)
 
 <a name="windows"></a>
 ### Windows ###
@@ -102,3 +103,17 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 1. Tap *Save*.
 1. Slide the *VPN* switch on.
 1. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+
+<a name="chromebook"></a>
+### Chromebook ###
+1. Go to *Settings*.
+1. Under *Internet Connection* click *Add connection*.
+1. Select *Add private network...*.
+1. Enter `{{ streisand_ipv4_address }}` for the *Server hostname*.
+1. Enter `{{ streisand_server_name }}` for the *Service name*.
+1. Make sure *Provider type* is *L2TP/IPSec + pre-shared key*.
+1. Enter `{{ ipsec_preshared_key.stdout }}` for the `Pre-shared key*.
+1. Enter `streisand` for the *Username*.
+1. Enter `{{ chap_password.stdout }}` for the `Password`.
+1. Click *Connect*.
+1. Once connected, you will see a VPN icon overlay on the network status icon. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
