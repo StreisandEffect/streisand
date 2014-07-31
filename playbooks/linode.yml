@@ -17,18 +17,19 @@
   vars_prompt:
     - name: "linode_datacenter"
       prompt: >
-        Enter the number of the region where the server will be located:
+        What region should the server be located in?
           1. Atlanta
           2. Dallas
           3. Fremont
           4. London
           5. Newark
           6. Tokyo
+        Please choose the number of your region. Press enter for default (#6) region.
       default: "6"
       private: no
 
     - name: "linode_server_name"
-      prompt: "\nWhat should the server be named?\n"
+      prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
       default: "streisand"
       private: no
 
@@ -37,7 +38,7 @@
       private: no
 
     - name: "confirmation"
-      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to continue...\n"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 
   roles:
     - genesis-linode
