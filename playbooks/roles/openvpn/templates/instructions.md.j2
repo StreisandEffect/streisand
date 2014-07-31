@@ -34,7 +34,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 1. Drag and drop the downloaded `{{ openvpn_direct_profile_filename }}` file to this location alongside the README.
 1. Right-click on the OpenVPN icon in your taskbar and choose *Connect*.
 1. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP.
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="osx"></a>
 ### OS X ###
@@ -50,7 +50,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 1. Click the *Open configuration folder* button on the *Welcome to Tunnelblick* screen.
 1. Drag and drop the downloaded `{{ openvpn_direct_profile_filename }}` file to the folder that was opened. You may need to enter your password in order to authorize Finder to copy the file to this location.
 1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose *Connect*. You will see an animation while the connection is being established. You can also click on the icon and choose *Details* to see a log of what is happening.
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
 ### Linux ###
@@ -67,7 +67,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 1. Execute OpenVPN, and pass it the .ovpn profile as an option.
 
    `sudo openvpn {{ openvpn_direct_profile_filename }}`
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux-ubuntu"></a>
 ### Linux (Ubuntu) ###
@@ -107,7 +107,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
    * Click *OK*.
 1. Click *Save...*
 1. Select the VPN in the left-hand menu, and flip the switch to *ON*. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to *VPN Connections*, and clicking on its name.
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="android"></a>
 ### Android ###
@@ -123,7 +123,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 1. Tap the save icon (floppy disk) in the lower-right of the screen after the import is complete.
 1. Tap the profile.
 1. Accept the Android VPN connection warning.
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) that affects VPN users who are running Android 4.4. The following workaround ensures that lookups can be performed successfully, even if you remain connected to the OpenVPN server for an extended period of time.
 
@@ -149,4 +149,4 @@ Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show
 1. OpenVPN on your phone will say that *1 new OpenVPN profile is available for import*.
 1. Tap the green *+* button to import the profile.
 1. Tap the slider to connect to the OpenVPN server.
-1. Success! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.

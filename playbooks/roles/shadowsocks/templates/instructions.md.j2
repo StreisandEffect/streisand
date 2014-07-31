@@ -35,7 +35,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1.  Type `about:config` into the address bar and hit Enter.
 1. You should see a screen that says *This might void your warranty!* Click *I'll be careful, I promise!*.
 1. Search for `socks_remote_dns` and double click on the value that is returned. It will change from *false* to *true*.
-1. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="osx"></a>
 ### OS X ###
@@ -68,7 +68,7 @@ Once you have Shadowsocks running locally, you'll need to forward your browser t
 1. Uncheck the *CHN Route* option.
 1. Slide the switch to *On*.
 1. Accept the Android VPN connection warning.
-1. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
 ### iOS ###
@@ -85,6 +85,6 @@ Once you have Shadowsocks running locally, you'll need to forward your browser t
 1. Go back, and tap the *Done* button in the upper-right.
 1. Double click the home button, and slide Shadowsocks off the top of the screen to close it.
 1. Press the home button, and relaunch the application.
-1. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/), in the Shadowsocks browser. It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 Now that Shadowsocks is properly configured, you can can launch it anytime and use its integrated browser to visit any blocked site. You can also route traffic from other iOS applications through the encrypted proxy. Instructions for this functionality (and details on its limitations) are available on the [Shadowsocks iOS Wiki](https://github.com/shadowsocks/shadowsocks-iOS/wiki/Help).

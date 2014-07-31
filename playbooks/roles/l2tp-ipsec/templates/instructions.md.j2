@@ -39,7 +39,7 @@ If the connection appears to time out, first check to make sure the passwords we
 1. Click *OK* to save the VPN connection details.
 1. To connect to the VPN, simply right-click on the wireless/network icon in your system tray, select *{{ streisand_server_name }}*, and click *Connect*.
 
-You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="osx"></a>
 ### OS X ###
@@ -59,7 +59,7 @@ You can verify that your traffic is being routed properly by visiting the Tor Pr
 1. Click the *Advanced* button and make sure the *Send all traffic over VPN connection* checkbox is selected.
 1. Click *OK* to close the Advanced settings, and then click *Apply* to save the VPN connection information.
 
-You can connect to the VPN using the VPN icon in the menu bar, or by selecting the VPN in the Network section of System Preferences and choosing *Connect*. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+You can connect to the VPN using the VPN icon in the menu bar, or by selecting the VPN in the Network section of System Preferences and choosing *Connect*. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
 ### Linux ###
@@ -88,7 +88,7 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 1. Enter `{{ chap_password.stdout }}` in the *Password* field.
 1. Check the *Save account information* checkbox.
 1. Tap *Connect*.
-1. Once connected, you will see a VPN icon in the notification bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. Once connected, you will see a VPN icon in the notification bar. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
 ### iOS ###
@@ -102,7 +102,7 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 1. Tap *Secret* and enter `{{ ipsec_preshared_key.stdout }}`.
 1. Tap *Save*.
 1. Slide the *VPN* switch on.
-1. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="chromebook"></a>
 ### Chromebook ###
@@ -116,4 +116,4 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 1. Enter `streisand` for the *Username*.
 1. Enter `{{ chap_password.stdout }}` for the *Password*.
 1. Click *Connect*.
-1. Once connected, you will see a VPN icon overlay on the network status icon. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. Once connected, you will see a VPN icon overlay on the network status icon. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.

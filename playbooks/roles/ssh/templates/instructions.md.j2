@@ -50,7 +50,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1.  Type `about:config` into the address bar and hit Enter.
 1. You should see a screen that says *This might void your warranty!* Click *I'll be careful, I promise!*.
 1. Search for `socks_remote_dns` and double click on the value that is returned. It will change from *false* to *true*.
-1. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux-and-osx"></a>
 ### Linux and OS X (sshuttle) ###
@@ -84,7 +84,7 @@ Sshuttle is a simple VPN tunnelling solution that operates over the SSH transpor
    `{{ ssh_server_fingerprints.results[0].stdout }}`
 
    `{{ ssh_server_fingerprints.results[1].stdout }}`
-1. All of your traffic, including DNS, is now being transparently forwarded through an encrypted SSH connection. You can verify that everything is working properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. All of your traffic, including DNS, is now being transparently forwarded through an encrypted SSH connection. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux-and-osx-alternate"></a>
 ### Linux and OS X (alternate) ###
