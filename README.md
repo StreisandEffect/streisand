@@ -134,6 +134,17 @@ You can also run Streisand on any number of new Debian 7 servers. Dedicated hard
 
 The servers should be accessible using SSH keys, and *root* is used as the connecting user by default (though this is simple to change by updating the streisand.yml file or ansible.cfg file).
 
+Upcoming Features
+-----------------
+* Native [Microsoft Azure](http://azure.microsoft.com/en-us/) support
+* Native [Google Compute Engine](https://cloud.google.com/products/compute-engine/) support
+* A flag to allow L2TP/IPsec installation to be disabled
+* Creation of a Streisand pip package to make the setup of all required dependencies even easier
+* Output of firewall configuration information for users who would like to run Streisand on their own hardware
+* Automatic security upgrades
+
+If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/jlund/streisand/issues).
+
 Acknowledgements
 ----------------
 I cannot express how grateful I am to [Trevor Smith](https://github.com/trevorsmith) for his massive contributions to the project. He suggested the Gateway approach, provided tons of invaluable feedback, made *everything* look better, and developed the HTML template that served as the inspiration to take things to the next level before Streisand's public release. I also appreciated the frequent use of his iPhone while testing various clients.
