@@ -95,12 +95,14 @@
   command: "{{ item }}"
   with_items: l2tp_ipsec_firewall_rules
 
-- name: Disable daemon logging in rsyslog to prevent xl2tpd from logging incoming connections
-  lineinfile: dest=/etc/rsyslog.conf
-              regexp="daemon.log"
-              line="#daemon.*                       -/var/log/daemon.log"
+- name: Copy the rsyslog config file that prevents incoming L2TP/IPsec traffic from being logged by completely filtering out all messages from pppd, charon, and xl2tpd.
+  copy: src=rsyslog.conf
+        dest=/etc/rsyslog.conf
+        owner=root
+        group=root
+        mode=644
 
-- name: Restart rsyslog
+- name: Restart rsyslog to apply the new configuration
   service: name=rsyslog
            state=restarted
 
