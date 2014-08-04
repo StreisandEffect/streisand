@@ -5,6 +5,6 @@
     - sslh
 
 - name: Copy sslh port multiplexer configuration file into place
-  copy: src=sslh
+  template: src=sslh.j2
         dest=/etc/default/sslh
   notify: Restart sslh
