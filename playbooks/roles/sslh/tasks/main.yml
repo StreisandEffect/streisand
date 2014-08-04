@@ -1,0 +1,10 @@
+---
+- name: Install sslh and dependencies from apt
+  apt: name={{ item }}
+  with_items:
+    - sslh
+
+- name: Copy sslh port multiplexer configuration file into place
+  copy: src=sslh
+        dest=/etc/default/sslh
+  notify: Restart sslh
