@@ -1,4 +1,8 @@
 ---
+- name: Warn users if the server's Linux distribution is not Debian 7
+  pause: prompt="Debian 7 is the only fully tested distribution; the setup will probably fail. Press Enter if you still want to continue."
+  when: ansible_distribution != "Debian" and ansible_distribution_major_version != "7"
+
 # Set default variables
 - include: set-default-variables.yml
 
@@ -6,10 +10,6 @@
   apt: upgrade=yes
        update_cache=yes
        cache_valid_time=3600
-
-- name: Attention, unsupported distribution
-  when:  ansible_distribution != 'Debian'
-  pause: prompt="Debian 7 is the only fully tested distribution, the setup will probably fail. Press Enter if you still want to continue."
 
 - name: Install Streisand common packages
   apt: name={{ item }}
