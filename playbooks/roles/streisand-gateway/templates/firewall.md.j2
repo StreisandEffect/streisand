@@ -1,0 +1,28 @@
+Firewall Information
+--------------------
+These ports are open by default when Streisand creates a new server from scratch on a supported provider.
+
+If you are installing Streisand on an existing server or alternate provider then you need to make sure the firewall allows traffic to the new server on the following ports:
+
+---
+{# L2TP/IPsec is not installed on Amazon servers #}
+{% if l2tp_ipsec_gateway_location %}
+* L2TP/IPsec
+  * UDP - 500
+  * UDP - 1701
+  * UDP - 4500
+{% endif %}
+* Nginx (Streisand Gateway)
+  * TCP - {{ nginx_port }}
+* OpenSSH
+  * TCP - {{ ssh_port }}
+* OpenVPN
+  * {{ openvpn_protocol | upper }} - {{ openvpn_port }}
+* Shadowsocks
+  * TCP - {{ shadowsocks_server_port }}
+* stunnel
+  * TCP - {{ stunnel_remote_port }}
+* Tor
+  * TCP - {{ tor_orport }} - Bridge
+  * TCP - {{ tor_obfs3_port }} - obfs3 pluggable transport
+  * TCP - {{ tor_scramblesuit_port }} - ScrambleSuit pluggable transport
