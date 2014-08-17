@@ -52,6 +52,8 @@ Services Provided
   * The [Dante](http://www.inet.no/dante/) proxy server is set up as a workaround for a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) in Firefox for Android.
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
   * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
+* [sslh](http://www.rutschle.net/tech/sslh.shtml)
+  * Sslh is a protocol demultiplexer that allows Nginx, OpenSSH, and OpenVPN to share port 443. This provides an alternative connection option and means that you can still route traffic via OpenSSH and OpenVPN even if you are on a restrictive network that blocks all access to non-HTTP ports.
 * [Stunnel](https://www.stunnel.org/index.html)
   * Listens for and wraps OpenVPN connections. This makes them look like standard SSL traffic and allows OpenVPN clients to successfully establish tunnels even in the presence of Deep Packet Inspection.
   * Unified profiles for stunnel-wrapped OpenVPN connections are generated alongside the direct connection profiles. Detailed instructions are also generated.

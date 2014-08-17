@@ -30,6 +30,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
+   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to ports `80` and `443`.*
 1. Open the *config* directory that is located in the Destination Folder. For most users, this will either be in *C:\Program Files\OpenVPN\config* or *C:\Program Files (x86)\OpenVPN\config*. You will see a single README file in this directory.
 1. Drag and drop the downloaded `{{ openvpn_direct_profile_filename }}` file to this location alongside the README.
 1. Right-click on the OpenVPN icon in your taskbar and choose *Connect*.
@@ -47,6 +48,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
+   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to ports `80` and `443`.*
 1. Click the *Open configuration folder* button on the *Welcome to Tunnelblick* screen.
 1. Drag and drop the downloaded `{{ openvpn_direct_profile_filename }}` file to the folder that was opened. You may need to enter your password in order to authorize Finder to copy the file to this location.
 1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose *Connect*. You will see an animation while the connection is being established. You can also click on the icon and choose *Details* to see a log of what is happening.
@@ -63,6 +65,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
+   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to ports `80` and `443`.*
 1. Copy the downloaded `{{ openvpn_direct_profile_filename }}` file to the location of your choice. */etc/openvpn/* is a decent option.
 1. Execute OpenVPN, and pass it the .ovpn profile as an option.
 
@@ -94,6 +97,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 1. Click the *Advanced* button.
 1. Go to the *General* tab.
    * Check *Use custom gateway port* and enter `{{ openvpn_port }}` as its value.
+     * Port `443` is available as an alternative if you are on a network that only allows to the two standard HTTP ports.
    * Check *Use LZO data compression*.
    * Check *Use a TCP connection*.
 1. Go to the *Security* tab.
@@ -116,6 +120,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
+   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to ports `80` and `443`.*
 1. Copy the `{{ openvpn_direct_profile_filename }}` file to your phone.
 1. Launch OpenVPN for Android.
 1. Tap the folder icon in the lower-right of the screen.
@@ -143,6 +148,7 @@ Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
+   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to ports `80` and `443`.*
 1. Open iTunes on your computer and connect your phone.
 1. Select your phone, click on the *Apps* tab, and find OpenVPN under the *File Sharing* section.
 1. Drag and drop the downloaded `{{ openvpn_direct_profile_filename }}` file into the file sharing window.
@@ -150,3 +156,9 @@ Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show
 1. Tap the green *+* button to import the profile.
 1. Tap the slider to connect to the OpenVPN server.
 1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+<a name="sslh-profiles"></a>
+### Alternate unified profiles for access via port 443 ###
+{% for client in openvpn_clients %}
+* [{{ client }}](/openvpn/{{ client }}/{{ openvpn_sslh_profile_filename }})
+{% endfor %}
