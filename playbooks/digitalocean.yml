@@ -12,8 +12,9 @@
       "3": 7
       "4": 1
       "5": 4
-      "6": 3
-      "7": 6
+      "6": 8
+      "7": 3
+      "8": 6
 
   vars_prompt:
     - name: "do_region"
@@ -24,8 +25,9 @@
           3. London
           4. New York         (Datacenter 1)
           5. New York         (Datacenter 2)
-          6. San Francisco
-          7. Singapore
+          6. New York         (Datacenter 3)
+          7. San Francisco
+          8. Singapore
         Please choose the number of your region. Press enter for default (#2) region.
       default: "2"
       private: no
