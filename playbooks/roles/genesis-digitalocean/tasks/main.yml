@@ -27,7 +27,7 @@
   register: streisand_server
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
-  shell: curl --silent --max-time 5 {{ streisand_server.droplet.ip_address }}:22 | grep 'SSH'
+  shell: echo quit | telnet {{ streisand_server.droplet.ip_address }} 22 2>/dev/null | grep Connected
   register: connection_attempt
   until: connection_attempt | success
   retries: 20
