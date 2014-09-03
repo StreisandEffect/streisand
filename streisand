@@ -4,9 +4,9 @@ echo
 echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m"
 echo
 
-if [[ "$(ansible --version | grep -oe '1\(.[0-9]\)*')" < "1.6" ]]
+if [[ "$(ansible --version | grep -oe '1\(.[0-9]\)*')" < "1.7" ]]
 then
-    echo "Ansible version 1.6+ is required."
+    echo "Ansible version 1.7+ is required."
     exit -1;
 fi
 

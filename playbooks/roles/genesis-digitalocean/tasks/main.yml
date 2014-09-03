@@ -27,10 +27,10 @@
   register: streisand_server
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
-  shell: curl --silent --max-time 5 {{ streisand_server.droplet.ip_address }}:22 | grep 'SSH'
-  register: connection_attempt
-  until: connection_attempt | success
-  retries: 20
+  wait_for: host={{ streisand_server.droplet.ip_address }}
+            port=22
+            search_regex=OpenSSH
+            timeout=300
 
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.droplet.ip_address }}
