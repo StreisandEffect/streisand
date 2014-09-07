@@ -8,4 +8,4 @@ aws_debian7_sydney_ami_id: "ami-b740db8d"
 aws_debian7_tokyo_ami_id: "ami-3d286e3c"
 aws_debian7_virginia_ami_id: "ami-78b45610"
 
-aws_instance_type: "t1.micro"
+aws_instance_type: "t2.micro"
