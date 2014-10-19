@@ -7,7 +7,7 @@ tor_mirror_href_base: "/mirror/tor"
 tor_erinn_clark_key_id: "0x416F061063FEE659"
 tor_erinn_clark_expected_fingerprint: "Key fingerprint = 8738 A680 B84B 3031 A630  F2DB 416F 0610 63FE E659"
 
-tor_base_download_url: "https://www.torproject.org/dist/torbrowser"
+tor_base_download_url: "https://dist.torproject.org/torbrowser"
 
 # Windows
 tor_browser_bundle_windows_filename: "torbrowser-install-{{ tor_browser_bundle_version }}_en-US.exe"
