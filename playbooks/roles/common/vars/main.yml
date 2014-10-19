@@ -1,5 +1,8 @@
 ---
 streisand_common_packages:
+  # Used to perform API requests, including the version check for
+  # the Tor Browser Bundle
+  - curl
   # Used to verify GPG signatures for mirrored packages
   - gnupg
   # Used for documentation generation
