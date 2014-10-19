@@ -40,18 +40,8 @@ openvpn_download_urls:
   - "{{ openvpn_windows64_installer_sig_url }}"
 
 # OS X
-tunnelblick_version: "3.3.4"
+tunnelblick_version: "3.4.1_r3054"
 tunnelblick_filename: "Tunnelblick_{{ tunnelblick_version }}.dmg"
 tunnelblick_href: "{{ openvpn_mirror_href_base }}/{{ tunnelblick_filename }}"
 tunnelblick_url: "http://softlayer-ams.dl.sourceforge.net/project/tunnelblick/All%20files/{{ tunnelblick_filename }}"
-tunnelblick_checksum: "c14e4b2d4e30679851de7701c8a0b3167158c5ce029c59b49e49eb58946de913"
-
-tunnelblick_beta_version: "3.4beta30"
-tunnelblick_beta_filename: "Tunnelblick_{{ tunnelblick_beta_version }}.dmg"
-tunnelblick_beta_href: "{{ openvpn_mirror_href_base }}/{{ tunnelblick_beta_filename }}"
-tunnelblick_beta_url: "http://softlayer-ams.dl.sourceforge.net/project/tunnelblick/All%20files/{{ tunnelblick_beta_filename }}"
-tunnelblick_beta_checksum: "dbd8df4c29b7ec742dde4bfee9ba8be8c2ac4fb5ff2ab7ac7f40e6b7214677ff"
-
-tunnelblick_download_urls:
-  - { url: "{{ tunnelblick_url }}",      checksum: "{{ tunnelblick_checksum }}" }
-  - { url: "{{ tunnelblick_beta_url }}", checksum: "{{ tunnelblick_beta_checksum }}" }
+tunnelblick_checksum: "44a9b1986c100698c82186c4ce404d5acf34f292d08c5f8528c33e22646f955a"
