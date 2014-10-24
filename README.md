@@ -106,6 +106,7 @@ Installation
   * Amazon EC2
 
             sudo pip install boto
+    * You will also need to subscribe to Debian GNU/Linux on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/B00AA289LU). There is no cost associated with doing this.
   * DigitalOcean
 
             sudo pip install dopy
