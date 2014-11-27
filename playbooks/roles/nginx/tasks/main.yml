@@ -8,7 +8,7 @@
   apt_repository: repo="deb http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_lsb.codename }} nginx"
 
 - name: Install Nginx
-  apt: name=nginx
+  apt: name=nginx force=yes
 
 - name: Update Nginx configuration
   copy: src=nginx.conf
