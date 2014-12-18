@@ -92,7 +92,7 @@ Installation
   * On OS X
 
             sudo easy_install pip
-* Install [Ansible](http://www.ansible.com/home). If you have an existing installation, please note that Ansible version 1.7+ is required.
+* Install [Ansible](http://www.ansible.com/home). If you have an existing installation, please note that Ansible version 1.8.2 or higher is required.
   * On OS X (via [Homebrew](http://brew.sh/))
 
             brew install ansible
