@@ -17,6 +17,8 @@ If you are installing Streisand on an existing server or alternate provider then
 * OpenSSH
   * TCP - {{ ssh_port }}
 * OpenVPN
+  * UDP - 53 to/from `10.8.0.1`
+    * This is the address that OpenVPN binds to on the virtual TUN interface that it creates. Dnsmasq listens for DNS traffic on this port and responds to requests from connected OpenVPN clients.
   * {{ openvpn_protocol | upper }} - {{ openvpn_port }}
 * Shadowsocks
   * TCP - {{ shadowsocks_server_port }}
