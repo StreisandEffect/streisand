@@ -143,7 +143,6 @@ Upcoming Features
 * Native [Google Compute Engine](https://cloud.google.com/products/compute-engine/) support
 * A flag to allow L2TP/IPsec installation to be disabled
 * Creation of a Streisand pip package to make the setup of all required dependencies even easier
-* Output of firewall configuration information for users who would like to run Streisand on their own hardware
 * Automatic security upgrades
 
 If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/jlund/streisand/issues).
