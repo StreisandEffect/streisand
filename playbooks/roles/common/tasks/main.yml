@@ -6,9 +6,8 @@
 # Set default variables
 - include: set-default-variables.yml
 
-- name: Upgrade all installed packages and ensure the APT cache is up to date
-  apt: upgrade=yes
-       update_cache=yes
+- name: Ensure the APT cache is up to date
+  apt: update_cache=yes
        cache_valid_time=3600
 
 - name: Install Streisand common packages

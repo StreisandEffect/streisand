@@ -1,9 +1,4 @@
 ---
-- name: Downgrade the kernel as a temporary workaround for a Debian regression that prevents OpenVPN from starting properly (https://bugs.debian.org/767836)
-  apt: name=linux-image-3.2.0-4-amd64=3.2.63-2
-       force=yes
-  when: ansible_distribution == "Debian"
-
 - name: Install OpenVPN and dependencies from apt
   apt: name={{ item }}
   with_items:
