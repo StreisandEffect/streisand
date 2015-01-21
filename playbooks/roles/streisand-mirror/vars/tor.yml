@@ -18,7 +18,7 @@ tor_browser_bundle_windows_url: "{{ tor_base_download_url }}/{{ tor_browser_bund
 tor_browser_bundle_windows_sig_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_windows_sig_filename }}"
 
 # OS X
-tor_browser_bundle_osx_filename: "TorBrowser-{{ tor_browser_bundle_version }}-osx32_en-US.dmg"
+tor_browser_bundle_osx_filename: "TorBrowser-{{ tor_browser_bundle_version }}-osx64_en-US.dmg"
 tor_browser_bundle_osx_sig_filename: "{{ tor_browser_bundle_osx_filename }}.asc"
 tor_browser_bundle_osx_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_osx_filename }}"
 tor_browser_bundle_osx_sig_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_osx_sig_filename }}"
