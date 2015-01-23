@@ -1,4 +1,9 @@
 ---
+- name: Remove the Apache web server in order to avoid conflicts with Nginx
+  apt: name={{ item }}
+       state=absent
+  with_items: apache_packages_to_remove
+
 - name: Add the official Nginx APT key
   apt_key: id=7BD9BF62
            data="{{ item }}"
