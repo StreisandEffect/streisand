@@ -8,7 +8,7 @@ streisand_common_packages:
   # Used for documentation generation
   - markdown
   # Ensures the server's clock is set properly
-  - ntp
+  - openntpd
   # Required for the apt_repository module
   - python-software-properties
   # Word List dictionary used by several roles to generate random
