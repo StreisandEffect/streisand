@@ -24,8 +24,8 @@
 
 - include: download-and-verify.yml
            project_name="Tor Browser Bundle"
-           project_signer="Erinn Clark"
-           project_signing_key="{{ tor_erinn_clark_key_id }}"
-           project_expected_fingerprint="{{ tor_erinn_clark_expected_fingerprint }}"
+           project_signer="Tor Browser Developers"
+           project_signing_key="{{ tor_browser_developers_key_id }}"
+           project_expected_fingerprint="{{ tor_browser_developers_expected_fingerprint }}"
            project_mirror_location="{{ tor_mirror_location }}"
            project_download_urls="{{ tor_download_urls }}"
