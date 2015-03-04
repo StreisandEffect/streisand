@@ -14,6 +14,9 @@ Shadowsocks
 1. Download [Shadowsocks for Windows](/mirror/#shadowsocks).
    * The Shadowsocks Windows GUI is compressed using the xz format. You can download an open source utility to extract the file from the [7-Zip home page](http://www.7-zip.org).
 1. Extract the archive, and double-click on the shadowsocks.exe file.
+1. Make sure the QR code is centered and completely visible, right click on the Shadowsocks system tray icon, and go to *Servers* > *Scan QRCode from Screen...*
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. You may also go to *Servers* > *New server* and manually enter the information below:
 1. Enter `{{ streisand_ipv4_address }}` as the *Server IP*.
 1. Enter `{{ shadowsocks_server_port }}` as the *Server Port*.
 1. Enter `{{ shadowsocks_password.stdout }}` as the *Password*.
@@ -43,8 +46,10 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Double-click the DMG, and drag the icon into your Applications folder.
 1. Launch ShadowsocksX. You will be prompted to enter your password so that your system proxy settings can be modified.
 1. Look for the Shadowsocks paper plane icon in your taskbar and click on it.
-1. Select *Servers* and choose *Open Server Preferences...*
-1. Click the *+* button on the sidebar to add a new entry.
+1. Make sure the QR code is centered and completely visible and choose *Scan QR Code from Screen...*
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. You may also go to *Servers* and *Open Server Preferences...*
+1. Click the *+* button on the sidebar to manually the following:
 1. Enter `{{ streisand_ipv4_address }}` and `{{ shadowsocks_server_port }}` in the *Address* fields.
 1. Make sure `{{ shadowsocks_encryption_method }}` is selected for the *Encryption* value.
 1. Enter `{{ shadowsocks_password.stdout }}` as the *Password*.
