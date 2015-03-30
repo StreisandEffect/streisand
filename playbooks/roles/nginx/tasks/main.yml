@@ -1,4 +1,14 @@
 ---
+- name: Remove the Apache web server in order to avoid conflicts with Nginx
+  apt: name={{ item }}
+       state=absent
+  with_items: apache_packages_to_remove
+
+- name: Make sure that nothing is listening on port 80 on the public interface
+  wait_for: host={{ streisand_ipv4_address }}
+            port=80
+            state=stopped
+
 - name: Add the official Nginx APT key
   apt_key: id=7BD9BF62
            data="{{ item }}"

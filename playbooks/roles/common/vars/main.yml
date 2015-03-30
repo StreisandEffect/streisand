@@ -1,16 +1,19 @@
 ---
 streisand_common_packages:
+  # Used to perform API requests, including the version check for
+  # the Tor Browser Bundle
+  - curl
   # Used to verify GPG signatures for mirrored packages
   - gnupg
   # Used for documentation generation
   - markdown
   # Ensures the server's clock is set properly
-  - ntp
+  - openntpd
   # Required for the apt_repository module
   - python-software-properties
   # Word List dictionary used by several roles to generate random
   # (yet typeable!) passphrases
-  - wamerican
+  - wamerican-huge
 
 streisand_gateway_location: "/var/www/streisand"
 

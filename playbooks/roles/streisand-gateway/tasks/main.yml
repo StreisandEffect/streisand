@@ -36,7 +36,7 @@
         state=absent
 
 - name: Generate a random Gateway password
-  shell: grep -v "'" /usr/share/dict/american-english | sort -R | tail -n 4 | xargs | sed -e 's/ /-/g' > {{ streisand_gateway_password_file }}
+  shell: grep -v "'" /usr/share/dict/american-english-huge | grep -v "[^ a-z]|[^ A-Z]" | sort -R | tail -n 4 | xargs | sed -e 's/ /-/g' > {{ streisand_gateway_password_file }}
          creates={{ streisand_gateway_password_file }}
 
 - name: Register the Gateway password
@@ -88,30 +88,37 @@
   command: base64 --wrap=0 {{ openssl_ca_certificate }}
   register: streisand_certificate_data_uri
 
-- name: Generate the Markdown Gateway index and instructions
+- name: Generate the Markdown Gateway index, instructions, and firewall information
   template: src={{ item.src }}
             dest={{ item.dest }}
   with_items:
     - { src: "index.md.j2",        dest: "{{ streisand_gateway_markdown_index }}" }
     - { src: "instructions.md.j2", dest: "{{ streisand_gateway_markdown_instructions }}" }
+    - { src: "firewall.md.j2", dest: "{{ streisand_gateway_markdown_firewall_information }}" }
 
-- name: Convert the Markdown Gateway index and instructions into HTML and surround them with the header and footer template
+- name: Convert the Markdown Gateway index, instructions, and firewall infomration into HTML and surround them with the header and footer template
   shell: markdown {{ item.md }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ item.html }}
   with_items:
-    - { md: "{{ streisand_gateway_markdown_index }}",        html: "{{ streisand_gateway_html_index }}" }
-    - { md: "{{ streisand_gateway_markdown_instructions }}", html: "{{ streisand_gateway_html_instructions }}" }
+    - { md: "{{ streisand_gateway_markdown_index }}",                html: "{{ streisand_gateway_html_index }}" }
+    - { md: "{{ streisand_gateway_markdown_instructions }}",         html: "{{ streisand_gateway_html_instructions }}" }
+    - { md: "{{ streisand_gateway_markdown_firewall_information }}", html: "{{ streisand_gateway_html_firewall_information }}" }
 
-- name: Fetch the Gateway HTML instructions
+- name: Fetch the Gateway HTML instructions and firewall information
   fetch: dest={{ streisand_local_directory }}/
-         src={{ streisand_gateway_html_instructions }}
+         src={{ item }}
          flat=yes
+  with_items:
+    - "{{ streisand_gateway_html_instructions }}"
+    - "{{ streisand_gateway_html_firewall_information }}"
 
-- name: Clean up the temporary Gateway instruction files once they have been retrieved
+- name: Clean up the temporary Gateway instruction and firewall information files once they have been retrieved
   file: path={{ item }}
         state=absent
   with_items:
     - "{{ streisand_gateway_html_instructions }}"
     - "{{ streisand_gateway_markdown_instructions }}"
+    - "{{ streisand_gateway_html_firewall_information }}"
+    - "{{ streisand_gateway_markdown_firewall_information }}"
 
 - name: Ensure that all of the files in the Gateway have the proper permissions
   file: path={{ streisand_gateway_location }}
@@ -124,14 +131,15 @@
 - meta: flush_handlers
 
 - name: Success!
-  pause: prompt="Server setup is complete. The `{{ streisand_server_name }}.html` instructions file in the generated-docs folder is ready to give to family, friends, and fellow activists. Press Enter to open these instructions."
+  pause: prompt="Server setup is complete. The `{{ streisand_server_name }}.html` instructions file in the generated-docs folder is ready to give to friends, family members, and fellow activists. Press Enter to continue."
 
-- name: Open the instructions (Linux)
+- name: Attempt to open the instructions on Linux (if applicable). Errors in this task are ignored because the `xdg-open` command is not always available.
   local_action: command xdg-open {{ streisand_local_directory }}/{{ streisand_server_name }}.html
+  ignore_errors: yes
   when: hostvars['127.0.0.1']['ansible_system'] == "Linux"
   sudo: no
 
-- name: Open the instructions (OS X)
+- name: Open the instructions on OS X (if applicable)
   local_action: command open {{ streisand_local_directory }}/{{ streisand_server_name }}.html
   when: hostvars['127.0.0.1']['ansible_system'] == "Darwin"
   sudo: no

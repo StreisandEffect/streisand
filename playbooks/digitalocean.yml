@@ -9,11 +9,13 @@
     regions:
       "1": 2
       "2": 5
-      "3": 7
-      "4": 1
-      "5": 4
-      "6": 3
-      "7": 6
+      "3": 9
+      "4": 7
+      "5": 1
+      "6": 4
+      "7": 8
+      "8": 3
+      "9": 6
 
   vars_prompt:
     - name: "do_region"
@@ -21,13 +23,15 @@
         What region should the server be located in?
           1. Amsterdam        (Datacenter 1)
           2. Amsterdam        (Datacenter 2)
-          3. London
-          4. New York         (Datacenter 1)
-          5. New York         (Datacenter 2)
-          6. San Francisco
-          7. Singapore
+          3. Amsterdam        (Datacenter 3)
+          4. London
+          5. New York         (Datacenter 1)
+          6. New York         (Datacenter 2)
+          7. New York         (Datacenter 3)
+          8. San Francisco
+          9. Singapore
         Please choose the number of your region. Press enter for default (#2) region.
-      default: "2"
+      default: "3"
       private: no
 
     - name: "do_server_name"
@@ -41,6 +45,11 @@
 
     - name: "do_api_key"
       prompt: "\nWhat is your DigitalOcean API key?\n"
+      private: no
+
+    - name: "do_ssh_name"
+      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/ssh_keys\n\nWhat is the name of the DigitalOcean SSH key that you would like to use?\n  * If you have never uploaded an SSH key to DigitalOcean then the default\n    value will work!\n  * This key should match your .ssh/id_rsa.pub file.\n\  * DigitalOcean requires SSH keys to be unique. You cannot upload multiple\n    keys that have the same value under different names.\n\n    If you see an error that says 'SSH Key failed to be created' once the setup\n    process starts, then this is the problem. You can retry the setup process\n    using the name of the existing SSH key that matches the contents of your\n    RSA public key.\n"
+      default: "streisand"
       private: no
 
     - name: "confirmation"

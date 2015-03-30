@@ -1,0 +1,17 @@
+# Default options for sslh initscript
+# sourced by /etc/init.d/sslh
+
+# Disabled by default, to force yourself
+# to read the configuration:
+# - /usr/share/doc/sslh/README.Debian (quick start)
+# - /usr/share/doc/sslh/README, at "Configuration" section
+# - sslh(8) via "man sslh" for more configuration details.
+# Once configuration ready, you *must* set RUN to yes here
+# and try to start sslh (standalone mode only)
+
+RUN=yes
+
+# binary to use: forked (sslh) or single-thread (sslh-select) version
+DAEMON=/usr/sbin/sslh
+
+DAEMON_OPTS="-u sslh -p {{ ansible_default_ipv4.address }}:443 --ssh 127.0.0.1:{{ ssh_port }} --openvpn 127.0.0.1:{{ openvpn_port }} --ssl 127.0.0.1:{{ nginx_port }} -P /var/run/sslh/sslh.pid"

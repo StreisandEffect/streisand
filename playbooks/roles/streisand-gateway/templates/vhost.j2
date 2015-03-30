@@ -1,6 +1,6 @@
 # SSL Gateway
 server {
-  listen {{ nginx_port }} default_server ssl;
+  listen 127.0.0.1:{{ nginx_port }} default_server ssl;
 
   ssl_certificate      {{ nginx_self_signed_certificate }};
   ssl_certificate_key  {{ nginx_private_key }};

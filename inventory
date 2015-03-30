@@ -1,5 +1,5 @@
 [localhost]
-127.0.0.1
+127.0.0.1 ansible_python_interpreter=python
 
 # Uncomment the following lines and update the IP address if you would
 # like to use Streisand to configure a server that is already running

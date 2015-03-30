@@ -1,26 +1,20 @@
 ---
-- name: Remove the 'streisand' SSH key from DigitalOcean if it already exists. This is to prevent problems if two people with two different keys are sharing the same DigitalOcean account.
-  digital_ocean_sshkey: name=streisand
-                        state=absent
-                        client_id="{{ do_client_id }}"
-                        api_key="{{ do_api_key }}"
-
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
 
-- name: Add the SSH key to DigitalOcean
-  digital_ocean_sshkey: name=streisand
+- name: Add the SSH key to DigitalOcean if it doesn't already exist
+  digital_ocean_sshkey: name="{{ do_ssh_name }}"
                         ssh_pub_key="{{ ssh_key.stdout }}"
                         client_id="{{ do_client_id }}"
                         api_key="{{ do_api_key }}"
   register: do_ssh_key
 
 - name: Get the latest 'Debian 7.0 x64' image ID from the DigitalOcean API
-  shell: curl -s 'https://api.digitalocean.com/images/?client_id={{ do_client_id }}&api_key={{ do_api_key }}' | ruby -e 'require "json"; puts JSON.parse(ARGF.read)["images"].select { |image| image["name"] == "Debian 7.0 x64" }.first["id"]'
+  shell: curl -s 'https://api.digitalocean.com/images/?client_id={{ do_client_id }}&api_key={{ do_api_key }}' | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print [img for img in j["images"] if img["slug"]=="debian-7-0-x64"][0]["id"]'
   register: do_debian7_x64_image_id
 
-- name: Create the server
+- name: Create the server. If this task fails with an "invalid region" error, then DigitalOcean is temporarily not allowing new 512MB Droplets to be provisioned in the selected region. You can either try the same region again later, or choose a different location.
   digital_ocean: command=droplet
                  name={{ do_server_name }}
                  ssh_key_ids={{ do_ssh_key.ssh_key.id }}
@@ -33,10 +27,10 @@
   register: streisand_server
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
-  shell: curl --silent --max-time 5 {{ streisand_server.droplet.ip_address }}:22 | grep 'SSH'
-  register: connection_attempt
-  until: connection_attempt | success
-  retries: 20
+  wait_for: host={{ streisand_server.droplet.ip_address }}
+            port=22
+            search_regex=OpenSSH
+            timeout=300
 
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.droplet.ip_address }}

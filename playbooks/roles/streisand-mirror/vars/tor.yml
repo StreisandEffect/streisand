@@ -4,11 +4,10 @@
 tor_mirror_location: "{{ streisand_mirror_location }}/tor"
 tor_mirror_href_base: "/mirror/tor"
 
-tor_erinn_clark_key_id: "0x416F061063FEE659"
-tor_erinn_clark_expected_fingerprint: "Key fingerprint = 8738 A680 B84B 3031 A630  F2DB 416F 0610 63FE E659"
+tor_browser_developers_key_id: "0x4E2C6E8793298290"
+tor_browser_developers_expected_fingerprint: "Key fingerprint = EF6E 286D DA85 EA2A 4BA7  DE68 4E2C 6E87 9329 8290"
 
-tor_browser_bundle_version: "3.6.2"
-tor_base_download_url: "https://www.torproject.org/dist/torbrowser"
+tor_base_download_url: "https://dist.torproject.org/torbrowser"
 
 # Windows
 tor_browser_bundle_windows_filename: "torbrowser-install-{{ tor_browser_bundle_version }}_en-US.exe"

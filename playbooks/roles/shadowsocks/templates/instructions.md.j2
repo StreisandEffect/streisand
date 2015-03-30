@@ -12,7 +12,7 @@ Shadowsocks
 <a name="windows"></a>
 ### Windows ###
 1. Download [Shadowsocks for Windows](/mirror/#shadowsocks).
-   * The Shadowsocks Windows GUI is compressed using the 7-Zip format. You can download an open source utility to extract the file from the [7-Zip home page](http://www.7-zip.org).
+   * The Shadowsocks Windows GUI is compressed using the xz format. You can download an open source utility to extract the file from the [7-Zip home page](http://www.7-zip.org).
 1. Extract the archive, and double-click on the shadowsocks.exe file.
 1. Enter `{{ streisand_ipv4_address }}` as the *Server IP*.
 1. Enter `{{ shadowsocks_server_port }}` as the *Server Port*.
@@ -35,11 +35,23 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1.  Type `about:config` into the address bar and hit Enter.
 1. You should see a screen that says *This might void your warranty!* Click *I'll be careful, I promise!*.
 1. Search for `socks_remote_dns` and double click on the value that is returned. It will change from *false* to *true*.
-1. You should be good to go! You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="osx"></a>
 ### OS X ###
-The ShadowsocksX client is extremely unreliable at the moment, and it does not work on OS X Mavericks or Yosemite. It is therefore recommended to use an alternate connection method until these issues are resolved. ShadowsocksX is still available via the [mirror](/mirror/#shadowsocks) if you are interested in giving it a try.
+1. Download [ShadowsocksX](/mirror/#shadowsocks).
+1. Double-click the DMG, and drag the icon into your Applications folder.
+1. Launch ShadowsocksX. You will be prompted to enter your password so that your system proxy settings can be modified.
+1. Look for the Shadowsocks paper plane icon in your taskbar and click on it.
+1. Select *Servers* and choose *Open Server Preferences...*
+1. Click the *+* button on the sidebar to add a new entry.
+1. Enter `{{ streisand_ipv4_address }}` and `{{ shadowsocks_server_port }}` in the *Address* fields.
+1. Make sure `{{ shadowsocks_encryption_method }}` is selected for the *Encryption* value.
+1. Enter `{{ shadowsocks_password.stdout }}` as the *Password*.
+1. Click *OK*.
+1. Click on the Shadowsocks icon in the taskbar again, and choose *Global Mode*.
+1. You can use the Shadowsocks icon to enable/disable the VPN. The color of the icon will change based on whether or not it is active.
+1. That's it! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
 ### Linux ###
@@ -58,17 +70,18 @@ Once you have Shadowsocks running locally, you'll need to forward your browser t
 
 <a name="android"></a>
 ### Android ###
-1. Download [Shadowsocks for Android](https://play.google.com/store/apps/details?id=com.github.shadowsocks) and launch it.
+1. Download Shadowsocks for Android from [Google Play](https://play.google.com/store/apps/details?id=com.github.shadowsocks). If Google Play is blocked in your country, you can [download a mirrored copy](/mirror/#shadowsocks) from this server!
+1. Launch the application.
 1. Tap the menu icon in the top-left of the screen.
 1. Tap *Add Profile*.
 1. Select *Scan QR code*.
 1. Use your phone to scan this image, or if you are using your phone _right now_ you can choose the *Manual Settings* option and copy and paste the information from the Linux section above:
   
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
-1. Uncheck the *CHN Route* option.
+1. Uncheck the *CHN Route* option unless you live in China and want to bypass Shadowsocks when visiting Chinese websites.
 1. Slide the switch to *On*.
 1. Accept the Android VPN connection warning.
-1. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/) It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
 ### iOS ###
@@ -79,12 +92,6 @@ Once you have Shadowsocks running locally, you'll need to forward your browser t
   
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
 1. Tap *OK* when the *Use this server?* pop-up appears.
-1. Tap the menu icon in the top-right of the screen.
-1. Tap *Settings*.
-1. Tap *Proxy Mode* and choose `Global`.
-1. Go back, and tap the *Done* button in the upper-right.
-1. Double click the home button, and slide Shadowsocks off the top of the screen to close it.
-1. Press the home button, and relaunch the application.
-1. You can verify that your traffic is being routed properly by visiting the Tor Project's check page, [Are you using Tor?](https://check.torproject.org/), in the Shadowsocks browser. It should say *Your IP address appears to be: {{ streisand_ipv4_address }}*.
+1. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 Now that Shadowsocks is properly configured, you can can launch it anytime and use its integrated browser to visit any blocked site. You can also route traffic from other iOS applications through the encrypted proxy. Instructions for this functionality (and details on its limitations) are available on the [Shadowsocks iOS Wiki](https://github.com/shadowsocks/shadowsocks-iOS/wiki/Help).

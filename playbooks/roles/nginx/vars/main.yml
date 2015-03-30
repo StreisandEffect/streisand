@@ -1,0 +1,9 @@
+---
+apache_packages_to_remove:
+  - apache2
+  - apache2.2-bin
+  - apache2.2-common
+  - apache2-mpm-event
+  - apache2-mpm-itk
+  - apache2-mpm-prefork
+  - apache2-mpm-worker

@@ -3,8 +3,8 @@
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
 
-- name: Get the latest 'Debian 7.0 x64' image ID from the Linode API
-  shell: curl -s 'https://api.linode.com/?api_key={{ linode_api_key }}&api_action=avail.distributions' | ruby -e 'require "json"; puts JSON.parse(ARGF.read)["DATA"].select { |image| image["LABEL"] == "Debian 7.5" }.first["DISTRIBUTIONID"]'
+- name: Get the latest 'Debian 7' image ID from the Linode API
+  shell: curl -s 'https://api.linode.com/?api_key={{ linode_api_key }}&api_action=avail.distributions' | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print [img for img in j["DATA"] if img["LABEL"]=="Debian 7"][0]["DISTRIBUTIONID"]'
   register: linode_debian7_x64_distribution_id
 
 - name: Create the server
@@ -18,10 +18,10 @@
   register: streisand_server
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
-  shell: curl --silent --max-time 5 {{ streisand_server.instance.ipv4 }}:22 | grep 'SSH'
-  register: connection_attempt
-  until: connection_attempt | success
-  retries: 20
+  wait_for: host={{ streisand_server.instance.ipv4 }}
+            port=22
+            search_regex=OpenSSH
+            timeout=300
 
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.instance.ipv4 }}
