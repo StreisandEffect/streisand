@@ -40,7 +40,7 @@
       private: no
 
     - name: "do_client_id"
-      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/api_access\n\nWhat is your DigitalOcean Client ID?\n"
+      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/generate_api_key\n\nWhat is your DigitalOcean Client Version 1 API ID?\n"
       private: no
 
     - name: "do_api_key"
