@@ -1,0 +1,49 @@
+---
+- name: Create network
+  local_action:
+    module: gce_net
+    name: "{{ gce_network }}"
+    state: "present"
+    ipv4_range: "{{ gce_ipv4_range }}"
+    pem_file: "{{ gce_pem_file }}"
+    project_id: "{{ gce_project_id }}"
+    service_account_email: "{{ gce_service_account_email }}"
+
+- name: Open the SSH port in the GCE firewall
+  local_action:
+    module: gce_net
+    name: "{{ gce_network }}"
+    fwname: "streisand-ssh"
+    allowed: "tcp:{{ ssh_port }}"
+    state: "present"
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    pem_file: "{{ gce_pem_file }}"
+    project_id: "{{ gce_project_id }}"
+  when: open_ssh_port_only
+
+- name: Open necessary TCP ports across most services in GCE firewall
+  local_action:
+    module: gce_net
+    name: "{{ gce_network }}"
+    fwname: "streisand-other"
+    allowed: "tcp:{{ nginx_port }},{{ shadowsocks_server_port }},{{ stunnel_remote_port }},{{ tor_orport }},{{ tor_obfs3_port }},{{ tor_scramblesuit_port }}"
+    state: "present"
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    pem_file: "{{ gce_pem_file }}"
+    project_id: "{{ gce_project_id }}"
+  when: open_all_service_ports
+
+- name: Open OpenVPN port across in GCE firewall
+  local_action:
+    module: gce_net
+    name: "{{ gce_network }}"
+    fwname: "streisand-openvpn"
+    allowed: "{{ openvpn_protocol }}:{{ openvpn_port }}"
+    state: "present"
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    pem_file: "{{ gce_pem_file }}"
+    project_id: "{{ gce_project_id }}"
+  when: open_all_service_ports

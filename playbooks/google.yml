@@ -1,0 +1,158 @@
+---
+- name: Provision the GCE Server
+# =======================================
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+
+  vars:
+    zones:
+      "1": "us-central1-a"
+      "2": "us-central1-b"
+      "3": "us-central1-c"
+      "4": "us-central1-f"
+      "5": "europe-west1-b"
+      "6": "europe-west1-c"
+      "7": "europe-west1-d"
+      "8": "asia-east1-a"
+      "9": "asia-east1-b"
+      "10": "asia-east1-c"
+
+  # This variable file is included so the gce-network role knows
+  # which port to open for SSH
+  vars_files:
+    - roles/ssh/defaults/main.yml
+
+  vars_prompt:
+    - name: "gce_zone_var"
+      prompt: >
+        What zone should the server be located in?
+          1. United States        (Datacenter A)
+          2. United States        (Datacenter B)
+          3. United States        (Datacenter C)
+          4. United States        (Datacenter F)
+          5. Europe         (Datacenter B)
+          6. Europe         (Datacenter C)
+          7. Europe         (Datacenter D)
+          8. Asia         (Datacenter A)
+          9. Asia         (Datacenter B)
+          10. Asia         (Datacenter C)
+        Please choose the number of your zone. Press enter for default (#3) zone.
+      default: "3"
+      private: no
+
+    - name: "gce_server_name_var"
+      prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
+      default: "streisand"
+      private: no
+
+    - name: "gce_pem_file_var"
+      prompt: "\n\nThe location of your unique gce pem file. Details on generating this can be found at \nhttp://docs.ansible.com/guide_gce.html#credentials\n"
+      default: "~/.ssh/google.pem"
+      private: no
+
+    - name: "gce_project_id_var"
+      prompt: "\nWhat is your GCE project id?\nThis can be found https://console.developers.google.com/project\n"
+      private: no
+
+    - name: "gce_service_account_email_var"
+      prompt: "\n\nWhat is your GCE service account email?\nThis can be found https://console.developers.google.com/project/<your_project_id>/apiui/credential\n"
+      private: no
+
+    - name: "confirmation"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
+
+
+  # Facts persist across plays, and these facts will be used in the
+  # final step to make an API call to open all of the necessary ports in
+  # the GCE network firewall. This is necessary because Tor chooses two
+  # random ports for the obfsproxy pluggable transports (one for obfs3
+  # and one for ScrambleSuit) and therefore the ports cannot be opened
+  # in advance before Tor is up and running.
+  pre_tasks:
+    - name: Set the GCE Zone fact
+      set_fact: gce_zone={{ zones[gce_zone_var] }}
+
+    - name: Set the GCE Server Name fact
+      set_fact: gce_server_name={{ gce_server_name_var }}
+
+    - name: Set the GCE Service Account Email
+      set_fact: gce_service_account_email={{ gce_service_account_email_var }}
+
+    - name: Set the GCE Project ID
+      set_fact: gce_project_id={{ gce_project_id_var }}
+
+    - name: Set the GCE PEM file fact
+      set_fact: gce_pem_file={{ gce_pem_file_var }}
+
+  roles:
+    - genesis-google
+
+
+- name: Configure the Server and install required software
+# ========================================================
+  hosts: streisand-host
+
+  remote_user: root
+
+  # The standard streisand.yml is not included in order to skip L2TP/Ipsec
+
+  vars:
+    # The rc-local role normally expects to configure firewall rules for
+    # L2TP/IPsec. Streisand does not install L2TP/IPsec on EC2 servers
+    # by default because the instances cannot bind directly to their
+    # public IP addresses which makes IPsec routing nearly impossible.
+    #
+    # This variable is therefore set to an empty value.
+    l2tp_ipsec_firewall_rules: ""
+
+    # Similarly, we don't want to display a link to nonexistent
+    # L2TP/IPsec information on the Gateway index page
+    l2tp_ipsec_gateway_location: ""
+
+  roles:
+    - common
+    - openvpn
+    - dante
+    - stunnel
+    - shadowsocks
+    - ssh
+    - tinyproxy
+    - tor-bridge
+    - sslh
+    - streisand-mirror
+    - streisand-gateway
+
+
+- name: Open all service ports
+# ============================
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  # These variable files are included so the gce-network role
+  # knows which ports to open
+  vars_files:
+    - roles/openvpn/defaults/main.yml
+    - roles/shadowsocks/defaults/main.yml
+    - roles/ssh/defaults/main.yml
+    - roles/streisand-gateway/defaults/main.yml
+    - roles/stunnel/defaults/main.yml
+    - roles/tor-bridge/defaults/main.yml
+
+  pre_tasks:
+    - name: Set the streisand_host fact to the value of the new server. This fact will be used to retrieve the obfsproxy port values.
+      set_fact: "streisand_host={{ groups['streisand-host'][0] }}"
+
+    - name: Retrieve the randomly chosen Tor obfs3 port
+      set_fact: "tor_obfs3_port={{ hostvars[streisand_host]['tor_obfs3_port'] }}"
+
+    - name: Retrieve the randomly chosen Tor ScrambleSuit port
+      set_fact: "tor_scramblesuit_port={{ hostvars[streisand_host]['tor_scramblesuit_port'] }}"
+
+  roles:
+    # We can modify the GCE network now that we know which
+    # obfsproxy ports Tor is using
+    - { role: gce-network,
+        open_ssh_port_only:     false,
+        open_all_service_ports: true }

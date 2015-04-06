@@ -13,8 +13,9 @@ fi
 echo -n "Which provider are you using?
   1. Amazon
   2. DigitalOcean
-  3. Linode
-  4. Rackspace
+  3. Google
+  4. Linode
+  5. Rackspace
 : "
 
 read reply
@@ -22,6 +23,7 @@ read reply
 case "$reply" in
   1) echo; echo; ansible-playbook playbooks/amazon.yml;;
   2) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
-  3) echo; echo; ansible-playbook playbooks/linode.yml;;
-  4) echo; echo; ansible-playbook playbooks/rackspace.yml;;
+  3) echo; echo; ansible-playbook playbooks/google.yml;;
+  4) echo; echo; ansible-playbook playbooks/linode.yml;;
+  5) echo; echo; ansible-playbook playbooks/rackspace.yml;;
 esac
