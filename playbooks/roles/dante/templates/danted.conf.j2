@@ -1,7 +1,7 @@
 logoutput: syslog
 
 internal: 10.8.0.1 port = 1080
-external: eth0
+external: {{ ansible_default_ipv4.interface }}
 
 user.privileged: proxy
 user.notprivileged: nobody
