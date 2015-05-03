@@ -5,25 +5,25 @@ shadowsocks_mirror_location: "{{ streisand_mirror_location }}/shadowsocks"
 shadowsocks_mirror_href_base: "/mirror/shadowsocks"
 
 # Android
-shadowsocks_android_version: "2.6.4"
+shadowsocks_android_version: "2.6.5"
 shadowsocks_android_filename: "shadowsocks-nightly-{{ shadowsocks_android_version }}.apk"
 shadowsocks_android_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_android_filename }}"
 shadowsocks_android_url: "https://github.com/shadowsocks/shadowsocks-android/releases/download/v{{ shadowsocks_android_version }}/shadowsocks-nightly-{{ shadowsocks_android_version }}.apk"
-shadowsocks_android_checksum: "78e0a3fcd768289a4be877547b0f95523c69539d483083a006e2438713447be9"
+shadowsocks_android_checksum: "16907bcb5c0e51a59fdf6e41c49f0a6265e8dece8b9bb811df98f8d3aaa98233"
 
 # Windows
-shadowsocks_gui_version: "0.6.4"
-shadowsocks_gui_filename: "shadowsocks-gui-{{ shadowsocks_gui_version }}-win-ia32.tar.xz"
+shadowsocks_gui_version: "2.3"
+shadowsocks_gui_filename: "Shadowsocks-win-dotnet4.0-{{ shadowsocks_gui_version }}.zip"
 shadowsocks_gui_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_gui_filename }}"
 shadowsocks_gui_url: "http://softlayer-ams.dl.sourceforge.net/project/shadowsocksgui/dist/{{ shadowsocks_gui_filename }}"
-shadowsocks_gui_checksum: "08896161adffaf3c205f6ac6ec826563aae9dd9a02d33d202d8e910619184e8b"
+shadowsocks_gui_checksum: "a96ebc4657a1d0dc922036365510776a48a9dd64fb497df58ef8e7abe77825e7"
 
 # OS X
-shadowsocks_x_version: "2.5.1"
+shadowsocks_x_version: "2.6.1"
 shadowsocks_x_filename: "ShadowsocksX-{{ shadowsocks_x_version }}.dmg"
 shadowsocks_x_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_filename }}"
 shadowsocks_x_url: "http://softlayer-ams.dl.sourceforge.net/project/shadowsocksgui/dist/{{ shadowsocks_x_filename }}"
-shadowsocks_x_checksum: "1f1000ac5b3b7704c377a0c78014628d782014dbf3b3ae60e48c2da8ffc4cccf"
+shadowsocks_x_checksum: "79650f9c592b69b0cbe867962f2aeedfcd07623c12db9585b533e7c5786c6d6f"
 
 # Linux
 shadowsocks_python_version: "2.4.3"
