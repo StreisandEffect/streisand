@@ -64,9 +64,17 @@ Services Provided
 
 Installation
 ------------
+Please read all installation instructions **carefully** before procceding.
+
+### Important Clarification ###
+Streisand is based on [Ansible](http://www.ansible.com/home) - an automated deployment system that provisions the files on a remote server. That means when you run streisand, it automatically sets up **another remote server** with the packages and configuration.
+
+This means that you run streisand **on your home machine** (your laptop) - it will spin up and deploy **another server** on your chosen hosting provider. Usually, you **do not run streisand on the remote server** - what would happen is that it would deploy another server from your server and render the first server redundent.
 
 ### Prerequisites ###
-* Streisand requires a BSD, Linux, or OS X system. All of the following commands should be run inside a Terminal session.
+Complete all of these tasks on your local home machine
+
+* Streisand requires a BSD, Linux, or OS X system. As of now, windows is not supported. All of the following commands should be run inside a Terminal session.
 * Python 2.7 is required. This comes standard on OS X, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
@@ -129,7 +137,10 @@ Installation
 
         ./streisand
 3. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
-4. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
+4. Once login information and API keys are entered, streisand will begin spinning up a new remote server.
+5. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
+
+### Running Streisand on Other Providers ###
 
 You can also run Streisand on any number of new Debian 7 servers. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do this, simply edit the `inventory` file and uncomment the final two lines. Replace the sample IP with the address (or addresses) of the servers you wish to configure. Make sure you read through all of the documentation in the `inventory` file and update the `ansible.cfg` file if necessary. Then run the Streisand playbook directly:
 
