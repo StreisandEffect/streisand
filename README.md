@@ -67,9 +67,9 @@ Installation
 Please read all installation instructions **carefully** before procceding.
 
 ### Important Clarification ###
-Streisand is based on [Ansible](http://www.ansible.com/home) - an automated deployment system that provisions the files on a remote server. That means when you run streisand, it automatically sets up **another remote server** with the packages and configuration.
+Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. That means when you run Streisand, it automatically sets up **another remote server** with the VPN packages and configuration.
 
-This means that you run streisand **on your home machine** (your laptop) - it will spin up and deploy **another server** on your chosen hosting provider. Usually, you **do not run streisand on the remote server** - what would happen is that it would deploy another server from your server and render the first server redundent.
+This means that you run Streisand **on your home machine** (e.g. your laptop) and it will spin up and deploy **another server** on your chosen hosting provider. Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!). Support for local provisioning (i.e. Streisand locally configuring the system on which it is installed) will be added soon.
 
 ### Prerequisites ###
 Complete all of these tasks on your local home machine
