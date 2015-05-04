@@ -129,17 +129,6 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 1. Accept the Android VPN connection warning.
 1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
-Firefox for Android has a DNS resolution [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) that affects VPN users who are running Android 4.4. The following workaround ensures that lookups can be performed successfully, even if you remain connected to the OpenVPN server for an extended period of time.
-
-#### Configuring Firefox for Android to use the Dante SOCKS server ####
-1. Open Firefox.
-1. Type `about:config` into the address bar and tap the *Go* button on your keyboard.
-1. Type `proxy` into the search box.
-1. Set the value of *network.proxy.socks* to `10.8.0.1`.
-1. Set the value of *network.proxy.socks\_port* to `1080`.
-1. Set the value of *network.proxy.socks\_remote\_dns* to `true`.
-1. Set the value of *network.proxy.type* to `1`.
-
 <a name="ios"></a>
 ### iOS ###
 1. Download [OpenVPN Connect](https://itunes.apple.com/us/app/openvpn-connect/id590379981) and launch it.

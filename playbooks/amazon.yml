@@ -101,7 +101,6 @@
   roles:
     - common
     - openvpn
-    - dante
     - stunnel
     - shadowsocks
     - ssh
