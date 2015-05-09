@@ -1,4 +1,4 @@
-![Streisand Logo](https://missingm.co/streisand.jpg "Automate the effect")
+![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
 
 Streisand
 =========
@@ -19,9 +19,7 @@ Introducing Streisand
 More Features
 -------------
 * Nginx powers a password-protected and encrypted Gateway that serves as the starting point for new users. The Gateway is accessible over SSL, or as a Tor [hidden service](https://www.torproject.org/docs/hidden-services.html.en).
-  * Beautiful, custom, step-by-step client configuration instructions are generated for each new server that Streisand creates. Users can quickly access these instructions through any web browser. The instructions are responsive and look fantastic on mobile phones:
-
-    ![Streisand Screenshot](https://missingm.co/streisand-mobile-screenshot.png "Gateway")
+  * Beautiful, custom, step-by-step client configuration instructions are generated for each new server that Streisand creates. Users can quickly access these instructions through any web browser. The instructions are responsive and look fantastic on mobile phones.
   * The integrity of mirrored software is ensured using SHA-256 checksums, or by verifying GPG signatures if the project provides them. This protects users from downloading corrupted files.
   * All ancillary files, such as OpenVPN configuration profiles, are also available via the Gateway.
   * Current Tor users can take advantage of the additional services Streisand sets up in order to transfer large files or to handle other traffic (e.g. BitTorrent) that isn't appropriate for the Tor network.
@@ -71,9 +69,9 @@ Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool
 This means that you run Streisand **on your home machine** (e.g. your laptop) and it will spin up and deploy **another server** on your chosen hosting provider. Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!). Support for local provisioning (i.e. Streisand locally configuring the system on which it is installed) will be added soon.
 
 ### Prerequisites ###
-Complete all of these tasks on your local home machine
+Complete all of these tasks on your local home machine.
 
-* Streisand requires a BSD, Linux, or OS X system. As of now, windows is not supported. All of the following commands should be run inside a Terminal session.
+* Streisand requires a BSD, Linux, or OS X system. As of now, Windows is not supported. All of the following commands should be run inside a Terminal session.
 * Python 2.7 is required. This comes standard on OS X, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
@@ -136,7 +134,7 @@ Complete all of these tasks on your local home machine
 
         ./streisand
 3. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
-4. Once login information and API keys are entered, streisand will begin spinning up a new remote server.
+4. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
 5. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
 
 ### Running Streisand on Other Providers ###
