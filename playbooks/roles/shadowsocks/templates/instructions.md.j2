@@ -12,30 +12,18 @@ Shadowsocks
 <a name="windows"></a>
 ### Windows ###
 1. Download [Shadowsocks for Windows](/mirror/#shadowsocks).
-   * The Shadowsocks Windows GUI is compressed using the xz format. You can download an open source utility to extract the file from the [7-Zip home page](http://www.7-zip.org).
-1. Extract the archive, and double-click on the shadowsocks.exe file.
-1. Enter `{{ streisand_ipv4_address }}` as the *Server IP*.
-1. Enter `{{ shadowsocks_server_port }}` as the *Server Port*.
-1. Enter `{{ shadowsocks_password.stdout }}` as the *Password*.
-1. The *SOCKS 5 Proxy Port* should be `{{ shadowsocks_local_port }}` and the *Encryption Method* should be `{{ shadowsocks_encryption_method }}`.
-1. Click *Save*.
+1. Extract the archive, and double-click on the Shadowsocks.exe file.
+1. Make sure the QR code below is centered and completely visible, right-click on the Shadowsocks system tray icon, and go to *Servers* > *Scan QRCode from Screen...*
 
-You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through Shadowsocks. The next step is to configure your web browser to use it.
-
-#### Configuring Firefox to connect through a SOCKS proxy ####
-1. Click the *Menu* button next to the *Home* icon to the right of the address bar.
-1. Click *Options*.
-1. Click the *Advanced* icon.
-1. Go to the *Network* tab.
-1. Click the *Settings* button to *Configure how Firefox connects to the Internet*.
-1. Choose *Manual proxy configuration*.
-1. Enter `127.0.0.1` and Port `{{ shadowsocks_local_port }}` on the *SOCKS Host* line.
-1. Click *OK*.
-1. Click *OK* again to close the Firefox preferences window. Now we need to configure Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
-1.  Type `about:config` into the address bar and hit Enter.
-1. You should see a screen that says *This might void your warranty!* Click *I'll be careful, I promise!*.
-1. Search for `socks_remote_dns` and double click on the value that is returned. It will change from *false* to *true*.
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. You may also go to *Servers* > *New server* and manually complete the following steps:
+   1. Enter `{{ streisand_ipv4_address }}` as the *Server IP*.
+   1. Enter `{{ shadowsocks_server_port }}` as the *Server Port*.
+   1. Enter `{{ shadowsocks_password.stdout }}` as the *Password*.
+   1. The *SOCKS 5 Proxy Port* should be `{{ shadowsocks_local_port }}` and the *Encryption Method* should be `{{ shadowsocks_encryption_method }}`.
+   1. Click *Save*.
+1. Click on the Shadowsocks menu tray icon and select *Enable*.
+1. That's it! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="osx"></a>
 ### OS X ###
@@ -43,12 +31,14 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Double-click the DMG, and drag the icon into your Applications folder.
 1. Launch ShadowsocksX. You will be prompted to enter your password so that your system proxy settings can be modified.
 1. Look for the Shadowsocks paper plane icon in your taskbar and click on it.
-1. Select *Servers* and choose *Open Server Preferences...*
-1. Click the *+* button on the sidebar to add a new entry.
-1. Enter `{{ streisand_ipv4_address }}` and `{{ shadowsocks_server_port }}` in the *Address* fields.
-1. Make sure `{{ shadowsocks_encryption_method }}` is selected for the *Encryption* value.
-1. Enter `{{ shadowsocks_password.stdout }}` as the *Password*.
-1. Click *OK*.
+1. Make sure the QR code below is centered and completely visible, and choose *Scan QR Code from Screen...*
+
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. You may also configure the connection by going to *Servers*, selecting *Open Server Preferences...*, and clicking the *+* button on the sidebar:
+   1. Enter `{{ streisand_ipv4_address }}` and `{{ shadowsocks_server_port }}` in the *Address* fields.
+   1. Make sure `{{ shadowsocks_encryption_method }}` is selected for the *Encryption* value.
+   1. Enter `{{ shadowsocks_password.stdout }}` as the *Password*.
+   1. Click *OK*.
 1. Click on the Shadowsocks icon in the taskbar again, and choose *Global Mode*.
 1. You can use the Shadowsocks icon to enable/disable the VPN. The color of the icon will change based on whether or not it is active.
 1. That's it! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
@@ -66,7 +56,23 @@ Here is the configuration information that you'll need:
         Password: {{ shadowsocks_password.stdout }}
         Encryption Method: {{ shadowsocks_encryption_method }}
 
-Once you have Shadowsocks running locally, you'll need to forward your browser traffic through the SOCKS proxy it provides. You can follow the Windows instructions above to configure Firefox to do this.
+Once you have Shadowsocks running locally, you'll need to forward your browser traffic through the SOCKS proxy it provides.
+
+#### Configuring Firefox to connect through a SOCKS proxy ####
+1. Click the *Menu* button next to the *Home* icon to the right of the address bar.
+1. Click *Options*.
+1. Click the *Advanced* icon.
+1. Go to the *Network* tab.
+1. Click the *Settings* button to *Configure how Firefox connects to the Internet*.
+1. Choose *Manual proxy configuration*.
+1. Enter `127.0.0.1` and Port `{{ shadowsocks_local_port }}` on the *SOCKS Host* line.
+1. Click *OK*.
+1. Click *OK* again to close the Firefox preferences window. Now we need to configure Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
+1.  Type `about:config` into the address bar and hit Enter.
+1. You should see a screen that says *This might void your warranty!* Click *I'll be careful, I promise!*.
+1. Search for `socks_remote_dns` and double click on the value that is returned. It will change from *false* to *true*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
 
 <a name="android"></a>
 ### Android ###

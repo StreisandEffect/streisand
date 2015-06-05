@@ -1,4 +1,4 @@
-![Streisand Logo](https://missingm.co/streisand.jpg "Automate the effect")
+![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
 
 Streisand
 =========
@@ -19,9 +19,7 @@ Introducing Streisand
 More Features
 -------------
 * Nginx powers a password-protected and encrypted Gateway that serves as the starting point for new users. The Gateway is accessible over SSL, or as a Tor [hidden service](https://www.torproject.org/docs/hidden-services.html.en).
-  * Beautiful, custom, step-by-step client configuration instructions are generated for each new server that Streisand creates. Users can quickly access these instructions through any web browser. The instructions are responsive and look fantastic on mobile phones:
-
-    ![Streisand Screenshot](https://missingm.co/streisand-mobile-screenshot.png "Gateway")
+  * Beautiful, custom, step-by-step client configuration instructions are generated for each new server that Streisand creates. Users can quickly access these instructions through any web browser. The instructions are responsive and look fantastic on mobile phones.
   * The integrity of mirrored software is ensured using SHA-256 checksums, or by verifying GPG signatures if the project provides them. This protects users from downloading corrupted files.
   * All ancillary files, such as OpenVPN configuration profiles, are also available via the Gateway.
   * Current Tor users can take advantage of the additional services Streisand sets up in order to transfer large files or to handle other traffic (e.g. BitTorrent) that isn't appropriate for the Tor network.
@@ -42,7 +40,8 @@ Services Provided
   * Windows, OS X, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software.
   * *Streisand does not install L2TP/IPsec on Amazon EC2 or Google GCE servers by default because the instances cannot bind directly to their public IP addresses which makes IPsec routing nearly impossible.*
 * [OpenSSH](http://www.openssh.com/)
-  * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/apenwarr/sshuttle) and SOCKS capabilities. Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
+  * An unprivileged forwarding user and SSH keypair are generated for Linux SOCKS proxy capabilities.
+  * Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
   * [Tinyproxy](https://banu.com/tinyproxy/) is installed and bound to localhost. It can be accessed over an SSH tunnel by programs that do not natively support SOCKS and that require an HTTP proxy, such as Twitter for Android.
 * [OpenVPN](https://openvpn.net/index.php/open-source.html)
   * Self-contained "unified" .ovpn profiles are generated for easy client configuration using only a single file.
@@ -50,7 +49,6 @@ Services Provided
   * Client DNS resolution is handled via [Dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html) to prevent DNS leaks.
   * TLS Authentication is enabled which helps protect against active probing attacks. Traffic that does not have the proper HMAC is simply dropped.
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
-  * The [Dante](https://www.inet.no/dante/) proxy server is set up as a workaround for a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=947801) in Firefox for Android.
   * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
 * [sslh](http://www.rutschle.net/tech/sslh.shtml)
   * Sslh is a protocol demultiplexer that allows Nginx, OpenSSH, and OpenVPN to share port 443. This provides an alternative connection option and means that you can still route traffic via OpenSSH and OpenVPN even if you are on a restrictive network that blocks all access to non-HTTP ports.
@@ -64,9 +62,17 @@ Services Provided
 
 Installation
 ------------
+Please read all installation instructions **carefully** before procceding.
+
+### Important Clarification ###
+Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. That means when you run Streisand, it automatically sets up **another remote server** with the VPN packages and configuration.
+
+This means that you run Streisand **on your home machine** (e.g. your laptop) and it will spin up and deploy **another server** on your chosen hosting provider. Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!). Support for local provisioning (i.e. Streisand locally configuring the system on which it is installed) will be added soon.
 
 ### Prerequisites ###
-* Streisand requires a BSD, Linux, or OS X system. All of the following commands should be run inside a Terminal session.
+Complete all of these tasks on your local home machine.
+
+* Streisand requires a BSD, Linux, or OS X system. As of now, Windows is not supported. All of the following commands should be run inside a Terminal session.
 * Python 2.7 is required. This comes standard on OS X, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
@@ -133,7 +139,10 @@ Installation
 
         ./streisand
 3. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
-4. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
+4. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
+5. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
+
+### Running Streisand on Other Providers ###
 
 You can also run Streisand on any number of new Debian 7 servers. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do this, simply edit the `inventory` file and uncomment the final two lines. Replace the sample IP with the address (or addresses) of the servers you wish to configure. Make sure you read through all of the documentation in the `inventory` file and update the `ansible.cfg` file if necessary. Then run the Streisand playbook directly:
 

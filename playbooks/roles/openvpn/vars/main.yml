@@ -1,9 +1,6 @@
 ---
 openvpn_days_valid: "1825"
 openvpn_request_subject: "/C={{ openvpn_key_country }}/ST={{ openvpn_key_province }}/L={{ openvpn_key_city }}/O={{ openvpn_key_org }}/OU={{ openvpn_key_ou }}"
-openvpn_key_size: "2048"
-openvpn_cipher: "AES-256-CBC"
-openvpn_auth_digest: "SHA256"
 openvpn_path: "/etc/openvpn"
 openvpn_ca: "{{ openvpn_path }}/ca"
 openvpn_dhparam: "{{ openvpn_path }}/dh{{ openvpn_key_size }}.pem"

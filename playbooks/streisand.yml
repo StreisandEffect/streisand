@@ -8,7 +8,6 @@
     - common
     - l2tp-ipsec
     - openvpn
-    - dante
     - stunnel
     - shadowsocks
     - ssh
