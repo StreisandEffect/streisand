@@ -1,0 +1,3 @@
+---
+gce_machine_type: "f1-micro"
+gce_image: "debian-7"

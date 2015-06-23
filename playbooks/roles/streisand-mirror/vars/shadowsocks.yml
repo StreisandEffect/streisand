@@ -12,18 +12,18 @@ shadowsocks_android_url: "https://github.com/shadowsocks/shadowsocks-android/rel
 shadowsocks_android_checksum: "16907bcb5c0e51a59fdf6e41c49f0a6265e8dece8b9bb811df98f8d3aaa98233"
 
 # Windows
-shadowsocks_gui_version: "2.3"
+shadowsocks_gui_version: "2.3.1"
 shadowsocks_gui_filename: "Shadowsocks-win-dotnet4.0-{{ shadowsocks_gui_version }}.zip"
 shadowsocks_gui_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_gui_filename }}"
-shadowsocks_gui_url: "http://softlayer-ams.dl.sourceforge.net/project/shadowsocksgui/dist/{{ shadowsocks_gui_filename }}"
-shadowsocks_gui_checksum: "a96ebc4657a1d0dc922036365510776a48a9dd64fb497df58ef8e7abe77825e7"
+shadowsocks_gui_url: "http://iweb.dl.sourceforge.net/project/shadowsocksgui/dist/{{ shadowsocks_gui_filename }}"
+shadowsocks_gui_checksum: "d63360b413819f557acab9080718a84c72d5d9768ecccb3e6747408ce05de5a1"
 
 # OS X
-shadowsocks_x_version: "2.6.1"
+shadowsocks_x_version: "2.6.3"
 shadowsocks_x_filename: "ShadowsocksX-{{ shadowsocks_x_version }}.dmg"
 shadowsocks_x_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_filename }}"
-shadowsocks_x_url: "http://softlayer-ams.dl.sourceforge.net/project/shadowsocksgui/dist/{{ shadowsocks_x_filename }}"
-shadowsocks_x_checksum: "79650f9c592b69b0cbe867962f2aeedfcd07623c12db9585b533e7c5786c6d6f"
+shadowsocks_x_url: "http://iweb.dl.sourceforge.net/project/shadowsocksgui/dist/{{ shadowsocks_x_filename }}"
+shadowsocks_x_checksum: "f0e263dd1d74b0b6977389f2b8b28c524bceccbc5ad24ca8a8164b92ede1c45a"
 
 # Linux
 shadowsocks_python_version: "2.4.3"

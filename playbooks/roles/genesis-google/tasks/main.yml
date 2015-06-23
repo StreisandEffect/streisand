@@ -1,0 +1,35 @@
+---
+- name: Get the default SSH key
+  command: cat ~/.ssh/id_rsa.pub
+  register: ssh_key
+
+- name: Create the GCE instance
+  local_action:
+    module: gce
+    name: "{{ gce_server_name }}"
+    network: "{{ gce_network }}"
+    zone: "{{ gce_zone }}"
+    machine_type: "{{ gce_machine_type }}"
+    pem_file: "{{ gce_pem_file }}"
+    project_id: "{{ gce_project_id }}"
+    service_account_email: "{{ gce_service_account_email }}"
+    image: "{{ gce_image }}"
+    tags: "{{ gce_server_name }}"
+    metadata: '{"sshKeys":"root:{{ ssh_key.stdout }}"}'
+  register: streisand_server
+
+- name: Wait until the server has finished booting and OpenSSH is accepting connections
+  wait_for: host={{ streisand_server.instance_data[0].public_ip }}
+            port=22
+            search_regex=OpenSSH
+            timeout=300
+
+- name: Create the in-memory inventory group
+  add_host: name={{ streisand_server.instance_data[0].public_ip }}
+            groups=streisand-host
+
+- name: Set the streisand_ipv4_address variable
+  set_fact: streisand_ipv4_address="{{ streisand_server.instance_data[0].public_ip }}"
+
+- name: Set the streisand_server_name variable
+  set_fact: streisand_server_name="{{ gce_server_name }}"

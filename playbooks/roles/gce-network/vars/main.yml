@@ -1,0 +1,3 @@
+---
+gce_network: "{{ gce_server_name }}-network"
+gce_ipv4_range: "10.240.16.0/24"

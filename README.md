@@ -38,7 +38,7 @@ Services Provided
 * L2TP/IPsec using [strongSwan](https://strongswan.org/) and [xl2tpd](https://www.xelerance.com/software/xl2tpd/)
   * A randomly chosen pre-shared key and password are generated.
   * Windows, OS X, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software.
-  * *Streisand does not install L2TP/IPsec on Amazon EC2 servers by default because the instances cannot bind directly to their public IP addresses which makes IPsec routing nearly impossible.*
+  * *Streisand does not install L2TP/IPsec on Amazon EC2 or Google GCE servers by default because the instances cannot bind directly to their public IP addresses which makes IPsec routing nearly impossible.*
 * [OpenSSH](http://www.openssh.com/)
   * An unprivileged forwarding user and SSH keypair are generated for Linux SOCKS proxy capabilities.
   * Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
@@ -116,6 +116,10 @@ Complete all of these tasks on your local home machine.
   * DigitalOcean
 
             sudo pip install dopy
+  * Google
+
+            sudo pip install "apache-libcloud>=0.17.0"
+
   * Linode
 
             sudo pip install linode-python
@@ -149,7 +153,6 @@ The servers should be accessible using SSH keys, and *root* is used as the conne
 Upcoming Features
 -----------------
 * Native [Microsoft Azure](https://azure.microsoft.com/en-us/) support
-* Native [Google Compute Engine](https://cloud.google.com/products/compute-engine/) support
 * A flag to allow L2TP/IPsec installation to be disabled
 * Creation of a Streisand pip package to make the setup of all required dependencies even easier
 * Automatic security upgrades
