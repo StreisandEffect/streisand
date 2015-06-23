@@ -22,7 +22,7 @@
     project_id: "{{ gce_project_id }}"
   when: open_ssh_port_only
 
-- name: Open necessary TCP ports across most services in GCE firewall
+- name: Open necessary TCP ports across most services in the GCE firewall
   local_action:
     module: gce_net
     name: "{{ gce_network }}"
@@ -35,7 +35,7 @@
     project_id: "{{ gce_project_id }}"
   when: open_all_service_ports
 
-- name: Open OpenVPN port across in GCE firewall
+- name: Open the OpenVPN port in the GCE firewall
   local_action:
     module: gce_net
     name: "{{ gce_network }}"
