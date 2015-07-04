@@ -16,3 +16,11 @@
            project_expected_fingerprint="{{ stunnel_michal_trojnara_expected_fingerprint }}"
            project_mirror_location="{{ stunnel_mirror_location }}"
            project_download_urls="{{ stunnel_download_urls }}"
+
+- name: Get the current stunnel version from the downloaded source file
+  shell: ls *.tar.gz | tail -n 1 | sed -e 's/stunnel-\(.*\)\.tar\.gz/\1/'
+         chdir={{ stunnel_mirror_location }}
+  register: stunnel_latest_check
+
+- name: Set the target stunnel version
+  set_fact: stunnel_version="{{ stunnel_latest_check.stdout }}"
