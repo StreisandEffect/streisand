@@ -12,10 +12,18 @@ set httpd port 2812 and
 check process nginx with pidfile /var/run/nginx.pid
   start program = "/etc/init.d/nginx start"
   stop  program = "/etc/init.d/nginx stop"
-  if failed host 127.0.0.1 port 443 type tcpssl protocol http with timeout 15 seconds then restart
   if cpu is greater than 40% for 2 cycles then alert
-  if cpu > 60% for 5 cycles then restart 
+  if cpu > 60% for 5 cycles then restart
   if 10 restarts within 10 cycles then timeout
+  if failed host 127.0.0.1 port 443 type tcpssl and
+    expect ""
+    send "GET / HTTP/1.1\r\n"
+    send "Host: Localhost\r\n"
+    send "Accept: */*\r\n"
+    send "User-Agent: Monit/Localhost\r\n"
+    send ""
+    expect ""
+  then restart
 
 # OpenVPN
 check process vpn-network with pidfile /var/run/openvpn.server.pid
