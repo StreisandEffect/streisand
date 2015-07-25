@@ -18,13 +18,13 @@ check process nginx with pidfile /opt/nginx/logs/nginx.pid
   if 10 restarts within 10 cycles then timeout
 
 # OpenVPN
-check process vpn-network with pidfile /var/run/vpn-network.pid
-   start program = "/etc/init.d/openvpn start vpn-network.com"
-   stop program = "/etc/init.d/openvpn stop vpn-network.com"
+check process vpn-network with pidfile /var/run/openvpn.server.pid
+   start program = "/etc/init.d/openvpn start openvpn.server"
+   stop program = "/etc/init.d/openvpn stop openvpn.server"
  
-check host tap0 with address 1.1.1.1
-    start program = "/etc/init.d/openvpn start vpn-network.com"
-    stop program = "/etc/init.d/openvpn stop vpn-network.com"
+check host tap0 with address 10.8.0.1
+    start program = "/etc/init.d/openvpn start openvpn.server"
+    stop program = "/etc/init.d/openvpn stop openvpn.server"
     if failed
         icmp type echo count 5 with timeout 15 seconds
     then restart
