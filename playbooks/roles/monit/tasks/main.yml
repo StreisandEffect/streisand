@@ -3,7 +3,7 @@
   apt: name=monit
 
 - name: Update Monit configuration
-  copy: src=monitrc
+  template: src=monitrc.j2
         dest=/etc/monit/monitrc
         owner=root
         group=root
