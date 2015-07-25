@@ -1,0 +1,75 @@
+set daemon 30
+with start delay 120
+set logfile /var/log/monit.log
+set idfile /var/lib/monit/id
+set statefile /var/lib/monit/state
+
+set httpd port 2812 and
+    use address localhost  # only accept connection from localhost
+    allow localhost        # allow localhost to connect to the server and
+
+# nginx
+check process nginx with pidfile /opt/nginx/logs/nginx.pid
+  start program = "/etc/init.d/nginx start"
+  stop  program = "/etc/init.d/nginx stop"
+  if failed host 127.0.0.1 port 80 then restart
+  if cpu is greater than 40% for 2 cycles then alert
+  if cpu > 60% for 5 cycles then restart 
+  if 10 restarts within 10 cycles then timeout
+
+# OpenVPN
+check process vpn-network with pidfile /var/run/vpn-network.pid
+   start program = "/etc/init.d/openvpn start vpn-network.com"
+   stop program = "/etc/init.d/openvpn stop vpn-network.com"
+ 
+check host tap0 with address 1.1.1.1
+    start program = "/etc/init.d/openvpn start vpn-network.com"
+    stop program = "/etc/init.d/openvpn stop vpn-network.com"
+    if failed
+        icmp type echo count 5 with timeout 15 seconds
+    then restart
+
+# OpenSSH
+check process sshd with pidfile /var/run/sshd.pid
+   start program  "/etc/init.d/ssh start"
+   stop program  "/etc/init.d/ssh stop"
+   if failed port 22 protocol ssh then restart
+   # if 5 restarts within 5 cycles then timeout
+
+# Stunnel
+check process stunnel4 with pidfile /var/chroot/stunnel4/stunnel4.pid
+	start program = "/etc/init.d/stunnel4 start" with timeout 20 seconds
+	stop program = "/etc/init.d/stunnel4 stop"
+	if failed host 127.0.0.1 port 1234 with timeout 20 seconds then restart
+	if 3 restarts within 5 cycles then unmonitor
+
+# dnsmasq
+check process dnsmasq with pidfile /var/run/dnsmasq/dnsmasq.pid
+  start program = "/etc/init.d/dnsmasq start" with timeout 60 seconds
+  stop program = "/etc/init.d/dnsmasq stop"
+  if failed
+    host 127.0.0.1
+    port 53 use type udp
+    protocol dns
+    with timeout 60 seconds
+  then restart
+  if 3 restarts within 5 cycles then timeout
+  depends on dnsmasq-bin
+  depends on dnsmasq-hosts
+
+
+check file dnsmasq-bin with path /usr/sbin/dnsmasq
+   if failed checksum then unmonitor
+   if failed permission 755 then unmonitor
+   if failed uid root then unmonitor
+   if failed gid root then unmonitor
+
+check file dnsmasq-hosts with path /etc/hosts
+   if changed timestamp then restart
+
+# Tiny Proxy
+check process tinyproxy with pidfile /var/run/tinyproxy/tinyproxy.pid
+   start program  "/etc/init.d/tinyproxy restart"
+   stop program  "/etc/init.d/tinyproxy stop"
+   if failed host 127.0.0.1 port 8888 type tcp then restart
+   # if 5 restarts within 5 cycles then timeout

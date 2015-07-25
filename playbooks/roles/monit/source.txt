@@ -1,0 +1,14 @@
+# Nginx
+https://gist.github.com/franck/1415908
+
+# Openvpn
+http://grimore.org/unix/monit/openvpn
+
+# Stunnel
+http://www.peter.ca/article11.11.html
+
+# DNSMasq
+https://www.the-hawkes.de/monitor-your-raspberrypi-with-monit.html
+
+# Tiny Proxy
+http://grimore.org/unix/monit/tinyproxy

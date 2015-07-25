@@ -1,0 +1,12 @@
+---
+- name: Install Nginx
+  apt: name=monit
+
+- name: Update Monit configuration
+  copy: src=monitrc
+        dest=/etc/monit/monitrc
+        owner=root
+        group=root
+        mode=644
+  notify: Restart Monit
+
