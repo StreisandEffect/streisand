@@ -1,5 +1,5 @@
 ---
-- name: Install Nginx
+- name: Install Monit
   apt: name=monit
 
 - name: Update Monit configuration
