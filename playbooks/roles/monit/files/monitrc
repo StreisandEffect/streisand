@@ -12,7 +12,7 @@ set httpd port 2812 and
 check process nginx with pidfile /var/run/nginx.pid
   start program = "/etc/init.d/nginx start"
   stop  program = "/etc/init.d/nginx stop"
-  if failed host 127.0.0.1 port 80 then restart
+  if failed host 127.0.0.1 port 443 type tcpssl protocol http with timeout 15 seconds then restart
   if cpu is greater than 40% for 2 cycles then alert
   if cpu > 60% for 5 cycles then restart 
   if 10 restarts within 10 cycles then timeout
