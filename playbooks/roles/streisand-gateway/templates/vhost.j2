@@ -20,7 +20,6 @@ server {
     rewrite ^/monit/(.*) /$1 break;
     proxy_ignore_client_abort on;
     proxy_pass   http://localhost:2812; 
-    proxy_redirect  http://localhost:2812/monit; 
   }
 }
 
