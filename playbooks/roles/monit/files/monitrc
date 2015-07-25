@@ -9,7 +9,7 @@ set httpd port 2812 and
     allow localhost        # allow localhost to connect to the server and
 
 # nginx
-check process nginx with pidfile /opt/nginx/logs/nginx.pid
+check process nginx with pidfile /var/run/nginx.pid
   start program = "/etc/init.d/nginx start"
   stop  program = "/etc/init.d/nginx stop"
   if failed host 127.0.0.1 port 80 then restart
