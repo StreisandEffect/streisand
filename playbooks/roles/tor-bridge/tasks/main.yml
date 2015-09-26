@@ -31,6 +31,15 @@
             group=root
             mode=644
 
+# Workaround for Tor Ticket #13716
+#   https://trac.torproject.org/projects/tor/ticket/13716
+- name: Copy the fixed AppArmor profile into place
+  copy: src=system_tor
+        dest=/etc/apparmor.d/system_tor
+        owner=root
+        group=root
+        mode=644
+
 - name: Restart Tor so the obfsproxy ports and server fingerprint will be available in the state file, and the hidden service for the Gateway will start running
   service: name=tor
            state=restarted
@@ -54,9 +63,6 @@
 
 - name: Set the obfs3 port fact
   set_fact: tor_obfs3_port={{ tor_obfs_ports.results[0].stdout }}
-
-- name: Set the ScrambleSuit port fact
-  set_fact: tor_scramblesuit_port={{ tor_obfs_ports.results[1].stdout }}
 
 - name: Discover the server fingerprint
   command: awk '{ print $2 }' /var/lib/tor/fingerprint

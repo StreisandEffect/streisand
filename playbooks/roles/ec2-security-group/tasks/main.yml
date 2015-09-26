@@ -84,12 +84,6 @@
         from_port: "{{ tor_obfs3_port }}"
         to_port: "{{ tor_obfs3_port }}"
         cidr_ip: 0.0.0.0/0
-      # Tor ScrambleSuit port
-      # ---
-      - proto: tcp
-        from_port: "{{ tor_scramblesuit_port }}"
-        to_port: "{{ tor_scramblesuit_port }}"
-        cidr_ip: 0.0.0.0/0
     rules_egress:
       - proto: all
         from_port: 1

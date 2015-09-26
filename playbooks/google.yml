@@ -65,10 +65,9 @@
 
   # Facts persist across plays, and these facts will be used in the
   # final step to make an API call to open all of the necessary ports in
-  # the Google Compute Engine network firewall. This is necessary because Tor chooses two
-  # random ports for the obfsproxy pluggable transports (one for obfs3
-  # and one for ScrambleSuit) and therefore the ports cannot be opened
-  # in advance before Tor is up and running.
+  # the Google Compute Engine network firewall. This is necessary because Tor chooses
+  # random ports for the obfsproxy pluggable transport and therefore they cannot be
+  # opened in advance before Tor is up and running.
   pre_tasks:
     - name: Set the Google Compute Engine Zone fact
       set_fact: gce_zone={{ zones[gce_zone_var] }}
@@ -145,9 +144,6 @@
 
     - name: Retrieve the randomly chosen Tor obfs3 port
       set_fact: "tor_obfs3_port={{ hostvars[streisand_host]['tor_obfs3_port'] }}"
-
-    - name: Retrieve the randomly chosen Tor ScrambleSuit port
-      set_fact: "tor_scramblesuit_port={{ hostvars[streisand_host]['tor_scramblesuit_port'] }}"
 
   roles:
     # We can modify the Google Compute Engine network now that we know which

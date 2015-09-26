@@ -27,7 +27,7 @@
     module: gce_net
     name: "{{ gce_network }}"
     fwname: "streisand-other"
-    allowed: "tcp:{{ nginx_port }},{{ shadowsocks_server_port }},{{ stunnel_remote_port }},{{ tor_orport }},{{ tor_obfs3_port }},{{ tor_scramblesuit_port }}"
+    allowed: "tcp:{{ nginx_port }},{{ shadowsocks_server_port }},{{ stunnel_remote_port }},{{ tor_orport }},{{ tor_obfs3_port }}"
     state: "present"
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
