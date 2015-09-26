@@ -11,9 +11,9 @@
 
 - include: download-and-verify.yml
            project_name="PuTTY"
-           project_signer="PuTTY Releases (DSA)"
+           project_signer="PuTTY Development Snapshots"
            project_signing_key="{{ putty_key_id }}"
            project_expected_fingerprint="{{ putty_expected_fingerprint }}"
            project_mirror_location="{{ ssh_mirror_location }}"
            project_download_urls="{{ putty_download_urls }}"
-           signature_extension="DSA"
+           signature_extension="gpg"
