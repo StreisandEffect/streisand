@@ -3,16 +3,16 @@
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
 
-- name: Get the latest 'Debian 7' image ID from the Linode API
-  shell: curl -s 'https://api.linode.com/?api_key={{ linode_api_key }}&api_action=avail.distributions' | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print [img for img in j["DATA"] if img["LABEL"]=="Debian 7"][0]["DISTRIBUTIONID"]'
-  register: linode_debian7_x64_distribution_id
+- name: Get the latest Ubuntu 14.04 image ID from the Linode API
+  shell: curl -s 'https://api.linode.com/?api_key={{ linode_api_key }}&api_action=avail.distributions' | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print [img for img in j["DATA"] if img["LABEL"]=="Ubuntu 14.04 LTS"][0]["DISTRIBUTIONID"]'
+  register: linode_ubuntu_distribution_id
 
 - name: Create the server
   linode: api_key="{{ linode_api_key }}"
           name="{{ linode_server_name }}"
           plan="{{ linode_plan_id }}"
           datacenter="{{ regions[linode_datacenter] }}"
-          distribution="{{ linode_debian7_x64_distribution_id.stdout }}"
+          distribution="{{ linode_ubuntu_distribution_id.stdout }}"
           ssh_pub_key="{{ ssh_key.stdout }}"
           wait=yes
   register: streisand_server
