@@ -80,10 +80,10 @@
 # ========================================================
   hosts: streisand-host
 
-  # The standard streisand.yml is not included because the Debian AMI
-  # uses 'admin' instead of 'root'
-  remote_user: admin
-  sudo: yes
+  # The standard streisand.yml is not included because the Ubuntu AMI
+  # uses 'ubuntu' instead of 'root'
+  remote_user: ubuntu
+  become: yes
 
   vars:
     # The rc-local role normally expects to configure firewall rules for
