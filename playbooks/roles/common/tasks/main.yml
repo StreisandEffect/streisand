@@ -1,7 +1,7 @@
 ---
-- name: Warn users if the server's Linux distribution is not Debian 7
-  pause: prompt="Debian 7 is the only fully tested distribution; the setup will probably fail. Press Enter if you still want to continue."
-  when: ansible_distribution != "Debian" or ansible_distribution_major_version != "7"
+- name: Warn users if the server's Linux distribution is not Ubuntu 14.04
+  pause: prompt="Ubuntu 14.04 is the only fully tested distribution; the setup will probably fail. Press Enter if you still want to continue."
+  when: ansible_distribution != "Ubuntu" or ansible_distribution_major_version != "14"
 
 # Set default variables
 - include: set-default-variables.yml
