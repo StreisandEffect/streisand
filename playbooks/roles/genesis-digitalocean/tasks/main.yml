@@ -10,9 +10,9 @@
                         api_key="{{ do_api_key }}"
   register: do_ssh_key
 
-- name: Get the latest 'Debian 7.0 x64' image ID from the DigitalOcean API
-  shell: curl -s 'https://api.digitalocean.com/images/?client_id={{ do_client_id }}&api_key={{ do_api_key }}' | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print [img for img in j["images"] if img["slug"]=="debian-7-0-x64"][0]["id"]'
-  register: do_debian7_x64_image_id
+- name: Get the latest 'Ubuntu 14.04 x64' image ID from the DigitalOcean API
+  shell: curl -s 'https://api.digitalocean.com/images/?client_id={{ do_client_id }}&api_key={{ do_api_key }}' | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print [img for img in j["images"] if img["slug"]=="ubuntu-14-04-x64"][0]["id"]'
+  register: do_ubuntu_x64_image_id
 
 - name: Create the server. If this task fails with an "invalid region" error, then DigitalOcean is temporarily not allowing new 512MB Droplets to be provisioned in the selected region. You can either try the same region again later, or choose a different location.
   digital_ocean: command=droplet
@@ -22,7 +22,7 @@
                  api_key="{{ do_api_key }}"
                  size_id={{ do_small_droplet_size_id }}
                  region_id={{ regions[do_region] }}
-                 image_id={{ do_debian7_x64_image_id.stdout }}
+                 image_id={{ do_ubuntu_x64_image_id.stdout }}
                  unique_name=yes
   register: streisand_server
 
