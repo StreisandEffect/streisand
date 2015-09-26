@@ -4,8 +4,8 @@
 ssh_mirror_location: "{{ streisand_mirror_location }}/ssh"
 ssh_mirror_href_base: "/mirror/ssh"
 
-putty_key_id: "0xFECD6F3F08B0A90B"
-putty_expected_fingerprint: "Key fingerprint = 00B1 1009 38E6 9800 6518  F0AB FECD 6F3F 08B0 A90B"
+putty_key_id: "0x9DFE2648B43434E4"
+putty_expected_fingerprint: "Key fingerprint = 0054 DDAA 8ADA 15D2 768A  6DE7 9DFE 2648 B434 34E4"
 
 putty_base_download_url: "http://the.earth.li/~sgtatham/putty/latest/x86"
 
