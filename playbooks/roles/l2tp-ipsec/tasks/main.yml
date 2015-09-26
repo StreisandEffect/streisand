@@ -1,23 +1,30 @@
 ---
-- name: Install strongSwan and xl2tpd
+- name: Install the Libreswan dependencies that are required for compilation
   apt: name={{ item }}
-  with_items:
-    - strongswan
-    - xl2tpd
+  with_items: libreswan_compilation_dependencies
 
-- name: Enable IPv4 traffic forwarding
-  sysctl: name=net.ipv4.ip_forward
-          value=1
+- name: Install xl2tpd
+  apt: name=xl2tpd
 
-- name: Disable IPv4 redirects
-  sysctl: name={{ item }}
-          value=0
-  with_items:
-    - net.ipv4.conf.all.accept_redirects
-    - net.ipv4.conf.all.send_redirects
+- name: Retrieve the Libreswan source code
+  get_url: url=https://download.libreswan.org/{{ libreswan_source_filename }}
+           dest={{ libreswan_source_location }}
+           sha256sum={{ libreswan_checksum }}
+           owner=root
+           group=root
+           mode=644
 
-- name: Ensure redirects are disabled immediately
-  shell: echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
+- name: Extract the Libreswan source code
+  unarchive: copy=no
+             src={{ libreswan_source_location }}
+             dest=/usr/local/src
+             owner=root
+             group=root
+             creates={{ libreswan_compilation_directory }}/README
+
+- name: Compile and install Libreswan (this will take a while)
+  shell: make programs && make install
+         chdir={{ libreswan_compilation_directory }}
 
 - name: Generate IPsec configuration file
   template: src=ipsec.conf.j2
@@ -25,7 +32,7 @@
             owner=root
             group=root
             mode=644
-  notify: Restart strongSwan
+  notify: Restart Libreswan
 
 - name: Generate a random IPsec pre-shared key
   shell: grep -v "'" /usr/share/dict/american-english-huge | grep -v "[^ a-z]|[^ A-Z]" | sort -R | tail -n 3 | xargs | sed -e 's/ /-/g' > {{ ipsec_preshared_key_file }}
@@ -64,8 +71,8 @@
         mode=600
 
 - name: Copy PPP options file
-  copy: src=options
-        dest=/etc/ppp/options
+  copy: src=options.xl2tpd
+        dest={{ ppp_options_file }}
         owner=root
         group=root
         mode=644
@@ -91,9 +98,24 @@
             group=root
             mode=600
 
+- name: Include the L2TP/IPsec sysctl value variables
+  include_vars: sysctl-values.yml
+
+- name: Apply the sysctl values
+  sysctl: name={{ item.key }}
+          value={{ item.value }}
+  with_items: l2tp_ipsec_sysctl_values
+
+- name: Ensure redirects are disabled immediately
+  shell: echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
+
 - name: Allow L2TP/IPsec through the firewall
   command: "{{ item }}"
   with_items: l2tp_ipsec_firewall_rules
+
+- name: Generate a certificate database file
+  script: generate-certificate-database.sh
+          creates=/etc/ipsec.d/cert8.db
 
 - name: Copy the rsyslog config file that prevents incoming L2TP/IPsec traffic from being logged by completely filtering out all messages from pppd, charon, and xl2tpd.
   copy: src=rsyslog.conf

@@ -1,25 +1,34 @@
-config setup
-    virtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:25.0.0.0/8,%v6:fd00::/8,%v6:fe80::/10,%v4:!10.8.8.0/24,%v4:!10.9.9.0/24
-    charonstart=yes
-    plutostart=yes
-    nat_traversal=yes
-    plutodebug=none
-    plutostderrlog=/dev/null
-    charondebug=0
+version 2.0
 
-conn L2TP
-    authby=psk
-    keyexchange=ikev1
-    pfs=no
-    rekey=no
-    type=tunnel
-    forceencaps=yes
-    esp=aes128-sha1
-    ike=aes128-sha-modp1024
-    left={{ ansible_default_ipv4.address }}
-    leftnexthop=%defaultroute
-    leftprotoport=17/1701
-    right=%any
-    rightprotoport=17/%any
-    rightsubnetwithin=0.0.0.0/0
-    auto=add
+config setup
+  dumpdir=/var/run/pluto/
+  nat_traversal=yes
+  virtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!192.168.42.0/24
+  oe=off
+  protostack=netkey
+  nhelpers=0
+  interfaces=%defaultroute
+
+conn vpnpsk
+  connaddrfamily=ipv4
+  auto=add
+  left={{ ansible_default_ipv4.address }}
+  leftid={{ ansible_default_ipv4.address }}
+  leftsubnet={{ ansible_default_ipv4.address }}/32
+  leftnexthop=%defaultroute
+  leftprotoport=17/1701
+  rightprotoport=17/%any
+  right=%any
+  rightsubnetwithin=0.0.0.0/0
+  forceencaps=yes
+  authby=secret
+  pfs=no
+  type=transport
+  auth=esp
+  ike=3des-sha1,aes-sha1
+  phase2alg=3des-sha1,aes-sha1
+  rekey=no
+  keyingtries=5
+  dpddelay=30
+  dpdtimeout=120
+  dpdaction=clear

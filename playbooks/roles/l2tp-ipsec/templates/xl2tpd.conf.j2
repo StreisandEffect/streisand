@@ -1,18 +1,18 @@
 [global]
-ipsec saref = yes
-listen-addr={{ ansible_default_ipv4.address }}
 port = 1701
-auth file = /etc/xl2tpd/l2tp-secrets
+
+;debug avp = yes
+;debug network = yes
+;debug state = yes
+;debug tunnel = yes
 
 [lns default]
-ip range = 10.9.9.100-10.9.9.200
-local ip = 10.9.9.1
-refuse chap = yes
+ip range = 192.168.42.10-192.168.42.250
+local ip = 192.168.42.1
+require chap = yes
 refuse pap = yes
 require authentication = yes
-ppp debug = yes
-pppoptfile = /etc/ppp/options
+name = l2tpd
+;ppp debug = yes
+pppoptfile = {{ ppp_options_file }}
 length bit = yes
-exclusive = no
-assign ip = yes
-name = Streisand-VPN

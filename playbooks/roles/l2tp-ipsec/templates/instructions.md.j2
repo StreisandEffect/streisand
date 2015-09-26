@@ -93,6 +93,7 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 <a name="ios"></a>
 ### iOS ###
 1. Go to Settings -> General -> VPN.
+1. Tap *Add VPN Configuration...*.
 1. Tap *Type*.
 1. Select *L2TP* and go back.
 1. Tap *Description* and enter `{{ streisand_server_name }}`.
@@ -100,7 +101,7 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 1. Tap *Account* and enter `streisand`.
 1. Tap *Password* and enter `{{ chap_password.stdout }}`.
 1. Tap *Secret* and enter `{{ ipsec_preshared_key.stdout }}`.
-1. Tap *Save*.
+1. Tap *Done*.
 1. Slide the *VPN* switch on.
 1. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 

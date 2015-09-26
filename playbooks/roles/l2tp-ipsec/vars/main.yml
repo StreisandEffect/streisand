@@ -2,12 +2,44 @@
 chap_password_file: "/etc/ppp/chap-password"
 ipsec_preshared_key_file: "/etc/ipsec.preshared-key"
 
+libreswan_compilation_dependencies:
+  - bison
+  - flex
+  - gcc
+  - libcap-ng-dev
+  - libcap-ng-utils
+  - libcurl4-nss-dev
+  - libevent-dev
+  - libgmp3-dev
+  - libnspr4-dev
+  - libnss3-dev
+  - libnss3-tools
+  - libpam0g-dev
+  - libselinux1-dev
+  - libunbound-dev
+  - make
+  - pkg-config
+  - xmlto
+libreswan_checksum: "1ca370105a2a619eb4dc34626cb53cd391391e953fce3761a83f0e3a4d5aec4c"
+libreswan_version: "3.15"
+libreswan_compilation_directory: "/usr/local/src/libreswan-{{ libreswan_version }}"
+libreswan_source_filename: "libreswan-{{ libreswan_version }}.tar.gz"
+libreswan_source_location: "/usr/local/src/{{ libreswan_source_filename }}"
+
 l2tp_ipsec_firewall_rules:
-  - iptables -I INPUT -s 10.9.9.0/24 -j ACCEPT
-  - iptables -t nat -I POSTROUTING -s 10.9.9.0/24 -j SNAT --to-source {{ ansible_default_ipv4.address }} -o {{ ansible_default_ipv4.interface }}
-  - iptables -t nat -I POSTROUTING -s 10.9.9.0/24 -j MASQUERADE
+  - iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+  - iptables -A INPUT -i lo -j ACCEPT
+  - iptables -A INPUT -p udp --dport 67:68 --sport 67:68 -j ACCEPT
+  - iptables -A INPUT -p udp -m multiport --dports 500,4500 -j ACCEPT
+  - iptables -A INPUT -p udp --dport 1701 -m policy --dir in --pol ipsec -j ACCEPT
+  - iptables -A INPUT -p udp --dport 1701 -j DROP
+  - iptables -A FORWARD -i eth+ -o ppp+ -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+  - iptables -A FORWARD -i ppp+ -o eth+ -j ACCEPT
+  - iptables -t nat -A POSTROUTING -s 192.168.42.0/24 -o eth+ -j SNAT --to-source {{ ansible_default_ipv4.address }}
 
 l2tp_ipsec_gateway_location: "{{ streisand_gateway_location }}/l2tp-ipsec"
 
 l2tp_ipsec_markdown_instructions: "{{ l2tp_ipsec_gateway_location }}/index.md"
 l2tp_ipsec_html_instructions: "{{ l2tp_ipsec_gateway_location }}/index.html"
+
+ppp_options_file: "/etc/ppp/options.xl2tpd"

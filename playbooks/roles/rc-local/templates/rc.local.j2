@@ -22,6 +22,9 @@
 
 /etc/init.d/dnsmasq start
 /etc/init.d/ipsec restart
+/etc/init.d/xl2tpd restart
+
+echo 1 > /proc/sys/net/ipv4/ip_forward
 
 echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
 exit 0

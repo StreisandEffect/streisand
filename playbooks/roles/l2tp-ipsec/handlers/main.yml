@@ -1,6 +1,6 @@
 ---
-- name: Restart strongSwan
-  service: name=strongswan
+- name: Restart Libreswan
+  service: name=ipsec
            state=restarted
 
 - name: Restart xl2tpd

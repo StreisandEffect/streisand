@@ -1,0 +1,14 @@
+ipcp-accept-local
+ipcp-accept-remote
+ms-dns 8.8.8.8
+ms-dns 8.8.4.4
+noccp
+auth
+crtscts
+idle 1800
+mtu 1280
+mru 1280
+lock
+lcp-echo-failure 10
+lcp-echo-interval 60
+connect-delay 5000
