@@ -29,7 +29,7 @@
           7. Singapore
           8. Tokyo
         Please choose the number of your region. Press enter for default (#6) region.
-      default: "6"
+      default: "7"
       private: no
 
     - name: "linode_server_name"
