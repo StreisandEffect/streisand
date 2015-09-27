@@ -7,31 +7,33 @@
 
   vars:
     regions:
-      "1": 2
-      "2": 5
-      "3": 9
-      "4": 7
-      "5": 1
-      "6": 4
-      "7": 8
-      "8": 3
-      "9": 6
+      "1":  5
+      "2":  9
+      "3":  10
+      "4":  7
+      "5":  1
+      "6":  4
+      "7":  8
+      "8":  3
+      "9":  6
+      "10": 11
 
   vars_prompt:
     - name: "do_region"
       prompt: >
         What region should the server be located in?
-          1. Amsterdam        (Datacenter 1)
-          2. Amsterdam        (Datacenter 2)
-          3. Amsterdam        (Datacenter 3)
-          4. London
-          5. New York         (Datacenter 1)
-          6. New York         (Datacenter 2)
-          7. New York         (Datacenter 3)
-          8. San Francisco
-          9. Singapore
+          1.  Amsterdam        (Datacenter 2)
+          2.  Amsterdam        (Datacenter 3)
+          3.  Frankfurt
+          4.  London
+          5.  New York         (Datacenter 1)
+          6.  New York         (Datacenter 2)
+          7.  New York         (Datacenter 3)
+          8.  San Francisco
+          9.  Singapore
+          10. Toronto
         Please choose the number of your region. Press enter for default (#2) region.
-      default: "3"
+      default: "2"
       private: no
 
     - name: "do_server_name"
