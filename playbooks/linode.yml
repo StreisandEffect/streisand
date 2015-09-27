@@ -9,11 +9,12 @@
     regions:
       "1": 4
       "2": 2
-      "3": 3
-      "4": 7
-      "5": 6
-      "6": 9
-      "7": 8
+      "3": 10
+      "4": 3
+      "5": 7
+      "6": 6
+      "7": 9
+      "8": 8
 
   vars_prompt:
     - name: "linode_datacenter"
@@ -21,11 +22,12 @@
         What region should the server be located in?
           1. Atlanta
           2. Dallas
-          3. Fremont
-          4. London
-          5. Newark
-          6. Singapore
-          7. Tokyo
+          3. Frankfurt
+          4. Fremont
+          5. London
+          6. Newark
+          7. Singapore
+          8. Tokyo
         Please choose the number of your region. Press enter for default (#6) region.
       default: "6"
       private: no
