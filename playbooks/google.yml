@@ -109,6 +109,24 @@
     # L2TP/IPsec information on the Gateway index page
     l2tp_ipsec_gateway_location: ""
 
+  pre_tasks:
+    #The GCE Ubuntu image has an ntp conflict, removing ntpd and associated apparmor rules, allows openntpd to install properly.
+    - name: Remove ntpd
+      apt: name=ntp
+           state=absent
+           purge=true
+
+    - name: Remove apparmor rule
+      file: path=/etc/apparmor.d/{{ item }}
+            state=absent
+      with_items:
+        - "usr.sbin.ntpd"
+        - "cache/usr.sbin.ntpd"
+
+    - name: Reload apparmor
+      service: name=apparmor
+               state=reloaded
+
   roles:
     - common
     - openvpn

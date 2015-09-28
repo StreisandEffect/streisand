@@ -32,69 +32,65 @@ options:
        - image string to use for the instance
     required: false
     default: "debian-7"
-    aliases: []
   instance_names:
     description:
       - a comma-separated list of instance names to create or destroy
     required: false
     default: null
-    aliases: []
   machine_type:
     description:
       - machine type to use for the instance, use 'n1-standard-1' by default
     required: false
     default: "n1-standard-1"
-    aliases: []
   metadata:
     description:
       - a hash/dictionary of custom data for the instance; '{"key":"value",...}'
     required: false
     default: null
-    aliases: []
   service_account_email:
-    version_added: 1.5.1
+    version_added: "1.5.1"
     description:
       - service account email
     required: false
     default: null
-    aliases: []
+  service_account_permissions:
+    version_added: "2.0"
+    description:
+      - service account permissions (see U(https://cloud.google.com/sdk/gcloud/reference/compute/instances/create), --scopes section for detailed information)
+    required: false
+    default: null
+    choices: ["bigquery", "cloud-platform", "compute-ro", "compute-rw", "computeaccounts-ro", "computeaccounts-rw", "datastore", "logging-write", "monitoring", "sql", "sql-admin", "storage-full", "storage-ro", "storage-rw", "taskqueue", "userinfo-email"]
   pem_file:
-    version_added: 1.5.1
+    version_added: "1.5.1"
     description:
       - path to the pem file associated with the service account email
     required: false
     default: null
-    aliases: []
   project_id:
-    version_added: 1.5.1
+    version_added: "1.5.1"
     description:
       - your GCE project ID
     required: false
     default: null
-    aliases: []
   name:
     description:
       - identifier when working with a single instance
     required: false
-    aliases: []
   network:
     description:
       - name of the network, 'default' will be used if not specified
     required: false
     default: "default"
-    aliases: []
   persistent_boot_disk:
     description:
       - if set, create the instance with a persistent boot disk
     required: false
     default: "false"
-    aliases: []
   disks:
     description:
       - a list of persistent disks to attach to the instance; a string value gives the name of the disk; alternatively, a dictionary value can define 'name' and 'mode' ('READ_ONLY' or 'READ_WRITE'). The first entry will be the boot disk (which must be READ_WRITE).
     required: false
     default: null
-    aliases: []
     version_added: "1.7"
   state:
     description:
@@ -102,24 +98,41 @@ options:
     required: false
     default: "present"
     choices: ["active", "present", "absent", "deleted"]
-    aliases: []
   tags:
     description:
       - a comma-separated list of tags to associate with the instance
     required: false
     default: null
-    aliases: []
   zone:
     description:
       - the GCE zone to use
     required: true
     default: "us-central1-a"
-    aliases: []
+  ip_forward:
+    version_added: "1.9"
+    description:
+      - set to true if the instance can forward ip packets (useful for gateways)
+    required: false
+    default: "false"
+  external_ip:
+    version_added: "1.9"
+    description:
+      - type of external ip, ephemeral by default
+    required: false
+    default: "ephemeral"
+  disk_auto_delete:
+    version_added: "1.9"
+    description:
+      - if set boot disk will be removed after instance destruction
+    required: false
+    default: "true"
 
-requirements: [ "libcloud" ]
+requirements:
+    - "python >= 2.6"
+    - "apache-libcloud >= 0.13.3"
 notes:
   - Either I(name) or I(instance_names) is required.
-author: Eric Johnson <erjohnso@google.com>
+author: "Eric Johnson (@erjohnso) <erjohnso@google.com>"
 '''
 
 EXAMPLES = '''
@@ -181,25 +194,21 @@ EXAMPLES = '''
 
 '''
 
-import sys
-
 try:
     from libcloud.compute.types import Provider
     from libcloud.compute.providers import get_driver
     from libcloud.common.google import GoogleBaseError, QuotaExceededError, \
             ResourceExistsError, ResourceInUseError, ResourceNotFoundError
     _ = Provider.GCE
+    HAS_LIBCLOUD = True
 except ImportError:
-    print("failed=True " + \
-        "msg='libcloud with GCE support (0.13.3+) required for this module'")
-    sys.exit(1)
+    HAS_LIBCLOUD = False
 
 try:
     from ast import literal_eval
+    HAS_PYTHON26 = True
 except ImportError:
-    print("failed=True " + \
-        "msg='GCE module requires python's 'ast' module, python v2.6+'")
-    sys.exit(1)
+    HAS_PYTHON26 = False
 
 
 def get_instance_info(inst):
@@ -223,6 +232,12 @@ def get_instance_info(inst):
                                 key=lambda disk_info: disk_info['index'])]
     else:
         disk_names = []
+
+    if len(inst.public_ips) == 0:
+        public_ip = None
+    else:
+        public_ip = inst.public_ips[0]
+
     return({
         'image': not inst.image is None and inst.image.split('/')[-1] or None,
         'disks': disk_names,
@@ -231,11 +246,11 @@ def get_instance_info(inst):
         'name': inst.name,
         'network': netname,
         'private_ip': inst.private_ips[0],
-        'public_ip': inst.public_ips[0],
+        'public_ip': public_ip,
         'status': ('status' in inst.extra) and inst.extra['status'] or None,
         'tags': ('tags' in inst.extra) and inst.extra['tags'] or [],
         'zone': ('zone' in inst.extra) and inst.extra['zone'].name or None,
-    })
+   })
 
 def create_instances(module, gce, instance_names):
     """Creates new instances. Attributes other than instance_names are picked
@@ -259,6 +274,14 @@ def create_instances(module, gce, instance_names):
     state = module.params.get('state')
     tags = module.params.get('tags')
     zone = module.params.get('zone')
+    ip_forward = module.params.get('ip_forward')
+    external_ip = module.params.get('external_ip')
+    disk_auto_delete = module.params.get('disk_auto_delete')
+    service_account_permissions = module.params.get('service_account_permissions')
+    service_account_email = module.params.get('service_account_email')
+
+    if external_ip == "none":
+        external_ip = None
 
     new_instances = []
     changed = False
@@ -290,16 +313,28 @@ def create_instances(module, gce, instance_names):
             if not isinstance(md, dict):
                 raise ValueError('metadata must be a dict')
         except ValueError, e:
-            print("failed=True msg='bad metadata: %s'" % str(e))
-            sys.exit(1)
+            module.fail_json(msg='bad metadata: %s' % str(e))
         except SyntaxError, e:
-            print("failed=True msg='bad metadata syntax'")
-            sys.exit(1)
+            module.fail_json(msg='bad metadata syntax')
 
         items = []
         for k,v in md.items():
             items.append({"key": k,"value": v})
         metadata = {'items': items}
+
+    ex_sa_perms = []
+    bad_perms = []
+    if service_account_permissions:
+        for perm in service_account_permissions:
+            if not perm in gce.SA_SCOPES_MAP.keys():
+                bad_perms.append(perm)
+        if len(bad_perms) > 0:
+            module.fail_json(msg='bad permissions: %s' % str(bad_perms))
+        if service_account_email:
+            ex_sa_perms.append({'email': service_account_email})
+        else:
+            ex_sa_perms.append({'email': "default"})
+        ex_sa_perms[0]['scopes'] = service_account_permissions
 
     # These variables all have default values but check just in case
     if not lc_image or not lc_network or not lc_machine_type or not lc_zone:
@@ -319,7 +354,8 @@ def create_instances(module, gce, instance_names):
         try:
             inst = gce.create_node(name, lc_machine_type, lc_image,
                     location=lc_zone, ex_network=network, ex_tags=tags,
-                    ex_metadata=metadata, ex_boot_disk=pd)
+                    ex_metadata=metadata, ex_boot_disk=pd, ex_can_ip_forward=ip_forward,
+                    external_ip=external_ip, ex_disk_auto_delete=disk_auto_delete, ex_service_accounts=ex_sa_perms)
             changed = True
         except ResourceExistsError:
             inst = gce.ex_get_node(name, lc_zone)
@@ -407,10 +443,20 @@ def main():
             tags = dict(type='list'),
             zone = dict(default='us-central1-a'),
             service_account_email = dict(),
+            service_account_permissions = dict(type='list'),
             pem_file = dict(),
             project_id = dict(),
+            ip_forward = dict(type='bool', default=False),
+            external_ip = dict(choices=['ephemeral', 'none'],
+                    default='ephemeral'),
+            disk_auto_delete = dict(type='bool', default=True),
         )
     )
+
+    if not HAS_PYTHON26:
+        module.fail_json(msg="GCE module requires python's 'ast' module, python v2.6+")
+    if not HAS_LIBCLOUD:
+        module.fail_json(msg='libcloud with GCE support (0.13.3+) required for this module')
 
     gce = gce_connect(module)
 
@@ -424,6 +470,7 @@ def main():
     state = module.params.get('state')
     tags = module.params.get('tags')
     zone = module.params.get('zone')
+    ip_forward = module.params.get('ip_forward')
     changed = False
 
     inames = []
@@ -464,11 +511,10 @@ def main():
 
 
     json_output['changed'] = changed
-    print json.dumps(json_output)
-    sys.exit(0)
+    module.exit_json(**json_output)
 
 # import module snippets
 from ansible.module_utils.basic import *
 from ansible.module_utils.gce import *
-
-main()
+if __name__ == '__main__':
+    main()
