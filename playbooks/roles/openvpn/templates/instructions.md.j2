@@ -40,17 +40,17 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 <a name="osx"></a>
 ### OS X ###
 1. Download and open [Tunnelblick](/mirror/#openvpn).
-1. Click *Install*.
+1. Type your password to allow the installation process to complete, and click *OK*.
 1. Click *Launch* after the installation is finished.
-1. Enter your password and click *OK* if Tunnelblick asks to *Repair ownership/permissions*.
+1. Click *I have configuration files*.
 1. Download one of these unified OpenVPN profiles:
 {% for client in openvpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
    * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to ports `80` and `443`.*
-1. Click the *Open configuration folder* button on the *Welcome to Tunnelblick* screen.
-1. Drag and drop the downloaded `{{ openvpn_direct_profile_filename }}` file to the folder that was opened. You may need to enter your password in order to authorize Finder to copy the file to this location.
-1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose *Connect*. You will see an animation while the connection is being established. You can also click on the icon and choose *Details* to see a log of what is happening.
+1. Double-click the OpenVPN profile.
+1. You will be asked to choose whether the profile should be available for all users or only the current user. After making your selection, you will be asked to enter your password.
+1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose *Connect*.
 1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
