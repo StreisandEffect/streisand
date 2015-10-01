@@ -40,7 +40,8 @@ Services Provided
   * Windows, OS X, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software.
   * *Streisand does not install L2TP/IPsec on Amazon EC2 or Google GCE servers by default because the instances cannot bind directly to their public IP addresses which makes IPsec routing nearly impossible.*
 * [OpenSSH](http://www.openssh.com/)
-  * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/apenwarr/sshuttle) and SOCKS capabilities. Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
+  * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/apenwarr/sshuttle) and SOCKS capabilities.
+  * Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
   * [Tinyproxy](https://banu.com/tinyproxy/) is installed and bound to localhost. It can be accessed over an SSH tunnel by programs that do not natively support SOCKS and that require an HTTP proxy, such as Twitter for Android.
 * [OpenVPN](https://openvpn.net/index.php/open-source.html)
   * Self-contained "unified" .ovpn profiles are generated for easy client configuration using only a single file.

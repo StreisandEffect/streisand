@@ -21,7 +21,8 @@ putty_download_urls:
   - "{{ putty_url }}"
   - "{{ putty_sig_url }}"
 
-sshuttle_filename: "sshuttle-master.zip"
+sshuttle_version: "0.71"
+sshuttle_filename: "sshuttle-{{ sshuttle_version }}.tar.gz"
 sshuttle_href: "{{ ssh_mirror_href_base }}/{{ sshuttle_filename }}"
-sshuttle_url: "https://codeload.github.com/apenwarr/sshuttle/zip/master"
-sshuttle_checksum: "9eaf00cd179b82614e810d4266d58ae991d12c9a6baf9f8ba129da69c25dc674"
+sshuttle_url: "https://codeload.github.com/sshuttle/sshuttle/tar.gz/sshuttle-{{ sshuttle_version }}"
+sshuttle_checksum: "62f0f8be5497c2d0098238c54e881ac001cd84fce442c2506ab6d37aa2f698f0"
