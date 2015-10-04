@@ -107,6 +107,7 @@
     - tinyproxy
     - tor-bridge
     - sslh
+    - monit
     - streisand-mirror
     - streisand-gateway
 
