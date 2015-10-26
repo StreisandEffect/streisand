@@ -62,7 +62,7 @@ Services Provided
 
 Installation
 ------------
-Please read all installation instructions **carefully** before procceding.
+Please read all installation instructions **carefully** before proceeding.
 
 ### Important Clarification ###
 Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. That means when you run Streisand, it automatically sets up **another remote server** with the VPN packages and configuration.
