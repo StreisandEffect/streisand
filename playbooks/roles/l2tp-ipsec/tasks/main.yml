@@ -71,7 +71,7 @@
         mode=600
 
 - name: Copy PPP options file
-  template: src=options.xl2tpd
+  template: src=options.xl2tpd.j2
         dest={{ ppp_options_file }}
         owner=root
         group=root
