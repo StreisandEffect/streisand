@@ -1,7 +1,8 @@
 ipcp-accept-local
 ipcp-accept-remote
-ms-dns 8.8.8.8
-ms-dns 8.8.4.4
+{% for item in upstream_dns_servers %}
+ms-dns {{ item }}
+{% endfor %}
 noccp
 auth
 crtscts
