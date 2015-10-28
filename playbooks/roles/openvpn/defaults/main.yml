@@ -14,5 +14,6 @@ openvpn_clients:
 openvpn_port: "636"
 openvpn_protocol: "tcp"
 openvpn_key_size: "2048"
+openvpn_cipher_suites: "DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA"
 openvpn_cipher: "AES-256-CBC"
 openvpn_auth_digest: "SHA256"
