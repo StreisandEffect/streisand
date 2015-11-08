@@ -1,2 +1,5 @@
 ---
-do_small_droplet_size_id: 66
+do_api_authorization_header: "Authorization: Bearer {{ do_access_token }}"
+do_api_content_type_header: "Content-Type: application/json"
+do_api_server_creation_data: "{\"name\":\"{{ do_server_name }}\",\"region\":\"{{ regions[do_region] }}\",\"size\":\"{{ do_small_droplet_size_id }}\",\"image\":\"ubuntu-14-04-x64\",\"ssh_keys\":[{{ do_ssh_key_id.stdout }}],\"backups\":false,\"ipv6\":false,\"user_data\":null,\"private_networking\":null}"
+do_small_droplet_size_id: "512mb"

@@ -7,16 +7,16 @@
 
   vars:
     regions:
-      "1":  5
-      "2":  9
-      "3":  10
-      "4":  7
-      "5":  1
-      "6":  4
-      "7":  8
-      "8":  3
-      "9":  6
-      "10": 11
+      "1":  "ams2"
+      "2":  "ams3"
+      "3":  "fra1"
+      "4":  "lon1"
+      "5":  "nyc1"
+      "6":  "nyc2"
+      "7":  "nyc3"
+      "8":  "sfo1"
+      "9":  "sgp1"
+      "10": "tor1"
 
   vars_prompt:
     - name: "do_region"
@@ -41,16 +41,12 @@
       default: "streisand"
       private: no
 
-    - name: "do_client_id"
-      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/generate_api_key\n\nWhat is your DigitalOcean Client Version 1 API ID?\n"
-      private: no
-
-    - name: "do_api_key"
-      prompt: "\nWhat is your DigitalOcean API key?\n"
+    - name: "do_access_token"
+      prompt: "\n\nNew API access tokens can be generated in the DigitalOcean control panel. When generating a new token, please note that the Write Scope is necessary in order to create Droplets.\nhttps://cloud.digitalocean.com/settings/applications\n\nWhat is your DigitalOcean Access Token?\n"
       private: no
 
     - name: "do_ssh_name"
-      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/ssh_keys\n\nWhat is the name of the DigitalOcean SSH key that you would like to use?\n  * If you have never uploaded an SSH key to DigitalOcean then the default\n    value will work!\n  * This key should match your .ssh/id_rsa.pub file.\n\  * DigitalOcean requires SSH keys to be unique. You cannot upload multiple\n    keys that have the same value under different names.\n\n    If you see an error that says 'SSH Key failed to be created' once the setup\n    process starts, then this is the problem. You can retry the setup process\n    using the name of the existing SSH key that matches the contents of your\n    RSA public key.\n"
+      prompt: "\n\nIf you haven't done so already, you must add your SSH public key in the DigitalOcean control panel.\nhttps://cloud.digitalocean.com/settings/security\n\nWhat is the name of the DigitalOcean SSH key that you would like to use?\n"
       default: "streisand"
       private: no
 

@@ -113,8 +113,7 @@ Complete all of these tasks on your local home machine.
 
             sudo pip install boto
   * DigitalOcean
-
-            sudo pip install dopy
+    * No additional libraries are necessary!
   * Google
 
             sudo pip install "apache-libcloud>=0.17.0"
