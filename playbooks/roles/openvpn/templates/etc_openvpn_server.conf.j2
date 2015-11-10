@@ -246,7 +246,6 @@ tls-auth ta.key 0 # This file is secret
 ;cipher BF-CBC        # Blowfish (default)
 ;cipher AES-128-CBC   # AES
 ;cipher DES-EDE3-CBC  # Triple-DES
-tls-cipher {{ openvpn_cipher_suites }}
 cipher {{ openvpn_cipher }}
 auth {{ openvpn_auth_digest }}
 
