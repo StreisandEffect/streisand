@@ -52,8 +52,9 @@ no-resolv
 
 # Add other name servers here, with domain specs if they are for
 # non-public domains.
-server=8.8.8.8
-server=8.8.4.4
+{% for item in upstream_dns_servers %}
+server={{ item }}
+{% endfor %}
 
 # Example of routing PTR queries to nameservers: this will send all
 # address->name queries for 192.168.3/24 to nameserver 10.1.2.3

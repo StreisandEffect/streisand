@@ -148,7 +148,7 @@
            state=restarted
 
 - name: Copy dnsmasq configuration file into place
-  copy: src=etc_dnsmasq.conf
+  template: src=etc_dnsmasq.conf.j2
         dest=/etc/dnsmasq.conf
   notify: Restart dnsmasq
 
