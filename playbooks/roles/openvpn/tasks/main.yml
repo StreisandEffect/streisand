@@ -147,9 +147,9 @@
   service: name=openvpn
            state=restarted
 
-- name: Copy dnsmasq configuration file into place
+- name: Generate dnsmasq configuration file
   template: src=etc_dnsmasq.conf.j2
-        dest=/etc/dnsmasq.conf
+            dest=/etc/dnsmasq.conf
   notify: Restart dnsmasq
 
 - name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server

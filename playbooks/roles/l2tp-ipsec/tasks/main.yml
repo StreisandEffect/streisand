@@ -70,12 +70,12 @@
         group=root
         mode=600
 
-- name: Copy PPP options file
+- name: Generate PPP options file
   template: src=options.xl2tpd.j2
-        dest={{ ppp_options_file }}
-        owner=root
-        group=root
-        mode=644
+            dest={{ ppp_options_file }}
+            owner=root
+            group=root
+            mode=644
 
 - name: Generate a random CHAP password
   shell: grep -v "'" /usr/share/dict/american-english-huge | grep -v "[^ a-z]|[^ A-Z]" | sort -R | tail -n 2 | xargs | sed -e 's/ /-/g' > {{ chap_password_file }}
