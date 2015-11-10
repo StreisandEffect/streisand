@@ -1,0 +1,90 @@
+set daemon 30
+with start delay 120
+set logfile /var/log/monit.log
+set idfile /var/lib/monit/id
+set statefile /var/lib/monit/state
+
+set httpd port 2812 and
+    use address localhost  # only accept connection from localhost
+    allow localhost        # allow localhost to connect to the server and
+
+# nginx
+check process nginx with pidfile /var/run/nginx.pid
+  start program = "/etc/init.d/nginx start"
+  stop  program = "/etc/init.d/nginx stop"
+  if cpu is greater than 40% for 2 cycles then alert
+  if cpu > 60% for 5 cycles then restart
+  if 10 restarts within 10 cycles then timeout
+  if failed host 127.0.0.1 port 443 type tcpssl and
+    expect ""
+    send "GET / HTTP/1.1\r\n"
+    send "Host: Localhost\r\n"
+    send "Accept: */*\r\n"
+    send "User-Agent: Monit/Localhost\r\n"
+    send ""
+    expect ""
+  then restart
+
+# OpenVPN
+check process vpn-network with pidfile /var/run/openvpn.server.pid
+   start program = "/etc/init.d/openvpn start openvpn.server"
+   stop program = "/etc/init.d/openvpn stop openvpn.server"
+ 
+check host tap0 with address 10.8.0.1
+    start program = "/etc/init.d/openvpn start openvpn.server"
+    stop program = "/etc/init.d/openvpn stop openvpn.server"
+    if failed
+        icmp type echo count 5 with timeout 15 seconds
+    then restart
+
+# OpenSSH
+check process sshd with pidfile /var/run/sshd.pid
+   start program  "/etc/init.d/ssh start"
+   stop program  "/etc/init.d/ssh stop"
+   if failed port 22 protocol ssh then restart
+   # if 5 restarts within 5 cycles then timeout
+
+# Stunnel
+check process stunnel4 with pidfile /var/chroot/stunnel4/stunnel4.pid
+	start program = "/etc/init.d/stunnel4 start" with timeout 20 seconds
+	stop program = "/etc/init.d/stunnel4 stop"
+	if failed host 127.0.0.1 port 993 with timeout 20 seconds then restart
+	if 3 restarts within 5 cycles then unmonitor
+
+# dnsmasq
+check process dnsmasq with pidfile /var/run/dnsmasq/dnsmasq.pid
+  start program = "/etc/init.d/dnsmasq start" with timeout 60 seconds
+  stop program = "/etc/init.d/dnsmasq stop"
+  if failed
+    host 127.0.0.1
+    port 53 use type udp
+    protocol dns
+    with timeout 60 seconds
+  then restart
+  if 3 restarts within 5 cycles then timeout
+  depends on dnsmasq-bin
+  depends on dnsmasq-hosts
+
+
+check file dnsmasq-bin with path /usr/sbin/dnsmasq
+   if failed checksum then unmonitor
+   if failed permission 755 then unmonitor
+   if failed uid root then unmonitor
+   if failed gid root then unmonitor
+
+check file dnsmasq-hosts with path /etc/hosts
+   if changed timestamp then restart
+
+# Tiny Proxy
+check process tinyproxy with pidfile /var/run/tinyproxy/tinyproxy.pid
+   start program  "/etc/init.d/tinyproxy restart"
+   stop program  "/etc/init.d/tinyproxy stop"
+   if failed host 127.0.0.1 port 8888 type tcp then restart
+   # if 5 restarts within 5 cycles then timeout
+
+# SSLH
+check process sslh with pidfile /var/run/sslh/sslh.pid
+   start program  "/etc/init.d/sslh start"
+   stop program  "/etc/init.d/sslh stop"
+   if failed host {{ ansible_default_ipv4.address }} port 443 type tcp then restart
+   # if 5 restarts within 5 cycles then timeout
