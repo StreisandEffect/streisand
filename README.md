@@ -39,6 +39,8 @@ Services Provided
   * A randomly chosen pre-shared key and password are generated.
   * Windows, OS X, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software.
   * *Streisand does not install L2TP/IPsec on Amazon EC2 or Google GCE servers by default because the instances cannot bind directly to their public IP addresses which makes IPsec routing nearly impossible.*
+* [Monit](https://mmonit.com/monit/)
+  * Monitors process health and automatically restarts services in the unlikely event that they crash or become unresponsive.
 * [OpenSSH](http://www.openssh.com/)
   * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/apenwarr/sshuttle) and SOCKS capabilities.
   * Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.

@@ -7,6 +7,5 @@
             dest=/etc/monit/monitrc
             owner=root
             group=root
-            mode=644
+            mode=700
   notify: Restart Monit
-
