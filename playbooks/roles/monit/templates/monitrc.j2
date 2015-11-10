@@ -28,10 +28,10 @@ check process nginx with pidfile /var/run/nginx.pid
 
 
 # OpenVPN
-check process vpn-network with pidfile /var/run/openvpn.server.pid
+check process vpn-network with pidfile /var/run/openvpn/server.pid
    start program = "/etc/init.d/openvpn start openvpn.server"
    stop program = "/etc/init.d/openvpn stop openvpn.server"
- 
+
 check host tap0 with address 10.8.0.1
     start program = "/etc/init.d/openvpn start openvpn.server"
     stop program = "/etc/init.d/openvpn stop openvpn.server"
