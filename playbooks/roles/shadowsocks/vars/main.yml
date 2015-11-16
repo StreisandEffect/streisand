@@ -2,7 +2,6 @@
 shadowsocks_dependencies:
   - python-m2crypto
   - python-pip
-  - qrencode
 
 shadowsocks_location: "/home/shadowsocks"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"

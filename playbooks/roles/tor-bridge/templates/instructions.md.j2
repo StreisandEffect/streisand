@@ -24,20 +24,16 @@ You are ready to go! Tor has connected to the *{{ tor_bridge_nickname.stdout }}*
 <a name="android"></a>
 ### Android ###
 1. Download [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android) and launch it.
-1. Tap the *Settings* icon.
-1. Scroll to the *Bridges* section.
-1. Check the *Use Bridges* checkbox.
-1. Tap *Bridges* and enter the following:
+1. Tap the *Menu* button.
+1. Tap *QR Codes*.
+1. Tap *Scan BridgeQR*.
+1. Scan the following QR code. This will automatically configure Orbot to connect to this server using the obfs3 pluggable transport:
 
-         {{ tor_standard_connection_details }}
-1. Go back, then long press on the power button to activate Orbot.
-1. Tap the *Log* button on the bottom of the screen. The fingerprint for the bridge should match the following (look for a line that begins with "NOTICE: Learned fingerprint"):
-
-         {{ tor_fingerprint.stdout }}
+   ![Tor obfs3 QR code](/tor/tor-obfs3-qr-code.png)
+1. You must restart Orbot in order for the changes to take effect. Tap the *Menu* button, select *Exit*, and launch Orbot again.
+1. Long press on the power button to activate Orbot.
 
 Great! Orbot has connected to the *{{ tor_bridge_nickname.stdout }}* bridge server!
-
-The version of Orbot in the Play Store only supports the obfs2 pluggable transport. The obfs2 pluggable transport is in the process of [being deprecated](https://trac.torproject.org/projects/tor/ticket/10314) and no longer works in China due to active probing attacks. The next version of Orbot will support the obfs3 and ScrambleSuit pluggable transports. Once it is released, you can use `{{ tor_obfs3_connection_details }}` as an obfs3 bridge!
 
 You are now ready to configure Twitter and Firefox to route their traffic through Orbot.
 

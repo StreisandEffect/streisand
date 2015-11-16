@@ -11,6 +11,9 @@ streisand_common_packages:
   - openntpd
   # Required for the apt_repository module
   - python-software-properties
+  # Used to generate convenient QR codes for mobile clients in the
+  # Shadowsocks and Tor roles
+  - qrencode
   # Word List dictionary used by several roles to generate random
   # (yet typeable!) passphrases
   - wamerican-huge
