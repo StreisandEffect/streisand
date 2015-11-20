@@ -92,9 +92,9 @@ Complete all of these tasks on your local home machine.
 
             brew install git
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
-  * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible)
+  * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible and that are required by some modules)
 
-            sudo apt-get install python-pip python-dev build-essential
+            sudo apt-get install python-pip python-pycurl python-dev build-essential
   * On Fedora
 
             sudo yum install python-pip
