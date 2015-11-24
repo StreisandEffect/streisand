@@ -25,6 +25,9 @@
 - name: Compile and install Libreswan (this will take a while)
   shell: make programs && make install
          chdir={{ libreswan_compilation_directory }}
+  async: 300
+  poll: 0
+  register: compile_libreswan
 
 - name: Generate IPsec configuration file
   template: src=ipsec.conf.j2

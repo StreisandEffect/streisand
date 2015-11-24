@@ -14,6 +14,13 @@
     - ca
     - server
 
+- name: Generate Diffie-Hellman parameters asynchronously
+  command: openssl dhparam -out {{ openvpn_dhparam }} {{ openvpn_key_size }}
+           creates={{ openvpn_dhparam }}
+  async: 300
+  poll: 0
+  register: dhparams_creation
+
 - name: Create directories for clients
   file: path={{ openvpn_path}}/{{ item }}
         state=directory
@@ -127,10 +134,6 @@
     - openvpn_client_certificates.results
     - openvpn_client_keys.results
 
-- name: Generate Diffie-Hellman parameters (this will take a while)
-  command: openssl dhparam -out {{ openvpn_dhparam }} {{ openvpn_key_size }}
-           creates={{ openvpn_dhparam }}
-
 - name: Enable IPv4 traffic forwarding
   sysctl: name=net.ipv4.ip_forward
           value=1
@@ -142,6 +145,12 @@
 - name: Copy OpenVPN configuration file into place
   template: src=etc_openvpn_server.conf.j2
             dest=/etc/openvpn/server.conf
+
+- name: Verify Diffie-Hellman parameters have been created
+  async_status: jid={{ dhparams_creation.ansible_job_id }}
+  register: async_task_result
+  until: async_task_result.finished
+  retries: 100
 
 - name: Restart OpenVPN so the 10.8.0.0 interface is available to dnsmasq
   service: name=openvpn
