@@ -22,7 +22,7 @@
   wait_for: host={{ streisand_server.instance_data[0].public_ip }}
             port=22
             search_regex=OpenSSH
-            timeout=300
+            timeout=600
 
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.instance_data[0].public_ip }}

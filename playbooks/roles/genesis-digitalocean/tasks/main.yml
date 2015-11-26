@@ -18,7 +18,7 @@
   wait_for: host={{ do_ip_address.stdout }}
             port=22
             search_regex=OpenSSH
-            timeout=300
+            timeout=600
 
 - name: Create the in-memory inventory group
   add_host: name={{ do_ip_address.stdout }}
