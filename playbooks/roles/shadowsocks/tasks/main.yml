@@ -49,6 +49,6 @@
 
 - name: Set permissions on the Shadowsocks password file
   file: path={{ shadowsocks_password_file }}
-        owner=shadowsocks
-        group=shadowsocks
-        mode=640
+        owner=root
+        group=root
+        mode=600
