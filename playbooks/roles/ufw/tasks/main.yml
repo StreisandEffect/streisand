@@ -1,4 +1,12 @@
 ---
+- name: Install UFW
+  apt: name=ufw
+
+- name: Disable UFW logging
+  lineinfile: dest=/etc/ufw/ufw.conf
+              regexp="^LOGLEVEL"
+              line="LOGLEVEL=off"
+
 - name: Ensure UFW allows SSH
   ufw: to_port="{{ ssh_port }}"
        proto="tcp"
@@ -45,12 +53,12 @@
        proto="tcp"
        rule="allow"
 
-- name: Ensure UFW allows TOR bridge
+- name: Ensure UFW allows Tor bridge
   ufw: to_port="{{ tor_orport }}"
        proto="tcp"
        rule="allow"
 
-- name: Ensure UFW allows TOR bfs3 pluggable transport
+- name: Ensure UFW allows Tor obfs3 pluggable transport
   ufw: to_port="{{ tor_obfs3_port }}"
        proto="tcp"
        rule="allow"
