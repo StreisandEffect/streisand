@@ -25,7 +25,7 @@
 
 - name: Generate Shadowsocks config file
   template: src=config.json.j2
-            dest="{{ shadowsocks_config_location }}/config.json"
+            dest={{ shadowsocks_location }}/config.json
             mode=640
 
 - name: Create the Shadowsocks Gateway directory

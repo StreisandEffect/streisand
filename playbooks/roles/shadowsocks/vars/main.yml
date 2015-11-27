@@ -2,7 +2,7 @@
 shadowsocks_dependencies:
   - qrencode
 
-shadowsocks_location: "/home/shadowsocks"
+shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
 
 shadowsocks_gateway_location: "{{ streisand_gateway_location }}/shadowsocks"
