@@ -63,6 +63,8 @@ Services Provided
   * A [bridge relay](https://www.torproject.org/docs/bridges) is set up with a random nickname.
   * [Obfsproxy](https://www.torproject.org/projects/obfsproxy.html.en) is installed and configured with support for the obfs3 pluggable transport.
   * A BridgeQR code is generated that can be used to automatically configure [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android) for Android.
+* [UFW](https://wiki.ubuntu.com/UncomplicatedFirewall)
+  * Firewall rules are configured for every service, and any traffic that is sent to an unauthorized port will be blocked.
 
 Installation
 ------------
