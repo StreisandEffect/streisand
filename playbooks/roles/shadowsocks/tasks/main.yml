@@ -11,23 +11,22 @@
   command: cat {{ shadowsocks_password_file }}
   register: shadowsocks_password
 
-- name: Add the Shadowsocks-libev APT key
-  apt_key: url=http://shadowsocks.org/debian/1D27208A.gpg state=present
+- name: Add the official Shadowsocks.org APT key
+  apt_key: id=1D27208A
+           data="{{ item }}"
+  with_file: shadowsocks_org_signing.key
   
 - name: Add the Shadowsocks-libev repository
-  apt_repository: repo='deb http://shadowsocks.org/ubuntu trusty main' state=present
+  apt_repository: repo='deb http://shadowsocks.org/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main'
+                  state=present
 
 - name: Install shadowsocks-libev
   apt: name=shadowsocks-libev
 
 - name: Generate Shadowsocks config file
   template: src=config.json.j2
-            dest={{ shadowsocks_location }}/config.json
+            dest="{{ shadowsocks_config_location }}/config.json"
             mode=640
-
-- name: Symlink config to /etc/ directory
-  file: src={{ shadowsocks_location }}/config.json dest=/etc/shadowsocks-libev/config.json state=link force=yes
-  notify: Restart shadowsocks-libev
 
 - name: Create the Shadowsocks Gateway directory
   file: path={{ shadowsocks_gateway_location }}
