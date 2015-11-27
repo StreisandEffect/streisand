@@ -107,6 +107,7 @@
     - tor-bridge
     - sslh
     - monit
+    - ufw
     - streisand-mirror
     - streisand-gateway
 
