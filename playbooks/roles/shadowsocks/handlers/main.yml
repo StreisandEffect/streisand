@@ -1,4 +1,4 @@
 ---
-- name: Restart Shadowsocks
-  service: name=shadowsocks
+- name: Restart shadowsocks-libev
+  service: name=shadowsocks-libev
            state=restarted

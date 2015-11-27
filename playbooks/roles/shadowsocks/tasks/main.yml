@@ -3,12 +3,6 @@
   apt: name={{ item }}
   with_items: shadowsocks_dependencies
 
-- name: Add the Shadowsocks user
-  user: name=shadowsocks
-        home={{ shadowsocks_location }}
-        shell=/usr/sbin/nologin
-        comment="Shadowsocks User"
-
 - name: Generate a random Shadowsocks password
   shell: openssl rand -base64 48 > {{ shadowsocks_password_file }}
          creates={{ shadowsocks_password_file }}
@@ -17,27 +11,22 @@
   command: cat {{ shadowsocks_password_file }}
   register: shadowsocks_password
 
-- name: Install Shadowsocks
-  pip: name=shadowsocks
+- name: Add the official Shadowsocks.org APT key
+  apt_key: id=1D27208A
+           data="{{ item }}"
+  with_file: shadowsocks_org_signing.key
+  
+- name: Add the Shadowsocks-libev repository
+  apt_repository: repo='deb http://shadowsocks.org/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main'
+                  state=present
+
+- name: Install shadowsocks-libev
+  apt: name=shadowsocks-libev
 
 - name: Generate Shadowsocks config file
   template: src=config.json.j2
-            dest={{ shadowsocks_location }}/config.json
-            owner=shadowsocks
-            group=shadowsocks
+            dest="{{ shadowsocks_config_location }}/config.json"
             mode=640
-  notify: Restart Shadowsocks
-
-- name: Generate Shadowsocks init script
-  template: src=shadowsocks-init.j2
-            dest=/etc/init.d/shadowsocks
-            owner=root
-            group=root
-            mode=755
-
-- name: Enable the Shadowsocks init script so the service will start at boot
-  command: update-rc.d shadowsocks defaults
-           creates=/etc/rc0.d/K01shadowsocks
 
 - name: Create the Shadowsocks Gateway directory
   file: path={{ shadowsocks_gateway_location }}
