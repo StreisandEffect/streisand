@@ -3,14 +3,6 @@
   apt: name={{ item }}
   with_items: shadowsocks_dependencies
 
-- name: Generate a random Shadowsocks password
-  shell: openssl rand -base64 48 > {{ shadowsocks_password_file }}
-         creates={{ shadowsocks_password_file }}
-
-- name: Register Shadowsocks password
-  command: cat {{ shadowsocks_password_file }}
-  register: shadowsocks_password
-
 - name: Add the official Shadowsocks.org APT key
   apt_key: id=1D27208A
            data="{{ item }}"
@@ -22,6 +14,14 @@
 
 - name: Install shadowsocks-libev
   apt: name=shadowsocks-libev
+
+- name: Generate a random Shadowsocks password
+  shell: openssl rand -base64 48 > {{ shadowsocks_password_file }}
+         creates={{ shadowsocks_password_file }}
+
+- name: Register Shadowsocks password
+  command: cat {{ shadowsocks_password_file }}
+  register: shadowsocks_password
 
 - name: Generate Shadowsocks config file
   template: src=config.json.j2
