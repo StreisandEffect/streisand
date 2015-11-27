@@ -61,6 +61,7 @@ Services Provided
 * [Tor](https://www.torproject.org/)
   * A [bridge relay](https://www.torproject.org/docs/bridges) is set up with a random nickname.
   * [Obfsproxy](https://www.torproject.org/projects/obfsproxy.html.en) is installed and configured with support for the obfs3 pluggable transport.
+  * A BridgeQR code is generated that can be used to automatically configure [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android) for Android.
 
 Installation
 ------------
@@ -91,9 +92,9 @@ Complete all of these tasks on your local home machine.
 
             brew install git
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
-  * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible)
+  * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible and that are required by some modules)
 
-            sudo apt-get install python-pip python-dev build-essential
+            sudo apt-get install python-pip python-pycurl python-dev build-essential
   * On Fedora
 
             sudo yum install python-pip
@@ -104,10 +105,7 @@ Complete all of these tasks on your local home machine.
   * On OS X (via [Homebrew](http://brew.sh/))
 
             brew install ansible
-  * On OS X Mavericks (via pip)
-
-            sudo CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install ansible
-  * On BSD, Linux, or earlier versions of OS X (via pip)
+  * On BSD or Linux (via pip)
 
             sudo pip install ansible markupsafe
 * Install the necessary Python libraries for your chosen cloud provider if you are going to take advantage of Streisand's ability to create new servers using a supported API.

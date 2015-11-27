@@ -10,12 +10,15 @@
 - name: Retrieve the IP address of the new Droplet
   shell: curl -s -X GET -H '{{ do_api_content_type_header }}' -H '{{ do_api_authorization_header }}' "https://api.digitalocean.com/v2/droplets/{{ do_droplet_id.stdout }}" | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print j["droplet"]["networks"]["v4"][0]["ip_address"]'
   register: do_ip_address
+  until: do_ip_address | success
+  retries: 10
+  delay: 5
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for: host={{ do_ip_address.stdout }}
             port=22
             search_regex=OpenSSH
-            timeout=300
+            timeout=600
 
 - name: Create the in-memory inventory group
   add_host: name={{ do_ip_address.stdout }}

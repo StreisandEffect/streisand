@@ -75,6 +75,9 @@
         mode=750
         state=directory
 
+- name: Generate the Tor obfs3 QR code
+  shell: echo -n '{{ tor_obfs3_bridge_line }}' | python -c 'import urllib; import sys; print urllib.quote(sys.stdin.read());' | qrencode -s 12 -o {{ tor_obfs3_qr_code }}
+
 - name: Generate the Markdown Tor instructions
   template: src=instructions.md.j2
             dest={{ tor_markdown_instructions }}

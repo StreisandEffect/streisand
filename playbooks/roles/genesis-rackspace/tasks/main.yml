@@ -17,7 +17,7 @@
   wait_for: host={{ streisand_server.instances[0].rax_accessipv4 }}
             port=22
             search_regex=OpenSSH
-            timeout=300
+            timeout=600
 
 - name: Create the in-memory inventory group
   add_host: name={{ streisand_server.instances[0].rax_accessipv4 }}
