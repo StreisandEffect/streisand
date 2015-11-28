@@ -45,7 +45,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Go to the *Network* tab.
 1. Click the *Settings* button to *Configure how Firefox connects to the Internet*.
 1. Choose *Manual proxy configuration*.
-1. Enter `127.0.0.1` and Port `{{ shadowsocks_local_port }}` on the *SOCKS Host* line.
+1. Enter `127.0.0.1` and Port `{{ ssh_default_socks_port }}` on the *SOCKS Host* line.
 1. Click *OK*.
 1. Click *OK* again to close the Firefox preferences window. Now we need to configure Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
 1.  Type `about:config` into the address bar and hit Enter.
