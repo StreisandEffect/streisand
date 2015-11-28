@@ -32,11 +32,11 @@
        proto="tcp"
        rule="allow"
 
-- name: Ensure UFW allows OpenVPN DNS from 10.8.0.1
+- name: Ensure UFW allows DNS requests from OpenVPN clients
   ufw: to_port="53"
        proto="udp"
        rule="allow"
-       from_ip="10.8.0.1"
+       from_ip="10.8.0.0/24"
 
 - name: Ensure UFW allows OpenVPN
   ufw: to_port="{{ openvpn_port }}"
