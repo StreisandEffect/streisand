@@ -4,10 +4,10 @@
 ssh_mirror_location: "{{ streisand_mirror_location }}/ssh"
 ssh_mirror_href_base: "/mirror/ssh"
 
-putty_key_id: "0xEEF20295D15F7E8A"
-putty_expected_fingerprint: "Key fingerprint = 0A3B 0048 FE49 9B67 A234  FEB6 EEF2 0295 D15F 7E8A"
+putty_key_id: "0x9DFE2648B43434E4"
+putty_expected_fingerprint: "Key fingerprint = 0054 DDAA 8ADA 15D2 768A  6DE7 9DFE 2648 B434 34E4"
 
-putty_base_download_url: "http://tartarus.org/~simon/putty-snapshots/x86"
+putty_base_download_url: "http://the.earth.li/~sgtatham/putty/latest/x86"
 
 putty_filename: "putty.exe"
 putty_sig_filename: "{{ putty_filename }}.gpg"
