@@ -95,7 +95,8 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. Copy `stunnel.conf` to the right destination. Be sure to update the source location if you have moved the directory elsewhere.
 
    `cp ~/Downloads/stunnel.conf /etc/stunnel/`
-3. Restart the stunnel service:
+1. Ubuntu users should adjust the `/etc/default/stunnel4` file and make sure `ENABLED` is set to `1`.
+1. Restart the stunnel service:
 
    `sudo service stunnel4 restart` OR `sudo service stunnel restart`
 
