@@ -25,7 +25,7 @@
     - "500"
     - "1701"
     - "4500"
-  when: l2tp_ipsec_gateway_location
+  when: l2tp_ipsec_gateway_location is defined
 
 - name: Ensure UFW allows nginx
   ufw: to_port="{{ nginx_port }}"
