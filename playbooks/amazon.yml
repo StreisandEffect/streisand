@@ -11,10 +11,11 @@
       "2": "ap-southeast-1"
       "3": "ap-southeast-2"
       "4": "eu-west-1"
-      "5": "sa-east-1"
-      "6": "us-east-1"
-      "7": "us-west-1"
-      "8": "us-west-2"
+      "5": "eu-central-1"
+      "6": "sa-east-1"
+      "7": "us-east-1"
+      "8": "us-west-1"
+      "9": "us-west-2"
 
   # This variable file is included so the ec2-security-group role knows
   # which port to open for SSH
@@ -29,10 +30,11 @@
           2. Asia Pacific     (Singapore)
           3. Asia Pacific     (Sydney)
           4. EU               (Ireland)
-          5. South America    (Sao Paulo)
-          6. US East          (Northern Virginia)
-          7. US West          (Northern California)
-          8. US West          (Oregon)
+          5. EU               (Germany)
+          6. South America    (Sao Paulo)
+          7. US East          (Northern Virginia)
+          8. US West          (Northern California)
+          9. US West          (Oregon)
         Please choose the number of your region. Press enter for default (#2) region.
       default: "2"
       private: no
