@@ -20,3 +20,10 @@
   with_items:
     - { src: "header.html", dest: "{{ streisand_header_template }}" }
     - { src: "footer.html", dest: "{{ streisand_footer_template }}" }
+
+- name: Copy the unattended-upgrades templates to enable automatic security updates
+  copy: src={{ item.src }}
+        dest={{ item.dest }}
+  with_items:
+    - { src: "20auto-upgrades", dest: "/etc/apt/apt.conf.d" }
+    - { src: "50unattended-upgrades", dest: "/etc/apt/apt.conf.d" }
