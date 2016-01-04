@@ -15,6 +15,10 @@
   set_fact: aws_ami_id="{{ aws_ubuntu_ireland_ami_id }}"
   when: aws_region == "eu-west-1"
 
+- name: Use the AMI ID for Germany when the region is eu-central-1
+  set_fact: aws_ami_id="{{ aws_ubuntu_germany_ami_id }}"
+  when: aws_region == "eu-central-1"
+
 - name: Use the AMI ID for Sao Paulo when the region is sa-east-1
   set_fact: aws_ami_id="{{ aws_ubuntu_sao_paulo_ami_id }}"
   when: aws_region == "sa-east-1"

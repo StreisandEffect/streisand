@@ -1,6 +1,7 @@
 ---
 aws_ubuntu_california_ami_id: "ami-df6a8b9b"
 aws_ubuntu_ireland_ami_id: "ami-47a23a30"
+aws_ubuntu_germany_ami_id: "ami-94aab6f8"
 aws_ubuntu_oregon_ami_id: "ami-5189a661"
 aws_ubuntu_sao_paulo_ami_id: "ami-4d883350"
 aws_ubuntu_signapore_ami_id: "ami-96f1c1c4"
