@@ -14,11 +14,11 @@ streisand_common_packages:
   # Used to generate convenient QR codes for mobile clients in the
   # Shadowsocks and Tor roles
   - qrencode
+  # Used for automatically installing security updates
+  - unattended-upgrades
   # Word List dictionary used by several roles to generate random
   # (yet typeable!) passphrases
   - wamerican-huge
-  # Used for automatically installing security updates
-  - unattended-upgrades
 
 streisand_gateway_location: "/var/www/streisand"
 

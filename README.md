@@ -65,6 +65,7 @@ Services Provided
   * A BridgeQR code is generated that can be used to automatically configure [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android) for Android.
 * [UFW](https://wiki.ubuntu.com/UncomplicatedFirewall)
   * Firewall rules are configured for every service, and any traffic that is sent to an unauthorized port will be blocked.
+* [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates) are configured to automatically install new security updates.
 
 Installation
 ------------
@@ -156,7 +157,6 @@ Upcoming Features
 * Native [Microsoft Azure](https://azure.microsoft.com/en-us/) support
 * A flag to allow L2TP/IPsec installation to be disabled
 * Creation of a Streisand pip package to make the setup of all required dependencies even easier
-* Automatic security upgrades
 
 If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/jlund/streisand/issues).
 

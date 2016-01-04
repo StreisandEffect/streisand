@@ -24,6 +24,9 @@
 - name: Copy the unattended-upgrades templates to enable automatic security updates
   copy: src={{ item.src }}
         dest={{ item.dest }}
+        owner=root
+        group=root
+        mode=644
   with_items:
-    - { src: "20auto-upgrades", dest: "/etc/apt/apt.conf.d" }
+    - { src: "20auto-upgrades",       dest: "/etc/apt/apt.conf.d" }
     - { src: "50unattended-upgrades", dest: "/etc/apt/apt.conf.d" }
