@@ -65,7 +65,8 @@ Services Provided
   * A BridgeQR code is generated that can be used to automatically configure [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android) for Android.
 * [UFW](https://wiki.ubuntu.com/UncomplicatedFirewall)
   * Firewall rules are configured for every service, and any traffic that is sent to an unauthorized port will be blocked.
-* [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates) are configured to automatically install new security updates.
+* [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
+  * Your Streisand server is configured to automatically install new security updates.
 
 Installation
 ------------
