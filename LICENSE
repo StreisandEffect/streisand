@@ -1,16 +1,16 @@
-Copyright 2014-2015 Joshua Lund
+Copyright 2014-2016 Joshua Lund
 
 OpenVPN role courtesy of Sovereign (https://github.com/al3x/sovereign)
 Copyright 2013-2014 Luke Cyca, Ben Ford, Greg Karékinian, Joshua Lund,
-and Alex Payne
+and Alex Payne.
 
 L2TP/IPsec configuration files courtesy of Lin Song
-(https://gist.github.com/hwdsl2/9030462)
+(https://gist.github.com/hwdsl2/9030462).
 Copyright 2014 Lin Song, and based on the work of Thomas Sarlandie
-(Copyright 2012)
+(Copyright 2012).
 Modifications to the L2TP/IPsec configuration files are licensed
 under CC Attribution-ShareAlike 3.0 Unported
-(http://creativecommons.org/licenses/by-sa/3.0/)
+(http://creativecommons.org/licenses/by-sa/3.0/).
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
