@@ -3,6 +3,10 @@
   set_fact: aws_ami_id="{{ aws_ubuntu_tokyo_ami_id }}"
   when: aws_region == "ap-northeast-1"
 
+- name: Use the AMI ID for Seoul when the region is ap-northeast-2
+  set_fact: aws_ami_id="{{ aws_ubuntu_seoul_ami_id }}"
+  when: aws_region == "ap-northeast-2"
+
 - name: Use the AMI ID for Singapore when the region is ap-southeast-1
   set_fact: aws_ami_id="{{ aws_ubuntu_signapore_ami_id }}"
   when: aws_region == "ap-southeast-1"
