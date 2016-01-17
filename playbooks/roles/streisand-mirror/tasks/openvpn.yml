@@ -12,7 +12,7 @@
 - name: Mirror Tunnelblick for OS X
   get_url: url={{ tunnelblick_url }}
            dest={{ openvpn_mirror_location }}
-           sha256sum={{ tunnelblick_checksum }}
+           checksum={{ tunnelblick_checksum }}
            owner=www-data
            group=www-data
            mode=644

@@ -12,7 +12,7 @@
 - name: Mirror Shadowsocks clients
   get_url: url={{ item.url }}
            dest={{ shadowsocks_mirror_location }}
-           sha256sum={{ item.checksum }}
+           checksum={{ item.checksum }}
            owner=www-data
            group=www-data
            mode=644

@@ -20,7 +20,7 @@ libreswan_compilation_dependencies:
   - make
   - pkg-config
   - xmlto
-libreswan_checksum: "1ca370105a2a619eb4dc34626cb53cd391391e953fce3761a83f0e3a4d5aec4c"
+libreswan_checksum: "sha256:1ca370105a2a619eb4dc34626cb53cd391391e953fce3761a83f0e3a4d5aec4c"
 libreswan_version: "3.15"
 libreswan_compilation_directory: "/usr/local/src/libreswan-{{ libreswan_version }}"
 libreswan_source_filename: "libreswan-{{ libreswan_version }}.tar.gz"

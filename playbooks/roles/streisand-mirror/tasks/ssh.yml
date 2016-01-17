@@ -12,7 +12,7 @@
 - name: Mirror sshuttle
   get_url: url={{ sshuttle_url }}
            dest={{ ssh_mirror_location }}/{{ sshuttle_filename }}
-           sha256sum={{ sshuttle_checksum }}
+           checksum={{ sshuttle_checksum }}
            owner=www-data
            group=www-data
            mode=644
