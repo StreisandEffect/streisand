@@ -104,7 +104,7 @@
     - { md: "{{ streisand_gateway_markdown_firewall_information }}", html: "{{ streisand_gateway_html_firewall_information }}" }
 
 - name: Fetch the Gateway HTML instructions and firewall information
-  fetch: dest={{ streisand_local_directory }}/
+  fetch: dest=../{{ streisand_local_directory }}/
          src={{ item }}
          flat=yes
   with_items:
