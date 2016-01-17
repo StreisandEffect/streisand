@@ -137,9 +137,9 @@
   local_action: command xdg-open {{ streisand_local_directory }}/{{ streisand_server_name }}.html
   ignore_errors: yes
   when: hostvars['127.0.0.1']['ansible_system'] == "Linux"
-  sudo: no
+  become: no
 
 - name: Open the instructions on OS X (if applicable)
   local_action: command open {{ streisand_local_directory }}/{{ streisand_server_name }}.html
   when: hostvars['127.0.0.1']['ansible_system'] == "Darwin"
-  sudo: no
+  become: no
