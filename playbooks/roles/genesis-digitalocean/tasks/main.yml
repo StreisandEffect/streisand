@@ -1,14 +1,17 @@
 ---
 - name: Retrieve the SSH key ID using the name that was provided
   shell: curl -s -X GET -H '{{ do_api_content_type_header }}' -H '{{ do_api_authorization_header }}' "https://api.digitalocean.com/v2/account/keys" | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print [key for key in j["ssh_keys"] if key["name"]=="{{ do_ssh_name }}"][0]["id"]'
+         warn=no
   register: do_ssh_key_id
 
 - name: Create the server. If this task fails with an "invalid region" error, then DigitalOcean is temporarily not allowing new 512MB Droplets to be provisioned in the selected region. You can either try the same region again later, or choose a different location.
   shell: curl -s -X POST -H '{{ do_api_content_type_header }}' -H '{{ do_api_authorization_header }}' -d '{{ do_api_server_creation_data }}' "https://api.digitalocean.com/v2/droplets" | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print j["droplet"]["id"]'
+         warn=no
   register: do_droplet_id
 
 - name: Retrieve the IP address of the new Droplet
   shell: curl -s -X GET -H '{{ do_api_content_type_header }}' -H '{{ do_api_authorization_header }}' "https://api.digitalocean.com/v2/droplets/{{ do_droplet_id.stdout }}" | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print j["droplet"]["networks"]["v4"][0]["ip_address"]'
+         warn=no
   register: do_ip_address
   until: do_ip_address | success
   retries: 10
