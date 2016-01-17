@@ -1,27 +1,14 @@
 #!/usr/bin/env bash
 
-function check_ansible_version
-{
-  regex="^([0-9]+)\.([0-9]+)\.([0-9]+)"
-  ansible_version="$(ansible --version | head -n 1 | cut -d\  -f2)"
-  [[ $ansible_version =~ $regex ]]
-
-  if [[ "${BASH_REMATCH[1]}" -le 1 && "${BASH_REMATCH[2]}" -le 9 && "${BASH_REMATCH[3]}" -lt 3 ]]
-  then
-    return 0;
-  else
-    return 1;
-  fi
-}
-
-
 echo
 echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m"
 echo
 
-if  ! check_ansible_version
+required_ansible_version="2.0.0.2"
+
+if [[ "$(ansible --version | grep -oe '2\(.[0-9]\)*')" < $required_ansible_version ]]
 then
-    echo "Ansible version 1.9.3 or higher is required."
+    echo "Ansible $required_ansible_version or higher is required."
     exit -1;
 fi
 
