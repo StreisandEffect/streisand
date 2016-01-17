@@ -180,5 +180,5 @@
 
 - name: Copy the client files to the OpenVPN Gateway directory
   command: cp --recursive {{ openvpn_path }}/{{ item }} {{ openvpn_gateway_location }}
-           creates={{ openvpn_gateway_location }}/{{ item }}/car.crt
+           creates={{ openvpn_gateway_location }}/{{ item }}/ca.crt
   with_items: openvpn_clients
