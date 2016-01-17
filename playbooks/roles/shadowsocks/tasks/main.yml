@@ -27,6 +27,7 @@
   template: src=config.json.j2
             dest={{ shadowsocks_location }}/config.json
             mode=640
+  notify: Restart shadowsocks-libev
 
 - name: Create the Shadowsocks Gateway directory
   file: path={{ shadowsocks_gateway_location }}
