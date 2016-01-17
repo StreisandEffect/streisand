@@ -48,7 +48,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Enter `127.0.0.1` and Port `{{ ssh_default_socks_port }}` on the *SOCKS Host* line.
 1. Select *Remote DNS*. This configures Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
 1. Click *OK*.
-1. Click *OK* again to close the Firefox preferences window. 
+1. Click *OK* again to close the Firefox preferences window.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux-and-osx"></a>
