@@ -42,7 +42,7 @@ Services Provided
 * [Monit](https://mmonit.com/monit/)
   * Monitors process health and automatically restarts services in the unlikely event that they crash or become unresponsive.
 * [OpenSSH](http://www.openssh.com/)
-  * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/apenwarr/sshuttle) and SOCKS capabilities.
+  * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/sshuttle/sshuttle) and SOCKS capabilities.
   * Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
   * [Tinyproxy](https://banu.com/tinyproxy/) is installed and bound to localhost. It can be accessed over an SSH tunnel by programs that do not natively support SOCKS and that require an HTTP proxy, such as Twitter for Android.
 * [OpenVPN](https://openvpn.net/index.php/open-source.html)
@@ -106,14 +106,14 @@ Complete all of these tasks on your local home machine.
   * On OS X
 
             sudo easy_install pip
-* Install [Ansible](http://www.ansible.com/home). If you have an existing installation, please note that Ansible version 1.8.2 or higher is required.
+* Install [Ansible](http://www.ansible.com/home).
   * On OS X (via [Homebrew](http://brew.sh/))
 
             brew install ansible
   * On BSD or Linux (via pip)
 
             sudo pip install ansible markupsafe
-* Install the necessary Python libraries for your chosen cloud provider if you are going to take advantage of Streisand's ability to create new servers using a supported API.
+* Install the necessary Python libraries for your chosen cloud provider.
   * Amazon EC2
 
             sudo pip install boto
