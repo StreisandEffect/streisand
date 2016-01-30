@@ -25,8 +25,9 @@ conn vpnpsk
   pfs=no
   type=transport
   auth=esp
-  ike=3des-sha1,aes-sha1,aes256-sha2_512
-  phase2alg=3des-sha1,aes-sha1,aes256-sha2_512
+  ike=3des-sha1,aes-sha1,aes256-sha2_256,aes256-sha2_512
+  phase2alg=3des-sha1,aes-sha1,aes256-sha2_256,aes256-sha2_512
+  sha2-truncbug=yes
   rekey=no
   keyingtries=5
   dpddelay=30
