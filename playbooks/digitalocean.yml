@@ -46,7 +46,7 @@
       private: no
 
     - name: "do_ssh_name"
-      prompt: "\n\nIf you haven't done so already, you must add your SSH public key in the DigitalOcean control panel.\nhttps://cloud.digitalocean.com/settings/security\n\nWhat is the name of the DigitalOcean SSH key that you would like to use?\n"
+      prompt: "\n\nIf you haven't done so already, you must upload your SSH public key (e.g. id_rsa.pub) in the DigitalOcean control panel:\nhttps://cloud.digitalocean.com/settings/security\n\nWhat is the name assigned to the SSH key in the DigitalOcean control panel that you would like to use?\n"
       default: "streisand"
       private: no
 
