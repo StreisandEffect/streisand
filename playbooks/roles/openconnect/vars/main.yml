@@ -1,5 +1,6 @@
 ---
 ocserv_path: "/etc/ocserv"
+ocserv_config_file: "{{ ocserv_path }}/config"
 
 ocserv_days_valid: "1825"
 ocserv_dependencies:

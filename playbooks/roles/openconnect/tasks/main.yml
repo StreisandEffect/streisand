@@ -31,6 +31,17 @@
         mode=750
         state=directory
 
+- name: Generate the ocserv init script
+  template: src=ocserv-init.j2
+            dest=/etc/init.d/ocserv
+            owner=root
+            group=root
+            mode=755
+
+- name: Enable the ocserv init script so the service will start at boot
+  command: update-rc.d ocserv defaults
+           creates=/etc/rc0.d/K20ocserv
+
 - name: Generate the CA template file
   template: src=ca.tmpl.j2
             dest={{ ocserv_ca_template_file }}
@@ -88,10 +99,11 @@
 
 - name: Generate the ocserv configuration file
   template: src=config.j2
-            dest={{ ocserv_path }}/config
+            dest={{ ocserv_config_file }}
             owner=root
             group=root
             mode=600
+  notify: Restart ocserv
 
 - name: Enable NAT
   command: iptables -t nat -A POSTROUTING -j MASQUERADE

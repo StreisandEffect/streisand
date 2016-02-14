@@ -1,7 +1,5 @@
 ---
-ocserv_port: "4443"
-
 ocserv_ca_cn: "Streisand"
 ocserv_ca_organization: "Streisand Effect Automated Signing, Inc."
-
+ocserv_port: "4443"
 ocserv_server_organization: "Streisand Effect Servers, Inc."
