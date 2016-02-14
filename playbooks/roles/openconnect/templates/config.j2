@@ -1,0 +1,38 @@
+auth = "plain[passwd={{ ocserv_hashed_password_file }}]"
+tcp-port = {{ ocserv_port }}
+udp-port = {{ ocserv_port }}
+run-as-user = nobody
+run-as-group = nogroup
+socket-file = {{ ocserv_socket_file }}
+server-cert = {{ ocserv_server_certificate_file }}
+server-key = {{ ocserv_server_key_file }}
+ca-cert = {{ ocserv_ca_certificate_file }}
+isolate-workers = true
+keepalive = 32400
+dpd = 90
+mobile-dpd = 1800
+try-mtu-discovery = true
+cert-user-oid = 0.9.2342.19200300.100.1.1
+tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-VERS-SSL3.0"
+auth-timeout = 40
+min-reauth-time = 300
+max-ban-score = 50
+ban-reset-time = 300
+cookie-timeout = 300
+cookie-rekey-time = 14400
+deny-roaming = false
+rekey-time = 3600
+rekey-method = ssl
+use-occtl = true
+pid-file = {{ ocserv_pid_file }}
+device = vpns
+default-domain = example.com
+ipv4-network = 192.168.1.0
+ipv4-netmask = 255.255.255.0
+tunnel-all-dns = true
+ping-leases = false
+cisco-client-compat = true
+
+{% for item in upstream_dns_servers %}
+dns = {{ item }}
+{% endfor %}

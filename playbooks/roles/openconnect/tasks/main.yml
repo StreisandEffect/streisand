@@ -60,3 +60,42 @@
 - name: Generate the server certificate
   command: certtool --generate-certificate --load-privkey {{ ocserv_server_key_file }} --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_server_template_file }} --outfile {{ ocserv_server_certificate_file }}
            creates={{ ocserv_server_certificate_file }}
+
+- name: Generate a random ocserv password
+  shell: grep -v "'" /usr/share/dict/american-english-huge | grep -v "[^ a-z]|[^ A-Z]" | sort -R | tail -n 4 | xargs | sed -e 's/ /-/g' > {{ ocserv_password_file }}
+         creates={{ ocserv_password_file }}
+
+- name: Set permissions on the unhashed ocserv password file
+  file: path={{ ocserv_password_file }}
+        owner=root
+        group=root
+        mode=600
+
+- name: Register the ocserv password
+  command: cat {{ ocserv_password_file }}
+  register: ocserv_password
+
+- name: Generate the ocpasswd Expect script
+  template: src=create-password.exp.j2
+            dest={{ ocserv_create_password_script }}
+            owner=root
+            group=root
+            mode=700
+
+- name: Execute the ocpasswd Expect script
+  command: "{{ ocserv_create_password_script }}
+           creates={{ ocserv_hashed_password_file }}"
+
+- name: Generate the ocserv configuration file
+  template: src=config.j2
+            dest={{ ocserv_path }}/config
+            owner=root
+            group=root
+            mode=600
+
+- name: Enable NAT
+  command: iptables -t nat -A POSTROUTING -j MASQUERADE
+
+- name: Enable IPv4 traffic forwarding
+  sysctl: name=net.ipv4.ip_forward
+          value=1

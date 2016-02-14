@@ -1,6 +1,9 @@
 ---
+ocserv_path: "/etc/ocserv"
+
 ocserv_days_valid: "1825"
 ocserv_dependencies:
+  - expect
   - gnutls-bin
   - libgnutls28-dev
   - libnl-route-3-dev
@@ -15,7 +18,11 @@ ocserv_compilation_directory: "/usr/local/src/ocserv-{{ ocserv_version }}"
 ocserv_source_filename: "ocserv-{{ ocserv_version }}.tar.xz"
 ocserv_source_location: "/usr/local/src/{{ ocserv_source_filename }}"
 
-ocserv_path: "/etc/ocserv"
+ocserv_create_password_script: "{{ ocserv_path }}/create-password.exp"
+ocserv_hashed_password_file: "{{ ocserv_path }}/ocpasswd"
+ocserv_password_file: "{{ ocserv_path }}/ocserv-password"
+ocserv_pid_file: "/var/run/ocserv.pid"
+ocserv_socket_file: "/var/run/ocserv-socket"
 
 ocserv_ca_certificate_file: "{{ ocserv_path }}/ca-cert.pem"
 ocserv_ca_key_file: "{{ ocserv_path }}/ca-key.pem"
