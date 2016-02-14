@@ -27,8 +27,13 @@ case "$1" in
   restart)
     echo "Restarting OpenConnect (ocserv)"
     start-stop-daemon --stop --pidfile $PIDFILE
-    sleep 5
+    sleep 1
     start-stop-daemon --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_ARGS > /dev/null
+    ;;
+  status)
+    echo "Checking OpenConnect (ocserv) status"
+    start-stop-daemon --status --pidfile $PID_FILE
+    exit $?
     ;;
   *)
     echo "Usage: /etc/init.d/ocserv {start|stop|restart}"
