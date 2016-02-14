@@ -111,3 +111,17 @@
 - name: Enable IPv4 traffic forwarding
   sysctl: name=net.ipv4.ip_forward
           value=1
+
+- name: Create the OpenConnect/AnyConnect Gateway directory
+  file: path={{ ocserv_gateway_location }}
+        owner=www-data
+        group=www-data
+        mode=750
+        state=directory
+
+- name: Generate the Markdown OpenConnect/AnyConnect instructions
+  template: src=instructions.md.j2
+            dest={{ ocserv_markdown_instructions }}
+
+- name: Convert the Markdown OpenConnect/AnyConnect instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ ocserv_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ ocserv_html_instructions }}

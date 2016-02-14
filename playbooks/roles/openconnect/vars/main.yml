@@ -32,3 +32,7 @@ ocserv_ca_template_file: "{{ ocserv_path }}/ca.tmpl"
 ocserv_server_certificate_file: "{{ ocserv_path }}/server-cert.pem"
 ocserv_server_key_file: "{{ ocserv_path }}/server-key.pem"
 ocserv_server_template_file: "{{ ocserv_path }}/server.tmpl"
+
+ocserv_gateway_location: "{{ streisand_gateway_location }}/openconnect"
+ocserv_markdown_instructions: "{{ ocserv_gateway_location }}/index.md"
+ocserv_html_instructions: "{{ ocserv_gateway_location }}/index.html"
