@@ -101,6 +101,7 @@
 
   roles:
     - common
+    - openconnect
     - openvpn
     - stunnel
     - shadowsocks
