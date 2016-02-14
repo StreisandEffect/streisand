@@ -1,0 +1,26 @@
+---
+ocserv_days_valid: "1825"
+ocserv_dependencies:
+  - gnutls-bin
+  - libgnutls28-dev
+  - libnl-route-3-dev
+  - libpam0g-dev
+  - libreadline-dev
+  - libseccomp-dev
+  - libwrap0-dev
+  - pkg-config
+ocserv_checksum: "sha256:ba607ecc377d62e66cecaca73154c97e2ef6609e932250aad2906af46c1f785c"
+ocserv_version: "0.10.11"
+ocserv_compilation_directory: "/usr/local/src/ocserv-{{ ocserv_version }}"
+ocserv_source_filename: "ocserv-{{ ocserv_version }}.tar.xz"
+ocserv_source_location: "/usr/local/src/{{ ocserv_source_filename }}"
+
+ocserv_path: "/etc/ocserv"
+
+ocserv_ca_certificate_file: "{{ ocserv_path }}/ca-cert.pem"
+ocserv_ca_key_file: "{{ ocserv_path }}/ca-key.pem"
+ocserv_ca_template_file: "{{ ocserv_path }}/ca.tmpl"
+
+ocserv_server_certificate_file: "{{ ocserv_path }}/server-cert.pem"
+ocserv_server_key_file: "{{ ocserv_path }}/server-key.pem"
+ocserv_server_template_file: "{{ ocserv_path }}/server.tmpl"

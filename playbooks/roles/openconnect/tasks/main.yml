@@ -1,0 +1,62 @@
+---
+- name: Install the ocserv dependencies
+  apt: name={{ item }}
+  with_items: ocserv_dependencies
+
+- name: Retrieve the ocserv source code
+  get_url: url=ftp://ftp.infradead.org/pub/ocserv/{{ ocserv_source_filename }}
+           dest={{ ocserv_source_location }}
+           checksum={{ ocserv_checksum }}
+           owner=root
+           group=root
+           mode=644
+
+- name: Extract the ocserv source code
+  unarchive: copy=no
+             src={{ ocserv_source_location }}
+             dest=/usr/local/src
+             owner=root
+             group=root
+             creates={{ ocserv_compilation_directory }}/README.md
+
+- name: Compile and install ocserv
+  shell: ./configure && make && make install
+         chdir={{ ocserv_compilation_directory }}
+         creates={{ ocserv_compilation_directory }}/config.log
+
+- name: Create the ocserv configuration directory
+  file: path={{ ocserv_path }}
+        owner=root
+        group=root
+        mode=750
+        state=directory
+
+- name: Generate the CA template file
+  template: src=ca.tmpl.j2
+            dest={{ ocserv_ca_template_file }}
+            owner=root
+            group=root
+            mode=600
+
+- name: Generate the CA key
+  command: certtool --generate-privkey --outfile {{ ocserv_ca_key_file }}
+           creates={{ ocserv_ca_key_file }}
+
+- name: Generate the self-signed CA certificate
+  command: certtool --generate-self-signed --load-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_ca_template_file }} --outfile {{ ocserv_ca_certificate_file }}
+           creates={{ ocserv_ca_certificate_file }}
+
+- name: Generate the server template file
+  template: src=server.tmpl.j2
+            dest={{ ocserv_server_template_file }}
+            owner=root
+            group=root
+            mode=600
+
+- name: Generate the server key
+  command: certtool --generate-privkey --outfile {{ ocserv_server_key_file }}
+           creates={{ ocserv_server_key_file }}
+
+- name: Generate the server certificate
+  command: certtool --generate-certificate --load-privkey {{ ocserv_server_key_file }} --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_server_template_file }} --outfile {{ ocserv_server_certificate_file }}
+           creates={{ ocserv_server_certificate_file }}

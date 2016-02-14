@@ -5,7 +5,6 @@ ipsec_preshared_key_file: "/etc/ipsec.preshared-key"
 libreswan_compilation_dependencies:
   - bison
   - flex
-  - gcc
   - libcap-ng-dev
   - libcap-ng-utils
   - libcurl4-nss-dev
@@ -17,7 +16,6 @@ libreswan_compilation_dependencies:
   - libpam0g-dev
   - libselinux1-dev
   - libunbound-dev
-  - make
   - pkg-config
   - xmlto
 libreswan_checksum: "sha256:2d77e95dacbb0400af47f1557444fb59b9b19876fa1140432a5c861b40201b97"
