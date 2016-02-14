@@ -38,6 +38,11 @@
        rule="allow"
        from_ip="10.8.0.0/24"
 
+- name: Ensure UFW allows OpenConnect (ocserv)
+  ufw: to_port="{{ ocserv_port }}"
+       proto="any"
+       rule="allow"
+
 - name: Ensure UFW allows OpenVPN
   ufw: to_port="{{ openvpn_port }}"
        proto="{{ openvpn_protocol | lower }}"
