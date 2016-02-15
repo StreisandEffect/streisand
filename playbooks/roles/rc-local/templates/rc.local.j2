@@ -10,6 +10,9 @@
 # bits.
 #
 
+# OpenConnect
+{{ ocserv_firewall_rule }}
+
 # OpenVPN
 {% for rule in openvpn_firewall_rules %}
 {{ rule }}
