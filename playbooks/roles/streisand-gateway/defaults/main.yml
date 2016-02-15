@@ -3,7 +3,7 @@ nginx_key_country:  "US"
 nginx_key_province: "California"
 nginx_key_city: "Malibu"
 nginx_key_org: "Streisand"
-nginx_key_ou: "Effect Department"
+nginx_key_ou: "Streisand Effect Department"
 
 nginx_port: "443"
 
