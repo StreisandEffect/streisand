@@ -7,6 +7,11 @@
               regexp="^LOGLEVEL"
               line="LOGLEVEL=off"
 
+- name: Change the default forward policy
+  lineinfile: dest=/etc/default/ufw
+              regexp="^DEFAULT_FORWARD_POLICY"
+              line='DEFAULT_FORWARD_POLICY="ACCEPT"'
+
 - name: Ensure UFW allows SSH
   ufw: to_port="{{ ssh_port }}"
        proto="tcp"
@@ -31,6 +36,12 @@
   ufw: to_port="{{ nginx_port }}"
        proto="tcp"
        rule="allow"
+
+- name: Ensure UFW allows DNS requests from OpenConnect clients
+  ufw: to_port="53"
+       proto="udp"
+       rule="allow"
+       from_ip="192.168.1.0/24"
 
 - name: Ensure UFW allows DNS requests from OpenVPN clients
   ufw: to_port="53"
