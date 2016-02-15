@@ -48,6 +48,12 @@
         from_port: "{{ nginx_port }}"
         to_port: "{{ nginx_port }}"
         cidr_ip: 0.0.0.0/0
+      # OpenConnect (ocserv)
+      # ---
+      - proto: "all"
+        from_port: "{{ ocserv_port }}"
+        to_port: "{{ ocserv_port }}"
+        cidr_ip: 0.0.0.0/0
       # OpenVPN
       # ---
       - proto: "{{ openvpn_protocol }}"
