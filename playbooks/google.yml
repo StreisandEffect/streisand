@@ -154,6 +154,7 @@
   # These variable files are included so the gce-network role
   # knows which ports to open
   vars_files:
+    - roles/openconnect/defaults/main.yml
     - roles/openvpn/defaults/main.yml
     - roles/shadowsocks/defaults/main.yml
     - roles/ssh/defaults/main.yml
