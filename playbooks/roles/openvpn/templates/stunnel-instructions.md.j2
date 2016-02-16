@@ -115,7 +115,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. Copy the downloaded `{{ openvpn_stunnel_profile_filename }}` file to the location of your choice. */etc/openvpn/* is a decent option.
 1. On some distributions, the pushed DHCP DNS option from the OpenVPN server will be ignored. This means that your DNS queries will still be routed through your ISP's servers which makes them vulnerable to what is known as a DNS leak.
    * You can test whether or not your DNS is leaking [here](https://dnsleaktest.com/).
-   * You can ensure that the correct DNS server is used by adding the following lines to the top of the `{{ openvpn_stunnel_profile_filename }}` file:
+   * You can ensure that the correct DNS servers are used by adding the following lines to the top of the `{{ openvpn_stunnel_profile_filename }}` file:
      * `script-security 2`
      * `up /etc/openvpn/update-resolv-conf`
      * `down /etc/openvpn/update-resolv-conf`
