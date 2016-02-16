@@ -1,26 +1,66 @@
 OpenConnect / Cisco AnyConnect
 -----------
+OpenConnect is an extremely high-performance and lightweight VPN server that also features full compatibility with the official Cisco AnyConnect clients. The [protocol](http://www.infradead.org/ocserv/technical.html) is built on top of standards like HTTP, TLS, and DTLS, and it's one of the most popular and widely used VPN technologies among large multi-national corporations. This means that in addition to its ease-of-use and speed, OpenConnect is also highly resistant to censorship and is almost never blocked.
 
 ---
 * Platforms
-  * [Windows](#windows)
-  * [OS X](#osx)
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
 
-<a name="windows"></a>
-### Windows ###
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
-
-<a name="osx"></a>
-### OS X ###
-
 <a name="linux"></a>
 ### Linux ###
+1. Install the OpenConnect plugin for NetworkManager.
+
+   `sudo apt-get install network-manager-openconnect-gnome`
+1. Open your *System Settings*.
+1. Click the *Network* icon.
+1. Click the *+* button in the lower-left of the window.
+1. Select *VPN* from the Interface drop-down and click *Create*.
+1. Select *Cisco AnyConnect Compatible VPN (openconnect)* and click *Create*.
+1. Enter `{{ streisand_server_name }}` for the *Connection name*.
+1. Enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}` for the *Gateway*.
+1. Click *Save*.
+1. Select the VPN in the left-hand menu, and flip the switch to *ON*. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to *VPN Connections*, and clicking on its name.
+1. Click *OK* to accept the certificate.
+1. Enter `streisand` for the *Username* and click *Login*.
+1. Enter `{{ ocserv_password.stdout }}` for the *Password*, check *Save passwords*, and click *Login*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="android"></a>
 ### Android ###
+1. Download [Cisco AnyConnect](https://play.google.com/store/apps/details?id=com.cisco.anyconnect.vpn.android.avf) from Google Play.
+1. Launch the application.
+1. Tap *OK* to accept the "Supplemental End User License Agreement for AnyConnect&reg; Secure Mobility Client vx.x and other VPN-related Software" (LOL).
+1. Tap the menu icon and select *Settings*.
+1. Uncheck the *Block Untrusted Servers* option.
+1. Tap the back button.
+1. Tap *Connection* and then tap *Add New VPN Connection...*.
+1. Tap *Description* and enter `{{ streisand_server_name }}`.
+1. Tap *Server Address* and enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}`.
+1. Tap *Done*.
+1. Tap the back button to return to the main screen. You should see `{{ streisand_server_name }}` in the *Connection* section.
+1. Slide the *AnyConnect VPN* switch On.
+1. Tap *Continue* when the Security Warning is displayed. This warning is expected, because the server is not using a paid SSL certificate that is signed by a Certificate Authority.
+1. Enter `streisand` for the *Username* and tap *Connect*.
+1. Enter `{{ ocserv_password.stdout }}` for the *Password* and tap *Connect*.
+1. Accept the *Connection request* dialog that Android displays.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
 ### iOS ###
+1. Download [Cisco AnyConnect](https://itunes.apple.com/us/app/cisco-anyconnect/id392790924) from the App Store.
+1. Launch the application.
+1. Tap *OK* to enable the software when the dialog box appears.
+1. Tap *Settings*.
+1. Turn off the *Block Untrusted Servers* switch.
+1. Tap *Home*.
+1. Tap *Connections* and then tap *Add VPN Connection...*.
+1. Tap *Description* and enter `{{ streisand_server_name }}`.
+1. Tap *Server Address* and enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}`.
+1. Tap *Save* in the top-right corner.
+1. Tap *Home*.
+1. Slide the *AnyConnect VPN* switch on.
+1. Tap *Continue* when the Untrusted Server warning is displayed. This warning is expected, because the server is not using a paid SSL certificate that is signed by a Certificate Authority.
+1. Enter `streisand` for the *Username* and tap *Connect*.
+1. Enter `{{ ocserv_password.stdout }}` for the *Password* and tap *Connect*.
