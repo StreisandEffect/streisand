@@ -23,6 +23,7 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Click *Save*.
 1. Select the VPN in the left-hand menu, and flip the switch to *ON*. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to *VPN Connections*, and clicking on its name.
 1. Click *OK* to accept the certificate.
+   * The server's fingerprint will be automatically verified for all future connections.
 1. Enter `streisand` for the *Username* and click *Login*.
 1. Enter `{{ ocserv_password.stdout }}` for the *Password*, check *Save passwords*, and click *Login*.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
@@ -34,6 +35,7 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Tap *OK* to accept the "Supplemental End User License Agreement for AnyConnect&reg; Secure Mobility Client vx.x and other VPN-related Software" (LOL).
 1. Tap the menu icon and select *Settings*.
 1. Uncheck the *Block Untrusted Servers* option.
+   * The server certificate will be imported during the initial login and automatically verified for all future connections.
 1. Tap the back button.
 1. Tap *Connection* and then tap *Add New VPN Connection...*.
 1. Tap *Description* and enter `{{ streisand_server_name }}`.
@@ -41,7 +43,8 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Tap *Done*.
 1. Tap the back button to return to the main screen. You should see `{{ streisand_server_name }}` in the *Connection* section.
 1. Slide the *AnyConnect VPN* switch On.
-1. Tap *Continue* when the Security Warning is displayed. This warning is expected, because the server is not using a paid SSL certificate that is signed by a Certificate Authority.
+1. Tap *Details* when the Security Warning is displayed.
+1. Scroll to the bottom of the Certificate Summary and tap *Import and Continue*.
 1. Enter `streisand` for the *Username* and tap *Connect*.
 1. Enter `{{ ocserv_password.stdout }}` for the *Password* and tap *Connect*.
 1. Accept the *Connection request* dialog that Android displays.
@@ -54,6 +57,7 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Tap *OK* to enable the software when the dialog box appears.
 1. Tap *Settings*.
 1. Turn off the *Block Untrusted Servers* switch.
+   * The server certificate will be imported during the initial login and automatically verified for all future connections.
 1. Tap *Home*.
 1. Tap *Connections* and then tap *Add VPN Connection...*.
 1. Tap *Description* and enter `{{ streisand_server_name }}`.
@@ -61,6 +65,8 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Tap *Save* in the top-right corner.
 1. Tap *Home*.
 1. Slide the *AnyConnect VPN* switch on.
-1. Tap *Continue* when the Untrusted Server warning is displayed. This warning is expected, because the server is not using a paid SSL certificate that is signed by a Certificate Authority.
+1. Tap *Details* when the Security Warning is displayed.
+1. Tap *Import* in the top-right corner.
 1. Enter `streisand` for the *Username* and tap *Connect*.
 1. Enter `{{ ocserv_password.stdout }}` for the *Password* and tap *Connect*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
