@@ -1,0 +1,15 @@
+---
+# OpenConnect Download variables
+# ------------------------------
+openconnect_mirror_location: "{{ streisand_mirror_location }}/openconnect"
+openconnect_mirror_href_base: "/mirror/openconnect"
+
+# Windows
+openconnect_windows_version: "v1.3"
+openconnect_windows_filename: "openconnect-installer.exe"
+openconnect_windows_href: "{{ openconnect_mirror_href_base }}/{{ openconnect_windows_filename }}"
+openconnect_windows_url: "https://github.com/openconnect/openconnect-gui/releases/download/{{ openconnect_windows_version }}/{{ openconnect_windows_filename }}"
+openconnect_windows_checksum: "sha256:894ce16fbfbb4be0f205dc5bc55323b5d99306e81672ad5d631bd9bab0d586b1"
+
+openconnect_download_urls:
+  - { url: "{{ openconnect_windows_url }}", checksum: "{{ openconnect_windows_checksum }}" }

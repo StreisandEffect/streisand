@@ -7,6 +7,7 @@
         state=directory
 
 # Download and verify client files
+- include: openconnect.yml
 - include: openvpn.yml
 - include: shadowsocks.yml
 - include: ssh.yml
