@@ -4,9 +4,27 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 
 ---
 * Platforms
+  * [Windows](#windows)
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
+
+<a name="windows"></a>
+### Windows ###
+1. Download the latest version of the [OpenConnect GUI](https://github.com/openconnect/openconnect-gui/releases).
+1. Run the OpenConnect GUI installer.
+1. Complete the TAP-Windows Setup Wizard.
+   * Choose the default options, and allow the TAP driver from the OpenVPN project to be installed.
+1. Launch the OpenConnect application.
+1. Click the *Edit* icon (pencil and notepad).
+1. Enter `{{ streisand_server_name }}` for the *Name*.
+1. Enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}` for the *Gateway*.
+1. Enter `streisand` for the *Username* and click *Save*.
+1. Click *Connect*.
+1. A prompt will appear during the initial connection asking you to trust the server's certificate. Click *The information is accurate* and the server will be automatically verified for all future connections.
+1. Enter `{{ ocserv_password.stdout }}` for the *Password* and click *OK*.
+1. Click *No* when the Windows prompt appears asking *Do you want to allow your PC to be discoverable...*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
 ### Linux ###
