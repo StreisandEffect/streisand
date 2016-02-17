@@ -24,6 +24,17 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. A prompt will appear during the initial connection asking you to trust the server's certificate. Click *The information is accurate* and the server will be automatically verified for all future connections.
 1. Enter `{{ ocserv_password.stdout }}` for the *Password* and click *OK*.
 1. Click *No* when the Windows prompt appears asking *Do you want to allow your PC to be discoverable...*.
+1. The current beta version of the OpenConnect GUI [does not support automatically changing the DNS settings](https://github.com/openconnect/openconnect-gui/issues/48). In order to avoid DNS leaks, the following steps must be performed:
+   1. Right-click on the Windows Start Button.
+   1. Click *Network Connections*.
+   1. Right-click on the device that you are using to connect (Ethernet or Wi-Fi) and click *Properties*.
+   1. Double-click *Internet Protocol Version 4 (TCP/IPv4)*.
+   1. Select *Use the following DNS server addresses* and enter:
+{% for item in upstream_dns_servers %}
+      * `{{ item }}`
+{% endfor %}
+   1. Click *OK*.
+   1. Click *OK* to close the connection properties.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
