@@ -16,7 +16,7 @@ check process nginx with pidfile /var/run/nginx.pid
   if cpu is greater than 40% for 2 cycles then alert
   if cpu > 60% for 5 cycles then restart
   if 10 restarts within 10 cycles then timeout
-  if failed host 127.0.0.1 port 443 type tcpssl and
+  if failed host 127.0.0.1 port {{ nginx_port }} type tcpssl and
     expect ""
     send "GET / HTTP/1.1\r\n"
     send "Host: Localhost\r\n"
@@ -44,7 +44,7 @@ check host tap0 with address 10.8.0.1
 check process sshd with pidfile /var/run/sshd.pid
    start program  "/etc/init.d/ssh start"
    stop program  "/etc/init.d/ssh stop"
-   if failed port 22 protocol ssh then restart
+   if failed port {{ ssh_port }} protocol ssh then restart
    # if 5 restarts within 5 cycles then timeout
 
 
@@ -52,7 +52,7 @@ check process sshd with pidfile /var/run/sshd.pid
 check process stunnel4 with pidfile /var/run/stunnel4.pid
 	start program = "/etc/init.d/stunnel4 start" with timeout 20 seconds
 	stop program = "/etc/init.d/stunnel4 stop"
-	if failed host 127.0.0.1 port 993 with timeout 20 seconds then restart
+	if failed host 127.0.0.1 port {{ stunnel_remote_port }} with timeout 20 seconds then restart
 	if 3 restarts within 5 cycles then unmonitor
 
 
