@@ -9,11 +9,15 @@
         mode=755
         state=directory
 
-- name: Mirror the OpenConnect clients
-  get_url: url={{ item.url }}
-           dest={{ openconnect_mirror_location }}
-           checksum={{ item.checksum }}
-           owner=www-data
-           group=www-data
-           mode=644
-  with_items: openconnect_download_urls
+- block:
+  - name: Mirror the OpenConnect clients
+    get_url: url={{ item.url }}
+             dest={{ openconnect_mirror_location }}
+             checksum={{ item.checksum }}
+             owner=www-data
+             group=www-data
+             mode=644
+    with_items: openconnect_download_urls
+  rescue:
+    - name: "{{ streisand_mirror_warning }}"
+      pause: seconds={{ streisand_mirror_warning_seconds }}

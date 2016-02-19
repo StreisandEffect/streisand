@@ -9,13 +9,17 @@
         mode=755
         state=directory
 
-- include: download-and-verify.yml
-           project_name="stunnel"
-           project_signer="Michal Trojnara"
-           project_signing_key="{{ stunnel_michal_trojnara_key_id }}"
-           project_expected_fingerprint="{{ stunnel_michal_trojnara_expected_fingerprint }}"
-           project_mirror_location="{{ stunnel_mirror_location }}"
-           project_download_urls="{{ stunnel_download_urls }}"
+- block:
+  - include: download-and-verify.yml
+             project_name="stunnel"
+             project_signer="Michal Trojnara"
+             project_signing_key="{{ stunnel_michal_trojnara_key_id }}"
+             project_expected_fingerprint="{{ stunnel_michal_trojnara_expected_fingerprint }}"
+             project_mirror_location="{{ stunnel_mirror_location }}"
+             project_download_urls="{{ stunnel_download_urls }}"
+  rescue:
+    - name: "{{ streisand_mirror_warning }}"
+      pause: seconds={{ streisand_mirror_warning_seconds }}
 
 - name: Get the current stunnel version from the downloaded source file
   shell: ls *.tar.gz | tail -n 1 | sed -e 's/stunnel-\(.*\)\.tar\.gz/\1/'
