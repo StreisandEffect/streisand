@@ -1,4 +1,5 @@
 auth = "plain[passwd={{ ocserv_hashed_password_file }}]"
+enable-auth = "certificate"
 tcp-port = {{ ocserv_port }}
 udp-port = {{ ocserv_port }}
 run-as-user = nobody
@@ -9,10 +10,11 @@ server-key = {{ ocserv_server_key_file }}
 ca-cert = {{ ocserv_ca_certificate_file }}
 isolate-workers = true
 keepalive = 32400
-dpd = 90
+dpd = 240
 mobile-dpd = 1800
 try-mtu-discovery = true
-cert-user-oid = 0.9.2342.19200300.100.1.1
+cert-user-oid = 2.5.4.3
+cert-group-oid = 2.5.4.11
 tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-VERS-SSL3.0"
 auth-timeout = 40
 min-reauth-time = 300

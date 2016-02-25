@@ -20,9 +20,6 @@ ocserv_compilation_directory: "/usr/local/src/ocserv-{{ ocserv_version }}"
 ocserv_source_filename: "ocserv-{{ ocserv_version }}.tar.xz"
 ocserv_source_location: "/usr/local/src/{{ ocserv_source_filename }}"
 
-ocserv_create_password_script: "{{ ocserv_path }}/create-password.exp"
-ocserv_hashed_password_file: "{{ ocserv_path }}/ocpasswd"
-ocserv_password_file: "{{ ocserv_path }}/ocserv-password"
 ocserv_pid_file: "/var/run/ocserv.pid"
 ocserv_socket_file: "/var/run/ocserv-socket"
 
@@ -33,6 +30,18 @@ ocserv_ca_template_file: "{{ ocserv_path }}/ca.tmpl"
 ocserv_server_certificate_file: "{{ ocserv_path }}/server-cert.pem"
 ocserv_server_key_file: "{{ ocserv_path }}/server-key.pem"
 ocserv_server_template_file: "{{ ocserv_path }}/server.tmpl"
+
+ocserv_client_name: "streisand-openconnect-{{ streisand_ipv4_address }}"
+ocserv_client_certificate_file: "{{ ocserv_path }}/client-cert.pem"
+ocserv_client_key_file: "{{ ocserv_path }}/client-key.pem"
+ocserv_client_template_file: "{{ ocserv_path }}/client.tmpl"
+ocserv_client_pkcs12_file: "{{ ocserv_path }}/client.p12"
+
+ocserv_create_password_script: "{{ ocserv_path }}/create-password.exp"
+ocserv_hashed_password_file: "{{ ocserv_path }}/ocpasswd"
+ocserv_password_file: "{{ ocserv_path }}/ocserv-password"
+ocserv_pkcs12_conversion_script: "{{ ocserv_path }}/create-pkcs12.exp"
+ocserv_pkcs12_password_file: "{{ ocserv_path }}/ocserv-pkcs12-password"
 
 ocserv_gateway_location: "{{ streisand_gateway_location }}/openconnect"
 ocserv_markdown_instructions: "{{ ocserv_gateway_location }}/index.md"

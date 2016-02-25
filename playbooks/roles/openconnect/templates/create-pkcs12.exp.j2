@@ -1,0 +1,12 @@
+#!/usr/bin/expect -f
+set timeout -1
+spawn certtool --to-p12 --load-privkey {{ ocserv_client_key_file }} --pkcs-cipher 3des-pkcs12 --load-certificate {{ ocserv_client_certificate_file }} --outfile {{ ocserv_client_pkcs12_file }} --outder
+match_max 100000
+expect -exact "Generating a PKCS #12 structure...\r
+Loading certificate list...\r
+Loaded 1 certificates.\r
+Enter a name for the key: "
+send -- "{{ ocserv_client_name }}\r"
+expect -exact "Enter password: "
+send -- "{{ ocserv_pkcs12_password.stdout }}\r"
+expect eof

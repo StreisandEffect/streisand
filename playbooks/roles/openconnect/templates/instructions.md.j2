@@ -81,6 +81,12 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 
 <a name="ios"></a>
 ### iOS ###
+1. Download and install the [client profile](/openconnect/client.p12) on your iOS device.
+   * The profile can be emailed to your device (simply tap the attachment), installed via the [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12) utility, or by viewing these instructions on the device itself and tapping [here](/openconnect/client.p12).
+   * Follow the on-screen instructions.
+   * You will be prompted to enter your device password or pin.
+   * Enter `{{ ocserv_pkcs12_password.stdout }}` when the *ENTER THE PASSWORD FOR THE CERTIFICATE...* prompt is displayed.
+   * Once the profile is installed, you are ready to continue.
 1. Download [Cisco AnyConnect](https://itunes.apple.com/us/app/cisco-anyconnect/id392790924) from the App Store.
 1. Launch the application.
 1. Tap *OK* to enable the software when the dialog box appears.
@@ -96,6 +102,5 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Slide the *AnyConnect VPN* switch on.
 1. Tap *Details* when the Security Warning is displayed.
 1. Tap *Import* in the top-right corner.
-1. Enter `streisand` for the *Username* and tap *Connect*.
-1. Enter `{{ ocserv_password.stdout }}` for the *Password* and tap *Connect*.
+1. Tap *Connect* on the group selection screen. The correct default has already been chosen.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
