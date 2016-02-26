@@ -59,9 +59,11 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 
 <a name="android"></a>
 ### Android ###
+1. Transfer the [client profile](/openconnect/client.p12) to your Android device.
+   * The profile can be downloaded on the device itself using the link above, or copied from your computer via USB.
 1. Download [Cisco AnyConnect](https://play.google.com/store/apps/details?id=com.cisco.anyconnect.vpn.android.avf) from Google Play.
 1. Launch the application.
-1. Tap *OK* to accept the "Supplemental End User License Agreement for AnyConnect&reg; Secure Mobility Client vx.x and other VPN-related Software" (LOL).
+1. Tap *OK* to accept the "Supplemental End User License Agreement for AnyConnect&reg; Secure Mobility Client vx.x and other VPN-related Software".
 1. Tap the menu icon and select *Settings*.
 1. Uncheck the *Block Untrusted Servers* option.
    * The server certificate will be imported during the initial login and automatically verified for all future connections.
@@ -69,14 +71,19 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Tap *Connection* and then tap *Add New VPN Connection...*.
 1. Tap *Description* and enter `{{ streisand_server_name }}`.
 1. Tap *Server Address* and enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}`.
-1. Tap *Done*.
+1. Tap *Advanced Preferences*.
+1. Tap *Certificate*.
+1. Tap *Import*, tap *File System*, and select the `client.p12` file that you transferred in Step 1.
+   * Check the `Download` folder if you downloaded the file directly to the device. This is where Chrome places its files, for example.
+1. Enter `{{ ocserv_pkcs12_password.stdout }}` when the *Password* prompt is displayed, and tap *Connect*.
+1. You'll see a checkmark next to the newly imported certificate. Tap the back button.
+1. Tap *Done* twice to save the connection.
 1. Tap the back button to return to the main screen. You should see `{{ streisand_server_name }}` in the *Connection* section.
 1. Slide the *AnyConnect VPN* switch On.
 1. Tap *Details* when the Security Warning is displayed.
-1. Scroll to the bottom of the Certificate Summary and tap *Import and Continue*.
-1. Enter `streisand` for the *Username* and tap *Connect*.
-1. Enter `{{ ocserv_password.stdout }}` for the *Password* and tap *Connect*.
-1. Accept the *Connection request* dialog that Android displays.
+1. Tap *Import and Continue* when the Certificate Summary is displayed.
+1. Tap *Connect* on the group selection screen. The correct default has already been chosen.
+1. If this is your first time using AnyConnect, you will need to accept the Connection Request dialog that Android displays.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
