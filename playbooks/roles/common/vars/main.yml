@@ -1,5 +1,8 @@
 ---
 streisand_common_packages:
+  # Required for generating passwords (not pre-installed on Ubuntu minimal)
+  - dictionaries-common
+  - wamerican-huge
   # Used to compile Libreswan and OpenConnect Server (ocserv)
   - build-essential
   # Used to perform API requests, including the version check for
