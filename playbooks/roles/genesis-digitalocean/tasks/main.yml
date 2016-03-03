@@ -11,7 +11,7 @@
                      api_token="{{ do_access_token }}"
       register: do_ssh_key
   rescue:
-    - fail: msg="The SSH key either already exists under a different name, or the dopy Python module is not installed. Use `pip install dopy` to install this module."
+    - fail: msg="The SSH key either already exists under a different name, or the dopy Python module is not installed. Use `pip install dopy==0.3.5` to install this module. On the latest version of OS X, dopy > 0.3.5 is currently broken."
 
 - name: Create the server. If this task fails with an "invalid region" error, then DigitalOcean is temporarily not allowing new 512MB Droplets to be provisioned in the selected region. You can either try the same region again later, or choose a different location.
   digital_ocean: command=droplet
