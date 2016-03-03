@@ -8,12 +8,15 @@
 
 - name: Retrieve the Libreswan source code
   # Temporary download location due to libreswan.org downtime.
+  #
+  #  The SHA-256 checksum obviates the need for certificate verification, and Python versions less than 2.7.9 struggle with SNI-enabled servers.
   get_url: url=https://missingm.co/{{ libreswan_source_filename }}
            dest={{ libreswan_source_location }}
            checksum={{ libreswan_checksum }}
            owner=root
            group=root
            mode=644
+           validate_certs=False
 
 - name: Extract the Libreswan source code
   unarchive: copy=no
