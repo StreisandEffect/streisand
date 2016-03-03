@@ -42,11 +42,11 @@
       private: no
 
     - name: "do_access_token"
-      prompt: "\n\nNew API access tokens can be generated in the DigitalOcean control panel. When generating a new token, please note that the Write Scope is necessary in order to create Droplets.\nhttps://cloud.digitalocean.com/settings/applications\n\nWhat is your DigitalOcean Access Token?\n"
+      prompt: "\n\nNew API access tokens can be generated in the DigitalOcean control panel.\nhttps://cloud.digitalocean.com/settings/applications\n  * When generating a new token, please note that the Write Scope is necessary\n    in order to create Droplets.\n\nWhat is your DigitalOcean Access Token?\n"
       private: no
 
     - name: "do_ssh_name"
-      prompt: "\n\nIf you haven't done so already, you must add your SSH public key (e.g. id_rsa.pub) in the DigitalOcean control panel:\nhttps://cloud.digitalocean.com/settings/security\n\nWhat is the name assigned to the SSH key in the DigitalOcean control panel that you would like to use?\n"
+      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/settings/security\n\nWhat is the name of the DigitalOcean SSH key that you would like to use?\n  * If you have never uploaded an SSH key to DigitalOcean then the default\n    value will work!\n  * This key should match your .ssh/id_rsa.pub file.\n\  * DigitalOcean requires SSH keys to be unique. You cannot upload multiple\n    keys that have the same value under different names.\n\n    If you see an error that says 'SSH Key failed to be created' once the setup\n    process starts, then this is the problem. You can retry the setup process\n    using the name of the existing SSH key from the DigitalOcean control panel\n    that matches the contents of your RSA public key.\n"
       default: "streisand"
       private: no
 
