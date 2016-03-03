@@ -1,8 +1,4 @@
 ---
-- name: Install Shadowsocks dependencies
-  apt: name={{ item }}
-  with_items: "{{ shadowsocks_dependencies }}"
-
 - name: Add the official Shadowsocks.org APT key
   apt_key: id=1D27208A
            data="{{ item }}"
