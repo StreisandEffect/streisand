@@ -12,7 +12,7 @@
 
 - name: Install Streisand common packages
   apt: name={{ item }}
-  with_items: streisand_common_packages
+  with_items: "{{ streisand_common_packages }}"
 
 - name: Copy the HTML header and footer templates that are used during documentation generation
   copy: src={{ item.src }}

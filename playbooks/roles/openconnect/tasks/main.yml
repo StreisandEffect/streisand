@@ -1,7 +1,7 @@
 ---
 - name: Install the ocserv dependencies
   apt: name={{ item }}
-  with_items: ocserv_dependencies
+  with_items: "{{ ocserv_dependencies }}"
 
 - name: Retrieve the ocserv source code
   get_url: url=ftp://ftp.infradead.org/pub/ocserv/{{ ocserv_source_filename }}

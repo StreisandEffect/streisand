@@ -47,7 +47,7 @@
 - name: Wait until obfsproxy information has shown up in the state file
   wait_for: path=/var/lib/tor/state
             search_regex={{ item }}
-  with_items: tor_obfs_transports
+  with_items: "{{ tor_obfs_transports }}"
 
 - name: Wait until the hidden service is online
   wait_for: path={{ tor_hidden_service_directory }}/hostname
@@ -59,7 +59,7 @@
 - name: Discover the randomly chosen obfs ports
   shell: grep {{ item }} /var/lib/tor/state | sed -e 's/^.*://'
   register: tor_obfs_ports
-  with_items: tor_obfs_transports
+  with_items: "{{ tor_obfs_transports }}"
 
 - name: Set the obfs3 port fact
   set_fact: tor_obfs3_port={{ tor_obfs_ports.results[0].stdout }}

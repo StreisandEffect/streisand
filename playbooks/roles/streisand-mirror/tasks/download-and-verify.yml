@@ -19,7 +19,7 @@
            owner=www-data
            group=www-data
            mode=644
-  with_items: project_download_urls
+  with_items: "{{ project_download_urls }}"
 
 - name: If necessary, rename signature files to match the GPG default of '.asc'
   shell: for file in *.{{ signature_extension }}; do mv $file ${file%.*}.asc; done

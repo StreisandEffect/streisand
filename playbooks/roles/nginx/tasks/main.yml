@@ -2,7 +2,7 @@
 - name: Remove the Apache web server in order to avoid conflicts with Nginx
   apt: name={{ item }}
        state=absent
-  with_items: apache_packages_to_remove
+  with_items: "{{ apache_packages_to_remove }}"
 
 - name: Make sure that nothing is listening on port 80 on the public interface
   wait_for: host={{ streisand_ipv4_address }}
