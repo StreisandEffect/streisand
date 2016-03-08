@@ -10,7 +10,7 @@
         state=directory
 
 - block:
-  - name: Mirror Shadowsocks clients
+  - name: Mirror the Shadowsocks clients
     get_url: url={{ item.url }}
              dest={{ shadowsocks_mirror_location }}
              checksum={{ item.checksum }}
