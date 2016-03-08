@@ -60,6 +60,8 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Install the OpenConnect plugin for NetworkManager.
 
    `sudo apt-get install network-manager-openconnect-gnome`
+1. Download the CA certificate file:
+   * [ca-cert.pem](/openconnect/ca-cert.pem)
 1. Open your *System Settings*.
 1. Click the *Network* icon.
 1. Click the *+* button in the lower-left of the window.
@@ -67,10 +69,9 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Select *Cisco AnyConnect Compatible VPN (openconnect)* and click *Create*.
 1. Enter `{{ streisand_server_name }}` for the *Connection name*.
 1. Enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}` for the *Gateway*.
+1. Select the `ca-cert.pem` file that you just downloaded for the *CA Certificate*.
 1. Click *Save*.
 1. Select the VPN in the left-hand menu, and flip the switch to *ON*. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to *VPN Connections*, and clicking on its name.
-1. Click *OK* to accept the certificate.
-   * The server's fingerprint will be automatically verified for all future connections.
 1. Enter `streisand` for the *Username* and click *Login*.
 1. Enter `{{ ocserv_password.stdout }}` for the *Password*, check *Save passwords*, and click *Login*.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
