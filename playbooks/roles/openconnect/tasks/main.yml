@@ -88,7 +88,7 @@
            creates={{ ocserv_client_certificate_file }}
 
 - name: "Generate a random password that will be used during the PKCS #12 conversion"
-  shell: grep -v "'" /usr/share/dict/american-english-huge | grep -v "[^ a-z]|[^ A-Z]" | sort -R | tail -n 2 | xargs | sed -e 's/ /-/g' > {{ ocserv_pkcs12_password_file }}
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ ocserv_pkcs12_password_file }}
          creates={{ ocserv_pkcs12_password_file }}
 
 - name: "Set permissions on the PKCS #12 password file"
@@ -113,7 +113,7 @@
            creates={{ ocserv_client_pkcs12_file }}"
 
 - name: Generate a random ocserv password
-  shell: grep -v "'" /usr/share/dict/american-english-huge | grep -v "[^ a-z]|[^ A-Z]" | sort -R | tail -n 4 | xargs | sed -e 's/ /-/g' > {{ ocserv_password_file }}
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 4 | xargs | sed -e 's/ /-/g' > {{ ocserv_password_file }}
          creates={{ ocserv_password_file }}
 
 - name: Set permissions on the unhashed ocserv password file
