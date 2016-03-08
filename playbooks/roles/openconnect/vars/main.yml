@@ -7,6 +7,7 @@ ocserv_days_valid: "1825"
 ocserv_dependencies:
   - expect
   - gnutls-bin
+  - libev-dev
   - libgnutls28-dev
   - libnl-route-3-dev
   - libpam0g-dev
