@@ -159,6 +159,10 @@
         mode=750
         state=directory
 
+- name: Copy the CA certificate file to the OpenConnect Gateway directory
+  command: cp {{ ocserv_ca_certificate_file }} {{ ocserv_gateway_location }}
+           creates={{ ocserv_gateway_location }}/ca-cert.pem
+
 - name: "Copy the client PKCS #12 file to the OpenConnect Gateway directory"
   command: cp {{ ocserv_client_pkcs12_file }} {{ ocserv_gateway_location }}
            creates={{ ocserv_gateway_location }}/client.p12

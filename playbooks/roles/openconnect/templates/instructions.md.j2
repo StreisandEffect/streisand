@@ -5,6 +5,7 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 ---
 * Platforms
   * [Windows](#windows)
+  * [OS X](#osx)
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
@@ -35,6 +36,23 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 {% endfor %}
    1. Click *OK*.
    1. Click *OK* to close the connection properties.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+<a name="osx"></a>
+### OS X ###
+1. Install [Homebrew](http://brew.sh/), if you haven't already.
+1. Install OpenConnect using Homebrew:
+
+   `brew install openconnect`
+
+   * If installing Homebrew is not an option, you can also download and compile the [OpenConnect source code](/mirror/#openconnect).
+1. Download the CA and client certificate files:
+   * [ca-cert.pem](/openconnect/ca-cert.pem)
+   * [client.p12](/openconnect/client.p12)
+1. Place the downloaded files into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
+1. Run OpenConnect:
+
+   `sudo openconnect --cafile ca-cert.pem --certificate client.p12 --key-password '{{ ocserv_password.stdout }}' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
