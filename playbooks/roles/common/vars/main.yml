@@ -12,7 +12,7 @@ streisand_common_packages:
   # Used for documentation generation
   - markdown
   # Ensures the server's clock is set properly
-  - openntpd
+  - ntp
   # Required for the apt_repository module
   - python-software-properties
   # Used to generate convenient QR codes for mobile clients in the

@@ -109,26 +109,6 @@
     # L2TP/IPsec information on the Gateway index page
     l2tp_ipsec_gateway_location: ""
 
-  pre_tasks:
-    # The GCE Ubuntu image has an NTP conflict. Removing the default NTP
-    # daemon and its associated AppArmor rules allows OpenNTPD to
-    # install properly.
-    - name: Remove default NTP daemon
-      apt: name=ntp
-           state=absent
-           purge=true
-
-    - name: Remove NTP AppArmor rules
-      file: path=/etc/apparmor.d/{{ item }}
-            state=absent
-      with_items:
-        - "usr.sbin.ntpd"
-        - "cache/usr.sbin.ntpd"
-
-    - name: Reload AppArmor
-      service: name=apparmor
-               state=reloaded
-
   roles:
     - common
     - openconnect
