@@ -96,7 +96,7 @@
     - { src: "instructions.md.j2", dest: "{{ streisand_gateway_markdown_instructions }}" }
     - { src: "firewall.md.j2", dest: "{{ streisand_gateway_markdown_firewall_information }}" }
 
-- name: Convert the Markdown Gateway index, instructions, and firewall infomration into HTML and surround them with the header and footer template
+- name: Convert the Markdown Gateway index, instructions, and firewall information into HTML and surround them with the header and footer template
   shell: markdown {{ item.md }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ item.html }}
   with_items:
     - { md: "{{ streisand_gateway_markdown_index }}",                html: "{{ streisand_gateway_html_index }}" }
