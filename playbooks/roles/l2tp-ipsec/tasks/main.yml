@@ -117,17 +117,6 @@
   script: generate-certificate-database.sh
           creates=/etc/ipsec.d/cert8.db
 
-- name: Copy the rsyslog config file that prevents incoming L2TP/IPsec traffic from being logged by completely filtering out all messages from pppd, charon, and xl2tpd.
-  copy: src=rsyslog.conf
-        dest=/etc/rsyslog.conf
-        owner=root
-        group=root
-        mode=644
-
-- name: Restart rsyslog to apply the new configuration
-  service: name=rsyslog
-           state=restarted
-
 - name: Create the L2TP/IPsec Gateway directory
   file: path={{ l2tp_ipsec_gateway_location }}
         owner=www-data

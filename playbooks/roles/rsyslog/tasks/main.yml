@@ -1,0 +1,10 @@
+- name: Copy the modified rsyslog configuration into place that prevents Libreswan and OpenConnect traffic from being logged
+  copy: src=rsyslog.conf
+        dest=/etc/rsyslog.conf
+        owner=root
+        group=root
+        mode=644
+
+- name: Restart rsyslog to apply the new configuration
+  service: name=rsyslog
+           state=restarted
