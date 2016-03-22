@@ -1,5 +1,5 @@
 ---
-- name: Install OpenVPN and dependencies from apt
+- name: Install OpenVPN and its dependencies from APT
   apt: name={{ item }}
   with_items:
     - openvpn
