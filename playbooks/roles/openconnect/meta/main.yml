@@ -1,3 +1,4 @@
 ---
 dependencies:
+  - { role: rc-local }
   - { role: rsyslog }
