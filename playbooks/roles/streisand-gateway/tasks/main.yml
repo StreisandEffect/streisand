@@ -128,6 +128,12 @@
         state=directory
         recurse=yes
 
+- name: Verify libreswan compilation has completed
+  async_status: jid={{ compile_libreswan.ansible_job_id }}
+  register: async_task_result
+  until: async_task_result.finished
+  retries: 100
+
 - meta: flush_handlers
 
 - name: Success!
