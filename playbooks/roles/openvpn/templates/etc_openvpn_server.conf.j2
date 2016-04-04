@@ -83,8 +83,8 @@ key server.key  # This file should be kept secret
 # Generate your own with:
 #   openssl dhparam -out dh1024.pem 1024
 # Substitute 2048 for 1024 if you are using
-# 2048 bit keys. 
-dh dh{{ openvpn_key_size }}.pem
+# 2048 bit keys.
+dh {{ dhparams_location }}
 
 # Configure server mode and supply a VPN subnet
 # for OpenVPN to draw client addresses from.

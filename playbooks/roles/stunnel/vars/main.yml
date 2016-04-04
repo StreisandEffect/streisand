@@ -1,6 +1,7 @@
 ---
 stunnel_days_valid: "1825"
-stunnel_request_subject: "/C={{ stunnel_key_country }}/ST={{ stunnel_key_province }}/L={{ stunnel_key_city }}/O={{ stunnel_key_org }}/OU={{ stunnel_key_ou }}"
+stunnel_request_subject: "/C={{ stunnel_cert_country }}/ST={{ stunnel_cert_province }}/L={{ stunnel_cert_city }}/O={{ stunnel_cert_org }}/OU={{ stunnel_cert_ou }}"
 stunnel_path: "/etc/stunnel"
-stunnel_pem: "{{ stunnel_path }}/stunnel.pem"
+stunnel_cert: "{{ stunnel_path }}/stunnel.crt"
+stunnel_key: "{{ stunnel_path }}/stunnel.key"
 stunnel_pkcs12: "{{ openvpn_gateway_location }}/stunnel.p12"

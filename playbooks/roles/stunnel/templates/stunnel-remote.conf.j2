@@ -1,6 +1,7 @@
-cert = {{ stunnel_pem }}
+cert = {{ stunnel_cert }}
+key = {{ stunnel_key }}
 debug = 4
- 
+
 [stunnel]
 accept = {{ stunnel_remote_port }}
 connect = {{ openvpn_port }}

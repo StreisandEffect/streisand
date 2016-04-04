@@ -127,10 +127,6 @@
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
-- name: Generate Diffie-Hellman parameters (this will take a while)
-  command: openssl dhparam -out {{ openvpn_dhparam }} {{ openvpn_key_size }}
-           creates={{ openvpn_dhparam }}
-
 - name: Enable IPv4 traffic forwarding
   sysctl: name=net.ipv4.ip_forward
           value=1

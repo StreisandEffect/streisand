@@ -2,16 +2,20 @@
 - name: Install stunnel
   apt: name=stunnel4
 
-- name: Generate stunnel certificate and private key
-  command: openssl req -new -nodes -x509 -out {{ stunnel_pem }} -keyout {{ stunnel_pem }} -days {{ stunnel_days_valid }} -subj "{{ stunnel_request_subject }}/CN=stunnel"
-           creates={{ stunnel_pem }}
+- name: Generate the stunnel private key
+  command: openssl genrsa -out {{ stunnel_key }} {{ stunnel_key_size }}
+           creates={{ stunnel_key }}
 
-- name: "Export the PEM file in PKCS #12 format"
-  command: "openssl pkcs12 -export -in {{ stunnel_pem }} -out {{ stunnel_pkcs12 }} -password pass:
+- name: Generate the stunnel certificate and combine it with a unique Diffie-Hellman group
+  shell: openssl req -new -nodes -x509 -key {{ stunnel_key}} -days {{ stunnel_days_valid }} -subj "{{ stunnel_request_subject }}/CN=stunnel" | cat - {{ dhparams_location }} > {{ stunnel_cert }}
+         creates={{ stunnel_cert }}
+
+- name: "Export the key and certificate file in PKCS #12 format"
+  command: "openssl pkcs12 -export -in {{ stunnel_cert }} -inkey {{ stunnel_key }} -out {{ stunnel_pkcs12 }} -password pass:
            creates={{ stunnel_pkcs12 }}"
 
-- name: "Set the proper permissions on the stunnel PEM file"
-  file: path={{ stunnel_pem }}
+- name: Set the proper permissions on the stunnel key file
+  file: path={{ stunnel_key }}
         owner=root
         group=root
         mode=600
