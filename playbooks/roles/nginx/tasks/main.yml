@@ -3,6 +3,9 @@
   apt: name={{ item }}
        state=absent
   with_items: "{{ apache_packages_to_remove }}"
+  
+- name: Stop nginx for configuration
+  service: name=nginx state=stopped
 
 - name: Make sure that nothing is listening on port 80 on the public interface
   wait_for: host={{ streisand_ipv4_address }}
