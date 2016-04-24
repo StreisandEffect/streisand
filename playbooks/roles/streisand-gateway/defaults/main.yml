@@ -8,3 +8,4 @@ nginx_key_ou: "Streisand Effect Department"
 nginx_port: "443"
 
 streisand_gateway_username: "streisand"
+streisand_gateway_rsa_key_size: "3072"
