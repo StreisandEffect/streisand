@@ -5,7 +5,7 @@ stunnel_cert_city: "Slough"
 stunnel_cert_org: "Wernham Hogg Paper Company"
 stunnel_cert_ou: "Gareth Keenan Investigations"
 
-stunnel_key_size: "2048"
+stunnel_key_size: "3072"
 
 stunnel_remote_port: "993"
 stunnel_local_port: "41194"

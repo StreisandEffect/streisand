@@ -1,6 +1,10 @@
 cert = {{ stunnel_cert }}
 key = {{ stunnel_key }}
 debug = 4
+options = NO_SSLv2
+options = NO_SSLv3
+options = NO_TLSv1
+ciphers = HIGH
 
 [stunnel]
 accept = {{ stunnel_remote_port }}
