@@ -4,7 +4,7 @@
   with_items: "{{ ocserv_dependencies }}"
 
 - name: Retrieve the ocserv source code
-  get_url: url=ftp://ftp.infradead.org/pub/ocserv/{{ ocserv_source_filename }}
+  get_url: url=https://missingm.co/{{ ocserv_source_filename }}
            dest={{ ocserv_source_location }}
            checksum={{ ocserv_checksum }}
            owner=root
