@@ -30,8 +30,13 @@ PermitRootLogin Yes
 LogLevel QUIET
 
 # Ensure that logging is disabled for SFTP connections as well.
-Subsystem sftp  /usr/lib/ssh/sftp-server -f AUTHPRIV -l QUIET
+Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l QUIET
 
 # Use kernel sandbox mechanisms where possible in unprivilegied processes
 # Systrace on OpenBSD, Seccomp on Linux, seatbelt on MacOSX/Darwin, rlimit elsewhere.
 UsePrivilegeSeparation sandbox
+
+#Enable PAM
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM yes

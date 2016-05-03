@@ -5,14 +5,17 @@
     dest: /etc/ssh/sshd_config
     owner: root
     group: root
-    mode: 644
+    mode: 0644
   notify: Restart SSH
 
 - name: Generate a stronger RSA host key
-  shell: rm {{ ssh_rsa_host_private_key }} {{ ssh_rsa_host_public_key }} && ssh-keygen -h -t rsa -b {{ ssh_rsa_host_key_size }} -f {{ ssh_rsa_host_private_key }} -N '' && touch {{ ssh_rsa_host_key_change_verification }}
+  shell: "rm {{ ssh_rsa_host_private_key }} {{ ssh_rsa_host_public_key }} && ssh-keygen -h -t rsa -b {{ ssh_rsa_host_key_size }} -f {{ ssh_rsa_host_private_key }} -N '' && touch {{ ssh_rsa_host_key_change_verification }}"
   args:
     creates: "{{ ssh_rsa_host_key_change_verification }}"
   notify: Restart SSH
+
+- name: Ensure missing hosts keys are generated
+  command: ssh-keygen -A
 
 - name: Add the SSH forwarding user and generate a key
   user:
@@ -44,7 +47,7 @@
     path: "{{ ssh_gateway_location }}"
     owner: www-data
     group: www-data
-    mode: 750
+    mode: 0750
     state: directory
 
 - name: Generate the Markdown SSH instructions
