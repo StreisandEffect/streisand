@@ -14,7 +14,7 @@
     creates: "{{ ssh_rsa_host_key_change_verification }}"
   notify: Restart SSH
 
-- name: Ensure missing hosts keys are generated
+- name: Ensure missing host keys are generated
   command: ssh-keygen -A
 
 - name: Add the SSH forwarding user and generate a key
