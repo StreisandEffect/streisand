@@ -21,6 +21,7 @@
   user:
     name: forward
     generate_ssh_key: yes
+    ssh_key_bits: "{{ ssh_rsa_host_key_size }}"
     ssh_key_comment: streisand
     home: "{{ forward_location }}"
     shell: /bin/bash
