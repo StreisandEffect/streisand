@@ -1,11 +1,12 @@
 # Adapted from the "Modern" configuration detailed on the Mozilla Security
 # Guidelines wiki (https://wiki.mozilla.org/Security/Guidelines/OpenSSH).
 #
-# Two notable changes were made from that initial configuration:
+# Three notable changes were made from that initial configuration:
 # 1) All logs are disabled.
 # 2) Root logins are allowed. This is the default way that most users
 #    connect to a new VPS. Brute-force attacks against the root user
 #    are mitigated because public key authentication is required.
+# 3) PAM support is enabled.
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -36,7 +37,7 @@ Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l QUIET
 # Systrace on OpenBSD, Seccomp on Linux, seatbelt on MacOSX/Darwin, rlimit elsewhere.
 UsePrivilegeSeparation sandbox
 
-#Enable PAM
+# Enable PAM.
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 UsePAM yes
