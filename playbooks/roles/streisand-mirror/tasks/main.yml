@@ -1,10 +1,11 @@
 ---
 - name: Make the directory where mirrored files will be stored
-  file: path={{ streisand_mirror_location }}
-        owner=www-data
-        group=www-data
-        mode=755
-        state=directory
+  file:
+    path: "{{ streisand_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 755
+    state: directory
 
 # Download and verify client files
 - include: openconnect.yml
@@ -15,8 +16,9 @@
 - include: tor.yml
 
 - name: Generate the Markdown mirror page
-  template: src=mirror-index.md.j2
-            dest={{ streisand_markdown_mirror_page }}
+  template:
+    src: mirror-index.md.j2
+    dest: "{{ streisand_markdown_mirror_page }}"
 
 - name: Convert the Markdown mirror page into HTML
   shell: markdown {{ streisand_markdown_mirror_page }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ streisand_html_mirror_page }}

@@ -14,21 +14,24 @@
   assert: { that: "project_expected_fingerprint in retrieved_fingerprint.stdout" }
 
 - name: Mirror the {{ project_name }} files and signatures
-  get_url: url={{ item }}
-           dest={{ project_mirror_location }}
-           owner=www-data
-           group=www-data
-           mode=644
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ project_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 644
   with_items: "{{ project_download_urls }}"
 
 - name: If necessary, rename signature files to match the GPG default of '.asc'
   shell: for file in *.{{ signature_extension }}; do mv $file ${file%.*}.asc; done
-         chdir={{ project_mirror_location }}
+  args:
+    chdir: "{{ project_mirror_location }}"
   when: signature_extension != "asc"
 
 - name: Register GPG signature verification results
   shell: for file in *.asc; do gpg --verify $file; done
-         chdir={{ project_mirror_location }}
+  args:
+    chdir: "{{ project_mirror_location }}"
   register: gpg_verification_results
 
 - name: Make sure the {{ project_name }} files all passed GPG signature verfication

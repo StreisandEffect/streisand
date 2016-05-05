@@ -3,21 +3,24 @@
   include_vars: shadowsocks.yml
 
 - name: Make the directory where the Shadowsocks mirrored files will be stored
-  file: path={{ shadowsocks_mirror_location }}
-        owner=www-data
-        group=www-data
-        mode=755
-        state=directory
+  file:
+    path: "{{ shadowsocks_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 755
+    state: directory
 
 - block:
-  - name: Mirror the Shadowsocks clients
-    get_url: url={{ item.url }}
-             dest={{ shadowsocks_mirror_location }}
-             checksum={{ item.checksum }}
-             owner=www-data
-             group=www-data
-             mode=644
-    with_items: "{{ shadowsocks_download_urls }}"
+    - name: Mirror the Shadowsocks clients
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ shadowsocks_mirror_location }}"
+        checksum: "{{ item.checksum }}"
+        owner: www-data
+        group: www-data
+        mode: 644
+      with_items: "{{ shadowsocks_download_urls }}"
   rescue:
     - name: "{{ streisand_mirror_warning }}"
-      pause: seconds={{ streisand_mirror_warning_seconds }}
+      pause: 
+        seconds: "{{ streisand_mirror_warning_seconds }}"

@@ -3,21 +3,24 @@
   include_vars: openconnect.yml
 
 - name: Make the directory where the OpenConnect mirrored files will be stored
-  file: path={{ openconnect_mirror_location }}
-        owner=www-data
-        group=www-data
-        mode=755
-        state=directory
+  file:
+    path: "{{ openconnect_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 755
+    state: directory
 
 - block:
-  - name: Mirror the OpenConnect clients
-    get_url: url={{ item.url }}
-             dest={{ openconnect_mirror_location }}
-             checksum={{ item.checksum }}
-             owner=www-data
-             group=www-data
-             mode=644
-    with_items: "{{ openconnect_download_urls }}"
+    - name: Mirror the OpenConnect clients
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ openconnect_mirror_location }}"
+        checksum: "{{ item.checksum }}"
+        owner: www-data
+        group: www-data
+        mode: 644
+      with_items: "{{ openconnect_download_urls }}"
   rescue:
     - name: "{{ streisand_mirror_warning }}"
-      pause: seconds={{ streisand_mirror_warning_seconds }}
+      pause:
+        seconds: "{{ streisand_mirror_warning_seconds }}"
