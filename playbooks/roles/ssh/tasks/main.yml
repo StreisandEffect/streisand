@@ -12,6 +12,7 @@
   shell: "rm {{ ssh_rsa_host_private_key }} {{ ssh_rsa_host_public_key }} && ssh-keygen -h -t rsa -b {{ ssh_rsa_host_key_size }} -f {{ ssh_rsa_host_private_key }} -N '' && touch {{ ssh_rsa_host_key_change_verification }}"
   args:
     creates: "{{ ssh_rsa_host_key_change_verification }}"
+    warn: no
   notify: Restart SSH
 
 - name: Ensure missing host keys are generated
