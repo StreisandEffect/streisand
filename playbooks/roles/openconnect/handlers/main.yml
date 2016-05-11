@@ -1,4 +1,5 @@
 ---
 - name: Restart ocserv
-  service: name=ocserv
-           state=restarted
+  service:
+    name: ocserv
+    state: restarted
