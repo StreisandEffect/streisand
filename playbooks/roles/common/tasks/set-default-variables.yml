@@ -18,17 +18,21 @@
 # These conditionals are here for that very reason :)
 
 - name: Set the streisand_ipv4_address variable to the value provided by a 'genesis' role if one is defined
-  set_fact: streisand_ipv4_address="{{ hostvars['127.0.0.1']['streisand_ipv4_address'] }}"
+  set_fact:
+    streisand_ipv4_address: "{{ hostvars['127.0.0.1']['streisand_ipv4_address'] }}"
   when: hostvars['127.0.0.1']['streisand_ipv4_address'] is defined
 
 - name: Set the streisand_ipv4_address variable to the default value if it doesn't already have one. The default is the value defined in the inventory file, which should be the IP address of the server that is being configured.
-  set_fact: streisand_ipv4_address="{{ inventory_hostname }}"
+  set_fact:
+    streisand_ipv4_address: "{{ inventory_hostname }}"
   when: streisand_ipv4_address is not defined
 
 - name: Set the streisand_server_name variable to the value provided by a 'genesis' role if one is defined
-  set_fact: streisand_server_name="{{ hostvars['127.0.0.1']['streisand_server_name'] }}"
+  set_fact:
+    streisand_server_name: "{{ hostvars['127.0.0.1']['streisand_server_name'] }}"
   when: hostvars['127.0.0.1']['streisand_server_name'] is defined
 
 - name: Set the streisand_server_name variable to the default value if it doesn't already have one. The default is the value of the hostname retrieved from the server that is being configured.
-  set_fact: streisand_server_name="{{ ansible_hostname }}"
+  set_fact:
+    streisand_server_name: "{{ ansible_hostname }}"
   when: streisand_server_name is not defined

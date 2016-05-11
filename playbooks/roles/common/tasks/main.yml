@@ -1,32 +1,37 @@
 ---
 - name: Warn users if the server's Linux distribution is not Ubuntu 14.04
-  pause: prompt="Ubuntu 14.04 is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
+  pause:
+    prompt: "Ubuntu 14.04 is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
   when: ansible_distribution != "Ubuntu" or ansible_distribution_major_version != "14"
 
 # Set default variables
 - include: set-default-variables.yml
 
 - name: Ensure the APT cache is up to date
-  apt: update_cache=yes
-       cache_valid_time=3600
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
 
 - name: Install Streisand common packages
-  apt: name={{ item }}
+  apt:
+    name: "{{ item }}"
   with_items: "{{ streisand_common_packages }}"
 
 - name: Copy the HTML header and footer templates that are used during documentation generation
-  copy: src={{ item.src }}
-        dest={{ item.dest }}
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
   with_items:
     - { src: "header.html", dest: "{{ streisand_header_template }}" }
     - { src: "footer.html", dest: "{{ streisand_footer_template }}" }
 
 - name: Copy the unattended-upgrades templates to enable automatic security updates
-  copy: src={{ item.src }}
-        dest={{ item.dest }}
-        owner=root
-        group=root
-        mode=644
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 644
   with_items:
     - { src: "20auto-upgrades",       dest: "/etc/apt/apt.conf.d" }
     - { src: "50unattended-upgrades", dest: "/etc/apt/apt.conf.d" }
