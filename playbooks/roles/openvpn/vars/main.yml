@@ -7,6 +7,7 @@ openvpn_hmac_firewall: "{{ openvpn_path }}/ta.key"
 openvpn_server: "{{ streisand_ipv4_address }}"
 
 openvpn_direct_profile_filename: "{{ openvpn_server }}-direct.ovpn"
+openvpn_direct_udp_profike_filename: "{{ openvpn_server }}-direct-udp.ovpn"
 openvpn_sslh_profile_filename: "{{ openvpn_server }}-sslh.ovpn"
 openvpn_stunnel_profile_filename: "{{ openvpn_server }}-stunnel.ovpn"
 
