@@ -1,4 +1,7 @@
 ---
+- name: Import the public GPG key from OpenpVPN community
+  command: wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -
+
 - name: Install OpenVPN and its dependencies from APT
   apt: name={{ item }}
   with_items:
