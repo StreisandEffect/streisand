@@ -2,6 +2,12 @@
 - name: Import the public GPG key from OpenpVPN community
   command: wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -
 
+- name: Create sources.list fragment so that apt can find the new OpenVPN packages
+  command: echo "deb https://swupdate.openvpn.net/apt trusty main" > /etc/apt/sources.list.d/swupdate.openvpn.net.list
+
+- name: Refresh apt sources so that community OpenVPN is available
+  command: apt-get update
+
 - name: Install OpenVPN and its dependencies from APT
   apt: name={{ item }}
   with_items:
