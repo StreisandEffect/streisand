@@ -11,13 +11,6 @@ openvpn_clients:
   - client-4
   - client-5
 
-openvpn_clients_udp:
-  - client-udp-1
-  - client-udp-2
-  - client-udp-3
-  - client-udp-4
-  - client-udp-5
-
 openvpn_port: "636"
 openvpn_port_udp: "8757"
 openvpn_protocol: "tcp"

@@ -28,17 +28,13 @@
 - name: Create directories for clients
   file: path={{ openvpn_path}}/{{ item }}
         state=directory
-  with_items: 
-    - "{{ openvpn_clients }}"
-    - "{{ openvpn_clients_udp }}"
+  with_items: "{{ openvpn_clients }}"
 
 - name: Generate RSA keys for the clients
   command: openssl genrsa -out client.key {{ openvpn_key_size }}
            chdir={{ openvpn_path }}/{{ item }}
            creates=client.key
-  with_items: 
-    - "{{ openvpn_clients }}"
-    - "{{ openvpn_clients_udp }}"
+  with_items: "{{ openvpn_clients }}"
 
 - name: Set the proper permissions on all RSA keys
   file: path={{ openvpn_path }}
@@ -84,17 +80,13 @@
   command: openssl req -new -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ item }}"
            chdir={{ openvpn_path }}/{{ item }}
            creates=client.csr
-  with_items: 
-    - "{{ openvpn_clients }}"
-    - "{{ openvpn_clients_udp }}"
+  with_items: "{{ openvpn_clients }}"
 
 - name: Generate certificates for the clients
   command: openssl x509 -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt
            chdir={{ openvpn_path }}/{{ item }}
            creates=client.crt
-  with_items: 
-    - "{{ openvpn_clients }}"
-    - "{{ openvpn_clients_udp }}"
+  with_items: "{{ openvpn_clients }}"
 
 - name: Generate HMAC firewall key
   command: openvpn --genkey --secret {{ openvpn_hmac_firewall }}
@@ -108,17 +100,13 @@
 - name: Register client certificate contents
   command: cat client.crt
            chdir={{ openvpn_path }}/{{ item }}
-  with_items: 
-    - "{{ openvpn_clients }}"
-    - "{{ openvpn_clients_udp }}"
+  with_items: "{{ openvpn_clients }}"
   register: openvpn_client_certificates
 
 - name: Register client key contents
   command: cat client.key
            chdir={{ openvpn_path }}/{{ item }}
-  with_items: 
-    - "{{ openvpn_clients }}"
-    - "{{ openvpn_clients_udp }}"
+  with_items: "{{ openvpn_clients }}"
   register: openvpn_client_keys
 
 - name: Register HMAC firewall contents
@@ -138,7 +126,7 @@
   template: src=client-direct-udp.ovpn.j2
             dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_udp_profile_filename }}
   with_together:
-    - "{{ openvpn_clients_udp }}"
+    - "{{ openvpn_clients }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
@@ -187,7 +175,6 @@
   command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0] }}
   with_nested:
     - "{{ openvpn_clients }}"
-    - "{{ openvpn_clients_udp }}"
     - ["ca.crt", "ta.key"]
 
 - name: Create the OpenVPN Gateway directory
@@ -213,6 +200,4 @@
 - name: Copy the client files to the OpenVPN Gateway directory
   command: cp --recursive {{ openvpn_path }}/{{ item }} {{ openvpn_gateway_location }}
            creates={{ openvpn_gateway_location }}/{{ item }}/ca.crt
-  with_items: 
-    - "{{ openvpn_clients }}"
-    - "{{ openvpn_clients_udp }}"
+  with_items: "{{ openvpn_clients }}"
