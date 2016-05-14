@@ -1,12 +1,14 @@
 ---
 - name: Import the public GPG key from OpenpVPN community
-  command: wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -
+  apt_key: url=https://swupdate.openvpn.net/repos/repo-public.gpg state=present
 
-- name: Create sources.list fragment so that apt can find the new OpenVPN packages
-  command: echo "deb https://swupdate.openvpn.net/apt trusty main" > /etc/apt/sources.list.d/swupdate.openvpn.net.list
+- name: Adds the OpenVPN community repositroy to sources.list
+  apt_repository: repo='deb http://swupdate.openvpn.net/apt trusty main' state=present
 
-- name: Refresh apt sources so that community OpenVPN is available
-  command: apt-get update
+- name: Ensure the APT cache is up to date
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
 
 - name: Install OpenVPN and its dependencies from APT
   apt: name={{ item }}
@@ -26,13 +28,17 @@
 - name: Create directories for clients
   file: path={{ openvpn_path}}/{{ item }}
         state=directory
-  with_items: "{{ openvpn_clients }}"
+  with_items: 
+    - "{{ openvpn_clients }}"
+    - "{{ openvpn_clients_udp }}"
 
 - name: Generate RSA keys for the clients
   command: openssl genrsa -out client.key {{ openvpn_key_size }}
            chdir={{ openvpn_path }}/{{ item }}
            creates=client.key
-  with_items: "{{ openvpn_clients }}"
+  with_items: 
+    - "{{ openvpn_clients }}"
+    - "{{ openvpn_clients_udp }}"
 
 - name: Set the proper permissions on all RSA keys
   file: path={{ openvpn_path }}
@@ -78,13 +84,17 @@
   command: openssl req -new -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ item }}"
            chdir={{ openvpn_path }}/{{ item }}
            creates=client.csr
-  with_items: "{{ openvpn_clients }}"
+  with_items: 
+    - "{{ openvpn_clients }}"
+    - "{{ openvpn_clients_udp }}"
 
 - name: Generate certificates for the clients
   command: openssl x509 -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt
            chdir={{ openvpn_path }}/{{ item }}
            creates=client.crt
-  with_items: "{{ openvpn_clients }}"
+  with_items: 
+    - "{{ openvpn_clients }}"
+    - "{{ openvpn_clients_udp }}"
 
 - name: Generate HMAC firewall key
   command: openvpn --genkey --secret {{ openvpn_hmac_firewall }}
@@ -98,13 +108,17 @@
 - name: Register client certificate contents
   command: cat client.crt
            chdir={{ openvpn_path }}/{{ item }}
-  with_items: "{{ openvpn_clients }}"
+  with_items: 
+    - "{{ openvpn_clients }}"
+    - "{{ openvpn_clients_udp }}"
   register: openvpn_client_certificates
 
 - name: Register client key contents
   command: cat client.key
            chdir={{ openvpn_path }}/{{ item }}
-  with_items: "{{ openvpn_clients }}"
+  with_items: 
+    - "{{ openvpn_clients }}"
+    - "{{ openvpn_clients_udp }}"
   register: openvpn_client_keys
 
 - name: Register HMAC firewall contents
@@ -117,6 +131,14 @@
             dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_profile_filename }}
   with_together:
     - "{{ openvpn_clients }}"
+    - "{{ openvpn_client_certificates.results }}"
+    - "{{ openvpn_client_keys.results }}"
+
+- name: Create the client configuration profiles that will be used when connecting directly via UDP
+  template: src=client-direct-udp.ovpn.j2
+            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_udp_profile_filename }}
+  with_together:
+    - "{{ openvpn_clients_udp }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
@@ -148,7 +170,11 @@
   template: src=etc_openvpn_server.conf.j2
             dest=/etc/openvpn/server.conf
 
-- name: Restart OpenVPN so the 10.8.0.0 interface is available to dnsmasq
+- name: Copy OpenVPN configuration file into place
+  template: src=etc_openvpn_server_udp.conf.j2
+            dest=/etc/openvpn/server-udp.conf
+
+- name: Restart OpenVPN so the 10.8.0.0/10.9.0.0 interface is available to dnsmasq
   service: name=openvpn
            state=restarted
 
@@ -161,6 +187,7 @@
   command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0] }}
   with_nested:
     - "{{ openvpn_clients }}"
+    - "{{ openvpn_clients_udp }}"
     - ["ca.crt", "ta.key"]
 
 - name: Create the OpenVPN Gateway directory
@@ -186,4 +213,6 @@
 - name: Copy the client files to the OpenVPN Gateway directory
   command: cp --recursive {{ openvpn_path }}/{{ item }} {{ openvpn_gateway_location }}
            creates={{ openvpn_gateway_location }}/{{ item }}/ca.crt
-  with_items: "{{ openvpn_clients }}"
+  with_items: 
+    - "{{ openvpn_clients }}"
+    - "{{ openvpn_clients_udp }}"
