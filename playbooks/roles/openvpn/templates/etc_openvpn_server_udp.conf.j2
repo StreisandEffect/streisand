@@ -29,11 +29,11 @@
 # on the same machine, use a different port
 # number for each one.  You will need to
 # open up this port on your firewall.
-port {{ openvpn_port }}
+port {{ openvpn_port_udp }}
 
 # TCP or UDP server?
 ;proto tcp
-proto {{ openvpn_protocol }}
+proto {{ openvpn_protocol_udp }}
 
 # "dev tun" will create a routed IP tunnel,
 # "dev tap" will create an ethernet tunnel.
@@ -93,7 +93,7 @@ dh {{ dhparams_location }}
 # Each client will be able to reach the server
 # on 10.8.0.1. Comment this line out if you are
 # ethernet bridging. See the man page for more info.
-server 10.8.0.0 255.255.255.0
+server 10.9.0.0 255.255.255.0
 
 # Maintain a record of client <-> virtual IP address
 # associations in this file.  If OpenVPN goes down or
