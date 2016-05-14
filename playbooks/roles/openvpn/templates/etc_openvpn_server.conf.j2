@@ -252,6 +252,9 @@ auth {{ openvpn_auth_digest }}
 # This will check the extended key usage on certificates
 remote-cert-eku "TLS Web Client Authentication"
 
+# Set the minimum TLS version for control channel
+tls-version-min 1.2
+
 # Enable compression on the VPN link.
 # If you enable it here, you must also
 # enable it in the client config file.
