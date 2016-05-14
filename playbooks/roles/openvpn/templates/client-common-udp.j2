@@ -1,0 +1,31 @@
+dev tun
+proto {{ openvpn_protocol_udp }}
+cipher {{ openvpn_cipher }}
+auth {{ openvpn_auth_digest }}
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+remote-cert-eku "TLS Web Server Authentication"
+tls-version-min 1.2
+verify-x509-name 'C={{ openvpn_key_country }}, O={{ openvpn_key_org }}, OU={{ openvpn_key_ou }}' subject
+comp-lzo
+key-direction 1
+verb 3
+route {{ streisand_ipv4_address }} 255.255.255.255 net_gateway
+
+<ca>
+{{ openvpn_ca_contents.stdout }}
+</ca>
+
+<cert>
+{{ item[1].stdout }}
+</cert>
+
+<key>
+{{ item[2].stdout }}
+</key>
+
+<tls-auth>
+{{ openvpn_hmac_firewall_contents.stdout }}
+</tls-auth>
