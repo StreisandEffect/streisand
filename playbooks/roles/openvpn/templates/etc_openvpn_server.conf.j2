@@ -250,8 +250,7 @@ cipher {{ openvpn_cipher }}
 auth {{ openvpn_auth_digest }}
 
 # This will check the extended key usage on certificates
-# Equivalent to OpenVPN directive '-remote-cert-eku "TLS Web Client Authentication"'
-remote-cert-tls-client
+remote-cert-eku "TLS Web Client Authentication"
 
 # Enable compression on the VPN link.
 # If you enable it here, you must also
