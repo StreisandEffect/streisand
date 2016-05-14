@@ -12,7 +12,9 @@ openvpn_clients:
   - client-5
 
 openvpn_port: "636"
+openvpn_port_udp: "8757"
 openvpn_protocol: "tcp"
+openvpn_protocol_udp: "udp"
 openvpn_key_size: "2048"
 openvpn_cipher: "AES-256-CBC"
 openvpn_auth_digest: "SHA256"
