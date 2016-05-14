@@ -158,7 +158,7 @@
   template: src=etc_openvpn_server.conf.j2
             dest=/etc/openvpn/server.conf
 
-- name: Copy OpenVPN configuration file into place
+- name: Copy OpenVPN UDP configuration file into place
   template: src=etc_openvpn_server_udp.conf.j2
             dest=/etc/openvpn/server-udp.conf
 
