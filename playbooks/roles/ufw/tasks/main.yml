@@ -59,6 +59,11 @@
        proto="{{ openvpn_protocol | lower }}"
        rule="allow"
 
+- name: Ensure UFW allows OpenVPN over UDP
+  ufw: to_port="{{ openvpn_port_udp }}"
+       proto="{{ openvpn_protocol_udp }}"
+       rule="allow"
+
 - name: Ensure UFW allows Shadowsocks
   ufw: to_port="{{ shadowsocks_server_port }}"
        proto="tcp"
