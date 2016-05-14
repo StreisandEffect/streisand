@@ -39,6 +39,17 @@ check host tap0 with address 10.8.0.1
         icmp type echo count 5 with timeout 15 seconds
     then restart
 
+check process vpn-network with pidfile /var/run/openvpn/server-udp.pid
+   start program = "/etc/init.d/openvpn start openvpn.server-udp"
+   stop program = "/etc/init.d/openvpn stop openvpn.server-udp"
+
+check host tap0 with address 10.9.0.1
+    start program = "/etc/init.d/openvpn start openvpn.server-udp"
+    stop program = "/etc/init.d/openvpn stop openvpn.server-udp"
+    if failed
+        icmp type echo count 5 with timeout 15 seconds
+    then restart
+
 
 # OpenSSH
 check process sshd with pidfile /var/run/sshd.pid
