@@ -1,5 +1,5 @@
 ---
-- name: Import the public GPG key from OpenpVPN community
+- name: Import the public GPG key from OpenVPN community
   apt_key: url=https://swupdate.openvpn.net/repos/repo-public.gpg state=present
 
 - name: Adds the OpenVPN community repositroy to sources.list
