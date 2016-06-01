@@ -8,11 +8,6 @@
   apt_repository: repo='deb http://swupdate.openvpn.net/apt trusty main' 
                   state=present
 
-- name: Ensure the APT cache is up to date
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
-
 - name: Install OpenVPN and its dependencies from APT
   apt: name={{ item }}
   with_items:
