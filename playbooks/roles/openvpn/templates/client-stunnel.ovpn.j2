@@ -1,3 +1,4 @@
 client
 remote 127.0.0.1 {{ stunnel_local_port }}
+proto {{ openvpn_protocol }}
 {% include "client-common.j2" %}
