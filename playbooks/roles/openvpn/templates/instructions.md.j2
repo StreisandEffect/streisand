@@ -152,7 +152,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="UDP-profiles"></a>
-### Alternate unified profiles for access via port UDP port 8757 ###
+### Alternate unified profiles for access via UDP port {{ openvpn_port_udp }} ###
 {% for client in openvpn_clients %}
 * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_udp_profile_filename }})
 {% endfor %}
