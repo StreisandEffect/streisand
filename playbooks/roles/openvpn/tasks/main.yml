@@ -2,7 +2,7 @@
 - name: Add the official OpenVPN community APT key
   apt_key: id=198D22A3 
            data="{{ item }}"
- with_file: openvpn_signing.key
+  with_file: openvpn_signing.key
 
 - name: Add the official OpenVPN Community repository
   apt_repository: repo='deb http://swupdate.openvpn.net/apt trusty main' 
