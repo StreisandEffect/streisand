@@ -1,6 +1,6 @@
 ---
 - name: Add the official OpenVPN community APT key
-  apt_key: id=198D22A3 
+  apt_key: id=E158C569 
            data="{{ item }}"
   with_file: openvpn_signing.key
 
