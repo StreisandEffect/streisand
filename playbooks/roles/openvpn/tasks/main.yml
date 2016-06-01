@@ -160,7 +160,7 @@
   template: src=etc_openvpn_server_udp.conf.j2
             dest=/etc/openvpn/server-udp.conf
 
-- name: Restart OpenVPN so the 10.8.0.0/10.9.0.0 interface is available to dnsmasq
+- name: Restart OpenVPN so the TUN interfaces are available to dnsmasq
   service: name=openvpn
            state=restarted
 
