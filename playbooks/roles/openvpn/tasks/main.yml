@@ -4,8 +4,9 @@
            data="{{ item }}"
  with_file: openvpn_signing.key
 
-- name: Adds the OpenVPN community repositroy to sources.list
-  apt_repository: repo='deb http://swupdate.openvpn.net/apt trusty main' state=present
+- name: Add the official OpenVPN Community repository
+  apt_repository: repo='deb http://swupdate.openvpn.net/apt trusty main' 
+                  state=present
 
 - name: Ensure the APT cache is up to date
   apt:
