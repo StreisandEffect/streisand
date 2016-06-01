@@ -1,3 +1,4 @@
 client
 remote {{ openvpn_server }} {{ openvpn_port_udp }}
-{% include "client-common-udp.j2" %}
+proto {{ openvpn_protocol_udp }}
+{% include "client-common.j2" %}

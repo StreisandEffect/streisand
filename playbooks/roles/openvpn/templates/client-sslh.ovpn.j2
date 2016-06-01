@@ -1,3 +1,4 @@
 client
 remote {{ openvpn_server }} 443
+proto {{ openvpn_protocol }}
 {% include "client-common.j2" %}
