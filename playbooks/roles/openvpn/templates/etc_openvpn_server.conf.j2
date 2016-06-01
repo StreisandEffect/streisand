@@ -1,4 +1,4 @@
 push "dhcp-option DNS 10.8.0.1"
 proto {{ openvpn_protocol }}
-port {{ openvpn_port_udp }}
+port {{ openvpn_port }}
 {% include "etc_openvpn_server_common.j2" %}
