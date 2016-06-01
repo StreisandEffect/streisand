@@ -5,7 +5,7 @@
 # 1) All logs are disabled.
 # 2) Root logins are allowed. This is the default way that most users
 #    connect to a new VPS. Brute-force attacks against the root user
-#    are mitigated because public key authentication is required.
+#    are mitigated because public-key authentication is required.
 # 3) PAM support is enabled.
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
