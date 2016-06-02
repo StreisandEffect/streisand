@@ -1,15 +1,18 @@
 ---
 - name: Install Tinyproxy
-  apt: name=tinyproxy
+  apt:
+    name: tinyproxy
 
 - name: Reconfigure Tinyproxy to bind to localhost
-  lineinfile: dest=/etc/tinyproxy.conf
-              regexp="^#?Listen"
-              line="Listen 127.0.0.1"
+  lineinfile:
+    dest: /etc/tinyproxy.conf
+    regexp: "^#?Listen"
+    line: "Listen 127.0.0.1"
   notify: Restart Tinyproxy
 
 - name: Reconfigure Tinyproxy so it doesn't log incoming connections
-  lineinfile: dest=/etc/tinyproxy.conf
-              regexp="^#?LogLevel"
-              line="LogLevel Critical"
+  lineinfile:
+    dest: /etc/tinyproxy.conf
+    regexp: "^#?LogLevel"
+    line: "LogLevel Critical"
   notify: Restart Tinyproxy

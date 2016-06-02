@@ -1,4 +1,5 @@
 ---
 - name: Restart sslh
-  service: name=sslh
-           state=restarted
+  service:
+    name: sslh
+    state: restarted

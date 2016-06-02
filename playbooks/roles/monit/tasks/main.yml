@@ -1,11 +1,13 @@
 ---
 - name: Install Monit
-  apt: name=monit
+  apt:
+    name: monit
 
 - name: Update Monit configuration
-  template: src=monitrc.j2
-            dest=/etc/monit/monitrc
-            owner=root
-            group=root
-            mode=700
+  template:
+    src: monitrc.j2
+    dest: /etc/monit/monitrc
+    owner: root
+    group: root
+    mode: 700
   notify: Restart Monit

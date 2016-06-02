@@ -1,8 +1,10 @@
 ---
 - name: Install sslh
-  apt: name=sslh
+  apt:
+    name: sslh
 
 - name: Generate the sslh port multiplexer configuration file
-  template: src=sslh.j2
-            dest=/etc/default/sslh
+  template:
+    src: sslh.j2
+    dest: /etc/default/sslh
   notify: Restart sslh
