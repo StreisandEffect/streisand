@@ -1,15 +1,18 @@
 ---
 - name: Add the official OpenVPN community APT key
-  apt_key: id=E158C569 
-           data="{{ item }}"
+  apt_key:
+    id: E158C569 
+    data: "{{ item }}"
   with_file: openvpn_signing.key
 
 - name: Add the official OpenVPN Community repository
-  apt_repository: repo='deb http://swupdate.openvpn.net/apt trusty main' 
-                  state=present
+  apt_repository:
+    repo: 'deb http://swupdate.openvpn.net/apt trusty main' 
+    state: present
 
 - name: Install OpenVPN and its dependencies from APT
-  apt: name={{ item }}
+  apt:
+    name: "{{ item }}"
   with_items:
     - openvpn
     - udev
@@ -17,34 +20,39 @@
 
 - name: Generate RSA keys for the CA and Server
   command: openssl genrsa -out {{ item }}.key {{ openvpn_key_size }}
-           chdir={{ openvpn_path }}
-           creates={{ item }}.key
+  args:
+    chdir: "{{ openvpn_path }}"
+    creates: "{{ item }}.key"
   with_items:
     - ca
     - server
 
 - name: Create directories for clients
-  file: path={{ openvpn_path}}/{{ item }}
-        state=directory
+  file:
+    path: "{{ openvpn_path}}/{{ item }}"
+    state: directory
   with_items: "{{ openvpn_clients }}"
 
 - name: Generate RSA keys for the clients
   command: openssl genrsa -out client.key {{ openvpn_key_size }}
-           chdir={{ openvpn_path }}/{{ item }}
-           creates=client.key
+  args:
+    chdir: "{{ openvpn_path }}/{{ item }}"
+    creates: client.key
   with_items: "{{ openvpn_clients }}"
 
 - name: Set the proper permissions on all RSA keys
-  file: path={{ openvpn_path }}
-        recurse=yes
-        state=directory
-        owner=root
-        group=root
-        mode=600
+  file:
+    path: "{{ openvpn_path }}"
+    recurse: yes
+    state: directory
+    owner: root
+    group: root
+    mode: 600
 
 - name: Generate CA certificate
   command: openssl req -nodes -batch -new -x509 -key {{ openvpn_ca }}.key -out {{ openvpn_ca }}.crt -days {{ openvpn_days_valid }} -subj "{{ openvpn_request_subject }}/CN=ca-certificate"
-           creates={{ openvpn_ca }}.crt
+  args:
+    creates: "{{ openvpn_ca }}.crt"
 
 - name: Generate the OpenSSL configuration that will be used for the Server certificate's req and ca commands
   # Properly sets the attributes that are described here:
@@ -53,120 +61,141 @@
   # This is required in order for the 'ns-cert-type server' option to
   # work, which is enabled by default in most standard client.conf
   # files.
-  template: src=openssl-server-certificate.cnf.j2
-            dest={{ openvpn_path }}/openssl-server-certificate.cnf
+  template:
+    src: openssl-server-certificate.cnf.j2
+    dest: "{{ openvpn_path }}/openssl-server-certificate.cnf"
 
 - name: Seed a blank database file that will be used when generating the Server's certificate
-  file: path={{ openvpn_path }}/index.txt
-        state=touch
+  file:
+    path: "{{ openvpn_path }}/index.txt"
+    state: touch
 
 - name: Seed a serial file that will be used when generating the Server's certificate
-  copy: content="01"
-        dest={{ openvpn_path }}/serial
+  copy:
+    content: "01"
+    dest: "{{ openvpn_path }}/serial"
 
 - name: Generate CSR for the Server
   command: openssl req -batch -extensions server -new -key server.key -out server.csr -config {{ openvpn_path }}/openssl-server-certificate.cnf
-           chdir={{ openvpn_path }}
-           creates=server.csr
+  args:
+    chdir: "{{ openvpn_path }}"
+    creates: server.csr
 
 - name: Generate certificate for the Server
   command: openssl ca -batch -extensions server -in server.csr -out server.crt -config openssl-server-certificate.cnf
-           chdir={{ openvpn_path }}
-           creates=server.crt
+  args:
+    chdir: "{{ openvpn_path }}"
+    creates: server.crt
 
 - name: Generate CSRs for the clients
   command: openssl req -new -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ item }}"
-           chdir={{ openvpn_path }}/{{ item }}
-           creates=client.csr
+  args:
+    chdir: "{{ openvpn_path }}/{{ item }}"
+    creates: client.csr
   with_items: "{{ openvpn_clients }}"
 
 - name: Generate certificates for the clients
   command: openssl x509 -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt
-           chdir={{ openvpn_path }}/{{ item }}
-           creates=client.crt
+  args:
+    chdir: "{{ openvpn_path }}/{{ item }}"
+    creates: client.crt
   with_items: "{{ openvpn_clients }}"
 
 - name: Generate HMAC firewall key
   command: openvpn --genkey --secret {{ openvpn_hmac_firewall }}
-           creates={{ openvpn_hmac_firewall }}
+  args:
+    creates: "{{ openvpn_hmac_firewall }}"
 
 - name: Register CA certificate contents
   command: cat ca.crt
-           chdir={{ openvpn_path }}
+  args:
+    chdir: "{{ openvpn_path }}"
   register: openvpn_ca_contents
 
 - name: Register client certificate contents
   command: cat client.crt
-           chdir={{ openvpn_path }}/{{ item }}
+  args:
+    chdir: "{{ openvpn_path }}/{{ item }}"
   with_items: "{{ openvpn_clients }}"
   register: openvpn_client_certificates
 
 - name: Register client key contents
   command: cat client.key
-           chdir={{ openvpn_path }}/{{ item }}
+  args:
+    chdir: "{{ openvpn_path }}/{{ item }}"
   with_items: "{{ openvpn_clients }}"
   register: openvpn_client_keys
 
 - name: Register HMAC firewall contents
   command: cat ta.key
-           chdir={{ openvpn_path }}
+  args:
+    chdir: "{{ openvpn_path }}"
   register: openvpn_hmac_firewall_contents
 
 - name: Create the client configuration profiles that will be used when connecting directly
-  template: src=client-direct.ovpn.j2
-            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_profile_filename }}
+  template:
+    src: client-direct.ovpn.j2
+    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_profile_filename }}"
   with_together:
     - "{{ openvpn_clients }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
 - name: Create the client configuration profiles that will be used when connecting directly via UDP
-  template: src=client-direct-udp.ovpn.j2
-            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_udp_profile_filename }}
+  template:
+    src: client-direct-udp.ovpn.j2
+    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_udp_profile_filename }}"
   with_together:
     - "{{ openvpn_clients }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
 - name: Create the client configuration profiles that will be used when connecting via sslh
-  template: src=client-sslh.ovpn.j2
-            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_sslh_profile_filename }}
+  template:
+    src: client-sslh.ovpn.j2
+    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_sslh_profile_filename }}"
   with_together:
     - "{{ openvpn_clients }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
 - name: Create the client configuration profiles that will be used when connecting via stunnel
-  template: src=client-stunnel.ovpn.j2
-            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_stunnel_profile_filename }}
+  template:
+    src: client-stunnel.ovpn.j2
+    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_stunnel_profile_filename }}"
   with_together:
     - "{{ openvpn_clients }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
 - name: Enable IPv4 traffic forwarding
-  sysctl: name=net.ipv4.ip_forward
-          value=1
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
 
 - name: Allow OpenVPN through the firewall
   command: "{{ item }}"
   with_items: "{{ openvpn_firewall_rules }}"
 
 - name: Copy OpenVPN configuration file into place
-  template: src=etc_openvpn_server.conf.j2
-            dest=/etc/openvpn/server.conf
+  template:
+    src: etc_openvpn_server.conf.j2
+    dest: /etc/openvpn/server.conf
 
 - name: Copy OpenVPN UDP configuration file into place
-  template: src=etc_openvpn_server_udp.conf.j2
-            dest=/etc/openvpn/server-udp.conf
+  template:
+    src: etc_openvpn_server_udp.conf.j2
+    dest: /etc/openvpn/server-udp.conf
 
 - name: Restart OpenVPN so the TUN interfaces are available to dnsmasq
-  service: name=openvpn
-           state=restarted
+  service:
+    name: openvpn
+    state: restarted
 
 - name: Generate dnsmasq configuration file
-  template: src=etc_dnsmasq.conf.j2
-            dest=/etc/dnsmasq.conf
+  template:
+    src: etc_dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
   notify: Restart dnsmasq
 
 - name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server
@@ -176,15 +205,17 @@
     - ["ca.crt", "ta.key"]
 
 - name: Create the OpenVPN Gateway directory
-  file: path={{ openvpn_gateway_location }}
-        owner=www-data
-        group=www-data
-        mode=750
-        state=directory
+  file:
+    path: "{{ openvpn_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 750
+    state: directory
 
 - name: Generate the Markdown OpenVPN instructions
-  template: src={{ item.src }}
-            dest={{ item.dest }}
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
   with_items:
     - { src: "instructions.md.j2",         dest: "{{ openvpn_markdown_instructions }}" }
     - { src: "stunnel-instructions.md.j2", dest: "{{ openvpn_stunnel_markdown_instructions }}" }
@@ -197,5 +228,6 @@
 
 - name: Copy the client files to the OpenVPN Gateway directory
   command: cp --recursive {{ openvpn_path }}/{{ item }} {{ openvpn_gateway_location }}
-           creates={{ openvpn_gateway_location }}/{{ item }}/ca.crt
+  args:
+    creates: "{{ openvpn_gateway_location }}/{{ item }}/ca.crt"
   with_items: "{{ openvpn_clients }}"
