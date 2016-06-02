@@ -49,6 +49,12 @@
        rule="allow"
        from_ip="10.8.0.0/24"
 
+- name: Ensure UFW allows DNS requests from OpenVPN UDP clients
+  ufw: to_port="53"
+       proto="udp"
+       rule="allow"
+       from_ip="10.9.0.0/24"
+
 - name: Ensure UFW allows OpenConnect (ocserv)
   ufw: to_port="{{ ocserv_port }}"
        proto="any"
@@ -57,6 +63,11 @@
 - name: Ensure UFW allows OpenVPN
   ufw: to_port="{{ openvpn_port }}"
        proto="{{ openvpn_protocol | lower }}"
+       rule="allow"
+
+- name: Ensure UFW allows OpenVPN over UDP
+  ufw: to_port="{{ openvpn_port_udp }}"
+       proto="{{ openvpn_protocol_udp }}"
        rule="allow"
 
 - name: Ensure UFW allows Shadowsocks

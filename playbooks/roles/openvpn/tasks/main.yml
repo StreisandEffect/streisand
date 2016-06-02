@@ -1,4 +1,13 @@
 ---
+- name: Add the official OpenVPN community APT key
+  apt_key: id=E158C569 
+           data="{{ item }}"
+  with_file: openvpn_signing.key
+
+- name: Add the official OpenVPN Community repository
+  apt_repository: repo='deb http://swupdate.openvpn.net/apt trusty main' 
+                  state=present
+
 - name: Install OpenVPN and its dependencies from APT
   apt: name={{ item }}
   with_items:
@@ -111,6 +120,14 @@
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
+- name: Create the client configuration profiles that will be used when connecting directly via UDP
+  template: src=client-direct-udp.ovpn.j2
+            dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_udp_profile_filename }}
+  with_together:
+    - "{{ openvpn_clients }}"
+    - "{{ openvpn_client_certificates.results }}"
+    - "{{ openvpn_client_keys.results }}"
+
 - name: Create the client configuration profiles that will be used when connecting via sslh
   template: src=client-sslh.ovpn.j2
             dest={{ openvpn_path }}/{{ item[0] }}/{{ openvpn_sslh_profile_filename }}
@@ -139,7 +156,11 @@
   template: src=etc_openvpn_server.conf.j2
             dest=/etc/openvpn/server.conf
 
-- name: Restart OpenVPN so the 10.8.0.0 interface is available to dnsmasq
+- name: Copy OpenVPN UDP configuration file into place
+  template: src=etc_openvpn_server_udp.conf.j2
+            dest=/etc/openvpn/server-udp.conf
+
+- name: Restart OpenVPN so the TUN interfaces are available to dnsmasq
   service: name=openvpn
            state=restarted
 
