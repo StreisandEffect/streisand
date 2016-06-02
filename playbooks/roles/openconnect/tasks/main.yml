@@ -11,7 +11,7 @@
     checksum: "{{ ocserv_checksum }}"
     owner: root
     group: root
-    mode: 644
+    mode: 0644
 
 - name: Extract the ocserv source code
   unarchive:
@@ -33,7 +33,7 @@
     path: "{{ ocserv_path }}"
     owner: root
     group: root
-    mode: 750
+    mode: 0750
     state: directory
 
 - name: Generate the ocserv init script
@@ -42,7 +42,7 @@
     dest: /etc/init.d/ocserv
     owner: root
     group: root
-    mode: 755
+    mode: 0755
 
 - name: Enable the ocserv init script so the service will start at boot
   command: update-rc.d ocserv defaults
@@ -55,7 +55,7 @@
     dest: "{{ ocserv_ca_template_file }}"
     owner: root
     group: root
-    mode: 600
+    mode: 0600
 
 - name: Generate the CA key
   command: certtool --generate-privkey --outfile {{ ocserv_ca_key_file }}
@@ -73,7 +73,7 @@
     dest: "{{ ocserv_server_template_file }}"
     owner: root
     group: root
-    mode: 600
+    mode: 0600
 
 - name: Generate the server key
   command: certtool --generate-privkey --outfile {{ ocserv_server_key_file }}
@@ -91,7 +91,7 @@
     dest: "{{ ocserv_client_template_file }}"
     owner: root
     group: root
-    mode: 600
+    mode: 0600
 
 - name: Generate the client key
   command: certtool --generate-privkey --outfile {{ ocserv_client_key_file }}
@@ -113,7 +113,7 @@
     path: "{{ ocserv_pkcs12_password_file }}"
     owner: root
     group: root
-    mode: 600
+    mode: 0600
 
 - name: "Register the PKCS #12 password"
   command: cat {{ ocserv_pkcs12_password_file }}
@@ -125,7 +125,7 @@
     dest: "{{ ocserv_pkcs12_conversion_script }}"
     owner: root
     group: root
-    mode: 700
+    mode: 0700
 
 - name: "Execute the PKCS #12 conversion Expect script"
   command: "{{ ocserv_pkcs12_conversion_script }}"
@@ -142,7 +142,7 @@
     path: "{{ ocserv_password_file }}"
     owner: root
     group: root
-    mode: 600
+    mode: 0600
 
 - name: Register the ocserv password
   command: cat {{ ocserv_password_file }}
@@ -154,7 +154,7 @@
     dest: "{{ ocserv_create_password_script }}"
     owner: root
     group: root
-    mode: 700
+    mode: 0700
 
 - name: Execute the ocpasswd Expect script
   command: "{{ ocserv_create_password_script }}"
@@ -167,7 +167,7 @@
     dest: "{{ ocserv_config_file }}"
     owner: root
     group: root
-    mode: 600
+    mode: 0600
   notify: Restart ocserv
 
 - name: Enable NAT
@@ -183,7 +183,7 @@
     path: "{{ ocserv_gateway_location }}"
     owner: www-data
     group: www-data
-    mode: 750
+    mode: 0750
     state: directory
 
 - name: Copy the CA certificate file to the OpenConnect Gateway directory

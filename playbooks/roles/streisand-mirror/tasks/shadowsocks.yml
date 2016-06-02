@@ -7,7 +7,7 @@
     path: "{{ shadowsocks_mirror_location }}"
     owner: www-data
     group: www-data
-    mode: 755
+    mode: 0755
     state: directory
 
 - block:
@@ -18,7 +18,7 @@
         checksum: "{{ item.checksum }}"
         owner: www-data
         group: www-data
-        mode: 644
+        mode: 0644
       with_items: "{{ shadowsocks_download_urls }}"
   rescue:
     - name: "{{ streisand_mirror_warning }}"

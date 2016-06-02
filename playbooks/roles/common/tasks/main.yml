@@ -31,7 +31,7 @@
     dest: "{{ item.dest }}"
     owner: root
     group: root
-    mode: 644
+    mode: 0644
   with_items:
     - { src: "20auto-upgrades",       dest: "/etc/apt/apt.conf.d" }
     - { src: "50unattended-upgrades", dest: "/etc/apt/apt.conf.d" }

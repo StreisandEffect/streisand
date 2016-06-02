@@ -47,7 +47,7 @@
     state: directory
     owner: root
     group: root
-    mode: 600
+    mode: 0600
 
 - name: Generate CA certificate
   command: openssl req -nodes -batch -new -x509 -key {{ openvpn_ca }}.key -out {{ openvpn_ca }}.crt -days {{ openvpn_days_valid }} -subj "{{ openvpn_request_subject }}/CN=ca-certificate"
@@ -209,7 +209,7 @@
     path: "{{ openvpn_gateway_location }}"
     owner: www-data
     group: www-data
-    mode: 750
+    mode: 0750
     state: directory
 
 - name: Generate the Markdown OpenVPN instructions

@@ -7,7 +7,7 @@
     path: "{{ openvpn_mirror_location }}"
     owner: www-data
     group: www-data
-    mode: 755
+    mode: 0755
     state: directory
 
 - block:
@@ -18,7 +18,7 @@
         checksum: "{{ tunnelblick_checksum }}"
         owner: www-data
         group: www-data
-        mode: 644
+        mode: 0644
 
     - include: download-and-verify.yml
       vars:

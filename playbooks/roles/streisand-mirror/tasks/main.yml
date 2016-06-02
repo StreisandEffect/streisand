@@ -4,7 +4,7 @@
     path: "{{ streisand_mirror_location }}"
     owner: www-data
     group: www-data
-    mode: 755
+    mode: 0755
     state: directory
 
 # Download and verify client files
