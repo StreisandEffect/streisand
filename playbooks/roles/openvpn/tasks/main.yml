@@ -1,13 +1,13 @@
 ---
-- name: Add the official OpenVPN community APT key
+- name: Add the official OpenVPN APT key
   apt_key:
-    id: E158C569 
+    id: E158C569
     data: "{{ item }}"
   with_file: openvpn_signing.key
 
-- name: Add the official OpenVPN Community repository
+- name: Add the official OpenVPN repository
   apt_repository:
-    repo: 'deb http://swupdate.openvpn.net/apt trusty main' 
+    repo: 'deb http://swupdate.openvpn.net/apt trusty main'
     state: present
 
 - name: Install OpenVPN and its dependencies from APT
