@@ -9,14 +9,15 @@
     regions:
       "1":  "ams2"
       "2":  "ams3"
-      "3":  "fra1"
-      "4":  "lon1"
-      "5":  "nyc1"
-      "6":  "nyc2"
-      "7":  "nyc3"
-      "8":  "sfo1"
-      "9":  "sgp1"
-      "10": "tor1"
+      "3":  "blr1"
+      "4":  "fra1"
+      "5":  "lon1"
+      "6":  "nyc1"
+      "7":  "nyc2"
+      "8":  "nyc3"
+      "9":  "sfo1"
+      "10": "sgp1"
+      "11": "tor1"
 
   vars_prompt:
     - name: "do_region"
@@ -24,14 +25,15 @@
         What region should the server be located in?
           1.  Amsterdam        (Datacenter 2)
           2.  Amsterdam        (Datacenter 3)
-          3.  Frankfurt
-          4.  London
-          5.  New York         (Datacenter 1)
-          6.  New York         (Datacenter 2)
-          7.  New York         (Datacenter 3)
-          8.  San Francisco
-          9.  Singapore
-          10. Toronto
+          3.  Bangalore
+          4.  Frankfurt
+          5.  London
+          6.  New York         (Datacenter 1)
+          7.  New York         (Datacenter 2)
+          8.  New York         (Datacenter 3)
+          9.  San Francisco
+          10. Singapore
+          11. Toronto
         Please choose the number of your region. Press enter for default (#2) region.
       default: "2"
       private: no
