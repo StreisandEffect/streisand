@@ -53,7 +53,7 @@
     module: gce_net
     name: "{{ gce_network }}"
     fwname: "streisand-openvpn"
-    allowed: "{{ openvpn_protocol }}:{{ openvpn_port }}"
+    allowed: "tcp:{{ openvpn_port }};udp:{{ openvpn_port_udp }}"
     state: "present"
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
