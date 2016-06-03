@@ -62,8 +62,8 @@
   # work, which is enabled by default in most standard client.conf
   # files.
   template:
-    src: openssl-server-certificate.cnf.j2
-    dest: "{{ openvpn_path }}/openssl-server-certificate.cnf"
+    src: openssl-certificate.cnf.j2
+    dest: "{{ openvpn_path }}/openssl-certificate.cnf"
 
 - name: Seed a blank database file that will be used when generating the Server's certificate
   file:
@@ -76,26 +76,26 @@
     dest: "{{ openvpn_path }}/serial"
 
 - name: Generate CSR for the Server
-  command: openssl req -batch -extensions server -new -key server.key -out server.csr -config {{ openvpn_path }}/openssl-server-certificate.cnf
+  command: openssl req -batch -extensions server -new -key server.key -out server.csr -config {{ openvpn_path }}/openssl-certificate.cnf
   args:
     chdir: "{{ openvpn_path }}"
     creates: server.csr
 
 - name: Generate certificate for the Server
-  command: openssl ca -batch -extensions server -in server.csr -out server.crt -config openssl-server-certificate.cnf
+  command: openssl ca -batch -extensions server -in server.csr -out server.crt -config openssl-certificate.cnf
   args:
     chdir: "{{ openvpn_path }}"
     creates: server.crt
 
 - name: Generate CSRs for the clients
-  command: openssl req -new -extensions client -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ item }}" -config {{ openvpn_path }}/openssl-server-certificate.cnf
+  command: openssl req -new -extensions client -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ item }}" -config {{ openvpn_path }}/openssl-certificate.cnf
   args:
     chdir: "{{ openvpn_path }}/{{ item }}"
     creates: client.csr
   with_items: "{{ openvpn_clients }}"
 
 - name: Generate certificates for the clients
-  command: openssl x509 -extensions client -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt -extfile {{ openvpn_path }}/openssl-server-certificate.cnf
+  command: openssl x509 -extensions client -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt -extfile {{ openvpn_path }}/openssl-certificate.cnf
   args:
     chdir: "{{ openvpn_path }}/{{ item }}"
     creates: client.crt
