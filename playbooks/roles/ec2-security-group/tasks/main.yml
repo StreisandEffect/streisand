@@ -65,6 +65,10 @@
         from_port: "{{ openvpn_port }}"
         to_port: "{{ openvpn_port }}"
         cidr_ip: 0.0.0.0/0
+      - proto: "{{ openvpn_protocol_udp }}"
+        from_port: "{{ openvpn_port_udp }}"
+        to_port: "{{ openvpn_port_udp }}"
+        cidr_ip: 0.0.0.0/0
       # Shadowsocks
       # ---
       - proto: tcp
