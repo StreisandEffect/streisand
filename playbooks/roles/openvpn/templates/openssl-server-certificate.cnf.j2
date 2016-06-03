@@ -64,3 +64,11 @@ subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid,issuer:always
 extendedKeyUsage=serverAuth
 keyUsage = digitalSignature, keyEncipherment
+
+[ client ]
+basicConstraints=CA:FALSE
+nsComment = "Ansible Generated Client Certificate"
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer:always
+extendedKeyUsage=clientAuth
+keyUsage = digitalSignature, keyEncipherment

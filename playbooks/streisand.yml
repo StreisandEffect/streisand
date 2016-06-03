@@ -6,9 +6,9 @@
 
   roles:
     - common
-    - openconnect
-    - l2tp-ipsec
     - openvpn
+    - l2tp-ipsec
+    - openconnect
     - stunnel
     - shadowsocks
     - ssh

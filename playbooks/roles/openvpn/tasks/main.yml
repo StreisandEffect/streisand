@@ -88,14 +88,14 @@
     creates: server.crt
 
 - name: Generate CSRs for the clients
-  command: openssl req -new -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ item }}"
+  command: openssl req -new -extensions client -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ item }}" -config {{ openvpn_path }}/openssl-server-certificate.cnf
   args:
     chdir: "{{ openvpn_path }}/{{ item }}"
     creates: client.csr
   with_items: "{{ openvpn_clients }}"
 
 - name: Generate certificates for the clients
-  command: openssl x509 -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt
+  command: openssl x509 -extensions client -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt -extfile {{ openvpn_path }}/openssl-server-certificate.cnf
   args:
     chdir: "{{ openvpn_path }}/{{ item }}"
     creates: client.crt
