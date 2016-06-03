@@ -4,7 +4,7 @@ echo
 echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m"
 echo
 
-required_ansible_version="2.0.1.0"
+required_ansible_version="2.1.0.0"
 
 if [[ "$(ansible --version | grep -oe '2\(.[0-9]\)*')" < $required_ansible_version ]]
 then
