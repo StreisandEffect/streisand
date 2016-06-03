@@ -6,7 +6,7 @@ dh {{ dhparams_location }}
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1"
 client-to-client
-remote-cert-tls server
+remote-cert-tls client
 duplicate-cn
 keepalive 10 120
 tls-auth ta.key 0 # This file is secret
