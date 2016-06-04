@@ -5,7 +5,8 @@ resolv-retry infinite
 nobind
 persist-key
 persist-tun
-ns-cert-type server
+remote-cert-tls server
+verify-x509-name {{ openvpn_server_common_name }} name
 tls-version-min 1.2
 comp-lzo
 key-direction 1
