@@ -2,6 +2,4 @@ server 10.8.0.0 255.255.255.0
 push "dhcp-option DNS 10.8.0.1"
 proto {{ openvpn_protocol }}
 port {{ openvpn_port }}
-log server.log
-log-append server.log
 {% include "etc_openvpn_server_common.j2" %}
