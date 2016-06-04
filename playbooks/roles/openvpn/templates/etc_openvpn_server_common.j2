@@ -183,6 +183,9 @@ push "redirect-gateway def1"
 # DNS servers provided by opendns.com.
 ;push "dhcp-option DNS 208.67.222.222"
 ;push "dhcp-option DNS 208.67.220.220"
+# Fix for the Windows 10 DNS leak described here:
+# https://community.openvpn.net/openvpn/ticket/605
+push block-outside-dns
 
 # Uncomment this directive to allow different
 # clients to be able to "see" each other.
