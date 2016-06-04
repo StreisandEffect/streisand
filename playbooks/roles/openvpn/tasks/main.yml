@@ -55,7 +55,7 @@
     creates: "{{ openvpn_ca }}.crt"
 
 - name: Generate a random server common name
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g'
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g'
   register: random_common_name
 
 - debug: msg="OpenVPN randomized common name is {{ random_common_name.stdout }}"
