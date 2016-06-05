@@ -1,0 +1,155 @@
+---
+- name: Provision the Azure Server (Resource Manager mode)
+# ========================================================
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+
+  vars:
+    regions:
+      "1":  "eastasia"
+      "2":  "southeastasia"
+      "3":  "centralus"
+      "4":  "eastus"
+      "5":  "eastus2"
+      "6":  "westus"
+      "7":  "northcentralus"
+      "8":  "southcentralus"
+      "9":  "northeurope"
+      "10": "westeurope"
+      "11": "japanwest"
+      "12": "japaneast"
+      "13": "brazilsouth"
+      "14": "australiaeast"
+      "15": "australiasoutheast"
+      "16": "southindia"
+      "17": "centralindia"
+      "18": "westindia"
+      "19": "canadacentral"
+      "20": "canadaeast"
+
+  # This variable file is included so the ??-security-group role knows
+  # which port to open for SSH
+  vars_files:
+    - roles/ssh/defaults/main.yml
+
+  vars_prompt:
+    - name: "azure_region_var"
+      prompt: >
+        What region should the server be located in?
+           1. East Asia           (Hong Kong)
+           2. Southeast Asia      (Singapore)
+           3. Central US          (Iowa)
+           4. East US             (Virginia)
+           5. East US 2           (Virginia)
+           6. West US             (California)
+           7. North Central US    (Illinois)
+           8. South Central US    (Texas)
+           9. North Europe        (Ireland)
+          10. West Europe         (Netherlands)
+          11. Japan West          (Osaka)
+          12. Japan East          (Tokyo, Saitama)
+          13. Brazil South        (Sao Paulo State)
+          14. Australia East      (New South Wales)
+          15. Australia Southeast (Victoria)
+          16. South India         (Chennai)
+          17. Central India       (Pune)
+          18. West India          (Mumbai)
+          19. Canada Central      (Toronto)
+          20. Canada East         (Quebec City)
+        Please choose the number of your region. Press enter for default (#9) region.
+      default: "9"
+      private: no
+
+    - name: "azure_instance_name_var"
+      prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
+      default: "streisand"
+      private: no
+
+    - name: "confirmation"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
+
+  # Facts persist across plays, and these facts will be used in the
+  # final step to make an API call to open all of the necessary ports in
+  # the ?? Azure firewall. This is necessary because Tor chooses random
+  # ports for the obfsproxy pluggable transport and therefore they cannot
+  # be opened in advance before Tor is up and running.
+  pre_tasks:
+    - name: Set the Azure Region fact
+      set_fact: azure_region={{ regions[azure_region_var] }}
+
+    - name: Set the Azure Instance Name fact
+      set_fact: azure_instance_name={{ azure_instance_name_var }}
+
+  roles:
+    - genesis-azure
+
+
+- name: Configure the Server and install required software
+# ========================================================
+  hosts: streisand-host
+
+  # The standard streisand.yml is not included because the Ubuntu AMI
+  # uses 'ubuntu' instead of 'root'
+  remote_user: ubuntu
+  become: yes
+
+  vars:
+    # The rc-local role normally expects to configure firewall rules for
+    # L2TP/IPsec. Streisand does not install L2TP/IPsec on EC2 servers
+    # by default because the instances cannot bind directly to their
+    # public IP addresses which makes IPsec routing nearly impossible.
+    #
+    # This variable is therefore set to an empty value.
+    l2tp_ipsec_firewall_rules: ""
+
+    # Similarly, we don't want to display a link to nonexistent
+    # L2TP/IPsec information on the Gateway index page
+    l2tp_ipsec_gateway_location: ""
+
+  roles:
+    - common
+    - openconnect
+    - openvpn
+    - stunnel
+    - shadowsocks
+    - ssh
+    - tinyproxy
+    - tor-bridge
+    - sslh
+    - monit
+    - ufw
+    - streisand-mirror
+    - streisand-gateway
+
+
+- name: Open all service ports
+# ============================
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  # These variable files are included so the azure-security-group role
+  # knows which ports to open
+  vars_files:
+    - roles/openconnect/defaults/main.yml
+    - roles/openvpn/defaults/main.yml
+    - roles/shadowsocks/defaults/main.yml
+    - roles/ssh/defaults/main.yml
+    - roles/streisand-gateway/defaults/main.yml
+    - roles/stunnel/defaults/main.yml
+    - roles/tor-bridge/defaults/main.yml
+
+  pre_tasks:
+    - name: Set the streisand_host fact to the value of the new server. This fact will be used to retrieve the obfsproxy port values.
+      set_fact: "streisand_host={{ groups['streisand-host'][0] }}"
+
+    - name: Retrieve the randomly chosen Tor obfs3 port
+      set_fact: "tor_obfs3_port={{ hostvars[streisand_host]['tor_obfs3_port'] }}"
+
+  roles:
+    # We can modify the Azure network security group now that we know which
+    # obfsproxy ports Tor is using
+    - { role: azure-security-group,
+        open_ssh_port_only:     false,
+        open_all_service_ports: true }
