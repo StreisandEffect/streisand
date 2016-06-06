@@ -4,17 +4,17 @@ Unattended-Upgrade::Allowed-Origins {
     "${distro_id} stable";
     "${distro_id} ${distro_codename}-security";
 
-    //Autoupdate OpenVPN
-    "Freight:${distro_codename}";
-
-    //Autoupdate Tor
-    "TorProject:${distro_codename}";
-
-    //Autoupdate nginx
+    // Autoupdate Nginx
     "nginx:${distro_codename}";
 
-    //Autoupdate shadowsocks-libev
+    // Autoupdate OpenVPN
+    "Freight:${distro_codename}";
+
+    // Autoupdate Shadowsocks
     "shadowsocks-libev:${distro_codename}";
+
+    // Autoupdate Tor
+    "TorProject:${distro_codename}";
 
 //  "${distro_id} ${distro_codename}-updates";
 //  "${distro_id} ${distro_codename}-proposed-updates";
