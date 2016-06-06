@@ -32,7 +32,7 @@ ocserv_server_certificate_file: "{{ ocserv_path }}/server-cert.pem"
 ocserv_server_key_file: "{{ ocserv_path }}/server-key.pem"
 ocserv_server_template_file: "{{ ocserv_path }}/server.tmpl"
 
-ocserv_client_name: "streisand-openconnect-{{ streisand_ipv4_address }}"
+ocserv_client_name: "streisand-openconnect-{{ streisand_cn_name }}"
 ocserv_client_certificate_file: "{{ ocserv_path }}/client-cert.pem"
 ocserv_client_key_file: "{{ ocserv_path }}/client-key.pem"
 ocserv_client_template_file: "{{ ocserv_path }}/client.tmpl"

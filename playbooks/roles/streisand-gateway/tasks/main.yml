@@ -15,7 +15,7 @@
            creates={{ openssl_ca_certificate }}
 
 - name: Create the certificate request
-  command: openssl req -new -nodes -days {{ nginx_days_valid }} -newkey rsa:{{ streisand_gateway_rsa_key_size }} -keyout {{ nginx_private_key }} -out {{ nginx_self_signed_certificate_request }} -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}/CN={{ streisand_ipv4_address }}"
+  command: openssl req -new -nodes -days {{ nginx_days_valid }} -newkey rsa:{{ streisand_gateway_rsa_key_size }} -keyout {{ nginx_private_key }} -out {{ nginx_self_signed_certificate_request }} -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}/CN={{ streisand_cn_name }}"
            creates={{ nginx_self_signed_certificate_request }}
 
 - name: Seed a blank database file that will be used when generating the self-signed certificate
