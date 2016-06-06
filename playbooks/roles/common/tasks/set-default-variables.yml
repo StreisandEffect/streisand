@@ -36,3 +36,18 @@
   set_fact:
     streisand_server_name: "{{ ansible_hostname }}"
   when: streisand_server_name is not defined
+
+- name: Set the streisand_cn_name variable to streisand_ipv4_address if it is not defined or empty
+  set_fact:
+    streisand_cn_name: "{{ streisand_ipv4_address }}"
+  when: (streisand_cn_name is undefined) or (streisand_cn_name == "")
+
+- name: Set ocserv_is_dyndns to true 
+  set_fact:
+    ocserv_is_dyndns: true
+  when: streisand_cn_name != streisand_ipv4_address
+  
+- name: Set ocserv_is_dyndns to true 
+  set_fact:
+    ocserv_is_dyndns: false
+  when: streisand_cn_name == streisand_ipv4_address

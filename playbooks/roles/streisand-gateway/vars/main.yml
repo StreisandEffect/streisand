@@ -1,5 +1,5 @@
 ---
-streisand_gateway_url: "https://{{ streisand_ipv4_address }}"
+streisand_gateway_url: "https://{{ streisand_cn_name }}"
 
 streisand_gateway_htpasswd_file: "/etc/nginx/htpasswd"
 streisand_gateway_password_file: "/etc/nginx/gateway-password.txt"
