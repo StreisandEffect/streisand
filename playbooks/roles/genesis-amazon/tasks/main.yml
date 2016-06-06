@@ -43,15 +43,25 @@
             search_regex=OpenSSH
             timeout=600
 
+- name: Allocate and associate Elastic IP
+  local_action:
+    module: ec2_eip
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ aws_region }}"
+    device_id: "{{ streisand_server.instances[0].id }}"
+  register: instance_eip
+
 - name: Create the in-memory inventory group
-  add_host: name={{ streisand_server.instances[0].public_ip }}
+  add_host: name={{ instance_eip.public_ip }}
             groups=streisand-host
 
 - name: Set the streisand_ipv4_address variable
-  set_fact: streisand_ipv4_address="{{ streisand_server.instances[0].public_ip }}"
+  set_fact: streisand_ipv4_address="{{ instance_eip.public_ip }}"
 
 - name: Set the streisand_server_name variable
   set_fact: streisand_server_name="{{ aws_instance_name }}"
 
 - name: New EC2 servers are occasionally slow to process incoming SSH connections even after the OpenSSH daemon has started up. Pause for 90 seconds.
   pause: seconds=90
+  
