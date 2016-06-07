@@ -60,7 +60,7 @@ organizationalUnitName = Organizational Unit Name (eg, section)
 organizationalUnitName_default = {{ openvpn_key_ou }}
 
 commonName = Common Name (eg, your name or your server\'s hostname)
-commonName_default = {{ openvpn_server_common_name }}
+commonName_default = {{ openvpn_server_common_name.stdout }}
 
 [ server ]
 basicConstraints=CA:FALSE

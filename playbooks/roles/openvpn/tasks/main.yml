@@ -55,7 +55,7 @@
     creates: "{{ openvpn_ca }}.crt"
 
 - name: Generate a random server common name
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g' > {{ openvpn_server_common_name_file }}
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g' | cut -c 1-64 > {{ openvpn_server_common_name_file }}
   args:
     creates: "{{ openvpn_server_common_name_file }}"
 
@@ -72,11 +72,10 @@
 
 - name: Generate the OpenSSL configuration that will be used for the Server certificate's req and ca commands
   # Properly sets the attributes that are described here:
-  # openvpn.net/index.php/open-source/documentation/howto.html#mitm
+  # https://openvpn.net/index.php/open-source/documentation/howto.html#mitm
   #
-  # This is required in order for the 'ns-cert-type server' option to
-  # work, which is enabled by default in most standard client.conf
-  # files.
+  # This is required for the 'remote-cert-tls server|client' option to
+  # work, which is a recommended practice to help mitigate MITM attacks
   template:
     src: openssl-certificate.cnf.j2
     dest: "{{ openvpn_path }}/openssl-certificate.cnf"
