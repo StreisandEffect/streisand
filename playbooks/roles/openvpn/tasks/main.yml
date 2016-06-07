@@ -56,7 +56,7 @@
 
 - name: Generate a random server common name
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g' > {{ openvpn_server_common_name_file }}
-  creates: {{ openvpn_server_common_name_file }}
+  creates: "{{ openvpn_server_common_name_file }}"
 
 - name: "Set permissions on the OpenVPN server common name file"
   file:
