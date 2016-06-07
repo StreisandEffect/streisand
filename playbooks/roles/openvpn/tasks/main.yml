@@ -65,8 +65,9 @@
     group: root
     mode: 0600
 
-- set_fact:
-    openvpn_server_common_name: "{{ random_common_name.stdout }}"
+- name: Register the OpenVPN server common name
+  command: cat {{ openvpn_server_common_name_file }}
+  register: openvpn_server_common_name
 
 - name: Generate the OpenSSL configuration that will be used for the Server certificate's req and ca commands
   # Properly sets the attributes that are described here:
