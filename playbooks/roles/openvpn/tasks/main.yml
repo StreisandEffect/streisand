@@ -7,7 +7,7 @@
 
 - name: Add the official OpenVPN repository
   apt_repository:
-    repo: 'deb http://swupdate.openvpn.net/apt {{ ansible_lsb.codename }} main'
+    repo: 'deb https://swupdate.openvpn.net/apt {{ ansible_lsb.codename }} main'
     state: present
 
 - name: Install OpenVPN and its dependencies from APT
