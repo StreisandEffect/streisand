@@ -13,7 +13,7 @@
 
 - name: Add the official Nginx repository
   apt_repository:
-    repo: "deb http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_lsb.codename }} nginx"
+    repo: "deb https://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_lsb.codename }} nginx"
 
 - name: Install Nginx
   apt:

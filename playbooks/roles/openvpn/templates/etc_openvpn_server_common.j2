@@ -5,6 +5,11 @@ key server.key  # This file should be kept secret
 dh {{ dhparams_location }}
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1"
+
+# Fix for the Windows 10 DNS leak described here:
+# https://community.openvpn.net/openvpn/ticket/605
+push block-outside-dns
+
 client-to-client
 remote-cert-tls client
 duplicate-cn

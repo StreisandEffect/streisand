@@ -3,6 +3,19 @@ Unattended-Upgrade::Allowed-Origins {
     // ${distro_id} and ${distro_codename} will be automatically expanded
     "${distro_id} stable";
     "${distro_id} ${distro_codename}-security";
+
+    // Autoupdate Nginx
+    "nginx:${distro_codename}";
+
+    // Autoupdate OpenVPN
+    "Freight:${distro_codename}";
+
+    // Autoupdate Shadowsocks
+    "shadowsocks-libev:${distro_codename}";
+
+    // Autoupdate Tor
+    "TorProject:${distro_codename}";
+
 //  "${distro_id} ${distro_codename}-updates";
 //  "${distro_id} ${distro_codename}-proposed-updates";
 };
@@ -23,8 +36,13 @@ Unattended-Upgrade::Package-Blacklist {
 
 // Do automatic removal of new unused dependencies after the upgrade
 // (equivalent to apt-get autoremove)
-//Unattended-Upgrade::Remove-Unused-Dependencies "false";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
 
 // Automatically reboot *WITHOUT CONFIRMATION* if a
 // the file /var/run/reboot-required is found after the upgrade
-//Unattended-Upgrade::Automatic-Reboot "false";
+Unattended-Upgrade::Automatic-Reboot "true";
+
+// If automatic reboot is enabled and needed, reboot at the specific
+// time instead of immediately
+//  Default: "now"
+Unattended-Upgrade::Automatic-Reboot-Time "00:00";
