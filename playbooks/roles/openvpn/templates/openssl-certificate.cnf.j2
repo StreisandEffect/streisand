@@ -24,6 +24,12 @@ preserve = no
 
 policy = policy_anything
 
+keyUsage = cRLSign, keyCertSign
+
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer:always
+
+
 [ policy_anything ]
 countryName = optional
 stateOrProvinceName = optional
@@ -54,13 +60,20 @@ organizationalUnitName = Organizational Unit Name (eg, section)
 organizationalUnitName_default = {{ openvpn_key_ou }}
 
 commonName = Common Name (eg, your name or your server\'s hostname)
-commonName_default = server
+commonName_default = {{ openvpn_server_common_name.stdout }}
 
 [ server ]
 basicConstraints=CA:FALSE
-nsCertType = server
 nsComment = "Ansible Generated Server Certificate"
 subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid,issuer:always
 extendedKeyUsage=serverAuth
 keyUsage = digitalSignature, keyEncipherment
+
+[ client ]
+basicConstraints=CA:FALSE
+nsComment = "Ansible Generated Client Certificate"
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer:always
+extendedKeyUsage=clientAuth
+keyUsage = digitalSignature

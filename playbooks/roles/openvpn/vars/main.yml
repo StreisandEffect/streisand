@@ -5,6 +5,7 @@ openvpn_path: "/etc/openvpn"
 openvpn_ca: "{{ openvpn_path }}/ca"
 openvpn_hmac_firewall: "{{ openvpn_path }}/ta.key"
 openvpn_server: "{{ streisand_ipv4_address }}"
+openvpn_server_common_name_file: "{{ openvpn_path }}/openvpn_server_common_name"
 
 openvpn_direct_profile_filename: "{{ openvpn_server }}-direct.ovpn"
 openvpn_direct_udp_profile_filename: "{{ openvpn_server }}-direct-udp.ovpn"
