@@ -55,8 +55,15 @@
     creates: "{{ openvpn_ca }}.crt"
 
 - name: Generate a random server common name
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g'
-  register: random_common_name
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g' > {{ openvpn_server_common_name_file }}
+  creates: {{ openvpn_server_common_name_file }}
+
+- name: "Set permissions on the OpenVPN server common name file"
+  file:
+    path: "{{ openvpn_server_common_name_file }}"
+    owner: root
+    group: root
+    mode: 0600
 
 - set_fact:
     openvpn_server_common_name: "{{ random_common_name.stdout }}"
