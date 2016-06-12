@@ -10,7 +10,7 @@
     network: "{{ gce_network }}"
     zone: "{{ gce_zone }}"
     machine_type: "{{ gce_machine_type }}"
-    pem_file: "{{ gce_pem_file }}"
+    credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
     service_account_email: "{{ gce_service_account_email }}"
     image: "{{ gce_image }}"
