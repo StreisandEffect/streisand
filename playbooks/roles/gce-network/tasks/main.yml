@@ -5,7 +5,7 @@
     name: "{{ gce_network }}"
     state: "present"
     ipv4_range: "{{ gce_ipv4_range }}"
-    pem_file: "{{ gce_pem_file }}"
+    credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
     service_account_email: "{{ gce_service_account_email }}"
 
@@ -18,7 +18,7 @@
     state: "present"
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
-    pem_file: "{{ gce_pem_file }}"
+    credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
   when: open_ssh_port_only
 
@@ -31,7 +31,7 @@
     state: "present"
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
-    pem_file: "{{ gce_pem_file }}"
+    credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
   when: open_all_service_ports
 
@@ -44,7 +44,7 @@
     state: "present"
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
-    pem_file: "{{ gce_pem_file }}"
+    credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
   when: open_all_service_ports
 
@@ -57,6 +57,6 @@
     state: "present"
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
-    pem_file: "{{ gce_pem_file }}"
+    credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
   when: open_all_service_ports
