@@ -2,6 +2,10 @@
 
 Streisand
 =========
+[![licence badge]][licence]
+[![stars badge]][stars]
+[![forks badge]][forks]
+[![issues badge]][issues]
 
 **Silence censorship. Automate the [effect](https://en.wikipedia.org/wiki/Streisand_effect).**
 
@@ -176,3 +180,14 @@ Huge thanks to [Paul Wouters](https://nohats.ca/) of [The Libreswan Project](htt
 [Corban Raun](https://github.com/CorbanR) was kind enough to lend me a Windows laptop that let me test and refine the instructions for that platform, and he was a big supporter of the project from the very beginning.
 
 I also listened to [Starcadian's](http://starcadian.com/) 'Sunset Blood' album approximately 300 times on repeat while working on this.
+
+
+[licence badge]:https://img.shields.io/badge/license-GNU-blue.svg
+[stars badge]:https://img.shields.io/github/stars/jlund/streisand.svg
+[forks badge]:https://img.shields.io/github/forks/jlund/streisand.svg
+[issues badge]:https://img.shields.io/github/issues/jlund/streisand.svg
+
+[licence]:https://github.com/jlund/streisand/blob/master/LICENSE
+[stars]:https://github.com/jlund/streisand/stargazers
+[forks]:https://github.com/jlund/streisand/network
+[issues]:https://github.com/jlund/streisand/issues
