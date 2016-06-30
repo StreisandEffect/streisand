@@ -5,6 +5,12 @@
 
 - name: Install xl2tpd
   apt: name=xl2tpd
+  
+- name: Install python-pip
+  apt: name=python-pip
+  
+- name: Install the SNI dependencies that are required to access Libreswan source
+  shell: pip install urllib3 pyopenssl ndg-httpsclient pyasn1
 
 - name: Retrieve the Libreswan source code
   get_url: url=https://download.libreswan.org/{{ libreswan_source_filename }}
