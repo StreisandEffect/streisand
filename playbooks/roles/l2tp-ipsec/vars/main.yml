@@ -41,3 +41,9 @@ l2tp_ipsec_markdown_instructions: "{{ l2tp_ipsec_gateway_location }}/index.md"
 l2tp_ipsec_html_instructions: "{{ l2tp_ipsec_gateway_location }}/index.html"
 
 ppp_options_file: "/etc/ppp/options.xl2tpd"
+
+sni_dependencies:
+  - urllib3
+  - pyopenssl
+  - ndg-httpsclient
+  - pyasn1
