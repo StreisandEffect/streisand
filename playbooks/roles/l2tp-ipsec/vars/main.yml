@@ -18,8 +18,8 @@ libreswan_compilation_dependencies:
   - libunbound-dev
   - pkg-config
   - xmlto
-libreswan_checksum: "sha256:2d77e95dacbb0400af47f1557444fb59b9b19876fa1140432a5c861b40201b97"
-libreswan_version: "3.16"
+libreswan_checksum: "sha256:28c286f57f6d8d00e1502ea283aac0f9f863edb2d759e50dc89df0e28c0d0d03"
+libreswan_version: "3.17"
 libreswan_compilation_directory: "/usr/local/src/libreswan-{{ libreswan_version }}"
 libreswan_source_filename: "libreswan-{{ libreswan_version }}.tar.gz"
 libreswan_source_location: "/usr/local/src/{{ libreswan_source_filename }}"
