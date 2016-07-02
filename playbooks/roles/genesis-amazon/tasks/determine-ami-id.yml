@@ -1,40 +1,50 @@
 ---
 - name: Use the AMI ID for Tokyo when the region is ap-northeast-1
-  set_fact: aws_ami_id="{{ aws_ubuntu_tokyo_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_tokyo_ami_id }}"
   when: aws_region == "ap-northeast-1"
 
 - name: Use the AMI ID for Seoul when the region is ap-northeast-2
-  set_fact: aws_ami_id="{{ aws_ubuntu_seoul_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_seoul_ami_id }}"
   when: aws_region == "ap-northeast-2"
 
 - name: Use the AMI ID for Singapore when the region is ap-southeast-1
-  set_fact: aws_ami_id="{{ aws_ubuntu_signapore_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_signapore_ami_id }}"
   when: aws_region == "ap-southeast-1"
 
 - name: Use the AMI ID for Sydney when the region is ap-southeast-2
-  set_fact: aws_ami_id="{{ aws_ubuntu_sydney_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_sydney_ami_id }}"
   when: aws_region == "ap-southeast-2"
 
 - name: Use the AMI ID for Ireland when the region is eu-west-1
-  set_fact: aws_ami_id="{{ aws_ubuntu_ireland_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_ireland_ami_id }}"
   when: aws_region == "eu-west-1"
 
 - name: Use the AMI ID for Germany when the region is eu-central-1
-  set_fact: aws_ami_id="{{ aws_ubuntu_germany_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_germany_ami_id }}"
   when: aws_region == "eu-central-1"
 
 - name: Use the AMI ID for Sao Paulo when the region is sa-east-1
-  set_fact: aws_ami_id="{{ aws_ubuntu_sao_paulo_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_sao_paulo_ami_id }}"
   when: aws_region == "sa-east-1"
 
 - name: Use the AMI ID for Northern Virginia when the region is us-east-1
-  set_fact: aws_ami_id="{{ aws_ubuntu_virginia_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_virginia_ami_id }}"
   when: aws_region == "us-east-1"
 
 - name: Use the AMI ID for Northern California when the region is us-west-1
-  set_fact: aws_ami_id="{{ aws_ubuntu_california_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_california_ami_id }}"
   when: aws_region == "us-west-1"
 
 - name: Use the AMI ID for Oregon when the region is us-west-2
-  set_fact: aws_ami_id="{{ aws_ubuntu_oregon_ami_id }}"
+  set_fact:
+    aws_ami_id: "{{ aws_ubuntu_oregon_ami_id }}"
   when: aws_region == "us-west-2"

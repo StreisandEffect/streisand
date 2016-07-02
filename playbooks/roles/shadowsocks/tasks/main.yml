@@ -1,40 +1,47 @@
 ---
 - name: Add the official Shadowsocks.org APT key
-  apt_key: id=1D27208A
-           data="{{ item }}"
+  apt_key:
+    id: 1D27208A
+    data: "{{ item }}"
   with_file: shadowsocks_org_signing.key
-  
+
 - name: Add the Shadowsocks-libev repository
-  apt_repository: repo='deb http://shadowsocks.org/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main'
-                  state=present
+  apt_repository:
+    repo: 'deb http://shadowsocks.org/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main'
+    state: present
 
 - name: Install shadowsocks-libev
-  apt: name=shadowsocks-libev
+  apt:
+    name: shadowsocks-libev
 
 - name: Generate a random Shadowsocks password
   shell: openssl rand -base64 48 > {{ shadowsocks_password_file }}
-         creates={{ shadowsocks_password_file }}
+  args:
+    creates: "{{ shadowsocks_password_file }}"
 
 - name: Register Shadowsocks password
   command: cat {{ shadowsocks_password_file }}
   register: shadowsocks_password
 
 - name: Generate Shadowsocks config file
-  template: src=config.json.j2
-            dest={{ shadowsocks_location }}/config.json
-            mode=640
+  template:
+    src: config.json.j2
+    dest: "{{ shadowsocks_location }}/config.json"
+    mode: 0640
   notify: Restart shadowsocks-libev
 
 - name: Create the Shadowsocks Gateway directory
-  file: path={{ shadowsocks_gateway_location }}
-        owner=www-data
-        group=www-data
-        mode=750
-        state=directory
+  file:
+    path: "{{ shadowsocks_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
 
 - name: Generate the Markdown Shadowsocks instructions
-  template: src=instructions.md.j2
-            dest={{ shadowsocks_markdown_instructions }}
+  template:
+    src: instructions.md.j2
+    dest: "{{ shadowsocks_markdown_instructions }}"
 
 - name: Convert the Markdown Shadowsocks instructions into HTML and surround them with the header and footer template
   shell: markdown {{ shadowsocks_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ shadowsocks_html_instructions }}
@@ -45,7 +52,8 @@
   shell: echo -n '{{ shadowsocks_encryption_method }}:{{ shadowsocks_password.stdout }}@{{ streisand_ipv4_address }}:{{ shadowsocks_server_port }}' | base64 --wrap=0 | sed 's/^/ss:\/\//' | qrencode -s 8 -o {{ shadowsocks_qr_code }}
 
 - name: Set permissions on the Shadowsocks password file
-  file: path={{ shadowsocks_password_file }}
-        owner=root
-        group=root
-        mode=600
+  file:
+    path: "{{ shadowsocks_password_file }}"
+    owner: root
+    group: root
+    mode: 0600
