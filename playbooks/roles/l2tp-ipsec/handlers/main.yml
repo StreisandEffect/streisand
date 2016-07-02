@@ -1,8 +1,10 @@
 ---
 - name: Restart Libreswan
-  service: name=ipsec
-           state=restarted
+  service:
+    name: ipsec
+    state: restarted
 
 - name: Restart xl2tpd
-  service: name=xl2tpd
-           state=restarted
+  service:
+    name: xl2tpd
+    state: restarted
