@@ -17,6 +17,15 @@
     name: "{{ item }}"
   with_items: "{{ streisand_common_packages }}"
 
+- name: Install the pip Python package manager
+  apt:
+    name: python-pip
+
+- name: Install the Python dependencies that enable SNI support for SSL connections
+  pip:
+    name: "{{ item }}"
+  with_items: "{{ python_sni_dependencies }}"
+
 - name: Copy the HTML header and footer templates that are used during documentation generation
   copy:
     src: "{{ item.src }}"
