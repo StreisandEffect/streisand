@@ -8,18 +8,15 @@
   apt:
     name: xl2tpd
 
-- name: Install the pip Python package manager
-  apt:
-    name: python-pip
-
-- name: Install the Python dependencies that enable SNI support for SSL connections
-  pip:
-    name: "{{ item }}"
-  with_items: "{{ python_sni_dependencies }}"
-
 - name: Retrieve the Libreswan source code
   get_url:
-    url: https://download.libreswan.org/{{ libreswan_source_filename }}
+    # This CDN mirrors the Libreswan source code, and helps
+    # mitigate connection errors that were occurring when
+    # using the project's official download location.
+    #
+    # Ubuntu 16.04's version of Python natively supports SNI,
+    # so this workaround will no longer be necessary.
+    url: https://d1shxn4vnb0yj3.cloudfront.net/{{ libreswan_source_filename }}
     dest: "{{ libreswan_source_location }}"
     checksum: "{{ libreswan_checksum }}"
     owner: root
