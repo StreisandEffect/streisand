@@ -1,10 +1,4 @@
 ---
-python_sni_dependencies:
-  - ndg-httpsclient
-  - pyasn1
-  - pyopenssl
-  - urllib3
-
 streisand_common_packages:
   # Used to compile Libreswan and OpenConnect Server (ocserv)
   - build-essential

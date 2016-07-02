@@ -8,6 +8,15 @@
   apt:
     name: xl2tpd
 
+- name: Install the pip Python package manager
+  apt:
+    name: python-pip
+
+- name: Install the Python dependencies that enable SNI support for SSL connections
+  pip:
+    name: "{{ item }}"
+  with_items: "{{ python_sni_dependencies }}"
+
 - name: Retrieve the Libreswan source code
   get_url:
     url: https://download.libreswan.org/{{ libreswan_source_filename }}
