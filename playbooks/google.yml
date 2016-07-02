@@ -68,26 +68,32 @@
   # opened in advance before Tor is up and running.
   pre_tasks:
     - name: Set the Google Compute Engine Zone fact
-      set_fact: gce_zone={{ zones[gce_zone_var] }}
+      set_fact:
+        gce_zone: "{{ zones[gce_zone_var] }}"
 
     - name: Set the Google Compute Engine Server Name fact
-      set_fact: gce_server_name={{ gce_server_name_var }}
+      set_fact:
+        gce_server_name: "{{ gce_server_name_var }}"
 
     - name: Set the Google Compute Engine JSON file location fact
-      set_fact: gce_json_file_location={{ gce_creds_json_var }}
+      set_fact:
+        gce_json_file_location: "{{ gce_creds_json_var }}"
 
     - name: Register JSON file contents
       local_action: command cat {{ gce_json_file_location }}
       register: gce_json_file_contents
 
     - name: Set JSON file contents fact
-      set_fact: gce_json_contents_fact={{ gce_json_file_contents.stdout | from_json }}
+      set_fact:
+        gce_json_contents_fact: "{{ gce_json_file_contents.stdout | from_json }}"
 
     - name: Set the Google Compute Engine Service Account Email
-      set_fact: gce_service_account_email={{ gce_json_contents_fact.client_email }}
+      set_fact:
+        gce_service_account_email: "{{ gce_json_contents_fact.client_email }}"
 
     - name: Set the Google Compute Engine Project ID
-      set_fact: gce_project_id={{ gce_json_contents_fact.project_id }}
+      set_fact:
+        gce_project_id: "{{ gce_json_contents_fact.project_id }}"
 
   roles:
     - genesis-google
@@ -149,10 +155,12 @@
 
   pre_tasks:
     - name: Set the streisand_host fact to the value of the new server. This fact will be used to retrieve the obfsproxy port values.
-      set_fact: "streisand_host={{ groups['streisand-host'][0] }}"
+      set_fact:
+        streisand_host: "{{ groups['streisand-host'][0] }}"
 
     - name: Retrieve the randomly chosen Tor obfs3 port
-      set_fact: "tor_obfs3_port={{ hostvars[streisand_host]['tor_obfs3_port'] }}"
+      set_fact:
+        tor_obfs3_port: "{{ hostvars[streisand_host]['tor_obfs3_port'] }}"
 
   roles:
     # We can modify the Google Compute Engine network now that we know which

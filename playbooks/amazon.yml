@@ -62,16 +62,20 @@
   # be opened in advance before Tor is up and running.
   pre_tasks:
     - name: Set the AWS Region fact
-      set_fact: aws_region={{ regions[aws_region_var] }}
+      set_fact:
+        aws_region: "{{ regions[aws_region_var] }}"
 
     - name: Set the AWS Instance Name fact
-      set_fact: aws_instance_name={{ aws_instance_name_var }}
+      set_fact:
+        aws_instance_name: "{{ aws_instance_name_var }}"
 
     - name: Set the AWS Access Key fact
-      set_fact: aws_access_key={{ aws_access_key_var }}
+      set_fact:
+        aws_access_key: "{{ aws_access_key_var }}"
 
     - name: Set the AWS Secret Key fact
-      set_fact: aws_secret_key={{ aws_secret_key_var }}
+      set_fact:
+        aws_secret_key: "{{ aws_secret_key_var }}"
 
   roles:
     - genesis-amazon
@@ -134,10 +138,12 @@
 
   pre_tasks:
     - name: Set the streisand_host fact to the value of the new server. This fact will be used to retrieve the obfsproxy port values.
-      set_fact: "streisand_host={{ groups['streisand-host'][0] }}"
+      set_fact:
+        streisand_host: "{{ groups['streisand-host'][0] }}"
 
     - name: Retrieve the randomly chosen Tor obfs3 port
-      set_fact: "tor_obfs3_port={{ hostvars[streisand_host]['tor_obfs3_port'] }}"
+      set_fact:
+        tor_obfs3_port: "{{ hostvars[streisand_host]['tor_obfs3_port'] }}"
 
   roles:
     # We can modify the EC2 security group now that we know which
