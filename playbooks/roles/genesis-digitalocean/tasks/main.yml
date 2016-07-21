@@ -51,7 +51,3 @@
 - name: Set the streisand_server_name variable
   set_fact:
     streisand_server_name: "{{ do_server_name }}"
-
-- name: New DigitalOcean servers are occasionally slow to process incoming SSH connections even after the OpenSSH daemon has started up. Pause for 90 seconds.
-  pause:
-    seconds: 90
