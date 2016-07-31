@@ -122,17 +122,13 @@
   command: cat {{ ocserv_pkcs12_password_file }}
   register: ocserv_pkcs12_password
 
-- name: "Generate the PKCS #12 conversion Expect script"
-  template:
-    src: create-pkcs12.exp.j2
-    dest: "{{ ocserv_pkcs12_conversion_script }}"
-    owner: root
-    group: root
-    mode: 0700
-
-- name: "Execute the PKCS #12 conversion Expect script"
-  command: "{{ ocserv_pkcs12_conversion_script }}"
-  args:
+- name: "Convert the key and certificate into PKCS #12 format"
+  expect:
+    command: certtool --to-p12 --load-privkey {{ ocserv_client_key_file }} --pkcs-cipher 3des-pkcs12 --load-certificate {{ ocserv_client_certificate_file }} --outfile {{ ocserv_client_pkcs12_file }} --outder
+    responses:
+      "Enter a name for the key": "{{ ocserv_client_name }}"
+      "Enter password": "{{ ocserv_pkcs12_password.stdout }}"
+      "Confirm password": "{{ ocserv_pkcs12_password.stdout }}"
     creates: "{{ ocserv_client_pkcs12_file }}"
 
 - name: Generate a random ocserv password
@@ -151,17 +147,12 @@
   command: cat {{ ocserv_password_file }}
   register: ocserv_password
 
-- name: Generate the ocpasswd Expect script
-  template:
-    src: create-password.exp.j2
-    dest: "{{ ocserv_create_password_script }}"
-    owner: root
-    group: root
-    mode: 0700
-
-- name: Execute the ocpasswd Expect script
-  command: "{{ ocserv_create_password_script }}"
-  args:
+- name: Create an ocpasswd credentials file
+  expect:
+    command: ocpasswd -c {{ ocserv_hashed_password_file }} streisand
+    responses:
+      "Enter password": "{{ ocserv_password.stdout }}"
+      "Re-enter password": "{{ ocserv_password.stdout }}"
     creates: "{{ ocserv_hashed_password_file }}"
 
 - name: Generate the ocserv configuration file

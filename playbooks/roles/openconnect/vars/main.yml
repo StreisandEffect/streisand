@@ -5,7 +5,6 @@ ocserv_firewall_rule: "iptables -t nat -A POSTROUTING -j MASQUERADE"
 
 ocserv_days_valid: "1825"
 ocserv_dependencies:
-  - expect
   - gnutls-bin
   - libev-dev
   - libgnutls-dev
@@ -39,10 +38,8 @@ ocserv_client_key_file: "{{ ocserv_path }}/client-key.pem"
 ocserv_client_template_file: "{{ ocserv_path }}/client.tmpl"
 ocserv_client_pkcs12_file: "{{ ocserv_path }}/client.p12"
 
-ocserv_create_password_script: "{{ ocserv_path }}/create-password.exp"
 ocserv_hashed_password_file: "{{ ocserv_path }}/ocpasswd"
 ocserv_password_file: "{{ ocserv_path }}/ocserv-password"
-ocserv_pkcs12_conversion_script: "{{ ocserv_path }}/create-pkcs12.exp"
 ocserv_pkcs12_password_file: "{{ ocserv_path }}/ocserv-pkcs12-password"
 
 ocserv_gateway_location: "{{ streisand_gateway_location }}/openconnect"

@@ -5,6 +5,8 @@ streisand_common_packages:
   # Used to perform API requests, including the version check for
   # the Tor Browser Bundle
   - curl
+  # Enables automation of programs and scripts that ask for user input
+  - expect
   # Used to verify GPG signatures for mirrored packages
   - gnupg
   # Used to configure firewall rules
@@ -13,6 +15,8 @@ streisand_common_packages:
   - markdown
   # Ensures the server's clock is set properly
   - ntp
+  # Required to use the Ansible `expect` module
+  - python-pexpect
   # Required for the apt_repository module
   - python-software-properties
   # Used to generate convenient QR codes for mobile clients in the
