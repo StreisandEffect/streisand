@@ -9,12 +9,12 @@ libreswan_compilation_dependencies:
   - libcap-ng-utils
   - libcurl4-nss-dev
   - libevent-dev
-  - libgmp3-dev
   - libnspr4-dev
   - libnss3-dev
   - libnss3-tools
   - libpam0g-dev
   - libselinux1-dev
+  - libsystemd-dev
   - libunbound-dev
   - pkg-config
   - xmlto
