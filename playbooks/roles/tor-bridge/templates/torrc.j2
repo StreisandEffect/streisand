@@ -6,7 +6,8 @@ ExitPolicy reject *:*
 
 Nickname {{ tor_bridge_nickname.stdout }}
 
-ServerTransportPlugin obfs3 exec /usr/bin/obfsproxy managed
+ServerTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+ServerTransportListenAddr obfs4 0.0.0.0:{{ tor_obfs4_port }}
 
 HiddenServiceDir {{ tor_hidden_service_directory }}
 HiddenServicePort 80 {{ nginx_internal_hidden_service_address }}

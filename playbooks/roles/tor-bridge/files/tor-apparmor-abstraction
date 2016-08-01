@@ -1,0 +1,27 @@
+# vim:syntax=apparmor
+
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+
+  network tcp,
+  network udp,
+
+  capability chown,
+  capability dac_override,
+  capability fowner,
+  capability fsetid,
+  capability setgid,
+  capability setuid,
+
+  /usr/bin/tor r,
+  /usr/sbin/tor r,
+
+  /proc/sys/kernel/random/uuid r,
+  /sys/devices/system/cpu/ r,
+  /sys/devices/system/cpu/** r,
+
+  /etc/tor/* r,
+  /usr/share/tor/** r,
+
+  /usr/bin/obfsproxy ix,
+  /usr/bin/obfs4proxy ix,
