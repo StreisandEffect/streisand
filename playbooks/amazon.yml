@@ -39,6 +39,20 @@
       default: "2"
       private: no
 
+    - name: "aws_vpc_id_var"
+      prompt: |
+
+        Which VPC would you like to create the server and security group rules in? (ex. vpc-89d740ee)
+        Press enter to use the default VPC.
+      private: no
+
+    - name: "aws_vpc_subnet_id_var"
+      prompt: |
+
+        Which subnet should the server receive an address from? (ex. subnet-78d9a232)
+        Press enter to use the default subnet.
+      private: no
+
     - name: "aws_instance_name_var"
       prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
       default: "streisand"
@@ -64,6 +78,16 @@
     - name: Set the AWS Region fact
       set_fact:
         aws_region: "{{ regions[aws_region_var] }}"
+
+    - name: Set the AWS VPC ID fact
+      set_fact:
+        aws_vpc_id: "{{ aws_vpc_id_var }}"
+      when: aws_vpc_id_var != ""
+
+    - name: Set the AWS VPC Subnet ID fact
+      set_fact:
+        aws_vpc_subnet_id: "{{ aws_vpc_subnet_id_var }}"
+      when: aws_vpc_subnet_id_var != ""
 
     - name: Set the AWS Instance Name fact
       set_fact:
