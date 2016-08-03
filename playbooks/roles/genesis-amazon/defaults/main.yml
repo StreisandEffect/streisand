@@ -1,13 +1,6 @@
 ---
-aws_ubuntu_california_ami_id: "ami-06116566"
-aws_ubuntu_ireland_ami_id: "ami-f95ef58a"
-aws_ubuntu_germany_ami_id: "ami-87564feb"
-aws_ubuntu_oregon_ami_id: "ami-9abea4fb"
-aws_ubuntu_sao_paulo_ami_id: "ami-0fb83963"
-aws_ubuntu_seoul_ami_id: "ami-fea46a90"
-aws_ubuntu_signapore_ami_id: "ami-25c00c46"
-aws_ubuntu_sydney_ami_id: "ami-6c14310f"
-aws_ubuntu_tokyo_ami_id: "ami-a21529cc"
-aws_ubuntu_virginia_ami_id: "ami-fce3c696"
-
 aws_instance_type: "t2.micro"
+# Search AMIs owned by this owner. This is the Amazon owner ID.
+aws_ami_owner: "099720109477"
+# Find AMIs matching this name
+aws_ami_name: "ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"
