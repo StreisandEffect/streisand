@@ -57,8 +57,8 @@
 
 - name: Wait until obfs4proxy information has shown up in its state file
   wait_for:
-    path: /var/lib/tor/pt_state/obfs4_bridgeline.txt
-    search_regex: "Bridge obfs4"
+    path: /var/lib/tor/pt_state/obfs4_state.json
+    search_regex: "node-id"
 
 - name: Wait until the hidden service is online
   wait_for:
@@ -72,6 +72,10 @@
   command: awk '{ print $2 }' /var/lib/tor/fingerprint
   register: tor_fingerprint
 
+- name: Discover the obfs4 certificate details
+  shell: cat /var/lib/tor/pt_state/obfs4_bridgeline.txt | grep 'Bridge obfs4' | sed -e 's/^.*cert=\(.*\) .*$/\1/'
+  register: tor_obfs4_certificate
+
 - name: Create the Tor Gateway directory
   file:
     path: "{{ tor_gateway_location }}"
@@ -80,8 +84,8 @@
     mode: 0750
     state: directory
 
-- name: Generate the Tor obfs3 QR code
-  shell: echo -n '{{ tor_obfs3_bridge_line }}' | python -c 'import urllib; import sys; print urllib.quote(sys.stdin.read());' | qrencode -s 12 -o {{ tor_obfs3_qr_code }}
+- name: Generate the Tor obfs4 QR code
+  shell: echo -n '{{ tor_obfs4_bridge_line }}' | python -c 'import urllib; import sys; print "bridge://" + urllib.quote(sys.stdin.read());' | qrencode -s 12 -o {{ tor_obfs4_qr_code }}
 
 - name: Generate the Markdown Tor instructions
   template:

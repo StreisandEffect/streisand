@@ -4,9 +4,8 @@ tor_obfs_transports:
   - obfs3
 
 tor_standard_connection_details: "{{ streisand_ipv4_address }}:{{ tor_orport }}"
-tor_obfs3_connection_details:    "{{ streisand_ipv4_address }}:{{ tor_obfs3_port }}"
 
-tor_obfs3_bridge_line: "bridge://obfs3 {{ tor_obfs3_connection_details }} {{ tor_fingerprint.stdout }}"
+tor_obfs4_bridge_line: "obfs4 {{ streisand_ipv4_address }}:{{ tor_obfs4_port }} {{ tor_fingerprint.stdout }} cert={{ tor_obfs4_certificate.stdout }} iat-mode=0"
 
 tor_hidden_service_directory: "/var/lib/tor/hidden_service/"
 tor_hidden_service_url: "http://{{ tor_hidden_service_hostname.stdout }}"
@@ -16,4 +15,4 @@ tor_gateway_location: "{{ streisand_gateway_location }}/tor"
 tor_markdown_instructions: "{{ tor_gateway_location }}/index.md"
 tor_html_instructions: "{{ tor_gateway_location }}/index.html"
 
-tor_obfs3_qr_code: "{{ tor_gateway_location }}/tor-obfs3-qr-code.png"
+tor_obfs4_qr_code: "{{ tor_gateway_location }}/tor-obfs4-qr-code.png"
