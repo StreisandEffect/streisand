@@ -23,6 +23,8 @@
 
 - name: Determine which AMI to use
   ec2_ami_find:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     owner: "{{ aws_ami_owner }}"
     region: "{{ aws_region }}"
     name: "{{ aws_ami_name }}"
