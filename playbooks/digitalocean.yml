@@ -45,8 +45,8 @@
       default: "streisand"
       private: no
 
-    - name: "do_access_token"
-      prompt: "\n\nNew API access tokens can be generated in the DigitalOcean control panel.\nhttps://cloud.digitalocean.com/settings/applications\n  * When generating a new token, please note that the Write Scope is necessary\n    in order to create Droplets.\n\nWhat is your DigitalOcean Access Token?\n"
+    - name: "do_access_token_entry"
+      prompt: "\n\nNew API access tokens can be generated in the DigitalOcean control panel.\nhttps://cloud.digitalocean.com/settings/applications\n  * When generating a new token, please note that the Write Scope is necessary\n    in order to create Droplets.\n\nIf this field is left blank, the environment variable DIGITALOCEAN_API_KEY\nwill be used.\n\nWhat is your DigitalOcean Access Token?\n"
       private: no
 
     - name: "do_ssh_name"
