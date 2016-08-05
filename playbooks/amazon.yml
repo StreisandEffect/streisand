@@ -92,7 +92,8 @@
 
   roles:
     - common
-    # openconnect must be run before the l2tp-ipsec role otherwise there are compilation issues
+    # OpenConnect must be set up before L2TP/IPsec in order to avoid
+    # compilation issues.
     - openconnect
     - l2tp-ipsec
     - openvpn
