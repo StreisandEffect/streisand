@@ -32,7 +32,7 @@
     instance_type: "{{ aws_instance_type }}"
     image: "{{ aws_ami_id }}"
     region: "{{ aws_region }}"
-    vpc_subnet_id: "{{ aws_vpc_subnet_id|default(omit) }}"
+    vpc_subnet_id: "{{ aws_vpc_subnet_id | default(omit) }}"
     assign_public_ip: "{{ aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '' }}"
     key_name: streisand-ssh
     group: "{{ aws_security_group }}"

@@ -24,8 +24,8 @@
 
   vars_prompt:
     - name: "aws_region_var"
-      prompt: >
-        What region should the server be located in?
+      prompt: |
+        In what region should the server be located?
           1. Asia Pacific     (Tokyo)
           2. Asia Pacific     (Singapore)
           3. Asia Pacific     (Sydney)
@@ -42,14 +42,17 @@
     - name: "aws_vpc_id_var"
       prompt: |
 
-        Which VPC would you like to create the server and security group rules in? (ex. vpc-89d740ee)
+        In which VPC would you like to create the server and security group
+        (e.g. vpc-89d740ee)?
+
         Press enter to use the default VPC.
       private: no
 
     - name: "aws_vpc_subnet_id_var"
       prompt: |
 
-        Which subnet should the server receive an address from? (ex. subnet-78d9a232)
+        From which subnet should the server receive an address (e.g. subnet-78d9a232)?
+
         Press enter to use the default subnet.
       private: no
 

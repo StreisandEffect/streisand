@@ -5,7 +5,7 @@
     name: "{{ aws_security_group }}"
     description: Security group for Streisand
     region: "{{ aws_region }}"
-    vpc_id: "{{ aws_vpc_id|default(omit) }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
 
@@ -19,7 +19,7 @@
     name: "{{ aws_security_group }}"
     description: Security group for Streisand
     region: "{{ aws_region }}"
-    vpc_id: "{{ aws_vpc_id|default(omit) }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     rules:
@@ -42,7 +42,7 @@
     name: "{{ aws_security_group }}"
     description: Security group for Streisand
     region: "{{ aws_region }}"
-    vpc_id: "{{ aws_vpc_id|default(omit) }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     rules:
