@@ -102,8 +102,8 @@
     proto: "tcp"
     rule: "allow"
 
-- name: Ensure UFW allows Tor obfs3 pluggable transport
+- name: Ensure UFW allows Tor obfs4 pluggable transport
   ufw:
-    to_port: "{{ tor_obfs3_port }}"
+    to_port: "{{ tor_obfs4_port }}"
     proto: "tcp"
     rule: "allow"

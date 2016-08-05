@@ -1,7 +1,5 @@
 ---
 tor_bridge_nickname_file: "/etc/tor/bridge_nickname"
-tor_obfs_transports:
-  - obfs3
 
 tor_standard_connection_details: "{{ streisand_ipv4_address }}:{{ tor_orport }}"
 
