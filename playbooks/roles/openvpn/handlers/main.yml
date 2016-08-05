@@ -1,4 +1,9 @@
 ---
+- name: Restart OpenVPN
+  service:
+    name: openvpn
+    state: restarted
+
 - name: Restart dnsmasq
   service:
     name: dnsmasq
