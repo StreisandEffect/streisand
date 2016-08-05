@@ -1,7 +1,6 @@
 version 2.0
 
 config setup
-  dumpdir=/var/run/pluto/
   nat_traversal=yes
   virtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!192.168.42.0/24
   oe=off
@@ -19,7 +18,6 @@ conn vpnpsk
   leftprotoport=17/1701
   rightprotoport=17/%any
   right=%any
-  rightsubnetwithin=0.0.0.0/0
   forceencaps=yes
   authby=secret
   pfs=no
