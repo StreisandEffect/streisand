@@ -90,22 +90,11 @@
   remote_user: ubuntu
   become: yes
 
-  vars:
-    # The rc-local role normally expects to configure firewall rules for
-    # L2TP/IPsec. Streisand does not install L2TP/IPsec on EC2 servers
-    # by default because the instances cannot bind directly to their
-    # public IP addresses which makes IPsec routing nearly impossible.
-    #
-    # This variable is therefore set to an empty value.
-    l2tp_ipsec_firewall_rules: ""
-
-    # Similarly, we don't want to display a link to nonexistent
-    # L2TP/IPsec information on the Gateway index page
-    l2tp_ipsec_gateway_location: ""
-
   roles:
     - common
+    # openconnect must be run before the l2tp-ipsec role otherwise there are compilation issues
     - openconnect
+    - l2tp-ipsec
     - openvpn
     - stunnel
     - shadowsocks
@@ -128,6 +117,7 @@
   # These variable files are included so the ec2-security-group role
   # knows which ports to open
   vars_files:
+    - roles/l2tp-ipsec/defaults/main.yml
     - roles/openconnect/defaults/main.yml
     - roles/openvpn/defaults/main.yml
     - roles/shadowsocks/defaults/main.yml
