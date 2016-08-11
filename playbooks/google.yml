@@ -99,41 +99,7 @@
     - genesis-google
 
 
-- name: Configure the Server and install required software
-# ========================================================
-  hosts: streisand-host
-
-  remote_user: root
-
-  # The standard streisand.yml is not included in order to skip L2TP/Ipsec
-
-  vars:
-    # The rc-local role normally expects to configure firewall rules for
-    # L2TP/IPsec. Streisand does not install L2TP/IPsec on EC2 servers
-    # by default because the instances cannot bind directly to their
-    # public IP addresses which makes IPsec routing nearly impossible.
-    #
-    # This variable is therefore set to an empty value.
-    l2tp_ipsec_firewall_rules: ""
-
-    # Similarly, we don't want to display a link to nonexistent
-    # L2TP/IPsec information on the Gateway index page
-    l2tp_ipsec_gateway_location: ""
-
-  roles:
-    - common
-    - openconnect
-    - openvpn
-    - stunnel
-    - shadowsocks
-    - ssh
-    - tinyproxy
-    - tor-bridge
-    - sslh
-    - monit
-    - ufw
-    - streisand-mirror
-    - streisand-gateway
+- include: streisand.yml
 
 
 - name: Open all service ports
@@ -146,6 +112,7 @@
   # knows which ports to open
   vars_files:
     - roles/openconnect/defaults/main.yml
+    - roles/l2tp-ipsec/defaults/main.yml
     - roles/openvpn/defaults/main.yml
     - roles/shadowsocks/defaults/main.yml
     - roles/ssh/defaults/main.yml
