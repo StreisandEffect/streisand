@@ -45,6 +45,8 @@
     name: "autorecover-{{ aws_instance_name }}"
     description: "This alarm will auto-recover the EC2 instance on host failure"
     state: present
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ aws_region }}"
     namespace: "AWS/EC2"
     metric: StatusCheckFailed_System
