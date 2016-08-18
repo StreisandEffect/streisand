@@ -18,6 +18,7 @@
 - name: Install Nginx
   apt:
     name: nginx
+    update_cache: yes
 
 - name: Update Nginx configuration
   copy:
