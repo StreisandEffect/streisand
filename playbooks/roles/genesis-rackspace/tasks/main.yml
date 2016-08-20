@@ -1,7 +1,6 @@
 ---
 - name: Create the server
-  local_action:
-    module: rax
+  rax:
     api_key: "{{ rackspace_api_key }}"
     username: "{{ rackspace_username }}"
     name: "{{ rackspace_server_name }}"
