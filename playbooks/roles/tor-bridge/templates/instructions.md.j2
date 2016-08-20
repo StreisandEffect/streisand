@@ -60,14 +60,13 @@ You are now ready to configure Twitter and Firefox to route their traffic throug
 ### iOS ###
 1. Download [Onion Browser](https://itunes.apple.com/us/app/onion-browser/id519296448?mt=8) and launch it.
 1. Tap the menu button on the bottom of the screen and choose *Browser Settings*.
-1. Scroll to the bottom and tap *Not Using Bridges*. If Onion Browser has not yet connected to Tor when you press the menu button, the *Opening Bridge Configuration* popup will automatically appear.
-1. Tap *Edit* in the Bridges section.
-1. Tap the *+* button.
-1. Touch the *Tap Here To Edit* field.
-1. Enter the following for your bridge information: `{{ tor_standard_connection_details }}`.
-1. Tap *Done* (twice).
-1. Tap *Back*.
-1. Tap the *Quit app* button when the *Bridges* popup appears.
-1. Relaunch the application. If you successfully connect, the *{{ tor_bridge_nickname.stdout }}* bridge is working correctly!
+1. Scroll to the bottom and tap *Configure Bridges*
+1. Tap *Enter Custom Bridges*.
+1. Tap the camera icon in the lower-right corner. You may need to enable camera access for Onion Browser in your iOS Settings.
+1. Scan the following QR code. This will automatically configure Onion Browser to connect to this server using the obfs4 pluggable transport:
 
-Onion Browser does not currently support any pluggable transports and cannot operate in countries that are blocking Tor using Deep Packet Inspection or active probing attacks. There is an [open issue](https://github.com/mtigas/iOS-OnionBrowser/issues/43) on the project's GitHub issue tracker requesting this functionality.
+   ![Tor obfs4 QR code](/tor/tor-obfs4-qr-code.png)
+1. Tap *OK* when the confirmation is displayed.
+1. Tap *Save*.
+1. Tap *Restart app*.
+1. Relaunch the application. If you successfully connect, the *{{ tor_bridge_nickname.stdout }}* bridge is working correctly, and your connection is obscured by the obfs4 pluggable transport so it doesn't look like Tor traffic at all!
