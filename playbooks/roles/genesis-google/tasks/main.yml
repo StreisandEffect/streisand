@@ -4,8 +4,7 @@
   register: ssh_key
 
 - name: Create the GCE instance
-  local_action:
-    module: gce
+  gce:
     name: "{{ gce_server_name }}"
     network: "{{ gce_network }}"
     zone: "{{ gce_zone }}"
