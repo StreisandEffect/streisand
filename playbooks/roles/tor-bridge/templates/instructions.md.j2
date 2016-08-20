@@ -12,11 +12,11 @@ Tor Bridge
 1. Download the [Tor Browser Bundle](/mirror/#tor) for your platform of choice. The Obfsproxy obfs4 pluggable transport that it includes will let you use the Tor network even if your ISP is actively performing Deep Packet Inspection in an attempt to block all Tor traffic.
 1. Launch the Tor Browser Bundle.
 1. Click the *Configure* button underneath the text that says *I need to configure bridge, firewall, or proxy settings*.
-1. Answer *Yes* or *No* to these questions, depending on your setup: *Does this computer need to use a proxy...* and *Does this computer's Internet connection go through a firewall...* In most cases the answer to both will be *No*.
 1. Answer *Yes* to *Does your Internet Service Provider (ISP) block or otherwise censor connections to the Tor Network?*
 1. Choose the *Enter custom bridges* option, and paste the following information into the text box:
 
          {{ tor_obfs4_bridge_line }}
+1. Answer the Local Proxy Configuration question. In most cases the answer will be *No*.
 1. Click *Connect*.
 
 You are ready to go! Tor has connected to the *{{ tor_bridge_nickname.stdout }}* bridge server, and your encrypted Tor traffic is completely obscured by obfsproxy so it doesn't look like Tor traffic at all!
