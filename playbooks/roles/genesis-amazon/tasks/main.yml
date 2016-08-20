@@ -34,8 +34,7 @@
   register: ami
 
 - name: Create the EC2 instance
-  local_action:
-    module: ec2
+  ec2:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     instance_type: "{{ aws_instance_type }}"
@@ -82,8 +81,7 @@
     timeout: 600
 
 - name: Allocate and associate Elastic IP
-  local_action:
-    module: ec2_eip
+  ec2_eip:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ aws_region }}"
