@@ -7,16 +7,17 @@
 
   vars:
     regions:
-      "1": "ap-northeast-1"
-      "2": "ap-south-1"
+      "1": "ap-south-1"
+      "2": "ap-northeast-2"
       "3": "ap-southeast-1"
       "4": "ap-southeast-2"
-      "5": "eu-west-1"
+      "5": "ap-northeast-1"
       "6": "eu-central-1"
-      "7": "sa-east-1"
-      "8": "us-east-1"
-      "9": "us-west-1"
-      "10": "us-west-2"
+      "7": "eu-west-1"
+      "8": "sa-east-1"
+      "9": "us-east-1"
+      "10": "us-west-1"
+      "11": "us-west-2"
 
   # These variable files are included so the ec2-security-group role
   # knows which ports to open
@@ -34,16 +35,17 @@
     - name: "aws_region_var"
       prompt: |
         In what region should the server be located?
-          1. Asia Pacific     (Tokyo)
-          2. Asia Pacific     (Mumbai)
-          3. Asia Pacific     (Singapore)
-          4. Asia Pacific     (Sydney)
-          5. EU               (Ireland)
-          6. EU               (Germany)
-          7. South America    (Sao Paulo)
-          8. US East          (Northern Virginia)
-          9. US West          (Northern California)
-          10. US West         (Oregon)
+          1. Asia Pacific   (Mumbai)
+          2. Asia Pacific   (Seoul)
+          3. Asia Pacific   (Singapore)
+          4. Asia Pacific   (Sydney)
+          5. Asia Pacific   (Tokyo)
+          6. EU             (Frankfurt)
+          7. EU             (Ireland)
+          8. South America  (Sao Paulo)
+          9. US East        (Northern Virginia)
+          10. US West       (Northern California)
+          11. US West       (Oregon)
         Please choose the number of your region. Press enter for default (#3) region.
       default: "3"
       private: no
