@@ -14,12 +14,15 @@
       "5": "us-east1-b"
       "6": "us-east1-c"
       "7": "us-east1-d"
-      "8": "europe-west1-b"
-      "9": "europe-west1-c"
-      "10": "europe-west1-d"
-      "11": "asia-east1-a"
-      "12": "asia-east1-b"
-      "13": "asia-east1-c"
+      "8": "us-west1-a"
+      "9": "us-west1-b"
+      "10": "europe-west1-b"
+      "11": "europe-west1-c"
+      "12": "europe-west1-d"
+      "13": "asia-east1-a"
+      "14": "asia-east1-b"
+      "15": "asia-east1-c"
+
 
   # These variable files are included so the gce-network role
   # knows which ports to open
@@ -44,12 +47,14 @@
           5. Eastern US       (South Carolina B)
           6. Eastern US       (South Carolina C)
           7. Eastern US       (South Carolina D)
-          8. Western Europe   (Belgium B)
-          9. Western Europe   (Belgium C)
-          10. Western Europe  (Belgium D)
-          11. East Asia       (Taiwan A)
-          12. East Asia       (Taiwan B)
-          13. East Asia       (Taiwan C)
+          8. Western US       (Oregon A)
+          9. Western US       (Oregon B)
+          10. Western Europe  (Belgium B)
+          11. Western Europe  (Belgium C)
+          12. Western Europe  (Belgium D)
+          13. East Asia       (Taiwan A)
+          14. East Asia       (Taiwan B)
+          15. East Asia       (Taiwan C)
         Please choose the number of your zone. Press enter for default (#3) zone.
       default: "3"
       private: no
