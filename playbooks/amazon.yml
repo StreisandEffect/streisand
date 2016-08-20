@@ -36,7 +36,7 @@
           7. South America    (Sao Paulo)
           8. US East          (Northern Virginia)
           9. US West          (Northern California)
-          10. US West          (Oregon)
+          10. US West         (Oregon)
         Please choose the number of your region. Press enter for default (#3) region.
       default: "3"
       private: no
