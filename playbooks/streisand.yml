@@ -11,6 +11,7 @@
       args:
         executable: /bin/bash
 
+
 - name: Configure the Server and install required software
 # ========================================================
   hosts: streisand-host
