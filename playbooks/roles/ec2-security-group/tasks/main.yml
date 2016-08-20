@@ -1,7 +1,6 @@
 ---
 - name: Create the EC2 security group
-  local_action:
-    module: ec2_group
+  ec2_group:
     name: "{{ aws_security_group }}"
     description: Security group for Streisand
     region: "{{ aws_region }}"
@@ -14,8 +13,7 @@
     seconds: 15
 
 - name: Open all of the necessary ports across every service in the EC2 security group
-  local_action:
-    module: ec2_group
+  ec2_group:
     name: "{{ aws_security_group }}"
     description: Security group for Streisand
     region: "{{ aws_region }}"

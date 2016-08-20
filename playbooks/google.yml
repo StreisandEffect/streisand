@@ -73,7 +73,7 @@
         gce_zone: "{{ zones[gce_zone_var] }}"
 
     - name: Register JSON file contents
-      local_action: command cat {{ gce_json_file_location }}
+      command: cat {{ gce_json_file_location }}
       register: gce_json_file_contents
 
     - name: Set JSON file contents fact
