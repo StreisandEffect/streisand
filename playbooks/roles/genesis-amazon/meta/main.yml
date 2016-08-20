@@ -1,5 +1,3 @@
 ---
 dependencies:
-  - { role: ec2-security-group,
-      open_ssh_port_only:     true,
-      open_all_service_ports: false }
+  - ec2-security-group

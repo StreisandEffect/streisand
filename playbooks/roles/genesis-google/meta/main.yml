@@ -1,5 +1,3 @@
 ---
 dependencies:
-  - { role: gce-network,
-      open_ssh_port_only:     true,
-      open_all_service_ports: false }
+  - gce-network
