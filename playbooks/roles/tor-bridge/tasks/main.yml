@@ -85,7 +85,7 @@
     state: directory
 
 - name: Generate the Tor obfs4 QR code
-  shell: echo -n '{{ tor_obfs4_bridge_line }}' | python -c 'import urllib; import sys; print "bridge://" + urllib.quote(sys.stdin.read());' | qrencode -s 6 -o {{ tor_obfs4_qr_code }}
+  shell: echo -n '{{ tor_obfs4_bridge_line }}' | qrencode -s 6 -o {{ tor_obfs4_qr_code }}
 
 - name: Generate the Markdown Tor instructions
   template:
