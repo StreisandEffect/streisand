@@ -20,20 +20,18 @@
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
-  when: open_ssh_port_only
 
 - name: Open necessary TCP ports across most services in the GCE firewall
   local_action:
     module: gce_net
     name: "{{ gce_network }}"
     fwname: "streisand-other"
-    allowed: "tcp:{{ nginx_port }},{{ shadowsocks_server_port }},{{ stunnel_remote_port }},{{ tor_orport }},{{ tor_obfs3_port }}"
+    allowed: "tcp:{{ nginx_port }},{{ shadowsocks_server_port }},{{ stunnel_remote_port }},{{ tor_orport }},{{ tor_obfs4_port }}"
     state: "present"
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
-  when: open_all_service_ports
 
 - name: Open the OpenConnect (ocserv) port in the GCE firewall
   local_action:
@@ -46,7 +44,6 @@
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
-  when: open_all_service_ports
 
 - name: Open the OpenVPN port in the GCE firewall
   local_action:
@@ -59,9 +56,8 @@
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
-  when: open_all_service_ports
 
-- name: Open L2TP/IPsec ports in the GCE firewall
+- name: Open the L2TP/IPsec ports in the GCE firewall
   local_action:
     module: gce_net
     name: "{{ gce_network }}"
@@ -72,4 +68,3 @@
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
-  when: open_all_service_ports
