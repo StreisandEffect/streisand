@@ -13,29 +13,6 @@
   pause:
     seconds: 15
 
-- name: Open the SSH port in the EC2 security group
-  local_action:
-    module: ec2_group
-    name: "{{ aws_security_group }}"
-    description: Security group for Streisand
-    region: "{{ aws_region }}"
-    vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
-    rules:
-      # SSH
-      # ---
-      - proto: tcp
-        from_port: "{{ ssh_port }}"
-        to_port: "{{ ssh_port }}"
-        cidr_ip: 0.0.0.0/0
-    rules_egress:
-      - proto: all
-        from_port: 1
-        to_port: 65535
-        cidr_ip: 0.0.0.0/0
-  when: open_ssh_port_only
-
 - name: Open all of the necessary ports across every service in the EC2 security group
   local_action:
     module: ec2_group
@@ -110,15 +87,14 @@
         from_port: "{{ tor_orport }}"
         to_port: "{{ tor_orport }}"
         cidr_ip: 0.0.0.0/0
-      # Tor obfs3 port
+      # Tor obfs4 port
       # ---
       - proto: tcp
-        from_port: "{{ tor_obfs3_port }}"
-        to_port: "{{ tor_obfs3_port }}"
+        from_port: "{{ tor_obfs4_port }}"
+        to_port: "{{ tor_obfs4_port }}"
         cidr_ip: 0.0.0.0/0
     rules_egress:
       - proto: all
         from_port: 1
         to_port: 65535
         cidr_ip: 0.0.0.0/0
-  when: open_all_service_ports

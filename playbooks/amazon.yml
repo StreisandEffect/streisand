@@ -18,10 +18,17 @@
       "9": "us-west-1"
       "10": "us-west-2"
 
-  # This variable file is included so the ec2-security-group role knows
-  # which port to open for SSH
+  # These variable files are included so the ec2-security-group role
+  # knows which ports to open
   vars_files:
+    - roles/l2tp-ipsec/defaults/main.yml
+    - roles/openconnect/defaults/main.yml
+    - roles/openvpn/defaults/main.yml
+    - roles/shadowsocks/defaults/main.yml
     - roles/ssh/defaults/main.yml
+    - roles/streisand-gateway/defaults/main.yml
+    - roles/stunnel/defaults/main.yml
+    - roles/tor-bridge/defaults/main.yml
 
   vars_prompt:
     - name: "aws_region_var"
@@ -58,27 +65,22 @@
         Press enter to use the default subnet.
       private: no
 
-    - name: "aws_instance_name_var"
+    - name: "aws_instance_name"
       prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
       default: "streisand"
       private: no
 
-    - name: "aws_access_key_var"
+    - name: "aws_access_key"
       prompt: "\n\nThe following information can be found in the IAM Management Console.\nhttps://console.aws.amazon.com/iam/home?#security_credential\n\nWhat is your AWS Access Key ID?\n"
       private: no
 
-    - name: "aws_secret_key_var"
+    - name: "aws_secret_key"
       prompt: "\nWhat is your AWS Secret Access Key?\n"
       private: no
 
     - name: "confirmation"
       prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 
-  # Facts persist across plays, and these facts will be used in the
-  # final step to make an API call to open all of the necessary ports in
-  # the EC2 security group. This is necessary because Tor chooses random
-  # ports for the obfsproxy pluggable transport and therefore they cannot
-  # be opened in advance before Tor is up and running.
   pre_tasks:
     - name: Set the AWS Region fact
       set_fact:
@@ -94,55 +96,8 @@
         aws_vpc_subnet_id: "{{ aws_vpc_subnet_id_var }}"
       when: aws_vpc_subnet_id_var != ""
 
-    - name: Set the AWS Instance Name fact
-      set_fact:
-        aws_instance_name: "{{ aws_instance_name_var }}"
-
-    - name: Set the AWS Access Key fact
-      set_fact:
-        aws_access_key: "{{ aws_access_key_var }}"
-
-    - name: Set the AWS Secret Key fact
-      set_fact:
-        aws_secret_key: "{{ aws_secret_key_var }}"
-
   roles:
     - genesis-amazon
 
 
 - include: streisand.yml
-
-
-- name: Open all service ports
-# ============================
-  hosts: localhost
-  connection: local
-  gather_facts: no
-
-  # These variable files are included so the ec2-security-group role
-  # knows which ports to open
-  vars_files:
-    - roles/l2tp-ipsec/defaults/main.yml
-    - roles/openconnect/defaults/main.yml
-    - roles/openvpn/defaults/main.yml
-    - roles/shadowsocks/defaults/main.yml
-    - roles/ssh/defaults/main.yml
-    - roles/streisand-gateway/defaults/main.yml
-    - roles/stunnel/defaults/main.yml
-    - roles/tor-bridge/defaults/main.yml
-
-  pre_tasks:
-    - name: Set the streisand_host fact to the value of the new server. This fact will be used to retrieve the obfsproxy port values.
-      set_fact:
-        streisand_host: "{{ groups['streisand-host'][0] }}"
-
-    - name: Retrieve the randomly chosen Tor obfs3 port
-      set_fact:
-        tor_obfs3_port: "{{ hostvars[streisand_host]['tor_obfs3_port'] }}"
-
-  roles:
-    # We can modify the EC2 security group now that we know which
-    # obfsproxy ports Tor is using
-    - { role: ec2-security-group,
-        open_ssh_port_only:     false,
-        open_all_service_ports: true }
