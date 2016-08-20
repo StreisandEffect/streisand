@@ -110,33 +110,7 @@
     - genesis-amazon
 
 
-- name: Configure the Server and install required software
-# ========================================================
-  hosts: streisand-host
-
-  # The standard streisand.yml is not included because the Ubuntu AMI
-  # uses 'ubuntu' instead of 'root'
-  remote_user: ubuntu
-  become: yes
-
-  roles:
-    - common
-    # OpenConnect must be set up before L2TP/IPsec in order to avoid
-    # compilation issues.
-    - openconnect
-    - l2tp-ipsec
-    - openvpn
-    - stunnel
-    - shadowsocks
-    - ssh
-    - tinyproxy
-    - tor-bridge
-    - sslh
-    - monit
-    - ufw
-    - streisand-mirror
-    - streisand-gateway
-
+- include: streisand.yml
 
 - name: Open all service ports
 # ============================

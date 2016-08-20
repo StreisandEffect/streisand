@@ -95,6 +95,8 @@
   add_host:
     name: "{{ instance_eip.public_ip }}"
     groups: streisand-host
+    ansible_user: ubuntu
+    ansible_become: yes
 
 - name: Set the streisand_ipv4_address variable
   set_fact:
