@@ -9,21 +9,15 @@ set httpd port 2812 and
     allow localhost        # allow localhost to connect to the server
 
 
-# nginx
+# Nginx
 check process nginx with pidfile /var/run/nginx.pid
   start program = "/etc/init.d/nginx start"
   stop  program = "/etc/init.d/nginx stop"
   if cpu is greater than 40% for 2 cycles then alert
   if cpu > 60% for 5 cycles then restart
   if 10 restarts within 10 cycles then timeout
-  if failed host 127.0.0.1 port {{ nginx_port }} type tcpssl and
-    expect ""
-    send "GET / HTTP/1.1\r\n"
-    send "Host: Localhost\r\n"
-    send "Accept: */*\r\n"
-    send "User-Agent: Monit/Localhost\r\n"
-    send ""
-    expect ""
+  if failed host 127.0.0.1 port {{ nginx_port }} protocol https and
+    status = 401
   then restart
 
 
