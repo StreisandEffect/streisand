@@ -70,6 +70,18 @@
     - "{{ nginx_private_key }}"
     - "{{ streisand_gateway_password_file }}"
 
+- name: Register MITM mitigation fact (certificate authority serial number)
+  command: openssl x509 -in {{ openssl_ca_certificate }} -noout -serial
+  register: ssl_certificate_authority_serial_number
+
+- name: Register more MITM mitigation facts (certificate authority fingerprints)
+  command: openssl x509 -{{ item }} -in {{ openssl_ca_certificate }} -noout -fingerprint
+  with_items:
+    - sha256
+    - sha1
+    - md5
+  register: ssl_certificate_authority_fingerprints
+
 - name: Register MITM mitigation fact (certificate serial number)
   command: openssl x509 -in {{ nginx_self_signed_certificate }} -noout -serial
   register: ssl_certificate_serial_number
