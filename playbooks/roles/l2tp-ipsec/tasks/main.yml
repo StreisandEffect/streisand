@@ -2,6 +2,7 @@
 - name: Install the Libreswan dependencies that are required for compilation
   apt:
     name: "{{ item }}"
+    install_recommends: "{{ 'yes' if item == 'xmlto' else 'no' }}"
   with_items: "{{ libreswan_compilation_dependencies }}"
 
 - name: Install xl2tpd
