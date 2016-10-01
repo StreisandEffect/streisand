@@ -1,5 +1,7 @@
 ---
 streisand_common_packages:
+  # Enables support for the HTTPS protocol in APT sources
+  - apt-transport-https
   # Used to compile Libreswan and OpenConnect Server (ocserv)
   - build-essential
   # Used to perform API requests, including the version check for
@@ -27,8 +29,6 @@ streisand_common_packages:
   # Word List dictionary used by several roles to generate random
   # (yet typeable!) passphrases
   - wamerican-huge
-  # Ensuring this is installed as some cloud providers don't install by default
-  - apt-transport-https
 
 streisand_gateway_location: "/var/www/streisand"
 
