@@ -1,5 +1,7 @@
 ---
 streisand_common_packages:
+  # Ensure that Apparmor is installed
+  - apparmor
   # Enables support for the HTTPS protocol in APT sources
   - apt-transport-https
   # Used to compile Libreswan and OpenConnect Server (ocserv)
