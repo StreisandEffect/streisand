@@ -1,5 +1,5 @@
 ---
-- name: Apply sysctl value enable TCP fast open
+- name: Apply the sysctl value to enable TCP Fast Open
   sysctl:
     name: net.ipv4.tcp_fastopen
     value: 3
@@ -55,7 +55,7 @@
 - name: Generate the Shadowsocks QR code
   # The ss:// URI format is documented here:
   #   http://shadowsocks.org/en/config/quick-guide.html
-  shell: echo -n '{{ shadowsocks_encryption_method }}:{{ shadowsocks_password.stdout }}@{{ streisand_ipv4_address }}:{{ shadowsocks_server_port }}' | base64 --wrap=0 | sed 's/^/ss:\/\//' | qrencode -s 8 -o {{ shadowsocks_qr_code }}
+  shell: echo -n '{{ shadowsocks_encryption_method }}-auth:{{ shadowsocks_password.stdout }}@{{ streisand_ipv4_address }}:{{ shadowsocks_server_port }}' | base64 --wrap=0 | sed 's/^/ss:\/\//' | qrencode -s 8 -o {{ shadowsocks_qr_code }}
 
 - name: Set permissions on the Shadowsocks password file
   file:

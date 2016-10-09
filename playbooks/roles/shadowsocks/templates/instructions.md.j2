@@ -56,6 +56,7 @@ Here is the configuration information that you'll need:
         Port: {{ shadowsocks_server_port }}
         Password: {{ shadowsocks_password.stdout }}
         Encryption Method: {{ shadowsocks_encryption_method }}
+        One-time Authentication: {{ shadowsocks_enable_ota }}
 
 Once you have Shadowsocks running locally, you'll need to forward your browser traffic through the SOCKS proxy it provides.
 
