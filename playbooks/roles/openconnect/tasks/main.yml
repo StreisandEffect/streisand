@@ -9,7 +9,7 @@
     # This CDN mirrors the ocserv source code, and helps
     # mitigate connection errors that were occurring when
     # using the project's official download location.
-    url: https://d1shxn4vnb0yj3.cloudfront.net/{{ ocserv_source_filename }}
+    url: https://d25kfp60e9u1dw.cloudfront.net/{{ ocserv_source_filename }}
     dest: "{{ ocserv_source_location }}"
     checksum: "{{ ocserv_checksum }}"
     owner: root

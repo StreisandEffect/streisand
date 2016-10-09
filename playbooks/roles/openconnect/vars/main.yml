@@ -15,8 +15,8 @@ ocserv_dependencies:
   - libseccomp-dev
   - libwrap0-dev
   - pkg-config
-ocserv_checksum: "sha256:fd9d21ca8105bedd66fddbf727a8188184333509cc30e14fb80e2b4a6ef58170"
-ocserv_version: "0.11.2"
+ocserv_checksum: "sha256:2a80e32e538044fba7745fd2a0cfaa27a398097fb8d4d684c1142118b69219cb"
+ocserv_version: "0.11.5"
 ocserv_compilation_directory: "/usr/local/src/ocserv-{{ ocserv_version }}"
 ocserv_source_filename: "ocserv-{{ ocserv_version }}.tar.xz"
 ocserv_source_location: "/usr/local/src/{{ ocserv_source_filename }}"
