@@ -19,12 +19,6 @@ shadowsocks_gui_url: "https://github.com/shadowsocks/shadowsocks-windows/release
 shadowsocks_gui_checksum: "sha256:aa1689d0e4fe83becafdaae7862fa3bd0335229f80cf55d00d4c12bcb1d65fe8"
 
 # OS X
-shadowsocks_x_version: "2.6.3"
-shadowsocks_x_filename: "ShadowsocksX-{{ shadowsocks_x_version }}.dmg"
-shadowsocks_x_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_filename }}"
-shadowsocks_x_url: "https://github.com/shadowsocks/shadowsocks-iOS/releases/download/{{ shadowsocks_x_version }}/{{ shadowsocks_x_filename }}"
-shadowsocks_x_checksum: "sha256:f0e263dd1d74b0b6977389f2b8b28c524bceccbc5ad24ca8a8164b92ede1c45a"
-
 shadowsocks_x_ng_version: "1.2"
 shadowsocks_x_ng_filename: "ShadowsocksX-NG-{{ shadowsocks_x_ng_version }}.dmg"
 shadowsocks_x_ng_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_ng_filename }}"
@@ -41,6 +35,5 @@ shadowsocks_python_checksum: "sha256:52800de519783009f12c5634c1d69a43626a1e0a1a1
 shadowsocks_download_urls:
   - { url: "{{ shadowsocks_android_url }}", checksum: "{{ shadowsocks_android_checksum }}" }
   - { url: "{{ shadowsocks_gui_url }}",     checksum: "{{ shadowsocks_gui_checksum }}" }
-  - { url: "{{ shadowsocks_x_url }}",       checksum: "{{ shadowsocks_x_checksum }}" }
-  - { url: "{{ shadowsocks_x_ng_url }}",       checksum: "{{ shadowsocks_x_ng_checksum }}" }
+  - { url: "{{ shadowsocks_x_ng_url }}",    checksum: "{{ shadowsocks_x_ng_checksum }}" }
   - { url: "{{ shadowsocks_python_url }}",  checksum: "{{ shadowsocks_python_checksum }}" }
