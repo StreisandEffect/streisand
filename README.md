@@ -156,7 +156,7 @@ You can also run Streisand on any number of new Ubuntu 16.04 servers. Dedicated 
 
     ansible-playbook playbooks/streisand.yml
 
-The servers should be accessible using SSH keys, and *root* is used as the connecting user by default (though this is simple to change by updating the streisand.yml file or ansible.cfg file).
+The servers should be accessible using SSH keys, and *root* is used as the connecting user by default (though this is simple to change while editing the inventory file).
 
 Upcoming Features
 -----------------
