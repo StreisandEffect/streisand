@@ -27,7 +27,7 @@
     creates: "{{ libreswan_compilation_directory }}/README"
 
 - name: Compile and install Libreswan (this will take a while)
-  shell: make programs && make install
+  shell: make -j {{ ansible_processor_cores }} programs && make install
   args:
     chdir: "{{ libreswan_compilation_directory }}"
 
