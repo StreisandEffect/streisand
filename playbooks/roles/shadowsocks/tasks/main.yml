@@ -1,4 +1,10 @@
 ---
+- name: Apply sysctl value enable TCP fast open
+  sysctl:
+    name: net.ipv4.tcp_fastopen
+    value: 3
+    state: present
+
 - name: Add the official Shadowsocks.org APT key
   apt_key:
     id: 1D27208A
