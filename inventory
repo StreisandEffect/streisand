@@ -15,3 +15,10 @@ localhost ansible_python_interpreter=python
 #
 # [streisand-host]
 # 255.255.255.255
+#
+# If the SSH user to be used to login is not "root", specify it here with
+# the ansible_user directive. Streisand will sudo automatically. If sudo
+# requires a password, use the --ask-become-pass command line option.
+#
+# [streisand-host]
+# 255.255.255.255 ansible_user=ubuntu

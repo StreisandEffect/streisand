@@ -4,6 +4,7 @@
   gather_facts: no
 
   remote_user: root
+  become: true
 
   tasks:
     - name: Install Python using a raw SSH command to enable the execution of Ansible modules
@@ -17,6 +18,7 @@
   hosts: streisand-host
 
   remote_user: root
+  become: true
 
   roles:
     - common
