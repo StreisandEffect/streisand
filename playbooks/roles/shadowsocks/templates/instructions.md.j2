@@ -21,6 +21,7 @@ Shadowsocks
    1. Enter `{{ shadowsocks_server_port }}` as the *Server Port*.
    1. Enter `{{ shadowsocks_password.stdout }}` as the *Password*.
    1. The *SOCKS 5 Proxy Port* should be `{{ shadowsocks_local_port }}` and the *Encryption Method* should be `{{ shadowsocks_encryption_method }}`.
+   1. Ensure that support for One-time Authentication (OTA) is enabled.
    1. Click *Save*.
 1. Click on the Shadowsocks menu tray icon and select *Enable*.
 1. That's it! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
