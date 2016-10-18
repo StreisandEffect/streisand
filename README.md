@@ -75,7 +75,7 @@ Services Provided
 
 Installation
 ------------
-Please read all installation instructions **carefully** before proceeding.
+Please read all installation instructions **carefully** before proceeding. If you have questions or issues regarding the installation process, please create a topic on the [streisand-users](https://groups.google.com/forum/#!forum/streisand-users/) mailing list.
 
 ### Important Clarification ###
 Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. That means when you run Streisand, it automatically sets up **another remote server** with the VPN packages and configuration.
