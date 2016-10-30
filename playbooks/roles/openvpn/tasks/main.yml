@@ -18,6 +18,22 @@
     - udev
     - dnsmasq
 
+- name: Ensure that OpenVPN does not attempt to start before the standard network interfaces are available
+  # This fixes an issue where GCE and EC2 servers lose network
+  # connectivity upon reboot. OpenVPN 2.4 should remove the need for
+  # this workaround.
+  #
+  # Nice description of the bug:
+  # https://bugs.launchpad.net/ubuntu/+source/openvpn/+bug/1598522
+  #
+  # OpenVPN patch:
+  # https://sourceforge.net/p/openvpn/mailman/openvpn-devel/thread/1476996158-5390-1-git-send-email-davids%40openvpn.net/#msg35440659
+  lineinfile:
+    dest: /lib/systemd/system/openvpn@.service
+    regexp: "^After"
+    line: "After=syslog.target network-online.target"
+    insertafter: "^Description"
+
 - name: Generate RSA keys for the CA and Server
   command: openssl genrsa -out {{ item }}.key {{ openvpn_key_size }}
   args:
