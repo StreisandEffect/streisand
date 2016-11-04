@@ -13,7 +13,7 @@
 
 - name: Add the Shadowsocks-libev repository
   apt_repository:
-    repo: 'deb http://shadowsocks.org/{{ ansible_distribution|lower }} trusty main'
+    repo: 'deb https://shadowsocks.org/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main'
     state: present
 
 - name: Install shadowsocks-libev
