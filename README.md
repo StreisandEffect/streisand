@@ -111,6 +111,8 @@ Complete all of these tasks on your local home machine.
   * On OS X
 
             sudo easy_install pip
+            sudo pip install pycurl
+            
 * Install [Ansible](http://www.ansible.com/home).
   * On OS X (via [Homebrew](http://brew.sh/))
 
