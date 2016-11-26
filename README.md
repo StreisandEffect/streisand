@@ -95,6 +95,7 @@ In some circumstances advanced users may opt to use the local provisioning mode 
 ### Prerequisites ###
 Complete all of these tasks on your local home machine.
 
+* If you have a working Docker install available, you can skip this section and [continue below](#docker-execution).
 * Streisand requires a BSD, Linux, or OS X system. As of now, Windows is not supported. All of the following commands should be run inside a Terminal session.
 * Python 2.7 is required. This comes standard on OS X, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
@@ -171,6 +172,15 @@ Complete all of these tasks on your local home machine.
 3. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
 4. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
 5. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
+
+<a name="docker-execution"></a>
+### Docker Execution ###
+1. Execute the Streisand script from Docker hub (if you prefer you can build the Dockerfile in the repository root locally).
+
+        docker run -it --rm jlund/streisand
+2. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
+3. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
+4. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
 
 ### Running Streisand to Provision Localhost (Advanced) ###
 
