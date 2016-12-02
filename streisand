@@ -7,7 +7,7 @@ echo
 echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m"
 echo
 
-command -v ansible 2>&1 > /dev/null || {
+command -v ansible > /dev/null 2>&1 || {
   echo "Ansible is not installed."
   exit 1
 }
