@@ -22,6 +22,9 @@
       "13": "asia-east1-a"
       "14": "asia-east1-b"
       "15": "asia-east1-c"
+      "16": "asia-northeast1-a"
+      "17": "asia-northeast1-b"
+      "18": "asia-northeast1-c"
 
 
   # These variable files are included so the gce-network role
@@ -55,6 +58,9 @@
           13. East Asia       (Taiwan A)
           14. East Asia       (Taiwan B)
           15. East Asia       (Taiwan C)
+          16. Northeast Asia  (Tokyo A)
+          17. Northeast Asia  (Tokyo B)
+          18. Northeast Asia  (Tokyo C)
         Please choose the number of your zone. Press enter for default (#3) zone.
       default: "3"
       private: no
