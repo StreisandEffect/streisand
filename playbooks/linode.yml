@@ -15,6 +15,7 @@
       "6": 6
       "7": 9
       "8": 8
+      "9": 11
 
   vars_prompt:
     - name: "linode_datacenter"
@@ -28,7 +29,8 @@
           6. Newark
           7. Singapore
           8. Tokyo
-        Please choose the number of your region. Press enter for default (#6) region.
+          9. Tokyo 2
+        Please choose the number of your region. Press enter for default (#7) region.
       default: "7"
       private: no
 

@@ -49,8 +49,7 @@
     wait: yes
   register: streisand_server
 
-# The auto-recover action is currently only available in us-east-1
-- name: Create CloudWatch alarm to auto-recover instance (us-east-1 only)
+- name: Create CloudWatch alarm to auto-recover instance
   ec2_metric_alarm:
     name: "autorecover-{{ aws_instance_name }}"
     description: "This alarm will auto-recover the EC2 instance on host failure"
@@ -69,9 +68,7 @@
       InstanceId: "{{ streisand_server.instances[0].id }}"
     alarm_actions:
       - "arn:aws:automate:{{ aws_region }}:ec2:recover"
-  when:
-    - aws_region == "us-east-1"
-    - aws_instance_type.startswith(("t2", "c3", "c4", "m3", "r3"))
+  when: aws_instance_type.startswith(("t2", "c3", "c4", "m3", "m4", "r3", "x1"))
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for:

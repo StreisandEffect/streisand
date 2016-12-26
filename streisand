@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
+# Streisand provisioning script
+
+set -e
 
 echo
 echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m"
 echo
+
+command -v ansible > /dev/null 2>&1 || {
+  echo "Ansible is not installed."
+  exit 1
+}
 
 required_ansible_version="2.1.1.0"
 
 if [[ "$(ansible --version | grep -oe '2\(.[0-9]\)*')" < $required_ansible_version ]]
 then
     echo "Ansible $required_ansible_version or higher is required."
-    exit -1;
+    exit 1
 fi
 
 echo -n "Which provider are you using?
@@ -28,4 +36,5 @@ case "$reply" in
   3) echo; echo; ansible-playbook playbooks/google.yml;;
   4) echo; echo; ansible-playbook playbooks/linode.yml;;
   5) echo; echo; ansible-playbook playbooks/rackspace.yml;;
+  *) echo; echo "Invalid provider selected."; exit 1;;
 esac
