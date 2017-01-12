@@ -56,7 +56,7 @@
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-l2tp-ipsec"
-    allowed: "udp:{{ ike_port }},{{ ipsec_port }},{{ l2tp_port }}"
+    allowed: "udp:500,4500,1701"
     state: "present"
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
