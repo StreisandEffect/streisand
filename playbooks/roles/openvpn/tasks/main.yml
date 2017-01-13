@@ -183,11 +183,6 @@
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
-- name: Enable IPv4 traffic forwarding
-  sysctl:
-    name: net.ipv4.ip_forward
-    value: 1
-
 - name: Allow OpenVPN through the firewall
   command: "{{ item }}"
   with_items: "{{ openvpn_firewall_rules }}"

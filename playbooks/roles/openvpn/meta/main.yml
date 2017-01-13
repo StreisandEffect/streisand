@@ -1,4 +1,5 @@
 ---
 dependencies:
   - { role: diffie-hellman-group }
+  - { role: ip-forwarding }
   - { role: rc-local }
