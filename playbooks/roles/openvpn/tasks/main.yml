@@ -16,7 +16,6 @@
   with_items:
     - openvpn
     - udev
-    - dnsmasq
 
 - name: Generate RSA keys for the CA and Server
   command: openssl genrsa -out {{ item }}.key {{ openvpn_key_size }}
@@ -197,12 +196,6 @@
     src: etc_openvpn_server_udp.conf.j2
     dest: /etc/openvpn/server-udp.conf
   notify: Restart OpenVPN
-
-- name: Generate dnsmasq configuration file
-  template:
-    src: etc_dnsmasq.conf.j2
-    dest: /etc/dnsmasq.conf
-  notify: Restart dnsmasq
 
 - name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server
   command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0] }}
