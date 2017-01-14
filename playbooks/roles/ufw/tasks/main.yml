@@ -106,3 +106,9 @@
     to_port: "{{ tor_obfs4_port }}"
     proto: "tcp"
     rule: "allow"
+
+- name: Ensure UFW allows Wireguard
+  ufw:
+    to_port: "{{ wireguard_port }}"
+    proto: "udp"
+    rule: "allow"
