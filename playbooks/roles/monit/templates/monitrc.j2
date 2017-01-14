@@ -26,7 +26,7 @@ check process vpn-network with pidfile /var/run/openvpn/server.pid
    start program = "/etc/init.d/openvpn start server"
    stop program = "/etc/init.d/openvpn stop server"
 
-check host tap0 with address 10.8.0.1
+check host tun0 with address 10.8.0.1
     start program = "/etc/init.d/openvpn start server"
     stop program = "/etc/init.d/openvpn stop server"
     if failed
@@ -37,7 +37,7 @@ check process vpn-network-udp with pidfile /var/run/openvpn/server-udp.pid
    start program = "/etc/init.d/openvpn start server-udp"
    stop program = "/etc/init.d/openvpn stop server-udp"
 
-check host tap1 with address 10.9.0.1
+check host tun1 with address 10.9.0.1
     start program = "/etc/init.d/openvpn start server-udp"
     stop program = "/etc/init.d/openvpn stop server-udp"
     if failed
