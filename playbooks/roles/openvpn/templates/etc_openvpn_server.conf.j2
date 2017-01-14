@@ -1,5 +1,5 @@
 server 10.8.0.0 255.255.255.0
-push "dhcp-option DNS 10.8.0.1"
+push "dhcp-option DNS {{ dnsmasq_openvpn_tcp_ip }}"
 proto tcp
 port {{ openvpn_port }}
 {% include "etc_openvpn_server_common.j2" %}
