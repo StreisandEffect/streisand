@@ -35,5 +35,6 @@
     - sslh
     - monit
     - ufw
+    - wireguard
     - streisand-mirror
     - streisand-gateway

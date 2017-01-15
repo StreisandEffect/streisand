@@ -23,6 +23,12 @@
 {{ rule }}
 {% endfor %}
 
+# Wireguard
+{% for rule in wireguard_firewall_rules %}
+{{ rule }}
+{% endfor %}
+{{ wireguard_interface_command }}
+
 ipsec setup start
 /etc/init.d/xl2tpd restart
 

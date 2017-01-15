@@ -1,0 +1,98 @@
+---
+- name: Add the Wireguard PPA
+  apt_repository:
+    repo: 'ppa:wireguard/wireguard'
+
+- name: Install the Wireguard packages
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - dkms
+    - wireguard-dkms
+    - wireguard-tools
+
+- name: Discover the installed Wireguard version
+  shell: dpkg-query --showformat='${Version}' --show wireguard-tools | sed -e 's/-wg.*$//'
+  register: wireguard_version
+
+- name: Install the Wireguard kernel module using dkms
+  shell: dkms install wireguard/{{ wireguard_version.stdout }}
+
+- name: Generate private and public keys for the client and server
+  shell: wg genkey | tee {{ item.private }} | wg pubkey > {{ item.public }}
+  args:
+    creates: "{{ item.public }}"
+  with_items:
+    - { private: "{{ wireguard_server_private_key_file }}", public: "{{ wireguard_server_public_key_file }}" }
+    - { private: "{{ wireguard_client_private_key_file }}", public: "{{ wireguard_client_public_key_file }}" }
+
+- name: Generate a pre-shared key
+  shell: wg genpsk > {{ wireguard_preshared_key_file }}
+  args:
+    creates: "{{ wireguard_preshared_key_file }}"
+
+- name: Set permissions on the client, server, and pre-shared keys
+  file:
+    path: "{{ wireguard_path }}"
+    recurse: yes
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Register the key file contents
+  command: cat {{ item }}
+  register: wireguard_key_files
+  with_items:
+    - "{{ wireguard_client_private_key_file }}"
+    - "{{ wireguard_client_public_key_file }}"
+    - "{{ wireguard_server_private_key_file }}"
+    - "{{ wireguard_server_public_key_file }}"
+    - "{{ wireguard_preshared_key_file }}"
+
+- name: Set the key material facts
+  set_fact:
+    wireguard_client_private_key: "{{ wireguard_key_files.results[0].stdout }}"
+    wireguard_client_public_key:  "{{ wireguard_key_files.results[1].stdout }}"
+    wireguard_server_private_key: "{{ wireguard_key_files.results[2].stdout }}"
+    wireguard_server_public_key:  "{{ wireguard_key_files.results[3].stdout }}"
+    wireguard_preshared_key:      "{{ wireguard_key_files.results[4].stdout }}"
+
+- name: Generate the client and server configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ wireguard_path }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_items:
+    - wg0-client.conf
+    - wg0-server.conf
+
+- name: Allow Wireguard through the firewall
+  command: "{{ item }}"
+  with_items: "{{ wireguard_firewall_rules }}"
+
+- name: Bring up the Wireguard network interface
+  command: "{{ wireguard_interface_command }}"
+
+- name: Create the Wireguard Gateway directory
+  file:
+    path: "{{ wireguard_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- name: Copy the client configuration file to the Wireguard Gateway directory
+  command: cp {{ wireguard_path }}/wg0-client.conf {{ wireguard_gateway_location }}
+  args:
+    creates: "{{ wireguard_gateway_location }}/wg0-client.conf"
+
+- name: Generate the Markdown Wireguard instructions
+  template:
+    src: instructions.md.j2
+    dest: "{{ wireguard_markdown_instructions }}"
+
+- name: Convert the Markdown Wireguard instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ wireguard_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ wireguard_html_instructions }}

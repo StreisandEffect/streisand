@@ -1,0 +1,26 @@
+Wireguard
+---------
+If you are a Linux Desktop user, [Wireguard](https://www.wireguard.io/) is almost certainly the best connection option that Streisand provides. This is due to its [incredible performance](https://www.wireguard.io/performance/), [class-leading cryptography](https://www.wireguard.io/protocol/), and many, many other benefits.
+
+Wireguard is currently only available for Linux, but [cross-platform](https://www.wireguard.io/xplatform/) and portable implementations are under active development.
+
+---
+
+<a name="linux"></a>
+### Linux ###
+1. [Install Wireguard](https://www.wireguard.io/install/)
+1. Download the client configuration file:
+   * [wg0-client.conf](/wireguard/wg0-client.conf)
+1. Move the client configuration file into the correct directory:
+
+   `sudo mv ~/Downloads/wg0-client.conf /etc/wireguard/`
+1. Set permissions on the client configuration file:
+
+   `sudo chown root:root /etc/wireguard/wg0-client.conf; sudo chmod 600 /etc/wireguard/wg0-client.conf`
+1. Use the `wg-quick` utility to bring up the Wireguard interface:
+
+   `sudo wg-quick up wg0-client`
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. To stop routing your traffic through Wireguard, simply bring the interface back down:
+
+   `sudo wg-quick down wg0-client`

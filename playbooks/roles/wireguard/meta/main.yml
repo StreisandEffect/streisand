@@ -1,0 +1,5 @@
+---
+dependencies:
+  - { role: dnsmasq }
+  - { role: ip-forwarding }
+  - { role: rc-local }
