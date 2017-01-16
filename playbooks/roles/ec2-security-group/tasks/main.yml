@@ -91,7 +91,7 @@
         from_port: "{{ tor_obfs4_port }}"
         to_port: "{{ tor_obfs4_port }}"
         cidr_ip: 0.0.0.0/0
-      # Wireguard
+      # WireGuard
       # ---
       - proto: udp
         from_port: "{{ wireguard_port }}"

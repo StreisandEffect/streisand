@@ -63,7 +63,7 @@
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
 
-- name: Open the Wireguard port in the GCE firewall
+- name: Open the WireGuard port in the GCE firewall
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-wireguard"

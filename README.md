@@ -72,9 +72,9 @@ Services Provided
   * Firewall rules are configured for every service, and any traffic that is sent to an unauthorized port will be blocked.
 * [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
   * Your Streisand server is configured to automatically install new security updates.
-* [Wireguard](https://www.wireguard.io/)
+* [WireGuard](https://www.wireguard.io/)
   * Linux desktop users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast.
-  * In addition to the public-key crypto that Wireguard uses by default, a pre-shared key is also configured to help provide post-quantum resistance. Use the VPN of the future with an eye towards the future!
+  * In addition to the public-key crypto that WireGuard uses by default, a pre-shared key is also configured to help provide post-quantum resistance. Use the VPN of the future with an eye towards the future!
 
 Installation
 ------------
