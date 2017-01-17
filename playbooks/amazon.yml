@@ -32,6 +32,7 @@
     - roles/streisand-gateway/defaults/main.yml
     - roles/stunnel/defaults/main.yml
     - roles/tor-bridge/defaults/main.yml
+    - roles/wireguard/defaults/main.yml
 
   vars_prompt:
     - name: "aws_region_var"
