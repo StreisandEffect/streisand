@@ -12,19 +12,19 @@ If you are installing Streisand on an existing server or alternate provider then
 * Nginx (Streisand Gateway)
   * TCP - {{ nginx_port }}
 * OpenConnect / Cisco AnyConnect
-  * TCP - {{ ocserv_port }}
-  * UDP - {{ ocserv_port }}
+  * TCP - {{ ocserv_port | default(4443) }}
+  * UDP - {{ ocserv_port | default(4443) }}
 * OpenSSH
   * TCP - {{ ssh_port }}
 * OpenVPN
   * UDP - 53 to/from `10.8.0.1`
     * This is the address that OpenVPN binds to on the virtual TUN interface that it creates. Dnsmasq listens for DNS traffic on this port and responds to requests from connected OpenVPN clients.
-  * TCP - {{ openvpn_port }}
-  * UDP - {{ openvpn_port_udp }}
+  * TCP - {{ openvpn_port | default(636) }}
+  * UDP - {{ openvpn_port_udp | default(8757) }}
 * Shadowsocks
-  * TCP - {{ shadowsocks_server_port }}
+  * TCP - {{ shadowsocks_server_port | default(8530) }}
 * stunnel
-  * TCP - {{ stunnel_remote_port }}
+  * TCP - {{ stunnel_remote_port | default(993) }}
 * Tor
-  * TCP - {{ tor_orport }} - Bridge
-  * TCP - {{ tor_obfs4_port }} - obfs4 pluggable transport
+  * TCP - {{ tor_orport | default(8443) }} - Bridge
+  * TCP - {{ tor_obfs4_port | default(9443) }} - obfs4 pluggable transport
