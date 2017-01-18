@@ -8,6 +8,11 @@
   apt:
     name: xl2tpd
 
+- name: Install xmlto (without the extraordinarily large number of packages it normally recommends)
+  apt:
+    name: xmlto
+    install_recommends: no
+
 - name: Retrieve the Libreswan source code
   get_url:
     url: https://download.libreswan.org/{{ libreswan_source_filename }}
