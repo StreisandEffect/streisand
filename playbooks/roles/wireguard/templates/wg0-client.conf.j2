@@ -1,12 +1,12 @@
 [Interface]
 Address = 10.192.122.2/32
-# These PostUp and PostDown commands were tested on Ubuntu (16.04),
-# but you may need to modify them for the distribution of your choice.
+# These PostUp and PostDown commands should work on most distributions,
+# but you may need to modify them if your network situation is unique.
 #
 # The IP address of the DNS server that is available via the encrypted
 # WireGuard interface is {{ dnsmasq_wireguard_ip }}.
-PostUp = cp /etc/resolv.conf /tmp/resolv.conf-pre-wireguard; echo 'nameserver {{ dnsmasq_wireguard_ip }}' > /etc/resolv.conf
-PostDown = cat /tmp/resolv.conf-pre-wireguard > /etc/resolv.conf
+PostUp = echo nameserver {{ dnsmasq_wireguard_ip }} | resolvconf -a %i -m 0
+PostDown = resolvconf -d %i
 PrivateKey = {{ wireguard_client_private_key }}
 PresharedKey = {{ wireguard_preshared_key }}
 
