@@ -30,16 +30,16 @@
       # L2TP/IPsec
       # ---
       - proto: udp
-        from_port: "{{ ike_port }}"
-        to_port: "{{ ike_port }}"
+        from_port: "500"
+        to_port: "500"
         cidr_ip: 0.0.0.0/0
       - proto: udp
-        from_port: "{{ ipsec_port }}"
-        to_port: "{{ ipsec_port }}"
+        from_port: "4500"
+        to_port: "4500"
         cidr_ip: 0.0.0.0/0
       - proto: udp
-        from_port: "{{ l2tp_port }}"
-        to_port: "{{ l2tp_port }}"
+        from_port: "1701"
+        to_port: "1701"
         cidr_ip: 0.0.0.0/0
       # OpenConnect (ocserv)
       # ---

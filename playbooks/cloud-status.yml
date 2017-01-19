@@ -1,0 +1,13 @@
+- name: Checking instance status
+# =========================================
+  hosts: streisand-host
+  gather_facts: no
+
+  remote_user: root
+  become: true
+
+  tasks:
+    - name: Wait for cloud-init to complete
+      raw: bash -c "for i in {1..30}; do if [ -f /var/lib/cloud/instance/boot-finished ]; then exit 0; fi; sleep 1; done; exit 1;"
+      register: result
+      failed_when: result.rc != 0

@@ -46,4 +46,5 @@
     - genesis-rackspace
 
 
+- include: cloud-status.yml
 - include: streisand.yml

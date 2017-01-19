@@ -17,7 +17,6 @@ libreswan_compilation_dependencies:
   - libsystemd-dev
   - libunbound-dev
   - pkg-config
-  - xmlto
 libreswan_checksum: "sha256:2ff61178913287567ed2736287df47e7f9a822ddcded967f3af5f03e95b5f17d"
 libreswan_version: "3.18"
 libreswan_compilation_directory: "/usr/local/src/libreswan-{{ libreswan_version }}"

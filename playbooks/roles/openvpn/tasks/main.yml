@@ -7,7 +7,7 @@
 
 - name: Add the official OpenVPN repository
   apt_repository:
-    repo: 'deb https://swupdate.openvpn.net/apt {{ ansible_lsb.codename }} main'
+    repo: 'deb https://build.openvpn.net/debian/openvpn/stable {{ ansible_lsb.codename }} main'
     state: present
 
 - name: Install OpenVPN and its dependencies from APT
@@ -16,23 +16,6 @@
   with_items:
     - openvpn
     - udev
-    - dnsmasq
-
-- name: Ensure that OpenVPN does not attempt to start before the standard network interfaces are available
-  # This fixes an issue where GCE and EC2 servers lose network
-  # connectivity upon reboot. OpenVPN 2.4 should remove the need for
-  # this workaround.
-  #
-  # Nice description of the bug:
-  # https://bugs.launchpad.net/ubuntu/+source/openvpn/+bug/1598522
-  #
-  # OpenVPN patch:
-  # https://sourceforge.net/p/openvpn/mailman/openvpn-devel/thread/1476996158-5390-1-git-send-email-davids%40openvpn.net/#msg35440659
-  lineinfile:
-    dest: /lib/systemd/system/openvpn@.service
-    regexp: "^After"
-    line: "After=syslog.target network-online.target"
-    insertafter: "^Description"
 
 - name: Generate RSA keys for the CA and Server
   command: openssl genrsa -out {{ item }}.key {{ openvpn_key_size }}
@@ -75,7 +58,7 @@
   args:
     creates: "{{ openvpn_server_common_name_file }}"
 
-- name: "Set permissions on the OpenVPN server common name file"
+- name: Set permissions on the OpenVPN server common name file
   file:
     path: "{{ openvpn_server_common_name_file }}"
     owner: root
@@ -199,11 +182,6 @@
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
 
-- name: Enable IPv4 traffic forwarding
-  sysctl:
-    name: net.ipv4.ip_forward
-    value: 1
-
 - name: Allow OpenVPN through the firewall
   command: "{{ item }}"
   with_items: "{{ openvpn_firewall_rules }}"
@@ -218,12 +196,6 @@
     src: etc_openvpn_server_udp.conf.j2
     dest: /etc/openvpn/server-udp.conf
   notify: Restart OpenVPN
-
-- name: Generate dnsmasq configuration file
-  template:
-    src: etc_dnsmasq.conf.j2
-    dest: /etc/dnsmasq.conf
-  notify: Restart dnsmasq
 
 - name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server
   command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0] }}
