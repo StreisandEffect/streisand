@@ -12,7 +12,7 @@ command -v ansible > /dev/null 2>&1 || {
   exit 1
 }
 
-required_ansible_version="2.2.0.0"
+required_ansible_version="2.2.1.0"
 
 if [[ "$(ansible --version | grep -oe '2\(.[0-9]\)*')" < $required_ansible_version ]]
 then
