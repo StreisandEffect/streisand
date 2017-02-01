@@ -9,7 +9,7 @@ stunnel_michal_trojnara_expected_fingerprint: "Key fingerprint = AC91 5EA3 0645 
 
 stunnel_base_download_url: "https://www.stunnel.org"
 
-stunnel_installer_filename: "stunnel-{{ stunnel_version }}-installer.exe"
+stunnel_installer_filename: "stunnel-{{ stunnel_version }}-win32-installer.exe"
 stunnel_installer_sig_filename: "{{ stunnel_installer_filename }}.asc"
 stunnel_installer_href: "{{ stunnel_mirror_href_base }}/{{ stunnel_installer_filename }}"
 stunnel_installer_sig_href: "{{ stunnel_mirror_href_base }}/{{ stunnel_installer_sig_filename }}"
