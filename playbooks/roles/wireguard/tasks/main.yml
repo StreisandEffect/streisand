@@ -61,6 +61,8 @@
     name: wg-quick@wg0-server.service
     enabled: yes
     state: started
+  # Temporary workaround for issue #500
+  ignore_errors: yes
 
 - name: Create the WireGuard Gateway directory
   file:
