@@ -70,7 +70,6 @@
     rule: "allow"
     from_ip: "10.9.0.0/24"
 
-
 - name: Ensure UFW allows OpenVPN
   ufw:
     to_port: "{{ openvpn_port }}"
@@ -105,4 +104,17 @@
   ufw:
     to_port: "{{ tor_obfs4_port }}"
     proto: "tcp"
+    rule: "allow"
+
+- name: Ensure UFW allows DNS requests from WireGuard clients
+  ufw:
+    to_port: "53"
+    proto: "udp"
+    rule: "allow"
+    from_ip: "10.192.122.0/24"
+
+- name: Ensure UFW allows WireGuard
+  ufw:
+    to_port: "{{ wireguard_port }}"
+    proto: "udp"
     rule: "allow"

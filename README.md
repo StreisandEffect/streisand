@@ -72,6 +72,9 @@ Services Provided
   * Firewall rules are configured for every service, and any traffic that is sent to an unauthorized port will be blocked.
 * [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
   * Your Streisand server is configured to automatically install new security updates.
+* [WireGuard](https://www.wireguard.io/)
+  * Linux users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast.
+  * In addition to the public-key crypto that WireGuard uses by default, a pre-shared key is also configured to help provide post-quantum resistance. Use the VPN of the future with an eye towards the future!
 
 Installation
 ------------
@@ -163,18 +166,20 @@ The servers should be accessible using SSH keys, and *root* is used as the conne
 
 Upcoming Features
 -----------------
-* Native [Microsoft Azure](https://azure.microsoft.com/en-us/) support
-* A flag to allow L2TP/IPsec installation to be disabled
-* Creation of a Streisand pip package to make the setup of all required dependencies even easier
+* Native [Microsoft Azure](https://azure.microsoft.com/en-us/) support.
+* Role isolation and selection, allowing you to choose which daemons and services are installed.
+* Easier setup.
 
 If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/jlund/streisand/issues).
 
 Acknowledgements
 ----------------
+[Jason A. Donenfeld](https://www.zx2c4.com/) deserves a lot of credit for being brave enough to reimagine what a modern VPN should look like and for coming up with something as good as [WireGuard](https://www.wireguard.io/). He has my sincere thanks for all of his patient help and high-quality feedback.
+
+[Corban Raun](https://github.com/CorbanR) was kind enough to lend me a Windows laptop that let me test and refine the instructions for that platform, and he was a big supporter of the project from the very beginning.
+
 I cannot express how grateful I am to [Trevor Smith](https://github.com/trevorsmith) for his massive contributions to the project. He suggested the Gateway approach, provided tons of invaluable feedback, made *everything* look better, and developed the HTML template that served as the inspiration to take things to the next level before Streisand's public release. I also appreciated the frequent use of his iPhone while testing various clients.
 
 Huge thanks to [Paul Wouters](https://nohats.ca/) of [The Libreswan Project](https://libreswan.org/) for his generous help troubleshooting the L2TP/IPsec setup.
-
-[Corban Raun](https://github.com/CorbanR) was kind enough to lend me a Windows laptop that let me test and refine the instructions for that platform, and he was a big supporter of the project from the very beginning.
 
 I also listened to [Starcadian's](http://starcadian.com/) 'Sunset Blood' album approximately 300 times on repeat while working on this.

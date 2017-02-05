@@ -1,6 +1,4 @@
-# 10.8.0.1     = OpenVPN TCP
-# 10.9.0.1     = OpenVPN UDP
-listen-address=127.0.0.1,10.8.0.1,10.9.0.1
+listen-address=127.0.0.1,{{ dnsmasq_openvpn_tcp_ip }},{{ dnsmasq_openvpn_udp_ip }},{{ dnsmasq_wireguard_ip }}
 
 # Never forward plain names (without a dot or domain part)
 domain-needed

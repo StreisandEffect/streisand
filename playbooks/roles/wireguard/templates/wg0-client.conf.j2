@@ -1,0 +1,16 @@
+[Interface]
+Address = 10.192.122.2/32
+# These PostUp and PostDown commands should work on most distributions,
+# but you may need to modify them if your network situation is unique.
+#
+# The IP address of the DNS server that is available via the encrypted
+# WireGuard interface is {{ dnsmasq_wireguard_ip }}.
+PostUp = echo nameserver {{ dnsmasq_wireguard_ip }} | resolvconf -a %i -m 0 -x
+PostDown = resolvconf -d %i
+PrivateKey = {{ wireguard_client_private_key }}
+PresharedKey = {{ wireguard_preshared_key }}
+
+[Peer]
+PublicKey = {{ wireguard_server_public_key }}
+AllowedIPs = 0.0.0.0/0
+Endpoint = {{ streisand_ipv4_address }}:{{ wireguard_port }}

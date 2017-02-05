@@ -167,11 +167,6 @@
 - name: Enable NAT
   command: "{{ ocserv_firewall_rule }}"
 
-- name: Enable IPv4 traffic forwarding
-  sysctl:
-    name: net.ipv4.ip_forward
-    value: 1
-
 - name: Create the OpenConnect/AnyConnect Gateway directory
   file:
     path: "{{ ocserv_gateway_location }}"

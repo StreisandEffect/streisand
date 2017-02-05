@@ -91,6 +91,12 @@
         from_port: "{{ tor_obfs4_port }}"
         to_port: "{{ tor_obfs4_port }}"
         cidr_ip: 0.0.0.0/0
+      # WireGuard
+      # ---
+      - proto: udp
+        from_port: "{{ wireguard_port }}"
+        to_port: "{{ wireguard_port }}"
+        cidr_ip: 0.0.0.0/0
     rules_egress:
       - proto: all
         from_port: 1
