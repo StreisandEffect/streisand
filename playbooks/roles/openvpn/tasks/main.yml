@@ -190,6 +190,17 @@
   loop_control:
     label: "{{ item[0] }}"
 
+- name: Create the combined client configuration profiles that will be used to connect from the fastest to the most compatible
+  template:
+    src: client-combined.ovpn.j2
+    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_combined_profile_filename }}"
+  with_together:
+    - "{{ openvpn_clients }}"
+    - "{{ openvpn_client_certificates.results }}"
+    - "{{ openvpn_client_keys.results }}"
+  loop_control:
+    label: "{{ item[0] }}"
+
 - name: Allow OpenVPN through the firewall
   command: "{{ item }}"
   with_items: "{{ openvpn_firewall_rules }}"
