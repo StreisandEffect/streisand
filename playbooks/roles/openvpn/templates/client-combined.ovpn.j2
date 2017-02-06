@@ -1,0 +1,13 @@
+client
+
+<connection>
+remote {{ openvpn_server }} {{ openvpn_port_udp }} udp
+</connection>
+<connection>
+remote {{ openvpn_server }} {{ openvpn_port }} tcp
+</connection>
+<connection>
+remote {{ openvpn_server }} {{ openvpn_port_sslh }} tcp
+</connection>
+
+{% include "client-common.j2" %}
