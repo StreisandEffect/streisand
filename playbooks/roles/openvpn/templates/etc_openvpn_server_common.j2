@@ -18,7 +18,7 @@ tls-crypt ta.key # This file is secret
 cipher {{ openvpn_cipher }}
 auth {{ openvpn_auth_digest }}
 tls-version-min 1.2
-comp-lzo
+compress lz4
 user nobody
 group nogroup
 persist-key
