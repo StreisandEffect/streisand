@@ -154,6 +154,8 @@
     - "{{ openvpn_clients }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
+  loop_control:
+    label: "{{ item[0] }}"
 
 - name: Create the client configuration profiles that will be used when connecting directly via UDP
   template:
@@ -163,6 +165,8 @@
     - "{{ openvpn_clients }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
+  loop_control:
+    label: "{{ item[0] }}"
 
 - name: Create the client configuration profiles that will be used when connecting via sslh
   template:
@@ -172,6 +176,8 @@
     - "{{ openvpn_clients }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
+  loop_control:
+    label: "{{ item[0] }}"
 
 - name: Create the client configuration profiles that will be used when connecting via stunnel
   template:
@@ -181,6 +187,8 @@
     - "{{ openvpn_clients }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
+  loop_control:
+    label: "{{ item[0] }}"
 
 - name: Allow OpenVPN through the firewall
   command: "{{ item }}"
