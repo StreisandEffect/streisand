@@ -5,20 +5,49 @@
     value: 3
     state: present
 
-- name: Add the official Shadowsocks.org APT key
-  apt_key:
-    id: 1D27208A
-    data: "{{ item }}"
-  with_file: shadowsocks_org_signing.key
+- name: Install the shadowsocks-libev dependencies
+  apt:
+    name: "{{ item }}"
+    install_recommends: no
+  with_items: "{{ shadowsocks_dependencies }}"
 
-- name: Add the Shadowsocks-libev repository
-  apt_repository:
-    repo: 'deb http://shadowsocks.org/{{ ansible_distribution|lower }} trusty main'
-    state: present
+- name: Retrieve the shadowsocks-libev source code
+  get_url:
+    url: https://github.com/shadowsocks/shadowsocks-libev/archive/v{{ shadowsocks_version }}.tar.gz
+    dest: "{{ shadowsocks_source_location }}"
+    checksum: "{{ shadowsocks_checksum }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Extract the shadowsocks-libev source code
+  unarchive:
+    copy: no
+    src: "{{ shadowsocks_source_location }}"
+    dest: /usr/local/src
+    owner: root
+    group: root
+    creates: "{{ shadowsocks_compilation_directory }}/README.md"
+
+- name: Build the shadowsocks-libev package
+  shell: ./autogen.sh && dpkg-buildpackage -j{{ ansible_processor_cores }} -b -us -uc -i
+  args:
+    chdir: "{{ shadowsocks_compilation_directory }}"
+    creates: "{{ shadowsocks_compilation_directory }}/config.log"
+
+- name: Discover the package name (in case we are compiling on an exotic non-AMD64 architecture)
+  command: find /usr/local/src/ -name shadowsocks-libev*.deb
+  register: shadowsocks_debian_package_location
 
 - name: Install shadowsocks-libev
   apt:
-    name: shadowsocks-libev
+    deb: "{{ shadowsocks_debian_package_location.stdout }}"
+
+- name: Ensure that shadowsocks-libev runs as an unprivileged user
+  lineinfile:
+    dest: /etc/default/shadowsocks-libev
+    regexp: "^USER"
+    line: "USER=nobody"
 
 - name: Generate a random Shadowsocks password
   shell: openssl rand -base64 48 > {{ shadowsocks_password_file }}

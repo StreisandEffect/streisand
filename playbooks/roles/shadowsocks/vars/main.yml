@@ -1,4 +1,27 @@
 ---
+shadowsocks_dependencies:
+  - apg
+  - asciidoc
+  - autoconf
+  - automake
+  - debhelper
+  - dh-systemd
+  - gettext
+  - libev-dev
+  - libmbedtls-dev
+  - libpcre3-dev
+  - libsodium-dev
+  - libssl-dev
+  - libtool
+  - libudns-dev
+  - xmlto
+
+shadowsocks_checksum: "sha256:fa232047d12d39bf19f3539828ca1662da5e5905bfc03163ba20c37fe8e94d8f"
+shadowsocks_version: "2.5.6"
+shadowsocks_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ shadowsocks_version }}"
+shadowsocks_source_filename: "shadowsocks-libev-{{ shadowsocks_version }}.tar.gz"
+shadowsocks_source_location: "/usr/local/src/{{ shadowsocks_source_filename }}"
+
 shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
 
