@@ -102,7 +102,10 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 1. Select `client.crt` from the client-files directory of your choice for the *User Certificate*.
 1. Select `ca.crt` from the same client-files directory for the *CA Certificate*.
 1. Select `client.key` from the same client-files directory for the *Private Key*.
-1. Click the *Advanced* button.
+1. Go to the *IPv4 Settings* tab
+   * Change the *Method* to *Automatic (VPN) addresses only*
+   * Add `{{ openvpn_server }}` into the DNS Servers box.
+1. Go back to the *VPN* tab and click *Advanced*
 1. Go to the *General* tab.
    * Check *Use custom gateway port* and enter `{{ openvpn_port }}` as its value.
      * Port `443` is available as an alternative if you are on a network that only allows access to the two standard HTTP ports.
