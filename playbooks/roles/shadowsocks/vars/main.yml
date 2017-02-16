@@ -6,6 +6,7 @@ shadowsocks_dependencies:
   - automake
   - debhelper
   - dh-systemd
+  - gawk
   - gettext
   - libev-dev
   - libmbedtls-dev
