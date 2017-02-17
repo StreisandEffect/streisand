@@ -11,17 +11,6 @@
     install_recommends: no
   with_items: "{{ shadowsocks_dependencies }}"
 
-<<<<<<< HEAD
-- name: Add the Shadowsocks-libev repository
-  apt_repository:
-    repo: 'deb https://shadowsocks.org/{{ ansible_distribution|lower }} trusty main'
-    state: present
-||||||| merged common ancestors
-- name: Add the Shadowsocks-libev repository
-  apt_repository:
-    repo: 'deb http://shadowsocks.org/{{ ansible_distribution|lower }} trusty main'
-    state: present
-=======
 - name: Retrieve the shadowsocks-libev source code
   get_url:
     url: https://github.com/shadowsocks/shadowsocks-libev/archive/v{{ shadowsocks_version }}.tar.gz
@@ -49,7 +38,6 @@
 - name: Discover the package name (in case we are compiling on an exotic non-AMD64 architecture)
   command: find /usr/local/src/ -name shadowsocks-libev*.deb
   register: shadowsocks_debian_package_location
->>>>>>> upstream/master
 
 - name: Install shadowsocks-libev
   apt:
@@ -103,4 +91,4 @@
     path: "{{ shadowsocks_password_file }}"
     owner: root
     group: root
-    mode: 0600
+mode: 0600
