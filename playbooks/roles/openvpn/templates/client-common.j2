@@ -9,6 +9,7 @@ remote-cert-tls server
 verify-x509-name {{ openvpn_server_common_name.stdout }} name
 tls-version-min 1.2
 comp-lzo
+key-direction 1
 verb 3
 route {{ streisand_ipv4_address }} 255.255.255.255 net_gateway
 
