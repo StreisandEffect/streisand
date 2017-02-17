@@ -24,6 +24,6 @@ route {{ streisand_ipv4_address }} 255.255.255.255 net_gateway
 {{ item[2].stdout }}
 </key>
 
-<tls-crypt>
+<tls-auth>
 {{ openvpn_hmac_firewall_contents.stdout }}
-</tls-crypt>
+</tls-auth>
