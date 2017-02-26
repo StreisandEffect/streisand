@@ -16,7 +16,7 @@ duplicate-cn
 keepalive 1800 3600
 tls-auth ta.key 0 # This file is secret
 cipher {{ openvpn_cipher }}
-ncp-ciphers {{ openvpn_ncp_cipher }}
+ncp-ciphers {{ openvpn_ncp_ciphers }}
 auth {{ openvpn_auth_digest }}
 tls-version-min 1.2
 compress lzo
