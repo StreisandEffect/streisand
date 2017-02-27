@@ -2,7 +2,6 @@ client
 
 <connection>
 remote {{ openvpn_server }} {{ openvpn_port_udp }} udp
-connect-timeout {{ openvpn_connect_timeout }}
 </connection>
 <connection>
 remote {{ openvpn_server }} {{ openvpn_port }} tcp
