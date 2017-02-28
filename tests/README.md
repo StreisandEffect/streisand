@@ -3,7 +3,7 @@ Streisand CI testing uses Travis CI to test Ansible syntax and kick off a full p
 The Full playbook run is executed against an LXC container.
 
 ## Testing Limitations
-There were some connectivity issues with the `tor-bridge` playbook in the Travis CI testing environment. Due to this, the role is curretnly skipped. 
+There were some connectivity issues with the `tor-bridge` playbook in the Travis CI testing environment. Due to this, the role is currently skipped.
 Streisand doc generation is also skipped until some mock variables and tasks are added.
 
 ## Local Testing

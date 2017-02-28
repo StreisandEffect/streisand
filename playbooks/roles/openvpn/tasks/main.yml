@@ -232,17 +232,25 @@
 
 - name: Generate the Markdown OpenVPN instructions
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-  with_items:
-    - { src: "instructions.md.j2",         dest: "{{ openvpn_markdown_instructions }}" }
-    - { src: "stunnel-instructions.md.j2", dest: "{{ openvpn_stunnel_markdown_instructions }}" }
+    src: "instructions{{ item.value.file_suffix}}.md.j2"
+    dest: "{{ openvpn_gateway_location }}/index{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
+
+- name: Generate the Markdown OpenVPN stunnel instructions
+  template:
+    src: "stunnel-instructions{{ item.value.file_suffix}}.md.j2"
+    dest: "{{ openvpn_gateway_location }}/stunnel{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
+
 
 - name: Convert the Markdown OpenVPN instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ item.md }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ item.html }}
-  with_items:
-    - { md: "{{ openvpn_markdown_instructions }}",         html: "{{ openvpn_html_instructions }}" }
-    - { md: "{{ openvpn_stunnel_markdown_instructions }}", html: "{{ openvpn_stunnel_html_instructions }}" }
+  shell: markdown {{ openvpn_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ openvpn_gateway_location }}/index{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"
+
+- name: Convert the Markdown OpenVPN stunnel instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ openvpn_gateway_location }}/stunnel{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ openvpn_gateway_location }}/stunnel{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"
+
 
 - name: Copy the client files to the OpenVPN Gateway directory
   command: cp --recursive {{ openvpn_path }}/{{ item }} {{ openvpn_gateway_location }}

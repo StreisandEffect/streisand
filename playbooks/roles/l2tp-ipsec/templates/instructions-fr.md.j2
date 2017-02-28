@@ -1,0 +1,121 @@
+L2TP/IPsec
+----------
+
+L2TP/IPsec est un excellent premier choix. Il est nativement pris en charge par Android, iOS, OS X et Windows. Il n'y a pas de logiciel supplémentaire à installer. L'installation ne devrait prendre que quelques minutes.
+
+Si la connexion semble instable, vérifiez d'abord que les mots de passe ont été entrés correctement. Si vous ne pouvez toujours pas vous connecter, il est possible que votre pays ou votre FAI bloque le protocole L2TP/IPsec. Ne vous inquiétez pas! les méthodes de connexion [OpenVPN (stunnel)](/openvpn/stunnel.html), [Shadowsocks](/shadowsocks/), [SSH](/ssh/) et [Tor](/tor/) devraient toujours vous servir.
+
+---
+* Plateformes
+  * [Windows](#windows)
+  * [OS X](#osx)
+  * [Linux](#linux)
+  * [Androïde](#android)
+  * [iOS](#ios)
+  * [Chromebook](#chromebook)
+
+<a name="windows"></a>
+### Windows ###
+1. Cliquez sur le menu *Démarrer* et sélectionnez le panneau de configuration.
+1. Accédez à la section *Réseau et Internet*.
+1. Cliquez sur *Afficher l'état du réseau*.
+1. Cliquez sur *Connexion à un réseau*.
+1. Sélectionnez *Connexion à votre espace de travail*.
+1. Cliquez *Utiliser ma connexion Internet (VPN)*.
+1. Saisissez `{{ streisand_ipv4_address }}` dans le champ *Adresse Internet*.
+1. Saisissez `{{ streisand_server_name }}` dans le champ *Nom de la connexion*.
+1. Cocher l'option *Ne pas me connecter maintenant, mais tout préparer pour une connexion ultériuere*.
+1. Cliquez *Suivant*.
+1. Saisissez `streisand` dans le champ *Nom d'utilisateur*.
+1. Saisissez `{{ chap_password.stdout }}` dans le champ *Mot de passe*.
+1. Cocher l'option *Mémoriser ce mot de passe*.
+1. Cliquez *Créer*, en suite cliquez sur le bouton *Fermer*.
+1. Revenez à la section panneau de configuration *Réseau et Internet* et cliquez sur l'option *Connexion à un réseau*.
+1. Cliquez-droit sur la nouvelle connexion *{{ streisand_server_name }}* et choisissez *Propriétés*.
+1. Cliquez sur l'onglet *Options* et décocher *Inclure le domaine d'ouverture de session Windows*.
+1. Cliquez sur l'onglet *Sécurité* et Sélectionnez l'option *Protocole L2TP (Layer 2 Tunneling Protocol)* dans le menu déroulant *Type de réseau VPN*.
+1. Cliquez le bouton *Paramètres avancés*.
+1. Sélectionnez *Utiliser une clé prépartagée pour l'authentification* et saisissez `{{ ipsec_preshared_key.stdout }}` pour la *Clé*.
+1. Cliquez *OK* pour fermer *Paramètres avancés*.
+1. Cliquez *OK* pour sauvegarder les détails de connexion VPN.
+1. Pour vous connecter au VPN, cliquez simplement sur l'icône sans fil/réseau dans votre barre d'état système, sélectionnez *{{streisand_server_name}}*, puis cliquez sur *Connecter*.
+
+Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+<a name="osx"></a>
+### OS X ###
+1. Ouvrir les préférences du système et aller à la section réseau
+1. Cliquez le bouton *+* dans le coin inférieur gauche de la fenêtre.
+1. Sélectionnez *VPN* dans le menu déroulant *Interface*.
+1. Sélectionnez *L2TP via IPSec* dans le menu déroulant *Type de VPN*.
+1. Saisissez `{{ streisand_server_name }}` dans le champ *Nom de service*.
+1. Cliquez *Créer*.
+1. Saisissez `{{ streisand_ipv4_address }}` pour *Adresse du serveur*.
+1. Saisissez `streisand` pour *Nom du compte*.
+1. Cliquez le bouton *Réglages d'authentification*.
+1. Dans la section *Auth. des utilisateurs*, Sélectionnez le bouton *Mot de passe* et saisissez `{{ chap_password.stdout }}` pour sa valeur.
+1. Dans la section *Auth. des machines*, Sélectionnez le bouton *Secret partagé* et saisissez `{{ ipsec_preshared_key.stdout }}` pour sa valeur.
+1. Cliquez *OK*.
+1. Cocher *Afficher l'état VPN dans la barre des menus.
+1. Cliquez le bouton *Avancé* et vérifiez que l'option *Envoyer tout le trafic sur la connexion VPN* est coché.
+1. Cliquez l'onglet *TCP/IP* tab, et vérifiez que l'option *Lien locale uniquement* est sélectionné dans la section *Configurer IPv6*.
+1. Cliquez *OK* pour fermer le menu avancé, puis cliquez *Appliquer* pour sauvgarder le details du connexion VPN.
+
+Vous pouvez vous connecter au VPN à l'aide de l'icône VPN dans la barre de menus, Ou en sélectionnant le VPN dans la section Réseau des Préférences Système et choisir *Se connecter*. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+<a name="linux"></a>
+### Linux ###
+Les connexions L2TP / IPsec ne sont pas prises en charge sur la plupart des distributions Linux sans nécessiter l'installation de logiciels supplémentaires. Cela annule l'un des plus grands appels de L2TP/IPsec (c'est-à-dire son support côté client natif). Il est recommandé d'utiliser une autre méthode de connexion comme OpenVPN à la place, mais si vous souhaitez configurer L2TP/IPsec sur votre bureau Linux, voici les paramètres dont vous aurez besoin:
+    Adresse serveur: {{ streisand_ipv4_address }}
+
+    Clé prépartagée IPsec: {{ ipsec_preshared_key.stdout }}
+
+    Utilisateur CHAP: streisand
+    Mot de passe CHAP: {{ chap_password.stdout }}
+
+<a name="android"></a>
+### Androïde ###
+1. Lancez l'application *Paramètres*.
+1. Appuyez *Plus...* dans la section *Sans fil et réseaux*.
+1. Tapez *VPN*.
+1. Tapez sur l'icône *+* dans le coin supérieur droit de l'écran.
+1. Saisissez `{{ streisand_server_name }}` dans le champ *Nom*.
+1. Sélectionnez *L2TP/IPSec PSK* dans le menu déroulant *Type*.
+1. Saisissez `{{ streisand_ipv4_address }}` dans le champ *Adresse du serveur*.
+1. Saisissez `{{ ipsec_preshared_key.stdout }}` dans le champ *Clé pré-partagée IPSec*.
+1. Tapez *Enregistrer*.
+1. Tapez la connexion *{{ streisand_server_name }}*.
+1. Saisissez `streisand` dans le champ *Nom d'utilisateur*.
+1. Saisissez `{{ chap_password.stdout }}` dans le champ *Mot de passe*.
+1. Cochez l'option *Enregistrer les informations de compte*.
+1. Tapez *Se Connecter*.
+1. Une fois connecté, vous verrez une icône VPN dans la barre d'état. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+<a name="ios"></a>
+### iOS ###
+1. Lancez l'application Réglages -> Général -> VPN.
+1. Tapez *Ajouter une configuration VPN...*.
+1. Tapez *Type*.
+1. Sélectionnez *L2TP* et retourner.
+1. Tapez *Description* et saisissez `{{ streisand_server_name }}`.
+1. Tapez *Serveur* et saisissez `{{ streisand_ipv4_address }}`.
+1. Tapez *Compte* et saisissez `streisand`.
+1. Tapez *Mot de passe* et saisissez `{{ chap_password.stdout }}`.
+1. Tapez *Secret* et saisissez `{{ ipsec_preshared_key.stdout }}`.
+1. Tapez *OK*.
+1. Faites glisser l'interrupteur *VPN* vers la position ON.
+1. Une fois connecté, vous verrez une icône VPN dans la barre d'état. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+<a name="chromebook"></a>
+### Chromebook ###
+1. Cliquez sur *Paramètres*.
+1. Sous *Connexion Internet* cliquez *Ajouter une connexion*.
+1. Cliquez sur *Ajouter une connexion OpenVPN/L2TP*.
+1. Saisissez `{{ streisand_ipv4_address }}` pour le *Nom d'hôte du serveur*.
+1. Saisissez `{{ streisand_server_name }}` pour le *Nom du service*.
+1. Vérifier que le *Type de fournisseur* est *L2TP/IPsec + clé pré-partagée*.
+1. Saisissez `{{ ipsec_preshared_key.stdout }}` pour le *Clé pré-partagée*.
+1. Saisissez `streisand` pour le *Nom d'utilisateur*.
+1. Saisissez `{{ chap_password.stdout }}` pour le *Mot de passe*.
+1. Cliquez sur *Se connecter*.
+1. Une fois connecté, vous verrez une icône VPN dans la barre d'état. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.

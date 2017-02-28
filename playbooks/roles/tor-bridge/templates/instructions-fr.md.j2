@@ -1,0 +1,75 @@
+Pont Tor
+--------
+
+---
+* Plateformes
+  * [Ordinateurs de bureau](#desktops)
+  * [Androïde](#android)
+  * [iOS](#ios)
+
+<a name="desktops"></a>
+### Ordinateurs de bureau ###
+1. Téléchargez le [Tor Browser Bundle](/mirror/index-fr.html#tor) Pour votre plate-forme de choix. Le transport enfichable Obfsproxy obfs4 qu'il inclut vous permettra d'utiliser le réseau Tor, même si votre FAI effectue activement une inspection Deep Packet afin de bloquer votre trafic Tor.
+1. Lancez Tor Browser Bundle.
+1. Cliquez le bouton *Configurer* sous le texte qui lit *La connexion Internet de cet ordinateur est censurée ou relayée*.
+1. Choisissez *Oui* pour la question *Votre fournisseur d'accès à Internet (FAI) bloque-t-il ou censure-t-il vos connexions au réseau Tor?*
+1. Choisissez l'option *Saisir les ponts personnalisés*, et coller les informations suivantes:
+
+         {{ tor_obfs4_bridge_line }}
+1. Répondez a la question du serveur mandataire locale. Dans la plupart des cas la réponse sera *Non*.
+1. Cliquez *Se Connecter*.
+
+Vous êtes prêt à partir! Tor est connecté au serveur de pont *{{ tor_bridge_nickname.stdout }}*, et votre trafic Tor crypté est totalement obscurci par obfsproxy afin qu'il ne ressemble pas au trafic Tor!
+
+<a name="android"></a>
+### Androïde ###
+1. Téléchargez [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android&hl=fr) et lancez-le.
+1. Tapez le bouton *Menu*.
+1. Tapdz *QR Codes*.
+1. Tapez *Analyser BridgeQR*.
+1. Scannez le code QR suivant. Cela configurera automatiquement Orbot pour se connecter à ce serveur en utilisant le transport enfichable obfs4:
+
+   ![Tor obfs4 QR code](/tor/tor-obfs4-qr-code.png)
+1. Vous devez redémarrer Orbot pour que les modifications prennent effet. Tapez sur le bouton *Menu*, sélectionnez *Quitter*, et lancer Orbot à nouveau.
+1. Appuyez sur le bouton *DÉMARRER* pour activer Orbot.
+
+Génial! Orbot s'est connecté au serveur pont *{{ tor_bridge_nickname.stdout }}*!
+
+Vous êtes maintenant prêt à configurer Twitter et Firefox pour acheminer leur trafic via Orbot.
+
+#### Configuration de Twitter pour Android pour utiliser Orbot ####
+1. Ouvrez Twitter.
+1. Accedez au menu de paramètres et confidentialité.
+1. Choisissez *Position et proxy*.
+1. Tapez *Proxy*.
+1. Chocher *Activer le proxy HTTP*.
+1. Tapez *Hôte du proxy* et entrez `127.0.0.1`.
+1. Tapez *Port du proxy* et entrez `8118`.
+
+#### Configuration de Firefox pour Androïde pour utiliser Orbot ####
+1. Ouvrez Firefox.
+2. Tapez `about:config` dans la barre d'adresse et appuyez sur le bouton 'Go' de votre clavier.
+3. Tapez `proxy` dans la barre de recherche.
+4. Définissez la valeur de *network.proxy.socks* à `127.0.0.1`.
+5. Définissez la valeur de *network.proxy.socks\_port* à `9050`.
+6. Définissez la valeur de *network.proxy.socks\_remote\_dns* à `true`.
+7. Définissez la valeur de *network.proxy.type* à `1`.
+
+
+<!--
+App is not localized in French -@alimakki
+-->
+<a name="ios"></a>
+### iOS ###
+1. Téléchargez [Onion Browser](https://itunes.apple.com/fr/app/onion-browser/id519296448?mt=8) et lancez-le.
+1. Tapez le bouton menu sur le bas de l'écran et choisissez *Browser Settings*.
+1. Faites défiler jusqu'au bas et appuyez sur *Bridges & Netwrok Connection*
+1. Sélectionnez *Custom Bridges*
+1. TAppuyez sur l'icône de la caméra dans le coin inférieur droit. Vous devrez peut-être avoir besoin d'activer l'accès de la caméra pour Onion Browser dans vos paramètres iOS.
+1. Scannez le code QR suivant. Cela configurera automatiquement le navigateur Onion pour se connecter à ce serveur à l'aide du transport enfichable obfs4:
+
+   ![Tor obfs4 QR code](/tor/tor-obfs4-qr-code.png)
+1. Tapez *OK* l'orsque la confirmation est affichée.
+1. Tapez *Save*.
+1. Tapez *Restart app*.
+1. Relancez l'application. Si vous vous connectez avec succès, le pont *{{ tor_bridge_nickname.stdout }}* fonctionne correctement et votre connexion est obscurcie par le transport enfichable obfs4!
