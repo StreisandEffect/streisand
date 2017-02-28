@@ -1,5 +1,9 @@
 ![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
 
+- - -
+[English](README.md), [Français](README-fr.md)
+- - -
+
 Streisand
 =========
 
@@ -57,7 +61,18 @@ Services Provided
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
   * The high-performance [libev variant](https://github.com/shadowsocks/shadowsocks-libev) is installed. This version is capable of handling thousands of simultaneous connections.
   * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
+<<<<<<< HEAD
   * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
+||||||| merged common ancestors
+<<<<<<< HEAD
+||||||| merged common ancestors
+  * [One-time Authentication](https://shadowsocks.org/en/spec/one-time-auth.html) (OTA) is enabled for enhanced security and improved GFW evasion.
+=======
+  * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
+>>>>>>> upstream/master
+=======
+  * Le support [d'AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) est activé en utilisant ChaCha20 et Poly1305 pour une sécurité accrue et une meilleure évasion du GFW.
+>>>>>>> updated readme-fr
 * [sslh](http://www.rutschle.net/tech/sslh.shtml)
   * Sslh is a protocol demultiplexer that allows Nginx, OpenSSH, and OpenVPN to share port 443. This provides an alternative connection option and means that you can still route traffic via OpenSSH and OpenVPN even if you are on a restrictive network that blocks all access to non-HTTP ports.
 * [Stunnel](https://www.stunnel.org/index.html)

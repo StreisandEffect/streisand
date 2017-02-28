@@ -1,0 +1,124 @@
+- - -
+{% for key, value in streisand_languages.iteritems() %}
+  [{{ value.language_name }}](index{{ value.file_suffix }}.html)&nbsp;
+{% endfor %}
+- - -
+
+Shadowsocks
+-----------
+
+---
+* Plateformes
+  * [Windows](#windows)
+  * [OS X](#osx)
+  * [Linux](#linux)
+  * [Androïde](#android)
+  * [iOS](#ios)
+
+<a name="windows"></a>
+### Windows ###
+1. Téléchargez [Shadowsocks pour Windows](/mirror/index-fr.html#shadowsocks).
+1. Extrayez l'archive et double-cliquez sur le fichier Shadowsocks.exe.
+1. Assurez-vous que le code QR ci-dessous est centré et complètement visible, cliquez avec le bouton droit de la souris sur l'icône de la barre d'état système de Shadowsocks, puis accédez à *Servers* > *Scan QRCode from Screen...*
+
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. Vous pouvez également aller à *Servers* > *New server* et procédez manuellement aux étapes suivantes:
+   1. Saisissez `{{ streisand_ipv4_address }}` pour le *Server IP*.
+   1. Saisissez `{{ shadowsocks_server_port }}` pour le *Server Port*.
+   1. Saisissez `{{ shadowsocks_password.stdout }}` pour le *Password*.
+   1. Le *SOCKS 5 Proxy Port* devrait être `{{ shadowsocks_local_port }}` et le *Encryption Method* devrait être `{{ shadowsocks_encryption_method }}`.
+   1. Assurez-vous que le support de l'authentification unique (OTA) est activé.
+   1. Cliquez *Save*.
+1. Cliquez sur l'icône de la barre de menus Shadowsocks et sélectionnez *Enable*.
+1. C'est tout! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+<a name="osx"></a>
+### OS X ###
+1. Téléchargez [ShadowsocksX-NG](/mirror/index-fr.html#shadowsocks).
+1. Double-cliquez sur le DMG et faites glisser l'icône dans votre dossier Applications.
+1. Lancez ShadowsocksX-NG. Vous serez invité à saisir votre mot de passe afin que vos paramètres de proxy système puissent être modifiés.
+1. Recherchez l'icône d'avion de papier Shadowsocks dans votre barre de menus et cliquez dessus.
+1. Assurez-vous que le code QR ci-dessous est centré et complètement visible, et choisissez *Scan QR Code from Screen...*
+
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. Vous pouvez également configurer la connexion en allant sur *Servers*, sélectionnant *Open Server Preferences...*, et en cliquant le bouton *+* sur la barre latérale:
+   1. Saisissez `{{ streisand_ipv4_address }}` et `{{ shadowsocks_server_port }}` dans le champ *Address*.
+   1. Assurez-vous que `{{ shadowsocks_encryption_method }}` est sélectionné pour la valeur *Encryption*.
+   1. Saisissez `{{ shadowsocks_password.stdout }}` pour le *Password*.
+   1. Chocher `Enable OTA`.
+   1. Cliquez *OK*.
+1. Cliquez à nouveau sur l'icône Shadowsocks dans la barre de menu, puis choisissez *Global Mode*.
+1. Vous pouvez utiliser l'icône Shadowsocks pour activer/désactiver le VPN. La couleur de l'icône changera en fonction de son activation ou pas.
+1. C'est tout! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+<a name="linux"></a>
+### Linux ###
+Téléchargez [shadowsocks2-linux-x64.gz](/mirror/index-fr.html#shadowsocks) et extrayez-le:
+
+   `gunzip shadowsocks2-linux-x64.gz`
+
+Modifier le binaire qu'il soit exécutable
+
+    `chmod +x shadowsocks2-linux-x64`
+
+Démarrez le proxy SOCKS shadowsocks:
+
+    `./shadowsocks2-linux-x64 -c {{ streisand_ipv4_address }}:{{ shadowsocks_server_port }} -password "{{ shadowsocks_password.stdout }}" -socks localhost:{{ shadowsocks_local_port }} -verbose -cipher {{ shadowsocks_encryption_method }}`
+
+
+Pour référence, voici les informations de configuration dont vous aurez besoin:
+
+        Server: {{ streisand_ipv4_address }}
+        Port: {{ shadowsocks_server_port }}
+        Password: {{ shadowsocks_password.stdout }}
+        Encryption Method: {{ shadowsocks_encryption_method }}
+
+Une fois que vous avez Shadowsocks fonctionnant localement, vous devrez transférer le trafic de votre navigateur via le proxy SOCKS qu'il fournit.
+
+#### Configuration de Firefox pour se connecter via un proxy SOCKS ####
+1. Cliquez sur le bouton *Menu* à côté de l'icône *Accueil* à droite de la barre d'adresse.
+1. Cliquez *Préférences*.
+1. Cliquez l'icône *Avancé*.
+1. Allez à l'onglet *Réseau*.
+1. Cliquez le bouton *Paramètres* pour *Configurer la façon dont Firefox se connecte à Internet*.
+1. Choisissez *Configuration manuelle de proxy*.
+1. Saisissez `127.0.0.1` et port `{{ shadowsocks_local_port }}` pour la ligne *Hôte SOCKS*.
+1. Sélectionnez *Utiliser un DNS distant lorsque SOCKS v5 est actif*. Cela configure Firefox pour envoyer toutes les requêtes DNS via le proxy SOCKS. Cela vous protégera contre l'empoisonnement du DNS et vous garantira que les fausses entrées DNS ne peuvent pas être utilisées pour censurer votre accès.
+1. Cliquez *OK*.
+1. Cliquez *OK* encore pour fermer la fenêtre de paramètres de Firefox..
+1. C'est tout! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+
+
+<a name="android"></a>
+### Android ###
+1. Téléchargez Shadowsocks pour Androïde à partir de [Google Play](https://play.google.com/store/apps/details?id=com.github.shadowsocks&hl=fr). Si Google Play est bloqué dans votre pays, vous pouvez [télécharger une copie en miroir](/mirror/index-fr.html#shadowsocks) de ce serveur!
+1. Lancez l'application.
+1. Tapez sur l'icône Shadowsocks en haut à gauche de l'écran.
+1. Tapez l'icône *+* en bas à droite.
+1. Sélectionnez *Scan QR code*.
+1. Utilisez votre téléphone pour numériser cette image, ou si vous utilisez votre téléphone _maintenant_, vous pouvez choisir la *Manual Settings* et copiez/collez les informations à partir de la section Linux ci-dessus:
+
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. Tapez sur l'icône de l'avion en haut.
+1. Acceptez l'avertissement de connexion VPN Androïde.
+1. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+
+<a name="ios"></a>
+### iOS ###
+
+**Note**: Le client Potatso iOS **ne supporte pas le cryptage par AEAD** et ne peut pas être utilisé avec la configuration moderne du serveur Streisand Shadowsocks-libev. Shadowrocket prend en charge AEAD uniquement dans les versions 'test flight'.
+
+1. Téléchargez [Cross](https://itunes.apple.com/fr/app/cross-shadowsocks-proxy-client/id1194595243?ls=1&mt=8) et lancez-le.
+   * Vous serez invité à vous connecter à l'iTunes Store la première fois que vous exécutez Cross.
+1. Tapez l'icône *More* en bas à droite de l'écran.
+1. Tapez *Import From QRCode*.
+1. Utilisez votre téléphone pour numériser cette image, ou si vous utilisez votre téléphone _maintenant_, vous pouvez ajouter manuellement un nouveau proxy à partir de l'onglet *Home* et copier et coller les informations de la section Linux ci-dessus:
+
+   ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+1. Saisissez `{{ streisand_server_name }}` quand l'invite *Add a new proxy* apparaîtra, puis tapez *OK*. Vous verrez une confirmation que l'importation a été réussie.
+1. Tapez sur l'icône *Home*.
+1. Tapez *Proxy* et sélectionnez le nom du proxy que vous venez d'importer.
+1. Tapez sur le bouton bleu *Connect*.
+   * Si c'est la première fois que vous utilisez Cross, iOS vous demandera de vérifier que l'application devrait avoir la permission d'ajouter des configurations VPN. Tapez *Permettre* et suivez les instructions.
+1. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.

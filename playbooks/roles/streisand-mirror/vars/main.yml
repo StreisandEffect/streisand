@@ -1,8 +1,5 @@
 ---
 streisand_mirror_location: "{{ streisand_gateway_location }}/mirror"
 
-streisand_markdown_mirror_page: "{{ streisand_mirror_location }}/index.md"
-streisand_html_mirror_page: "{{ streisand_mirror_location }}/index.html"
-
 streisand_mirror_warning: "One or more of the VPN clients could not be mirrored. Please file a bug report on GitHub so that the version number, checksum, or download location can be updated. Setup will now continue."
 streisand_mirror_warning_seconds: "20"

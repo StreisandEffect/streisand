@@ -10,29 +10,13 @@ Unattended-Upgrade::Allowed-Origins {
     // Autoupdate OpenVPN
     "Freight:${distro_codename}";
 
-    // Autoupdate Shadowsocks
-    "shadowsocks-libev:${distro_codename}";
-
     // Autoupdate Tor
     "TorProject:${distro_codename}";
-
-//  "${distro_id} ${distro_codename}-updates";
-//  "${distro_id} ${distro_codename}-proposed-updates";
 };
 
 // List of packages to not update
 Unattended-Upgrade::Package-Blacklist {
-//  "vim";
-//  "libc6";
-//  "libc6-dev";
-//  "libc6-i686";
 };
-
-// Send email to this address for problems or packages upgrades
-// If empty or unset then no email is sent, make sure that you
-// have a working mail setup on your system. The package 'mailx'
-// must be installed or anything that provides /usr/bin/mail.
-//Unattended-Upgrade::Mail "root@localhost";
 
 // Do automatic removal of new unused dependencies after the upgrade
 // (equivalent to apt-get autoremove)

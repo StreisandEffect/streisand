@@ -1,4 +1,4 @@
----
+---  
 - name: Set the DigitalOcean Access Token fact to the value that was entered, or attempt to retrieve it from the environment if the entry is blank
   set_fact:
     do_access_token: "{{ do_access_token_entry | default( lookup('env', 'DIGITALOCEAN_API_KEY') ) }}"

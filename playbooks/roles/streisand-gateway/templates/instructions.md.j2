@@ -1,3 +1,9 @@
+- - -
+{% for key, value in streisand_languages.iteritems() %}
+  [{{ value.language_name }}]({{ streisand_server_name }}{{value.file_suffix}}.html)&nbsp;
+{% endfor %}
+- - -
+
 Your Streisand Gateway contains step-by-step instructions for the services it provides, and mirrors of all necessary client software. The Gateway can be accessed over SSL or via a Tor Hidden Service.
 
 ---
@@ -93,7 +99,7 @@ These instructions work for Chrome. Firefox for Android uses its own internal Ce
 #### More secure ####
 1. Connect the iOS device to your OS X computer.
 1. Tap *Trust* if the *Trust This Computer?* popup appears.
-1. Install the <a href="https://itunes.apple.com/us/app/apple-configurator-2/id1037126344?mt=12">Apple Configurator</a> utility from the Mac App Store.
+1. Install the <a href="https://itunes.apple.com/us/app/apple-configurator-2/id1037126344?mt=12">Apple Configurator 2</a> utility from the Mac App Store.
 1. Launch the Apple Configurator utility and agree to the license.
 1. Click *Start Preparing Devices*.
 1. Click *Install Profiles...*.
@@ -166,7 +172,7 @@ Each connection option takes you to the same place and you can use whichever one
 ### SSL ###
 [{{ streisand_gateway_url }}]({{ streisand_gateway_url }})
 
-username: `{{ streisand_gateway_username }}`  
+username: `{{ streisand_gateway_username }}`
 password: `{{ streisand_gateway_password.stdout }}`
 
 <a name="connecting-tor"></a>
@@ -175,5 +181,5 @@ password: `{{ streisand_gateway_password.stdout }}`
 
 [{{ tor_hidden_service_url }}]({{ tor_hidden_service_url }})
 
-username: `{{ streisand_gateway_username }}`  
+username: `{{ streisand_gateway_username }}`
 password: `{{ streisand_gateway_password.stdout }}`
