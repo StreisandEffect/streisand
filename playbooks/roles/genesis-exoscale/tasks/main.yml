@@ -1,0 +1,178 @@
+---
+- name: Set the Exoscale API details facts to the value that was entered, or attempt to retrieve it from the environment if the entry is blank
+  set_fact:
+    EXO_API_SECRET: "{{ EXO_API_SECRET_entry | default( lookup('env', 'EXO_API_SECRET') ) }}"
+    EXO_API_KEY: "{{ EXO_API_KEY_entry | default( lookup('env', 'EXO_API_KEY') ) }}"
+    EXO_API_ENDPOINT: "{{ lookup('env', 'EXO_API_ENDPOINT') | default('https://api.exoscale.ch/compute', true) }}"
+
+
+- name: Get the default SSH key
+  command: cat ~/.ssh/id_rsa.pub
+  register: ssh_key
+
+- block:
+    - name: Add the SSH key to Exoscale if it doesn't already exist
+      local_action:
+        module: cs_sshkeypair
+        name: "{{ exo_ssh_name }}"
+        public_key: "{{ ssh_key.stdout }}"
+      register: exo_ssh_key
+  rescue:
+    - fail:
+        msg: "* The API key or secret might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the Exoscale portal under a different name. OR * The cs Python module might not be installed. Use `pip install cs` to install this module."
+
+- block:
+  - name: Streisand Security Group
+    local_action:
+      module: cs_securitygroup
+      name: "streisand"
+      description: streisand VPN
+  
+  - name: public to streisand ssh
+    local_action:
+     module: cs_securitygroup_rule
+     security_group: "streisand"
+     start_port: 22
+     end_port: 22
+
+  - name: public to nginx
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: tcp
+      start_port: "{{ nginx_port }}"
+      end_port: "{{ nginx_port }}"
+
+  - name: public to ipsec
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: udp
+      start_port: 500
+      end_port: 500
+
+  - name: public to ipsec 2
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: udp
+      start_port: 4500
+      end_port: 4500
+
+  - name: public to ipsec 3
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: udp
+      start_port: 1701
+      end_port: 1701
+
+  - name: public to ocserv tcp
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: tcp
+      start_port: "{{ ocserv_port }}"
+      end_port: "{{ ocserv_port }}"
+
+  - name: public to ocserv udp
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: udp
+      start_port: "{{ ocserv_port }}"
+      end_port: "{{ ocserv_port }}"
+
+  - name: public to openvpn
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: tcp
+      start_port: "{{ openvpn_port }}"
+      end_port: "{{ openvpn_port }}"
+
+  - name: public to openvpn udp
+    local_action: 
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: udp
+      start_port: "{{ openvpn_port_udp }}"
+      end_port: "{{ openvpn_port_udp }}"
+
+  - name: public to shadowsocks
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: tcp
+      start_port: "{{ shadowsocks_server_port }}"
+      end_port: "{{ shadowsocks_server_port }}"
+
+  - name: public to ssh
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: tcp
+      start_port: "{{ ssh_port }}"
+      end_port: "{{ ssh_port }}"
+
+  - name: public to stunnel
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: tcp
+      start_port: "{{ stunnel_remote_port }}"
+      end_port: "{{ stunnel_remote_port }}"
+
+  - name: public to tor
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: tcp
+      start_port: "{{ tor_orport }}"
+      end_port: "{{ tor_orport }}"
+
+  - name: public to tor obfs4
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "streisand"
+      protocol: tcp
+      start_port: "{{ tor_obfs4_port }}"
+      end_port: "{{ tor_obfs4_port }}"
+  rescue:
+    - fail:
+        msg: "Unable to create the security group. Please ensure that the API credentials you provided are correct."
+
+- block:
+  - name: Create the new Instance
+    local_action:
+      module: cs_instance
+      display_name: "{{ exo_server_name }}"
+      ssh_key: "{{ exo_ssh_name }}"
+      service_offering: "{{ exo_instance_size }}"
+      zone: "{{ regions[exo_region] }}"
+      template: "{{ exo_ubuntu_x64_template }}"
+      security_groups: [ '{{ streisand_security_group_name }}' ]
+    register: streisand_server
+  rescue:
+    - fail:
+        msg: "Unable to create the Instance. Please ensure that the API credentials you provided are correct."
+
+- name: Wait until the server has finished booting and OpenSSH is accepting connections
+  wait_for:
+    host: "{{ streisand_server.default_ip }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+
+- name: Create the in-memory inventory group
+  add_host:
+    name: "{{ streisand_server.default_ip }}"
+    groups: streisand-host
+
+- name: Set the streisand_ipv4_address variable
+  set_fact:
+    streisand_ipv4_address: "{{ streisand_server.default_ip }}"
+
+- name: Set the streisand_server_name variable
+  set_fact:
+    streisand_server_name: "{{ exo_server_name }}"
