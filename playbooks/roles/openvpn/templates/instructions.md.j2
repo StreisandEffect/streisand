@@ -99,6 +99,9 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 1. Click the *+* button in the lower-left of the window.
 1. Select *VPN* from the Interface drop-down and click *Create*.
 1. Select *OpenVPN* and click *Create*.
+  * If you don't see an *OpenVPN* option, install the following package:
+
+    `sudo agt-get install network-manager-openvpn-gnome`
 1. Enter `{{ streisand_server_name }}` for the *Connection name*.
 1. Enter `{{ openvpn_server }}` for the *Gateway*.
 1. Make sure *Certificates (TLS)* is selected for the *Type*.
