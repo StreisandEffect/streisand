@@ -140,7 +140,7 @@ Complete all of these tasks on your local home machine.
   * Rackspace Cloud
 
             sudo pip install pyrax
-  * If you are using a Homebrew-installed version of Python you should also run these commands to make sure it can find the necessary libraries:
+  * **Important note if you are using a Homebrew-installed version of Python** you should also run these commands to make sure it can find the necessary libraries:
 
             mkdir -p ~/Library/Python/2.7/lib/python/site-packages
             echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
