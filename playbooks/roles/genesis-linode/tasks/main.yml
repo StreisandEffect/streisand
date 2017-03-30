@@ -16,6 +16,7 @@
     plan: "{{ linode_plan_id }}"
     datacenter: "{{ regions[linode_datacenter] }}"
     distribution: "{{ linode_ubuntu_distribution_id.stdout }}"
+    kernel_id: "{{ linode_kernel_id }}"
     ssh_pub_key: "{{ ssh_key.stdout }}"
     wait: yes
   register: streisand_server
