@@ -1,2 +1,4 @@
 ---
 linode_plan_id: 1
+# Use the GRUB2 distribution-supplied kernel option
+linode_kernel_id: 210
