@@ -9,7 +9,7 @@ ocserv_dependencies:
   - gnutls-bin
   - libev-dev
   - libgnutls-dev
-  - libgnutls30
+  - libgnutls28
   - libnl-route-3-dev
   - libpam0g-dev
   - libreadline-dev
