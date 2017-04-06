@@ -12,14 +12,15 @@
       "3": "ap-southeast-1"
       "4": "ap-southeast-2"
       "5": "ap-northeast-1"
-      "6": "eu-central-1"
-      "7": "eu-west-1"
-      "8": "eu-west-2"
-      "9": "sa-east-1"
-      "10": "us-east-1"
-      "11": "us-east-2"
-      "12": "us-west-1"
-      "13": "us-west-2"
+      "6": "ca-central-1"
+      "7": "eu-central-1"
+      "8": "eu-west-1"
+      "9": "eu-west-2"
+      "10": "sa-east-1"
+      "11": "us-east-1"
+      "12": "us-east-2"
+      "13": "us-west-1"
+      "14": "us-west-2"
 
   # These variable files are included so the ec2-security-group role
   # knows which ports to open
@@ -43,14 +44,15 @@
           3. Asia Pacific   (Singapore)
           4. Asia Pacific   (Sydney)
           5. Asia Pacific   (Tokyo)
-          6. EU             (Frankfurt)
-          7. EU             (Ireland)
-          8. EU             (London)
-          9. South America  (Sao Paulo)
-          10. US East       (Northern Virginia)
-          11. US East       (Ohio)
-          12. US West       (Northern California)
-          13. US West       (Oregon)
+          6. Canada         (Central)
+          7. EU             (Frankfurt)
+          8. EU             (Ireland)
+          9. EU             (London)
+          10. South America (Sao Paulo)
+          11. US East       (Northern Virginia)
+          12. US East       (Ohio)
+          13. US West       (Northern California)
+          14. US West       (Oregon)
         Please choose the number of your region. Press enter for default (#3) region.
       default: "3"
       private: no
