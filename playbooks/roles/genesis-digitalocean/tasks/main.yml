@@ -54,4 +54,4 @@
 
 - name: Set the streisand_server_name variable
   set_fact:
-    streisand_server_name: "{{ do_server_name }}"
+    streisand_server_name: "{{ do_server_name | regex_replace('\\s', '_') }}"
