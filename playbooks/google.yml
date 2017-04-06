@@ -66,6 +66,14 @@
       default: "3"
       private: no
 
+    - name: "gce_machine_type"
+      prompt: >
+        What type of instance would you like ?
+          f1-micro (0.6GB RAM)
+          g1-small (1.7GB RAM)
+      default: "g1-small"
+      private: no
+
     - name: "gce_server_name"
       prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
       default: "streisand"
