@@ -6,7 +6,7 @@ tor_standard_connection_details: "{{ streisand_ipv4_address }}:{{ tor_orport }}"
 tor_obfs4_bridge_line: "obfs4 {{ streisand_ipv4_address }}:{{ tor_obfs4_port }} {{ tor_fingerprint.stdout }} cert={{ tor_obfs4_certificate.stdout }} iat-mode=0"
 
 tor_hidden_service_directory: "/var/lib/tor/hidden_service/"
-tor_hidden_service_url: "http://{{ tor_hidden_service_hostname.stdout }}"
+tor_hidden_service_url: "{% if 'stdout' in tor_hidden_service_hostname %}http://{{ tor_hidden_service_hostname.stdout }}{% endif %}"
 
 tor_gateway_location: "{{ streisand_gateway_location }}/tor"
 

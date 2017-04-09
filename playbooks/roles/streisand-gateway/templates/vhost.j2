@@ -29,6 +29,7 @@ server {
   }
 }
 
+{% if enable_tor %}
 # Tor Hidden Service Gateway
 server {
   listen {{ nginx_internal_hidden_service_address }};
@@ -43,3 +44,4 @@ server {
   root  {{ streisand_gateway_location }};
   index index.html index.htm;
 }
+{% endif %}

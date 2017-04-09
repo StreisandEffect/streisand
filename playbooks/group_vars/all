@@ -2,3 +2,9 @@
 upstream_dns_servers:
   - 8.8.8.8
   - 8.8.4.4
+enable_openconnect: false
+enable_l2tp_ipsec: false
+enable_openvpn: true
+enable_shadowsocks: false
+enable_tor: false
+enable_wireguard: false

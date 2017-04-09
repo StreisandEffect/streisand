@@ -4,13 +4,24 @@ The files mirrored below have all been cryptographically verified. Where possibl
 
 ---
 * Clients
+{% if enable_openconnect %}
   * [OpenConnect](#openconnect)
+{% endif %}
+{% if enable_openvpn %}
   * [OpenVPN](#openvpn)
+{% endif %}
+{% if enable_shadowsocks %}
   * [Shadowsocks](#shadowsocks)
+{% endif %}
   * [OpenSSH](#ssh)
+{% if enable_openvpn %}
   * [Stunnel](#stunnel)
+{% endif %}
+{% if enable_tor %}
   * [Tor Browser Bundle](#tor)
+{% endif %}
 
+{% if enable_openconnect %}
 <a name="openconnect"></a>
 ### OpenConnect ###
 
@@ -24,6 +35,8 @@ The files mirrored below have all been cryptographically verified. Where possibl
 * [{{ openconnect_windows_filename }}]({{ openconnect_windows_href }})
   * Checksum: *{{ openconnect_windows_checksum }}*
 
+{% endif %}
+{% if enable_openvpn %}
 <a name="openvpn"></a>
 ### OpenVPN ###
 
@@ -40,6 +53,8 @@ The files mirrored below have all been cryptographically verified. Where possibl
 
 * [{{ openvpn_windows_installer_filename }}]({{ openvpn_windows_installer_href }}) ([sig]({{ openvpn_windows_installer_sig_href }}))
 
+{% endif %}
+{% if enable_shadowsocks %}
 <a name="shadowsocks"></a>
 ### Shadowsocks ###
 
@@ -63,6 +78,7 @@ The files mirrored below have all been cryptographically verified. Where possibl
 * [{{ shadowsocks_gui_filename }}]({{ shadowsocks_gui_href }})
   * Checksum: *{{ shadowsocks_gui_checksum }}*
 
+{% endif %}
 <a name="ssh"></a>
 ### SSH ###
 
@@ -75,6 +91,7 @@ The files mirrored below have all been cryptographically verified. Where possibl
 
 * [{{ putty_filename }}]({{ putty_href }}) ([sig]({{ putty_sig_href }}))
 
+{% if enable_openvpn %}
 <a name="stunnel"></a>
 ### stunnel ###
 
@@ -86,6 +103,8 @@ The files mirrored below have all been cryptographically verified. Where possibl
 
 * [{{ stunnel_installer_filename }}]({{ stunnel_installer_href }}) ([sig]({{ stunnel_installer_sig_href }}))
 
+{% endif %}
+{% if enable_tor %}
 <a name="tor"></a>
 ### Tor Browser Bundle ###
 
@@ -101,3 +120,5 @@ The files mirrored below have all been cryptographically verified. Where possibl
 **Windows**
 
 * [{{ tor_browser_bundle_windows_filename }}]({{ tor_browser_bundle_windows_href }}) ([sig]({{ tor_browser_bundle_windows_sig_href }}))
+
+{% endif %}

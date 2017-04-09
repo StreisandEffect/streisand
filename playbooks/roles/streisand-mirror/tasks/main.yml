@@ -9,11 +9,16 @@
 
 # Download and verify client files
 - include: openconnect.yml
+  when: enable_openconnect
 - include: openvpn.yml
+  when: enable_openvpn
 - include: shadowsocks.yml
+  when: enable_shadowsocks
 - include: ssh.yml
 - include: stunnel.yml
+  when: enable_openvpn
 - include: tor.yml
+  when: enable_tor
 
 - name: Generate the Markdown mirror page
   template:
