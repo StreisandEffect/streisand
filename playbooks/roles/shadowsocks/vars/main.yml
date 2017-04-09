@@ -1,30 +1,43 @@
 ---
+# Note: these dependencies are only sufficient to build from source with the
+#       --disable-documentation flag to configure. It is *not* sufficient to
+#       build a .deb
 shadowsocks_dependencies:
-  - apg
-  - asciidoc
+  - git
+  - gcc
+  - make
   - autoconf
   - automake
-  - debhelper
-  - dh-systemd
-  - gawk
-  - gettext
+  - shtool
+  - libtool
   - libev-dev
   - libmbedtls-dev
   - libpcre3-dev
   - libsodium-dev
-  - libssl-dev
-  - libtool
   - libudns-dev
-  - xmlto
+  # Shadowsocks may complain about lack of entropy without rngtools installed
+  - rngtools
 
-shadowsocks_checksum: "sha256:fa232047d12d39bf19f3539828ca1662da5e5905bfc03163ba20c37fe8e94d8f"
-shadowsocks_version: "2.5.6"
+shadowsocks_checksum: "sha256:961ddbe06c2fd6299d0f181a371af16463d59e146228c53769f24e08a1d95f2e"
+shadowsocks_version: "3.0.5"
 shadowsocks_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ shadowsocks_version }}"
 shadowsocks_source_filename: "shadowsocks-libev-{{ shadowsocks_version }}.tar.gz"
 shadowsocks_source_location: "/usr/local/src/{{ shadowsocks_source_filename }}"
 
+# Configuring the build without documentation means we save close to 900mb of deps
+# with the tradeoff of not creating man pages
+#
+# TODO(@cpu): Investigate installing doc deps with --no-install-recommends, if
+# it ends up being not that big of a deal then we can build a deb and save some
+# Ansible role complexity.
+shadowsocks_configure_flags: "--disable-documentation --prefix=/usr"
+
 shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
+
+# Add -v for verbose mode to help with debugging
+# TODO(@cpu): don't ship with -v, remove before PR
+shadowsocks_daemon_args: "-u -v"
 
 shadowsocks_gateway_location: "{{ streisand_gateway_location }}/shadowsocks"
 
