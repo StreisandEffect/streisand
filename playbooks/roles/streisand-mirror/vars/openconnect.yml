@@ -21,6 +21,9 @@ openconnect_windows_href: "{{ openconnect_mirror_href_base }}/{{ openconnect_win
 openconnect_windows_url: "https://github.com/openconnect/openconnect-gui/releases/download/{{ openconnect_windows_version }}/{{ openconnect_windows_filename }}"
 openconnect_windows_checksum: "sha256:65ea336108640b44eb16192c7d357953895ce9f61f5ee77d124e56e98714cc7e"
 
+# The below section is commented out as v1.5.1 OpenConnect GUI for macOS crashes on El Capitan when
+# attempting to connect.
+# see issue: https://github.com/openconnect/openconnect-gui/issues/160
 # macOS
 #openconnect_macos_version: "v1.5.1"
 #openconnect_macos_filename: "openconnect-gui-1.5.1-Darwin.dmg"
