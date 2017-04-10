@@ -8,3 +8,7 @@
   service:
     name: xl2tpd
     state: restarted
+  register: xl2tpd_restart_result
+  until: xl2tpd_restart_result|success
+  retries: 3
+  delay: 5

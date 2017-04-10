@@ -132,7 +132,7 @@ Complete all of these tasks on your local home machine.
             sudo pip install dopy==0.3.5
   * Google
 
-            sudo pip install "apache-libcloud>=0.17.0"
+            sudo pip install "apache-libcloud>=1.5.0"
 
   * Linode
 
