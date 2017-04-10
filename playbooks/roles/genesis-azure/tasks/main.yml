@@ -3,64 +3,38 @@
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
 
-# - name: Create the Azure ???
-#   local_action:
-#     module: azure_rm_networkinterface
-#     resource_group: "{{ azure_resource_group }}"
-#     location: "{{ azure_region }}"
-#     name: "???""
-
-# - name: Create the Azure ???
-#   local_action:
-#     module: azure_rm_publicipaddress
-#     resource_group: "{{ azure_resource_group }}"
-#     location: "{{ azure_region }}"
-#     name: "???""
-
 - name: Create the Azure instance
   local_action:
     module: azure_rm_virtualmachine
     resource_group: "{{ azure_resource_group }}"
-    location: "{{ azure_region }}"
+    network_interfaces: "{{ azure_network_interface }}"
     name: "{{ azure_instance_name }}"
-
-    admin_username: ubuntu
-    ssh_public_keys:
-      path: /home/${admin_username}/.ssh/authorized_keys
-      key_data: "{{ ssh_key.stdout }}"
-
-    #network_interfaces: testvm001
-      publisher: "{{ azure_image_publisher }}"
-      offer:     "{{ azure_image_offer }}"
-      sku:       "{{ azure_image_sku }}"
-      version:   "{{ azure_image_version }}"
-
+    vm_size: "{{ azure_instance_type }}"
+    location: "{{ azure_region }}"
     image:
-    instance_type: "{{ azure_instance_type }}"
-    image: "{{ aws_ami_id }}"
-    region: "{{ aws_region }}"
-    key_name: streisand-ssh
-    group: "{{ aws_security_group }}"
-    instance_tags:
-      Name: "{{ aws_instance_name }}"
-    wait: yes
+      offer: "{{ azure_image_offer }}"
+      publisher: "{{ azure_image_publisher }}"
+      sku: "{{ azure_image_sku }}"
+      version: "{{ azure_image_version }}"
+    admin_username: "ubuntu"
+    ssh_password_enabled: false
+    ssh_public_keys:
+      - path: /home/ubuntu/.ssh/authorized_keys
+        key_data: "{{ ssh_key.stdout }}"
   register: streisand_server
 
+- name: Set the streisand_ipv4_address variable
+  set_fact: streisand_ipv4_address="{{ streisand_server.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
-  wait_for: host={{ streisand_server.instances[0].public_ip }}
+  wait_for: host={{ streisand_ipv4_address }}
             port=22
             search_regex=OpenSSH
             timeout=600
 
 - name: Create the in-memory inventory group
-  add_host: name={{ streisand_server.instances[0].public_ip }}
+  add_host: name={{ streisand_ipv4_address }}
             groups=streisand-host
 
-- name: Set the streisand_ipv4_address variable
-  set_fact: streisand_ipv4_address="{{ streisand_server.instances[0].public_ip }}"
-
 - name: Set the streisand_server_name variable
-  set_fact: streisand_server_name="{{ aws_instance_name }}"
-
-- name: New Azure servers are occasionally slow to process incoming SSH connections even after the OpenSSH daemon has started up. Pause for 90 seconds.
-  pause: seconds=90
+  set_fact: streisand_server_name="{{ azure_instance_name }}"

@@ -1,3 +1,7 @@
 ---
 azure_resource_group: "streisand-{{ azure_instance_name }}"
 azure_security_group: "streisand-{{ azure_instance_name }}"
+azure_virtual_network: "streisand-{{ azure_instance_name }}"
+azure_subnet: "streisand-{{ azure_instance_name }}"
+azure_ip: "streisand-{{ azure_instance_name }}"
+azure_network_interface: "streisand-{{ azure_instance_name }}"

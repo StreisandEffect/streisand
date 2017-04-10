@@ -7,58 +7,93 @@
 
   vars:
     regions:
-      "1":  "eastasia"
-      "2":  "southeastasia"
+      "1":  "eastus"
+      "2":  "eastus2"
       "3":  "centralus"
-      "4":  "eastus"
-      "5":  "eastus2"
-      "6":  "westus"
-      "7":  "northcentralus"
-      "8":  "southcentralus"
-      "9":  "northeurope"
-      "10": "westeurope"
-      "11": "japanwest"
-      "12": "japaneast"
-      "13": "brazilsouth"
-      "14": "australiaeast"
-      "15": "australiasoutheast"
-      "16": "southindia"
-      "17": "centralindia"
-      "18": "westindia"
-      "19": "canadacentral"
-      "20": "canadaeast"
+      "4":  "northcentralus"
+      "5":  "southcentralus"
+      "6":  "westcentralus"
+      "7":  "westus"
+      "8":  "westus2"
+      "9":  "usgovvirginia"
+      "10":  "usgoviowa"
+      "11":  "usdodeast"
+      "12":  "usdodcentral"
+      "13":  "canadaeast"
+      "14":  "canadacentral"
+      "15":  "brazilsouth"
+      "16":  "southeastssia"
+      "17":  "eastssia"
+      "18":  "australiaeast"
+      "19":  "australiasoutheast"
+      "20":  "chinaeast"
+      "21":  "chinanorth"
+      "22":  "centralindia"
+      "23":  "westindia"
+      "24":  "southindia"
+      "25":  "japaneast"
+      "26":  "japanwest"
+      "27":  "koreacentral"
+      "28":  "koreasouth"
+      "29":  "northeurope"
+      "30":  "westeurope"
+      "31":  "germanycentral"
+      "32":  "germanynortheast"
+      "33":  "ukwest"
+      "35":  "uksouth"
 
-  # This variable file is included so the ??-security-group role knows
-  # which port to open for SSH
+  # These variable files are included so the azure-security-group role
+  # knows which ports to open
   vars_files:
+    - roles/openconnect/defaults/main.yml
+    - roles/openvpn/defaults/main.yml
+    - roles/shadowsocks/defaults/main.yml
     - roles/ssh/defaults/main.yml
+    - roles/streisand-gateway/defaults/main.yml
+    - roles/stunnel/defaults/main.yml
+    - roles/tor-bridge/defaults/main.yml
+    - roles/wireguard/defaults/main.yml
 
   vars_prompt:
     - name: "azure_region_var"
       prompt: >
         What region should the server be located in?
-           1. East Asia           (Hong Kong)
-           2. Southeast Asia      (Singapore)
+           1. East US             (Virginia)
+           2. East US 2           (Virginia)
            3. Central US          (Iowa)
-           4. East US             (Virginia)
-           5. East US 2           (Virginia)
-           6. West US             (California)
-           7. North Central US    (Illinois)
-           8. South Central US    (Texas)
-           9. North Europe        (Ireland)
-          10. West Europe         (Netherlands)
-          11. Japan West          (Osaka)
-          12. Japan East          (Tokyo, Saitama)
-          13. Brazil South        (Sao Paulo State)
-          14. Australia East      (New South Wales)
-          15. Australia Southeast (Victoria)
-          16. South India         (Chennai)
-          17. Central India       (Pune)
-          18. West India          (Mumbai)
-          19. Canada Central      (Toronto)
-          20. Canada East         (Quebec City)
+           4. North Central US    (Illinois)
+           5. South Central US    (Texas)
+           6. West Central US     (West Central US)
+           7. West US             (California)
+           8. West US 2           (West US 2)
+           9. US Gov Virginia     (Virginia)
+          10. US Gov Iowa         (Iowa)
+          11. US DoD East         (US DoD East)
+          12. US DoD Central      (US DoD Central)
+          13. Canada East         (Quebec City)
+          14. Canada Central      (Toronto)
+          15. Brazil South        (Sao Paulo State)
+          16. Southeast Asia      (Singapore)
+          17. East Asia           (Hong Kong)
+          18. Australia East      (New South Wales)
+          19. Australia Southeast (Victoria)
+          20. China East          (Shanghai)
+          21. China North         (Beijing)
+          22. Central India       (Pune)
+          23. West India          (Mumbai)
+          24. South India         (Chennai)
+          25. Japan East          (Tokyo, Saitama)
+          26. Japan West          (Osaka)
+          27. Korea Central       (Seoul)
+          28. Korea South         (Busan)
+          29. North Europe        (Ireland)
+          30. West Europe         (Netherlands)
+          31. Germany Central     (Frankfurt)
+          32. Germany Northeast   (Magdeburg)
+          33. UK West             (Cardiff)
+          35. UK South            (London)
         Please choose the number of your region. Press enter for default (#9) region.
-      default: "9"
+      default: "28"
       private: no
 
     - name: "azure_instance_name_var"
@@ -69,11 +104,6 @@
     - name: "confirmation"
       prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 
-  # Facts persist across plays, and these facts will be used in the
-  # final step to make an API call to open all of the necessary ports in
-  # the ?? Azure firewall. This is necessary because Tor chooses random
-  # ports for the obfsproxy pluggable transport and therefore they cannot
-  # be opened in advance before Tor is up and running.
   pre_tasks:
     - name: Set the Azure Region fact
       set_fact: azure_region={{ regions[azure_region_var] }}
@@ -84,7 +114,6 @@
   roles:
     - genesis-azure
 
-
 - name: Configure the Server and install required software
 # ========================================================
   hosts: streisand-host
@@ -93,19 +122,6 @@
   # uses 'ubuntu' instead of 'root'
   remote_user: ubuntu
   become: yes
-
-  vars:
-    # The rc-local role normally expects to configure firewall rules for
-    # L2TP/IPsec. Streisand does not install L2TP/IPsec on EC2 servers
-    # by default because the instances cannot bind directly to their
-    # public IP addresses which makes IPsec routing nearly impossible.
-    #
-    # This variable is therefore set to an empty value.
-    l2tp_ipsec_firewall_rules: ""
-
-    # Similarly, we don't want to display a link to nonexistent
-    # L2TP/IPsec information on the Gateway index page
-    l2tp_ipsec_gateway_location: ""
 
   roles:
     - common
@@ -119,37 +135,6 @@
     - sslh
     - monit
     - ufw
+    - wireguard
     - streisand-mirror
     - streisand-gateway
-
-
-- name: Open all service ports
-# ============================
-  hosts: localhost
-  connection: local
-  gather_facts: no
-
-  # These variable files are included so the azure-security-group role
-  # knows which ports to open
-  vars_files:
-    - roles/openconnect/defaults/main.yml
-    - roles/openvpn/defaults/main.yml
-    - roles/shadowsocks/defaults/main.yml
-    - roles/ssh/defaults/main.yml
-    - roles/streisand-gateway/defaults/main.yml
-    - roles/stunnel/defaults/main.yml
-    - roles/tor-bridge/defaults/main.yml
-
-  pre_tasks:
-    - name: Set the streisand_host fact to the value of the new server. This fact will be used to retrieve the obfsproxy port values.
-      set_fact: "streisand_host={{ groups['streisand-host'][0] }}"
-
-    - name: Retrieve the randomly chosen Tor obfs3 port
-      set_fact: "tor_obfs3_port={{ hostvars[streisand_host]['tor_obfs3_port'] }}"
-
-  roles:
-    # We can modify the Azure network security group now that we know which
-    # obfsproxy ports Tor is using
-    - { role: azure-security-group,
-        open_ssh_port_only:     false,
-        open_all_service_ports: true }

@@ -1,9 +1,7 @@
 ---
-# aws t2.micro == 1 vCPU || 6 CPU credits/hr || 1 GB RAM || Xeon 3.3 GHz
+azure_instance_type: "Basic_A0"
 
-azure_instance_type: "Standard_A0"
-
-azure_image_publisher: "canonical"
+azure_image_publisher: "Canonical"
 azure_image_offer:     "UbuntuServer"
-azure_image_sku:       "14.04.4-LTS"
-#azure_image_version:   "latest"
+azure_image_sku:       "16.04-LTS"
+azure_image_version:   "latest"
