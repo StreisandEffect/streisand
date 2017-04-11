@@ -15,8 +15,8 @@ shadowsocks_dependencies:
   - libpcre3-dev
   - libsodium-dev
   - libudns-dev
-  # Shadowsocks may complain about lack of entropy without rngtools installed
-  - rngtools
+  # Shadowsocks may complain about lack of entropy without rng-tools installed
+  - rng-tools
 
 shadowsocks_checksum: "sha256:961ddbe06c2fd6299d0f181a371af16463d59e146228c53769f24e08a1d95f2e"
 shadowsocks_version: "3.0.5"
