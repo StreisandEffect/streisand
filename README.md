@@ -140,6 +140,9 @@ Complete all of these tasks on your local home machine.
   * Rackspace Cloud
 
             sudo pip install pyrax
+  * Microsoft Azure
+
+            sudo pip install msrest msrestazure azure==2.0.0rc5
   * If you are using a Homebrew-installed version of Python you should also run these commands to make sure it can find the necessary libraries:
 
             mkdir -p ~/Library/Python/2.7/lib/python/site-packages
@@ -166,7 +169,6 @@ The servers should be accessible using SSH keys, and *root* is used as the conne
 
 Upcoming Features
 -----------------
-* Native [Microsoft Azure](https://azure.microsoft.com/en-us/) support.
 * Role isolation and selection, allowing you to choose which daemons and services are installed.
 * Easier setup.
 
