@@ -81,9 +81,9 @@ Installation
 Please read all installation instructions **carefully** before proceeding.
 
 ### Important Clarification ###
-Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. That means when you run Streisand, it automatically sets up **another remote server** with the VPN packages and configuration.
+Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. Streisand automatically sets up **another remote server** with the VPN packages and configuration.
 
-This means that you run Streisand **on your home machine** (e.g. your laptop) and it will spin up and deploy **another server** on your chosen hosting provider. Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!). Support for local provisioning (i.e. Streisand locally configuring the system on which it is installed) will be added soon.
+Streisand will spin up and deploy **another server** on your chosen hosting provider when you run **on your home machine** (e.g. your laptop). Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!). Support for local provisioning (i.e. Streisand locally configuring the system on which it is installed) will be added soon.
 
 ### Prerequisites ###
 Complete all of these tasks on your local home machine.
@@ -115,7 +115,7 @@ Complete all of these tasks on your local home machine.
 
             sudo easy_install pip
             sudo pip install pycurl
-            
+
 * Install [Ansible](http://www.ansible.com/home).
   * On OS X (via [Homebrew](http://brew.sh/))
 
@@ -132,7 +132,7 @@ Complete all of these tasks on your local home machine.
             sudo pip install dopy==0.3.5
   * Google
 
-            sudo pip install "apache-libcloud>=0.17.0"
+            sudo pip install "apache-libcloud>=1.5.0"
 
   * Linode
 
@@ -143,7 +143,7 @@ Complete all of these tasks on your local home machine.
   * Microsoft Azure
 
             sudo pip install msrest msrestazure azure==2.0.0rc5
-  * If you are using a Homebrew-installed version of Python you should also run these commands to make sure it can find the necessary libraries:
+  * **Important note if you are using a Homebrew-installed version of Python** you should also run these commands to make sure it can find the necessary libraries:
 
             mkdir -p ~/Library/Python/2.7/lib/python/site-packages
             echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth

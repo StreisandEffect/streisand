@@ -99,7 +99,7 @@
 
 - name: Set the streisand_server_name variable
   set_fact:
-    streisand_server_name: "{{ aws_instance_name }}"
+    streisand_server_name: "{{ aws_instance_name | regex_replace('\\s', '_') }}"
 
 - name: New EC2 servers are occasionally slow to process incoming SSH connections even after the OpenSSH daemon has started up. Pause for 90 seconds.
   pause:
