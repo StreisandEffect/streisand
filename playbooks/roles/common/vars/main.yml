@@ -4,6 +4,8 @@ streisand_common_packages:
   - apparmor
   # Enables support for the HTTPS protocol in APT sources
   - apt-transport-https
+  # Used to perform a system upgrade
+  - aptitude
   # Used to compile Libreswan and OpenConnect Server (ocserv)
   - build-essential
   # Used to perform API requests, including the version check for
