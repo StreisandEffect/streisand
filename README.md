@@ -133,6 +133,7 @@ Complete all of these tasks on your local home machine.
   * Google
 
             sudo pip install "apache-libcloud>=0.17.0"
+            sudo pip install pycrypto          
 
   * Linode
 
