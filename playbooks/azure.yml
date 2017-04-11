@@ -101,6 +101,9 @@
       default: "streisand"
       private: no
 
+    - name: "confirmation_credentials"
+      prompt: "\n\nEnsure that you have the azure credentials file: ~/.azure/credentials \nDetails on generating this can be found at \nhttps://docs.ansible.com/ansible/guide_azure.html#storing-in-a-file\nand \nhttps://docs.microsoft.com/en-in/azure/azure-resource-manager/resource-group-create-service-principal-portal\n"
+
     - name: "confirmation"
       prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 
