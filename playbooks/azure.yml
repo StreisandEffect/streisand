@@ -40,12 +40,13 @@
       "31":  "germanycentral"
       "32":  "germanynortheast"
       "33":  "ukwest"
-      "35":  "uksouth"
+      "34":  "uksouth"
 
   # These variable files are included so the azure-security-group role
   # knows which ports to open
   vars_files:
     - roles/openconnect/defaults/main.yml
+    - roles/l2tp-ipsec/defaults/main.yml
     - roles/openvpn/defaults/main.yml
     - roles/shadowsocks/defaults/main.yml
     - roles/ssh/defaults/main.yml
@@ -91,7 +92,7 @@
           31. Germany Central     (Frankfurt)
           32. Germany Northeast   (Magdeburg)
           33. UK West             (Cardiff)
-          35. UK South            (London)
+          34. UK South            (London)
         Please choose the number of your region. Press enter for default (#9) region.
       default: "28"
       private: no
@@ -112,32 +113,10 @@
       set_fact: azure_region={{ regions[azure_region_var] }}
 
     - name: Set the Azure Instance Name fact
-      set_fact: azure_instance_name={{ azure_instance_name_var }}
+      set_fact: azure_instance_name={{ azure_instance_name_var | regex_replace('\\s', '_') }}
 
   roles:
     - genesis-azure
 
-- name: Configure the Server and install required software
-# ========================================================
-  hosts: streisand-host
-
-  # The standard streisand.yml is not included because the Ubuntu AMI
-  # uses 'ubuntu' instead of 'root'
-  remote_user: ubuntu
-  become: yes
-
-  roles:
-    - common
-    - openconnect
-    - openvpn
-    - stunnel
-    - shadowsocks
-    - ssh
-    - tinyproxy
-    - tor-bridge
-    - sslh
-    - monit
-    - ufw
-    - wireguard
-    - streisand-mirror
-    - streisand-gateway
+- include: cloud-status.yml
+- include: streisand.yml

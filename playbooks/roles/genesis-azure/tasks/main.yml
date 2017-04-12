@@ -16,10 +16,10 @@
       publisher: "{{ azure_image_publisher }}"
       sku: "{{ azure_image_sku }}"
       version: "{{ azure_image_version }}"
-    admin_username: "ubuntu"
+    admin_username: root
     ssh_password_enabled: false
     ssh_public_keys:
-      - path: /home/ubuntu/.ssh/authorized_keys
+      - path: /root/.ssh/authorized_keys
         key_data: "{{ ssh_key.stdout }}"
   register: streisand_server
 
@@ -27,14 +27,16 @@
   set_fact: streisand_ipv4_address="{{ streisand_server.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
-  wait_for: host={{ streisand_ipv4_address }}
-            port=22
-            search_regex=OpenSSH
-            timeout=600
+  wait_for:
+    host: "{{ streisand_ipv4_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
 
 - name: Create the in-memory inventory group
-  add_host: name={{ streisand_ipv4_address }}
-            groups=streisand-host
+  add_host:
+    name: "{{ streisand_ipv4_address }}"
+    groups: streisand-host
 
 - name: Set the streisand_server_name variable
   set_fact: streisand_server_name="{{ azure_instance_name }}"
