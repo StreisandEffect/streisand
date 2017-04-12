@@ -127,12 +127,28 @@
         priority: 111
       # Tor L2TP/IPsec ports
       # ---
-      - name: "AllowWireguard"
-        destination_port_range: "500,1701,4500"
+      - name: "AllowL2TPPort500"
+        destination_port_range: "500"
         protocol: Udp
         access: Allow
         direction: Inbound
         priority: 112
+      # Tor L2TP/IPsec ports
+      # ---
+      - name: "AllowL2TPPort1701"
+        destination_port_range: "1701"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 113
+      # Tor L2TP/IPsec ports
+      # ---
+      - name: "AllowL2TPPort4500"
+        destination_port_range: "4500"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 114
 
 - name: Create Azure network interface
   local_action:

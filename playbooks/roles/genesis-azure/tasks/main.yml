@@ -16,10 +16,10 @@
       publisher: "{{ azure_image_publisher }}"
       sku: "{{ azure_image_sku }}"
       version: "{{ azure_image_version }}"
-    admin_username: root
+    admin_username: ubuntu
     ssh_password_enabled: false
     ssh_public_keys:
-      - path: /root/.ssh/authorized_keys
+      - path: /home/ubuntu/.ssh/authorized_keys
         key_data: "{{ ssh_key.stdout }}"
   register: streisand_server
 

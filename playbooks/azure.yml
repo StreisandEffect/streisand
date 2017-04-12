@@ -112,6 +112,9 @@
     - name: Set the Azure Region fact
       set_fact: azure_region={{ regions[azure_region_var] }}
 
+    - name: Set the remote user fact
+      set_fact: remote_user=ubuntu
+
     - name: Set the Azure Instance Name fact
       set_fact: azure_instance_name={{ azure_instance_name_var | regex_replace('\\s', '_') }}
 
