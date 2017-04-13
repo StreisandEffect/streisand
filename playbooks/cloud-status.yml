@@ -3,7 +3,7 @@
   hosts: streisand-host
   gather_facts: no
 
-  remote_user: "{{ hostvars.localhost.remote_user | default('root') }}"
+  remote_user: "root"
   become: true
 
   tasks:

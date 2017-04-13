@@ -6,8 +6,8 @@
 - name: Create the Azure instance
   local_action:
     module: azure_rm_virtualmachine
-    resource_group: "{{ azure_resource_group }}"
-    network_interfaces: "{{ azure_network_interface }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    network_interfaces: "{{ azure_resource_group_name }}"
     name: "{{ azure_instance_name }}"
     vm_size: "{{ azure_instance_type }}"
     location: "{{ azure_region }}"
@@ -37,6 +37,8 @@
   add_host:
     name: "{{ streisand_ipv4_address }}"
     groups: streisand-host
+    ansible_user: ubuntu
+    ansible_become: yes
 
 - name: Set the streisand_server_name variable
   set_fact: streisand_server_name="{{ azure_instance_name }}"
