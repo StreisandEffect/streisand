@@ -22,7 +22,7 @@ fi
 
 echo -n "Which provider are you using?
   1. Amazon
-  2. Azure (Resource Management mode)
+  2. Azure
   3. DigitalOcean
   4. Google
   5. Linode
