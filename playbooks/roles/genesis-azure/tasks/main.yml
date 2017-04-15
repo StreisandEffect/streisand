@@ -24,7 +24,8 @@
   register: streisand_server
 
 - name: Set the streisand_ipv4_address variable
-  set_fact: streisand_ipv4_address="{{ streisand_server.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+  set_fact:
+    streisand_ipv4_address: "{{ streisand_server.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for:
@@ -41,4 +42,5 @@
     ansible_become: yes
 
 - name: Set the streisand_server_name variable
-  set_fact: streisand_server_name="{{ azure_instance_name }}"
+  set_fact:
+    streisand_server_name: "{{ azure_instance_name }}"
