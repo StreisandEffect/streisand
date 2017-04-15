@@ -1,0 +1,7 @@
+---
+azure_instance_type: "Basic_A0"
+
+azure_image_publisher: "Canonical"
+azure_image_offer:     "UbuntuServer"
+azure_image_sku:       "16.04-LTS"
+azure_image_version:   "latest"

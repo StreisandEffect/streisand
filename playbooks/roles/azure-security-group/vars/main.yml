@@ -1,0 +1,2 @@
+---
+azure_resource_group_name: "streisand-{{ azure_instance_name }}"

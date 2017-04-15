@@ -1,0 +1,156 @@
+---
+- name: Create Azure resource group
+  azure_rm_resourcegroup:
+    name: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+
+- name: Create Azure virtual network
+  azure_rm_virtualnetwork:
+    resource_group: "{{ azure_resource_group_name }}"
+    name: "{{ azure_resource_group_name }}"
+    address_prefixes: "10.10.0.0/16"
+
+- name: Create Azure subnet
+  azure_rm_subnet:
+    resource_group: "{{ azure_resource_group_name }}"
+    name: "{{ azure_resource_group_name }}"
+    address_prefix: "10.10.0.0/24"
+    virtual_network: "{{ azure_resource_group_name }}"
+
+- name: Create Azure public ip
+  azure_rm_publicipaddress:
+    resource_group: "{{ azure_resource_group_name }}"
+    allocation_method: Static
+    name: "{{ azure_resource_group_name }}"
+
+- name: Open all of the necessary ports across every service in the Azure security group
+  azure_rm_securitygroup:
+    name: "{{ azure_resource_group_name }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+    rules:
+      # Nginx
+      # ---
+      - name: "AllowNGINX"
+        destination_port_range: "{{ nginx_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 101
+      # OpenConnect (ocserv)
+      # ---
+      - name: "AllowOCServTCP"
+        destination_port_range: "{{ ocserv_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 102
+      - name: "AllowOCServUDP"
+        destination_port_range: "{{ ocserv_port }}"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 103
+      # OpenVPN
+      # ---
+      - name: "AllowOpenVPNTCP"
+        destination_port_range: "{{ openvpn_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 104
+      - name: "AllowOpenVPNUDP"
+        destination_port_range: "{{ openvpn_port_udp }}"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 105
+      # Shadowsocks TCP
+      # ---
+      - name: "AllowShadowsocksTCP"
+        destination_port_range: "{{ shadowsocks_server_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 106
+      # Shadowsocks UDP
+      # ---
+      - name: "AllowShadowsocksUDP"
+        destination_port_range: "{{ shadowsocks_server_port }}"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 107
+      # SSH
+      # ---
+      - name: "AllowSSHTCP"
+        destination_port_range: "{{ ssh_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 108
+      # Stunnel
+      # ---
+      - name: "AllowStunnelTCP"
+        destination_port_range: "{{ stunnel_remote_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 109
+      # Tor
+      # ---
+      - name: "AllowTorTCP"
+        destination_port_range: "{{ tor_orport }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 110
+      # Tor obfs4 port
+      # ---
+      - name: "AllowOBFS4TCP"
+        destination_port_range: "{{ tor_obfs4_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 111
+      # Tor wireguard port
+      # ---
+      - name: "AllowWireguard"
+        destination_port_range: "{{ wireguard_port }}"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 112
+      # Tor L2TP/IPsec ports
+      # ---
+      - name: "AllowL2TPPort500"
+        destination_port_range: "500"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 113
+      # Tor L2TP/IPsec ports
+      # ---
+      - name: "AllowL2TPPort1701"
+        destination_port_range: "1701"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 114
+      # Tor L2TP/IPsec ports
+      # ---
+      - name: "AllowL2TPPort4500"
+        destination_port_range: "4500"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 115
+
+- name: Create Azure network interface
+  azure_rm_networkinterface:
+    resource_group: "{{ azure_resource_group_name }}"
+    name: "{{ azure_resource_group_name }}"
+    virtual_network: "{{ azure_resource_group_name }}"
+    subnet: "{{ azure_resource_group_name }}"
+    public_ip_name: "{{ azure_resource_group_name }}"
+    security_group: "{{ azure_resource_group_name }}"
