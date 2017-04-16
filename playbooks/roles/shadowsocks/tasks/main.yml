@@ -103,6 +103,13 @@
     enabled: yes
     state: started
 
+- name: Ensure the Shadowsocks service is started
+  wait_for:
+    host: "{{ streisand_ipv4_address }}"
+    port: "{{ shadowsocks_server_port }}"
+    state: started
+    timeout: 60
+
 - name: Create the Shadowsocks Gateway directory
   file:
     path: "{{ shadowsocks_gateway_location }}"
