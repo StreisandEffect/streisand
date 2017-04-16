@@ -29,6 +29,8 @@ echo -n "Which provider are you using?
   6. Rackspace
 : "
 
+export PYTHONPATH="$(cd "$(dirname "$0")" && pwd -P)/monkey:$PYTHONPATH"
+
 read reply
 
 case "$reply" in
