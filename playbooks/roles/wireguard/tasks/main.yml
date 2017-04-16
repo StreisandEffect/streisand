@@ -1,4 +1,8 @@
 ---
+- name: Determine the running kernel release
+  command: uname -r
+  register: kernel_release
+
 - name: Add the WireGuard PPA
   apt_repository:
     repo: 'ppa:wireguard/wireguard'
@@ -7,6 +11,7 @@
   apt:
     name: "{{ item }}"
   with_items:
+    - linux-headers-{{ kernel_release.stdout }}
     - wireguard-dkms
     - wireguard-tools
 
