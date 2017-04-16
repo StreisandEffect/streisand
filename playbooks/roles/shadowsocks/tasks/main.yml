@@ -95,6 +95,8 @@
   template:
     src: config.json.j2
     dest: "{{ shadowsocks_location }}/config.json"
+    # The nobody user in nogroup needs to be able to read the config file
+    group: nogroup
     mode: 0640
 
 - name: Enable the Shadowsocks service so it starts at boot, and bring it up
