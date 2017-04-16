@@ -1,4 +1,5 @@
 - name: Copy the modified rsyslog configuration into place that prevents Libreswan and OpenConnect traffic from being logged
+  when: hostvars.localhost.l2tp_ipsec or hostvars.localhost.enable_openconnect
   copy:
     src: "{{ item }}"
     dest: /etc/rsyslog.d/{{ item }}

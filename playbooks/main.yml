@@ -15,32 +15,48 @@
           - shadowsocks
           - tor
           - wireguard
+        enabled_modules: []
 
     - name: Setting default module flags
+      when: vars.get('disable-all', "0") == "0"
       set_fact:
         enabled_modules: "{{ all_modules }}"
 
-    - name: Checking modules flags
-      when: vars.get(item + '-only', "") == "1"
+    - name: Checking "only" modules flags
+      when: vars.get(item + '-only', "0") == "1"
       set_fact:
         enabled_modules:
           - "{{ item }}"
       with_items: "{{ all_modules }}"
 
-    - name: Checking disabled modules flags
-      when: vars.get('disable-' + item, "") == "1"
+    - name: Checking enable modules flags
+      when: vars.get('enable-' + item, "0") == "1"
       set_fact:
         enabled_modules: "{{ enabled_modules | difference(item) }}"
       with_items:
         "{{ all_modules }}"
 
-    - name: Assigning enabled flag vars
+    - name: Checking disable modules flags
+      when: vars.get('disable-' + item, "0") == "1"
+      set_fact:
+        enabled_modules: "{{ enabled_modules | difference(item) }}"
+      with_items:
+        "{{ all_modules }}"
+
+    - name: Checking enable modules flags
+      when: vars.get('enable-' + item, "0") == "1" and vars.get('disable-' + item, "0") == "0"
+      set_fact:
+        enabled_modules: "{{ enabled_modules + [item] }}"
+      with_items:
+        "{{ all_modules }}"
+
+    - name: Assigning enable flag vars
       set_fact:
         "enable_{{ item }}": true
       with_items:
         "{{ enabled_modules }}"
 
-    - name: Assigning disabled flag vars
+    - name: Assigning disable flag vars
       when: vars.get('enable_' + item, false) == false
       set_fact:
         "enable_{{ item }}": false

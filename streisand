@@ -24,8 +24,10 @@ fi
 extra_vars=""
 while [[ $# -gt 0 ]]; do
     key="${1#--}"
+    enable_prefix="enable-"
     disable_prefix="disable-"
     only_sufix="-only"
+    [[ ${key} != "${key#${enable_prefix}}" ]] && extra_vars="${key}=1 ${extra_vars}";
     [[ ${key} != "${key#${disable_prefix}}" ]] && extra_vars="${key}=1 ${extra_vars}";
     [[ ${key} != "${key%${only_sufix}}" ]] && extra_vars="${key}=1 ${extra_vars}";
     shift
