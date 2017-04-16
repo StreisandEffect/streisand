@@ -49,5 +49,6 @@
   roles:
     - genesis-linode
 
+- include: linode-headers.yml
 
 - include: streisand.yml

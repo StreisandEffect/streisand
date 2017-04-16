@@ -1,0 +1,23 @@
+#
+# Linode's grub2 image doesn't include kernel headers, which means the
+# wireguard-dkms package will fail to generate any kernel modules. We work
+# around this by doing the equivalent of a
+# `apt-get install linux-kernel-headers-$(uname -r)`.
+# It would be tempting to just install `linux-headers-generic` but in practice
+# this ends up installing different headers than the kernel that is running at
+# the time wireguard-dkms is installed following all the apt updates
+#
+- name: Install the Linode kernel headers
+  hosts: streisand-host
+  gather_facts: no
+  remote_user: "root"
+  become: true
+
+  tasks:
+    - name: Determine the running kernel version
+      command: uname -r
+      register: linode_kernel_version
+
+    - name: "Install linux-headers-{{ linode_kernel_version.stdout }} for Wireguard"
+      apt:
+        name: "linux-headers-{{ linode_kernel_version.stdout }}"
