@@ -1,0 +1,134 @@
+---
+- name: Provision the Azure Server (Resource Manager mode)
+# ========================================================
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+
+  vars:
+    regions:
+      "1": "eastus"
+      "2": "eastus2"
+      "3": "centralus"
+      "4": "northcentralus"
+      "5": "southcentralus"
+      "6": "westcentralus"
+      "7": "westus"
+      "8": "westus2"
+      "9": "usgovvirginia"
+      "10": "usgoviowa"
+      "11": "usdodeast"
+      "12": "usdodcentral"
+      "13": "canadaeast"
+      "14": "canadacentral"
+      "15": "brazilsouth"
+      "16": "southeastssia"
+      "17": "eastasia"
+      "18": "chinaeast"
+      "19": "chinanorth"
+      "20": "japaneast"
+      "21": "japanwest"
+      "22": "koreacentral"
+      "23": "koreasouth"
+      "24": "centralindia"
+      "25": "westindia"
+      "26": "southindia"
+      "27": "australiaeast"
+      "28": "australiasoutheast"
+      "29": "northeurope"
+      "30": "westeurope"
+      "31": "germanycentral"
+      "32": "germanynortheast"
+      "33": "ukwest"
+      "34": "uksouth"
+
+  # These variable files are included so the azure-security-group role
+  # knows which ports to open
+  vars_files:
+    - roles/openconnect/defaults/main.yml
+    - roles/l2tp-ipsec/defaults/main.yml
+    - roles/openvpn/defaults/main.yml
+    - roles/shadowsocks/defaults/main.yml
+    - roles/ssh/defaults/main.yml
+    - roles/streisand-gateway/defaults/main.yml
+    - roles/stunnel/defaults/main.yml
+    - roles/tor-bridge/defaults/main.yml
+    - roles/wireguard/defaults/main.yml
+
+  vars_prompt:
+    - name: "azure_region_var"
+      prompt: >
+        What region should the server be located in?
+
+          North America:
+             1: East US             (Virginia)
+             2: East US 2           (Virginia)
+             3: Central US          (Iowa)
+             4: North Central US    (Illinois)
+             5: South Central US    (Texas)
+             6: West Central US     (West Central US)
+             7: West US             (California)
+             8: West US 2           (West US 2)
+             9: US Gov Virginia     (Virginia)
+            10: US Gov Iowa         (Iowa)
+            11: US DoD East         (US DoD East)
+            12: US DoD Central      (US DoD Central)
+            13: Canada East         (Quebec City)
+            14: Canada Central      (Toronto)
+
+          South America:
+            15: Brazil South        (Sao Paulo State)
+
+          Asia:
+            16: Southeast Asia      (Singapore)
+            17: East Asia           (Hong Kong)
+            18: China East          (Shanghai)
+            19: China North         (Beijing)
+            20: Japan East          (Tokyo, Saitama)
+            21: Japan West          (Osaka)
+            22: Korea Central       (Seoul)
+            23: Korea South         (Busan)
+            24: Central India       (Pune)
+            25: West India          (Mumbai)
+            26: South India         (Chennai)
+
+          Australia:
+            27: Australia East      (New South Wales)
+            28: Australia Southeast (Victoria)
+
+          Europe:
+            29: North Europe        (Ireland)
+            30: West Europe         (Netherlands)
+            31: Germany Central     (Frankfurt)
+            32: Germany Northeast   (Magdeburg)
+            33: UK West             (Cardiff)
+            34: UK South            (London)
+        Please choose the number of your region: Press enter for default (#1) region.
+      default: "1"
+      private: no
+
+    - name: "azure_instance_name_var"
+      prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
+      default: "streisand"
+      private: no
+
+    - name: "confirmation_credentials"
+      prompt: "\nEnsure that you have the azure credentials file: ~/.azure/credentials \nDetails on generating this can be found at https://github.com/jlund/streisand/blob/master/documentation/AZURE.md"
+
+    - name: "confirmation"
+      prompt: "\nStreisand will now set up your server: This process usually takes around ten minutes: Press Enter to begin setup...\n"
+
+  pre_tasks:
+    - name: Set the Azure Region fact
+      set_fact:
+        azure_region: "{{ regions[azure_region_var] }}"
+
+    - name: Set the Azure Instance Name fact
+      set_fact:
+        azure_instance_name: "{{ azure_instance_name_var | regex_replace('\\s', '_') }}"
+
+  roles:
+    - genesis-azure
+
+- include: cloud-status.yml
+- include: streisand.yml
