@@ -22,33 +22,26 @@
       set_fact:
         enabled_modules: "{{ all_modules }}"
 
-    - name: Checking "only" modules flags
-      when: vars.get(item + '-only', "0") == "1"
-      set_fact:
-        enabled_modules:
-          - "{{ item }}"
-      with_items: "{{ all_modules }}"
-
-    - name: Checking enable modules flags
-      when: vars.get('enable-' + item, "0") == "1"
-      set_fact:
-        enabled_modules: "{{ enabled_modules | difference(item) }}"
-      with_items:
-        "{{ all_modules }}"
-
-    - name: Checking disable modules flags
+    - name: Checking "disable" modules flags
       when: vars.get('disable-' + item, "0") == "1"
       set_fact:
         enabled_modules: "{{ enabled_modules | difference(item) }}"
       with_items:
         "{{ all_modules }}"
 
-    - name: Checking enable modules flags
+    - name: Checking "enable" modules flags
       when: vars.get('enable-' + item, "0") == "1" and vars.get('disable-' + item, "0") == "0"
       set_fact:
         enabled_modules: "{{ enabled_modules + [item] }}"
       with_items:
         "{{ all_modules }}"
+
+    - name: Checking "enable-only" modules flags
+      when: vars.get(item + '-only', "0") == "1"
+      set_fact:
+        enabled_modules:
+          - "{{ item }}"
+      with_items: "{{ all_modules }}"
 
     - name: Assigning enable flag vars
       set_fact:

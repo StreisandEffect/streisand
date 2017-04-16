@@ -159,6 +159,31 @@ Complete all of these tasks on your local home machine.
 4. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
 5. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
 
+### Role isolation ###
+
+By default all services are enabled.
+If you want to select which services are installed you can use the following CLI options:
+
+Enabling one service:
+
+          --enable-{provider}
+
+Disabling one service:
+
+          --disable-{provider}
+
+Only enable one service:
+
+          --{provider}-only
+
+Disable all services:
+
+          --disable-all
+
+Combined example:
+
+          ./streisand --disable-all --enable-shadosocks --enable-wireguard
+
 ### Running Streisand on Other Providers ###
 
 You can also run Streisand on any number of new Ubuntu 16.04 servers. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do this, simply edit the `inventory` file and uncomment the final two lines. Replace the sample IP with the address (or addresses) of the servers you wish to configure. Make sure you read through all of the documentation in the `inventory` file and update the `ansible.cfg` file if necessary. Then run the Streisand playbook directly:
@@ -167,9 +192,10 @@ You can also run Streisand on any number of new Ubuntu 16.04 servers. Dedicated 
 
 The servers should be accessible using SSH keys, and *root* is used as the connecting user by default (though this is simple to change while editing the inventory file).
 
+By default all providers are enabled
+
 Upcoming Features
 -----------------
-* Role isolation and selection, allowing you to choose which daemons and services are installed.
 * Easier setup.
 
 If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/jlund/streisand/issues).
