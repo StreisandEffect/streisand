@@ -26,10 +26,6 @@ shadowsocks_source_location: "/usr/local/src/{{ shadowsocks_source_filename }}"
 
 # Configuring the build without documentation means we save close to 900mb of deps
 # with the tradeoff of not creating man pages
-#
-# TODO(@cpu): Investigate installing doc deps with --no-install-recommends, if
-# it ends up being not that big of a deal then we can build a deb and save some
-# Ansible role complexity.
 shadowsocks_configure_flags: "--disable-documentation --prefix=/usr"
 
 shadowsocks_location: "/etc/shadowsocks-libev"
