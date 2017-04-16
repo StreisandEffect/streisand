@@ -29,7 +29,7 @@ server {
   }
 }
 
-{% if enable_tor %}
+{% if hostvars.localhost.enable_tor %}
 # Tor Hidden Service Gateway
 server {
   listen {{ nginx_internal_hidden_service_address }};

@@ -6,24 +6,24 @@ Connection Instructions
 
 There are multiple ways to bypass censorship, and Streisand provides several choices and different protocols in the event that any of them are restricted.
 
-{% if enable_l2tp_ipsec %}
+{% if hostvars.localhost.enable_l2tp_ipsec %}
 * [L2TP/IPsec](/l2tp-ipsec/)
 {% endif %}
-{% if enable_openconnect %}
+{% if hostvars.localhost.enable_openconnect %}
 * [OpenConnect / Cisco AnyConnect](/openconnect/)
 {% endif %}
-{% if enable_openvpn %}
+{% if hostvars.localhost.enable_openvpn %}
 * [OpenVPN (direct)](/openvpn/)
 * [OpenVPN (stunnel)](/openvpn/stunnel.html)
 {% endif %}
-{% if enable_shadowsocks %}
+{% if hostvars.localhost.enable_shadowsocks %}
 * [Shadowsocks](/shadowsocks/)
 {% endif %}
 * [SSH](/ssh/)
-{% if enable_tor %}
+{% if hostvars.localhost.enable_tor %}
 * [Tor](/tor/)
 {% endif %}
-{% if enable_wireguard %}
+{% if hostvars.localhost.enable_wireguard %}
 * [WireGuard](/wireguard/)
 {% endif %}
 
@@ -33,19 +33,19 @@ Client Mirrors
 
 You can download the necessary client software directly from Streisand in case the official websites are blocked. These versions could be slightly out of date (depending on when this server was set up) but they can be easily updated once you have connected to the open Internet.
 
-{% if enable_openconnect %}
+{% if hostvars.localhost.enable_openconnect %}
 * [OpenConnect](/mirror/#openconnect)
 {% endif %}
-{% if enable_openvpn %}
+{% if hostvars.localhost.enable_openvpn %}
 * [OpenVPN](/mirror/#openvpn)
 {% endif %}
-{% if enable_shadowsocks %}
+{% if hostvars.localhost.enable_shadowsocks %}
 * [Shadowsocks](/mirror/#shadowsocks)
 {% endif %}
 * [SSH](/mirror/#ssh)
-{% if enable_openvpn %}
+{% if hostvars.localhost.enable_openvpn %}
 * [stunnel](/mirror/#stunnel)
 {% endif %}
-{% if enable_tor %}
+{% if hostvars.localhost.enable_tor %}
 * [Tor Browser Bundle](/mirror/#tor)
 {% endif %}

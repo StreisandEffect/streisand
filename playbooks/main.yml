@@ -1,0 +1,50 @@
+---
+- name: Determine modules to be installed
+# =======================================
+  hosts: localhost
+  gather_facts: yes
+
+  tasks:
+    - name: Setting default module flags
+      set_fact:
+        all_modules:
+          - openvpn
+          - openconnect
+          - l2tp_ipsec
+          - shadowsocks
+          - tor
+          - wireguard
+
+    - name: Setting default module flags
+      set_fact:
+        enabled_modules: "{{ all_modules }}"
+
+    - name: Checking modules flags
+      when: vars.get(item + '-only', "") == "1"
+      set_fact:
+        enabled_modules:
+          - "{{ item }}"
+      with_items: "{{ all_modules }}"
+
+    - name: Checking disabled modules flags
+      when: vars.get('disable-' + item, "") == "1"
+      set_fact:
+        enabled_modules: "{{ enabled_modules | difference(item) }}"
+      with_items:
+        "{{ all_modules }}"
+
+    - name: Assigning enabled flag vars
+      set_fact:
+        "enable_{{ item }}": true
+      with_items:
+        "{{ enabled_modules }}"
+
+    - name: Assigning disabled flag vars
+      when: vars.get('enable_' + item, false) == false
+      set_fact:
+        "enable_{{ item }}": false
+      with_items:
+        "{{ all_modules }}"
+
+# A provider has been chosen
+- include: "{{ provider }}.yml"

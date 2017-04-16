@@ -28,7 +28,7 @@
     direction: "incoming"
 
 - name: Ensure UFW allows L2TP/IPSec
-  when: enable_l2tp_ipsec
+  when: hostvars.localhost.enable_l2tp_ipsec
   ufw:
     to_port: "{{ item }}"
     proto: "udp"
@@ -45,7 +45,7 @@
     rule: "allow"
 
 - name: Ensure UFW allows DNS requests from OpenConnect clients
-  when: enable_openconnect
+  when: hostvars.localhost.enable_openconnect
   ufw:
     to_port: "53"
     proto: "udp"
@@ -53,14 +53,14 @@
     from_ip: "192.168.1.0/24"
 
 - name: Ensure UFW allows OpenConnect (ocserv)
-  when: enable_openconnect
+  when: hostvars.localhost.enable_openconnect
   ufw:
     to_port: "{{ ocserv_port }}"
     proto: "any"
     rule: "allow"
 
 - name: Ensure UFW allows DNS requests from OpenVPN clients
-  when: enable_openvpn
+  when: hostvars.localhost.enable_openvpn
   ufw:
     to_port: "53"
     proto: "udp"
@@ -68,7 +68,7 @@
     from_ip: "10.8.0.0/24"
 
 - name: Ensure UFW allows DNS requests from OpenVPN UDP clients
-  when: enable_openvpn
+  when: hostvars.localhost.enable_openvpn
   ufw:
     to_port: "53"
     proto: "udp"
@@ -76,49 +76,49 @@
     from_ip: "10.9.0.0/24"
 
 - name: Ensure UFW allows OpenVPN
-  when: enable_openvpn
+  when: hostvars.localhost.enable_openvpn
   ufw:
     to_port: "{{ openvpn_port }}"
     proto: "tcp"
     rule: "allow"
 
 - name: Ensure UFW allows OpenVPN over UDP
-  when: enable_openvpn
+  when: hostvars.localhost.enable_openvpn
   ufw:
     to_port: "{{ openvpn_port_udp }}"
     proto: "udp"
     rule: "allow"
 
 - name: Ensure UFW allows Shadowsocks
-  when: enable_shadowsocks
+  when: hostvars.localhost.enable_shadowsocks
   ufw:
     to_port: "{{ shadowsocks_server_port }}"
     proto: "any"
     rule: "allow"
 
 - name: Ensure UFW allows stunnel
-  when: enable_openvpn
+  when: hostvars.localhost.enable_openvpn
   ufw:
     to_port: "{{ stunnel_remote_port }}"
     proto: "tcp"
     rule: "allow"
 
 - name: Ensure UFW allows Tor bridge
-  when: enable_tor
+  when: hostvars.localhost.enable_tor
   ufw:
     to_port: "{{ tor_orport }}"
     proto: "tcp"
     rule: "allow"
 
 - name: Ensure UFW allows Tor obfs4 pluggable transport
-  when: enable_tor
+  when: hostvars.localhost.enable_tor
   ufw:
     to_port: "{{ tor_obfs4_port }}"
     proto: "tcp"
     rule: "allow"
 
 - name: Ensure UFW allows DNS requests from WireGuard clients
-  when: enable_wireguard
+  when: hostvars.localhost.enable_wireguard
   ufw:
     to_port: "53"
     proto: "udp"
@@ -126,7 +126,7 @@
     from_ip: "10.192.122.0/24"
 
 - name: Ensure UFW allows WireGuard
-  when: enable_wireguard
+  when: hostvars.localhost.enable_wireguard
   ufw:
     to_port: "{{ wireguard_port }}"
     proto: "udp"

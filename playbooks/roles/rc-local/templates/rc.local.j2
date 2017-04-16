@@ -11,26 +11,26 @@
 #
 
 # OpenConnect
-{% if enable_openconnect %}
+{% if hostvars.localhost.enable_openconnect %}
 {{ ocserv_firewall_rule }}
 {% endif %}
 
 # OpenVPN
-{% if enable_openvpn %}
+{% if hostvars.localhost.enable_openvpn %}
 {% for rule in openvpn_firewall_rules %}
 {{ rule }}
 {% endfor %}
 {% endif %}
 
 # L2TP/IPsec
-{% if enable_l2tp_ipsec %}
+{% if hostvars.localhost.enable_l2tp_ipsec %}
 {% for rule in l2tp_ipsec_firewall_rules %}
 {{ rule }}
 {% endfor %}
 {% endif %}
 
 # WireGuard
-{% if enable_wireguard %}
+{% if hostvars.localhost.enable_wireguard %}
 {% for rule in wireguard_firewall_rules %}
 {{ rule }}
 {% endfor %}

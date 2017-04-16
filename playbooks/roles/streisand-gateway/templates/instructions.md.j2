@@ -11,7 +11,7 @@ Your Streisand Gateway contains step-by-step instructions for the services it pr
   * [Manual Certificate Verification](#ssl-manual)
 * [Connecting to your Streisand Gateway](#connecting)
   * [SSL](#connecting-ssl)
-{% if enable_tor %}
+{% if hostvars.localhost.enable_tor %}
   * [Tor Hidden Service](#connecting-tor)
 {% endif %}
 
@@ -171,7 +171,7 @@ Each connection option takes you to the same place and you can use whichever one
 username: `{{ streisand_gateway_username }}`  
 password: `{{ streisand_gateway_password.stdout }}`
 
-{% if enable_tor and tor_hidden_service_url is defined %}
+{% if hostvars.localhost.enable_tor %}
 <a name="connecting-tor"></a>
 ### Tor Hidden Service ###
 *All connections to Tor hidden services are fully encrypted.*
