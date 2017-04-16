@@ -12,7 +12,7 @@
   pause:
     seconds: 15
 
-- name: Open all of the necessary ports across every service in the EC2 security group
+- name: Open Nginx and SSH ports the EC2 security group
   ec2_group:
     name: "{{ aws_security_group }}"
     description: Security group for Streisand
@@ -27,6 +27,28 @@
         from_port: "{{ nginx_port }}"
         to_port: "{{ nginx_port }}"
         cidr_ip: 0.0.0.0/0
+      # SSH
+      # ---
+      - proto: tcp
+        from_port: "{{ ssh_port }}"
+        to_port: "{{ ssh_port }}"
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        from_port: 1
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0
+
+- name: Open L2TP/IPsec ports the EC2 security group
+  when: hostvars.localhost.enable_l2tp_ipsec
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    rules:
       # L2TP/IPsec
       # ---
       - proto: udp
@@ -41,16 +63,42 @@
         from_port: "1701"
         to_port: "1701"
         cidr_ip: 0.0.0.0/0
-      # OpenConnect (ocserv)
+
+- name: Open OpenConnect ports the EC2 security group
+  when: hostvars.localhost.enable_openconnect
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    rules:
+      # OpenConnect
       # ---
-      - proto: tcp
-        from_port: "{{ ocserv_port }}"
-        to_port: "{{ ocserv_port }}"
+      - proto: udp
+        from_port: "500"
+        to_port: "500"
         cidr_ip: 0.0.0.0/0
       - proto: udp
-        from_port: "{{ ocserv_port }}"
-        to_port: "{{ ocserv_port }}"
+        from_port: "4500"
+        to_port: "4500"
         cidr_ip: 0.0.0.0/0
+      - proto: udp
+        from_port: "1701"
+        to_port: "1701"
+        cidr_ip: 0.0.0.0/0
+
+- name: Open OpenVPN port the EC2 security group
+  when: hostvars.localhost.enable_openvpn
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    rules:
       # OpenVPN
       # ---
       - proto: tcp
@@ -61,6 +109,17 @@
         from_port: "{{ openvpn_port_udp }}"
         to_port: "{{ openvpn_port_udp }}"
         cidr_ip: 0.0.0.0/0
+
+- name: Open Shadowsocks port the EC2 security group
+  when: hostvars.localhost.enable_shadowsocks
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    rules:
       # Shadowsocks
       # ---
       - proto: tcp
@@ -71,18 +130,34 @@
         from_port: "{{ shadowsocks_server_port }}"
         to_port: "{{ shadowsocks_server_port }}"
         cidr_ip: 0.0.0.0/0
-      # SSH
-      # ---
-      - proto: tcp
-        from_port: "{{ ssh_port }}"
-        to_port: "{{ ssh_port }}"
-        cidr_ip: 0.0.0.0/0
+
+- name: Open Stunnel port the EC2 security group
+  when: hostvars.localhost.enable_stunnel
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    rules:
       # Stunnel
       # ---
       - proto: tcp
         from_port: "{{ stunnel_remote_port }}"
         to_port: "{{ stunnel_remote_port }}"
         cidr_ip: 0.0.0.0/0
+
+- name: Open Tor ports the EC2 security group
+  when: hostvars.localhost.enable_tor
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    rules:
       # Tor
       # ---
       - proto: tcp
@@ -95,14 +170,20 @@
         from_port: "{{ tor_obfs4_port }}"
         to_port: "{{ tor_obfs4_port }}"
         cidr_ip: 0.0.0.0/0
+
+- name: Open Wireguard port the EC2 security group
+  when: hostvars.localhost.enable_wireguard
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    rules:
       # WireGuard
       # ---
       - proto: udp
         from_port: "{{ wireguard_port }}"
         to_port: "{{ wireguard_port }}"
-        cidr_ip: 0.0.0.0/0
-    rules_egress:
-      - proto: all
-        from_port: 1
-        to_port: 65535
         cidr_ip: 0.0.0.0/0

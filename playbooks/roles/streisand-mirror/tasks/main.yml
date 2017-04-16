@@ -16,7 +16,7 @@
   when: hostvars.localhost.enable_shadowsocks
 - include: ssh.yml
 - include: stunnel.yml
-  when: hostvars.localhost.enable_openvpn
+  when: hostvars.localhost.enable_stunnel
 - include: tor.yml
   when: hostvars.localhost.enable_tor
 

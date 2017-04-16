@@ -14,7 +14,7 @@ The files mirrored below have all been cryptographically verified. Where possibl
   * [Shadowsocks](#shadowsocks)
 {% endif %}
   * [OpenSSH](#ssh)
-{% if hostvars.localhost.enable_openvpn %}
+{% if hostvars.localhost.enable_stunnel %}
   * [Stunnel](#stunnel)
 {% endif %}
 {% if hostvars.localhost.enable_tor %}
@@ -91,7 +91,7 @@ The files mirrored below have all been cryptographically verified. Where possibl
 
 * [{{ putty_filename }}]({{ putty_href }}) ([sig]({{ putty_sig_href }}))
 
-{% if hostvars.localhost.enable_openvpn %}
+{% if hostvars.localhost.enable_stunnel %}
 <a name="stunnel"></a>
 ### stunnel ###
 

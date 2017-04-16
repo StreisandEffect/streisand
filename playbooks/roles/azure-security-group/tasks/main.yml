@@ -68,7 +68,7 @@
         direction: Inbound
         priority: 104
 
-- name: Open openvpn and stunnel port
+- name: Open openvpn port
   when: hostvars.localhost.enable_openvpn
   azure_rm_securitygroup:
     name: "{{ azure_resource_group_name }}"
@@ -89,6 +89,14 @@
         access: Allow
         direction: Inbound
         priority: 106
+
+- name: Open stunnel port
+  when: hostvars.localhost.enable_stunnel
+  azure_rm_securitygroup:
+    name: "{{ azure_resource_group_name }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+    rules:
       # Stunnel
       # ---
       - name: "AllowStunnelTCP"
@@ -147,7 +155,7 @@
         priority: 111
 
 - name: Open wireguard port
-  when: hostvars.localhost.enable_tor
+  when: hostvars.localhost.enable_wireguard
   azure_rm_securitygroup:
     name: "{{ azure_resource_group_name }}"
     resource_group: "{{ azure_resource_group_name }}"

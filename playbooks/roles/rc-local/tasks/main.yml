@@ -1,5 +1,6 @@
 ---
 - name: Generate rc.local with Firewall and dnsmasq settings for OpenConnect, OpenVPN, and L2TP/IPsec
+  when: hostvars.localhost.enable_openconnect or hostvars.localhost.enable_openvpn or hostvars.localhost.enable_l2tp_ipsec
   template:
     src: rc.local.j2
     dest: /etc/rc.local

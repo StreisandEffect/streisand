@@ -9,6 +9,7 @@
       set_fact:
         all_modules:
           - openvpn
+          - stunnel
           - openconnect
           - l2tp_ipsec
           - shadowsocks
@@ -45,6 +46,12 @@
         "enable_{{ item }}": false
       with_items:
         "{{ all_modules }}"
+
+    # Stunnel depends on OpenVPN
+    - name: Checking OpenVPN and Stunnel flag dependency
+      when: enable_stunnel
+      set_fact:
+        enable_openvpn: true
 
 # A provider has been chosen
 - include: "{{ provider }}.yml"

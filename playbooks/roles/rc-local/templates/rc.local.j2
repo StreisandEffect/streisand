@@ -10,27 +10,27 @@
 # bits.
 #
 
-# OpenConnect
 {% if hostvars.localhost.enable_openconnect %}
+# OpenConnect
 {{ ocserv_firewall_rule }}
 {% endif %}
 
-# OpenVPN
 {% if hostvars.localhost.enable_openvpn %}
+# OpenVPN
 {% for rule in openvpn_firewall_rules %}
 {{ rule }}
 {% endfor %}
 {% endif %}
 
-# L2TP/IPsec
 {% if hostvars.localhost.enable_l2tp_ipsec %}
+# L2TP/IPsec
 {% for rule in l2tp_ipsec_firewall_rules %}
 {{ rule }}
 {% endfor %}
 {% endif %}
 
-# WireGuard
 {% if hostvars.localhost.enable_wireguard %}
+# WireGuard
 {% for rule in wireguard_firewall_rules %}
 {{ rule }}
 {% endfor %}

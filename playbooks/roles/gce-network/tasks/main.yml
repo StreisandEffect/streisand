@@ -21,11 +21,37 @@
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
 
-- name: Open necessary TCP ports across most services in the GCE firewall
+- name: Open Nginx port in the GCE firewall
   gce_net:
     name: "{{ gce_network }}"
-    fwname: "streisand-{{ gce_server_name }}-other"
-    allowed: "tcp:{{ nginx_port }},{{ stunnel_remote_port }},{{ tor_orport }},{{ tor_obfs4_port }}"
+    fwname: "streisand-{{ gce_server_name }}-nginx"
+    allowed: "tcp:{{ nginx_port }}"
+    state: "present"
+    mode: auto
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: "{{ gce_json_file_location }}"
+    project_id: "{{ gce_project_id }}"
+
+- name: Open the Stunnel port in the GCE firewall
+  when: hostvars.localhost.enable_stunnel
+  gce_net:
+    name: "{{ gce_network }}"
+    fwname: "streisand-{{ gce_server_name }}-stunnel"
+    allowed: "tcp:{{ stunnel_remote_port }}"
+    state: "present"
+    mode: auto
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: "{{ gce_json_file_location }}"
+    project_id: "{{ gce_project_id }}"
+
+- name: Open the Tor ports in the GCE firewall
+  when: hostvars.localhost.enable_tor
+  gce_net:
+    name: "{{ gce_network }}"
+    fwname: "streisand-{{ gce_server_name }}-tor"
+    allowed: "tcp:{{ tor_orport }},{{ tor_obfs4_port }}"
     state: "present"
     mode: auto
     src_range: 0.0.0.0/0
@@ -34,6 +60,7 @@
     project_id: "{{ gce_project_id }}"
 
 - name: Open the L2TP/IPsec ports in the GCE firewall
+  when: hostvars.localhost.enable_l2tp_ipsec
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-l2tp-ipsec"
@@ -46,6 +73,7 @@
     project_id: "{{ gce_project_id }}"
 
 - name: Open the OpenConnect (ocserv) port in the GCE firewall
+  when: hostvars.localhost.enable_openconnect
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-openconnect"
@@ -58,6 +86,7 @@
     project_id: "{{ gce_project_id }}"
 
 - name: Open the OpenVPN port in the GCE firewall
+  when: hostvars.localhost.enable_openvpn
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-openvpn"
@@ -70,6 +99,7 @@
     project_id: "{{ gce_project_id }}"
 
 - name: Open the Shadowsocks port in the GCE firewall
+  when: hostvars.localhost.enable_shadowsocks
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-shadowsocks"
@@ -82,6 +112,7 @@
     project_id: "{{ gce_project_id }}"
 
 - name: Open the WireGuard port in the GCE firewall
+  when: hostvars.localhost.enable_wireguard
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-wireguard"

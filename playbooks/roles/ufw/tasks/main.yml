@@ -97,7 +97,7 @@
     rule: "allow"
 
 - name: Ensure UFW allows stunnel
-  when: hostvars.localhost.enable_openvpn
+  when: hostvars.localhost.enable_stunnel
   ufw:
     to_port: "{{ stunnel_remote_port }}"
     proto: "tcp"

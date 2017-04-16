@@ -24,17 +24,17 @@
     - {role: common}
     # OpenConnect must be set up before L2TP/IPsec in order to avoid
     # compilation issues.
-    - {role: openconnect, when: enable_openconnect}
-    - {role: l2tp-ipsec, when: enable_l2tp_ipsec}
-    - {role: openvpn, when: enable_openvpn}
-    - {role: stunnel, when: enable_openvpn}
-    - {role: shadowsocks, when: enable_shadowsocks}
+    - {role: openconnect, when: hostvars.localhost.enable_openconnect}
+    - {role: l2tp-ipsec, when: hostvars.localhost.enable_l2tp_ipsec}
+    - {role: openvpn, when: hostvars.localhost.enable_openvpn}
+    - {role: stunnel, when: hostvars.localhost.enable_stunnel}
+    - {role: shadowsocks, when: hostvars.localhost.enable_shadowsocks}
     - {role: ssh}
     - {role: tinyproxy}
-    - {role: tor-bridge, when: enable_tor}
+    - {role: tor-bridge, when: hostvars.localhost.enable_tor}
     - {role: sslh}
     - {role: monit}
     - {role: ufw}
-    - {role: wireguard, when: enable_wireguard}
+    - {role: wireguard, when: hostvars.localhost.enable_wireguard}
     - {role: streisand-mirror}
     - {role: streisand-gateway}

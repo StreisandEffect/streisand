@@ -33,7 +33,7 @@ If you are installing Streisand on an existing server or alternate provider then
   * TCP - {{ shadowsocks_server_port }}
   * UDP - {{ shadowsocks_server_port }}
 {% endif %}
-{% if hostvars.localhost.enable_openvpn %}
+{% if hostvars.localhost.enable_stunnel %}
 * stunnel
   * TCP - {{ stunnel_remote_port }}
 {% endif %}
