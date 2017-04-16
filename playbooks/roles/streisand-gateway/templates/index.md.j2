@@ -14,6 +14,8 @@ There are multiple ways to bypass censorship, and Streisand provides several cho
 {% endif %}
 {% if hostvars.localhost.enable_openvpn %}
 * [OpenVPN (direct)](/openvpn/)
+{% endif %}
+{% if hostvars.localhost.enable_stunnel %}
 * [OpenVPN (stunnel)](/openvpn/stunnel.html)
 {% endif %}
 {% if hostvars.localhost.enable_shadowsocks %}
