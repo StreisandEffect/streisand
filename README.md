@@ -198,8 +198,6 @@ You can also run Streisand on any number of new Ubuntu 16.04 servers. Dedicated 
 
 The servers should be accessible using SSH keys, and *root* is used as the connecting user by default (though this is simple to change while editing the inventory file).
 
-By default all providers are enabled
-
 Upcoming Features
 -----------------
 * Easier setup.
