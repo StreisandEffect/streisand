@@ -20,6 +20,19 @@ then
     exit 1
 fi
 
+# As long as there is at least one more argument, keep looping
+extra_vars=""
+while [[ $# -gt 0 ]]; do
+    key="${1#--}"
+    enable_prefix="enable-"
+    disable_prefix="disable-"
+    only_sufix="-only"
+    [[ ${key} != "${key#${enable_prefix}}" ]] && extra_vars="${key}=1 ${extra_vars}";
+    [[ ${key} != "${key#${disable_prefix}}" ]] && extra_vars="${key}=1 ${extra_vars}";
+    [[ ${key} != "${key%${only_sufix}}" ]] && extra_vars="${key}=1 ${extra_vars}";
+    shift
+done
+
 echo -n "Which provider are you using?
   1. Amazon
   2. Azure
@@ -32,11 +45,15 @@ echo -n "Which provider are you using?
 read reply
 
 case "$reply" in
-  1) echo; echo; ansible-playbook playbooks/amazon.yml;;
-  2) echo; echo; ansible-playbook playbooks/azure.yml;;
-  3) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
-  4) echo; echo; ansible-playbook playbooks/google.yml;;
-  5) echo; echo; ansible-playbook playbooks/linode.yml;;
-  6) echo; echo; ansible-playbook playbooks/rackspace.yml;;
+  1) provider="amazon";;
+  2) provider="azure";;
+  3) provider="digitalocean";;
+  4) provider="google";;
+  5) provider="linode";;
+  6) provider="rackspace";;
   *) echo; echo "Invalid provider selected."; exit 1;;
 esac
+
+ansible-playbook playbooks/main.yml --extra-vars "\
+provider=${provider} \
+${extra_vars}"

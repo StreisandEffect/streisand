@@ -21,20 +21,20 @@
   become: true
 
   roles:
-    - common
+    - {role: common}
     # OpenConnect must be set up before L2TP/IPsec in order to avoid
     # compilation issues.
-    - openconnect
-    - l2tp-ipsec
-    - openvpn
-    - stunnel
-    - shadowsocks
-    - ssh
-    - tinyproxy
-    - tor-bridge
-    - sslh
-    - monit
-    - ufw
-    - wireguard
-    - streisand-mirror
-    - streisand-gateway
+    - {role: openconnect, when: hostvars.localhost.enable_openconnect}
+    - {role: l2tp-ipsec, when: hostvars.localhost.enable_l2tp_ipsec}
+    - {role: openvpn, when: hostvars.localhost.enable_openvpn}
+    - {role: stunnel, when: hostvars.localhost.enable_stunnel}
+    - {role: shadowsocks, when: hostvars.localhost.enable_shadowsocks}
+    - {role: ssh}
+    - {role: tinyproxy}
+    - {role: tor-bridge, when: hostvars.localhost.enable_tor}
+    - {role: sslh}
+    - {role: monit}
+    - {role: ufw}
+    - {role: wireguard, when: hostvars.localhost.enable_wireguard}
+    - {role: streisand-mirror}
+    - {role: streisand-gateway}
