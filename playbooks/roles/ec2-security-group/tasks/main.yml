@@ -76,17 +76,13 @@
     rules:
       # OpenConnect
       # ---
-      - proto: udp
-        from_port: "500"
-        to_port: "500"
+      - proto: tcp
+        from_port: "{{ ocserv_port }}"
+        to_port: "{{ ocserv_port }}"
         cidr_ip: 0.0.0.0/0
       - proto: udp
-        from_port: "4500"
-        to_port: "4500"
-        cidr_ip: 0.0.0.0/0
-      - proto: udp
-        from_port: "1701"
-        to_port: "1701"
+        from_port: "{{ ocserv_port }}"
+        to_port: "{{ ocserv_port }}"
         cidr_ip: 0.0.0.0/0
 
 - name: Open OpenVPN port the EC2 security group
