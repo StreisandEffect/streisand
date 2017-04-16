@@ -164,15 +164,15 @@ Complete all of these tasks on your local home machine.
 By default all services are enabled.
 If you want to select which services are installed you can use the following CLI options:
 
-Enabling one service:
+Enable one service:
 
           --enable-{provider}
 
-Disabling one service:
+Disable one service:
 
           --disable-{provider}
 
-Only enable one service:
+Enable only one service:
 
           --{provider}-only
 
@@ -180,9 +180,15 @@ Disable all services:
 
           --disable-all
 
-Combined example:
+**Examples:**
+
+1. Enable Shadowsocks and Wireguard
 
           ./streisand --disable-all --enable-shadosocks --enable-wireguard
+
+2. Enable only Openconnect
+
+          ./streisand --openconnect-only
 
 ### Running Streisand on Other Providers ###
 
