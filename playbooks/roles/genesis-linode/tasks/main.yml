@@ -9,7 +9,7 @@
     name: "{{ linode_server_name }}"
     plan: "{{ linode_plan_id }}"
     datacenter: "{{ regions[linode_datacenter] }}"
-    distribution: "146"
+    distribution: "{{ linode_distribution_id }}"
     ssh_pub_key: "{{ ssh_key.stdout }}"
     wait: yes
   register: streisand_server
