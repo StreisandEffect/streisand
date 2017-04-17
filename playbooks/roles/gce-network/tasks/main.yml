@@ -3,6 +3,7 @@
   gce_net:
     name: "{{ gce_network }}"
     state: "present"
+    mode: auto
     ipv4_range: "{{ gce_ipv4_range }}"
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
@@ -14,6 +15,7 @@
     fwname: "streisand-{{ gce_server_name }}-ssh"
     allowed: "tcp:{{ ssh_port }}"
     state: "present"
+    mode: auto
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
@@ -23,30 +25,9 @@
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-other"
-    allowed: "tcp:{{ nginx_port }},{{ shadowsocks_server_port }},{{ stunnel_remote_port }},{{ tor_orport }},{{ tor_obfs4_port }}"
+    allowed: "tcp:{{ nginx_port }},{{ stunnel_remote_port }},{{ tor_orport }},{{ tor_obfs4_port }}"
     state: "present"
-    src_range: 0.0.0.0/0
-    service_account_email: "{{ gce_service_account_email }}"
-    credentials_file: "{{ gce_json_file_location }}"
-    project_id: "{{ gce_project_id }}"
-
-- name: Open the OpenConnect (ocserv) port in the GCE firewall
-  gce_net:
-    name: "{{ gce_network }}"
-    fwname: "streisand-{{ gce_server_name }}-openconnect"
-    allowed: "tcp:{{ ocserv_port }};udp:{{ ocserv_port }}"
-    state: "present"
-    src_range: 0.0.0.0/0
-    service_account_email: "{{ gce_service_account_email }}"
-    credentials_file: "{{ gce_json_file_location }}"
-    project_id: "{{ gce_project_id }}"
-
-- name: Open the OpenVPN port in the GCE firewall
-  gce_net:
-    name: "{{ gce_network }}"
-    fwname: "streisand-{{ gce_server_name }}-openvpn"
-    allowed: "tcp:{{ openvpn_port }};udp:{{ openvpn_port_udp }}"
-    state: "present"
+    mode: auto
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
@@ -58,6 +39,43 @@
     fwname: "streisand-{{ gce_server_name }}-l2tp-ipsec"
     allowed: "udp:500,4500,1701"
     state: "present"
+    mode: auto
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: "{{ gce_json_file_location }}"
+    project_id: "{{ gce_project_id }}"
+
+- name: Open the OpenConnect (ocserv) port in the GCE firewall
+  gce_net:
+    name: "{{ gce_network }}"
+    fwname: "streisand-{{ gce_server_name }}-openconnect"
+    allowed: "tcp:{{ ocserv_port }};udp:{{ ocserv_port }}"
+    state: "present"
+    mode: auto
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: "{{ gce_json_file_location }}"
+    project_id: "{{ gce_project_id }}"
+
+- name: Open the OpenVPN port in the GCE firewall
+  gce_net:
+    name: "{{ gce_network }}"
+    fwname: "streisand-{{ gce_server_name }}-openvpn"
+    allowed: "tcp:{{ openvpn_port }};udp:{{ openvpn_port_udp }}"
+    state: "present"
+    mode: auto
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: "{{ gce_json_file_location }}"
+    project_id: "{{ gce_project_id }}"
+
+- name: Open the Shadowsocks port in the GCE firewall
+  gce_net:
+    name: "{{ gce_network }}"
+    fwname: "streisand-{{ gce_server_name }}-shadowsocks"
+    allowed: "tcp:{{ shadowsocks_server_port }};udp:{{ shadowsocks_server_port }}"
+    state: "present"
+    mode: auto
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
@@ -69,6 +87,7 @@
     fwname: "streisand-{{ gce_server_name }}-wireguard"
     allowed: "udp:{{ wireguard_port }}"
     state: "present"
+    mode: auto
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"

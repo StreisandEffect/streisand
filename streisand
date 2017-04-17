@@ -22,19 +22,23 @@ fi
 
 echo -n "Which provider are you using?
   1. Amazon
-  2. DigitalOcean
-  3. Google
-  4. Linode
-  5. Rackspace
+  2. Azure
+  3. DigitalOcean
+  4. Google
+  5. Linode
+  6. Rackspace
 : "
+
+export PYTHONPATH="$(cd "$(dirname "$0")" && pwd -P)/monkey:$PYTHONPATH"
 
 read reply
 
 case "$reply" in
   1) echo; echo; ansible-playbook playbooks/amazon.yml;;
-  2) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
-  3) echo; echo; ansible-playbook playbooks/google.yml;;
-  4) echo; echo; ansible-playbook playbooks/linode.yml;;
-  5) echo; echo; ansible-playbook playbooks/rackspace.yml;;
+  2) echo; echo; ansible-playbook playbooks/azure.yml;;
+  3) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
+  4) echo; echo; ansible-playbook playbooks/google.yml;;
+  5) echo; echo; ansible-playbook playbooks/linode.yml;;
+  6) echo; echo; ansible-playbook playbooks/rackspace.yml;;
   *) echo; echo "Invalid provider selected."; exit 1;;
 esac

@@ -7,14 +7,7 @@
 
 - name: Add the official OpenVPN repository
   apt_repository:
-    # Temporarily use the HTTP endpoint in order to mitigate an expired
-    # SSL certificate. The packages are signed and verified using the
-    # key that is added in the task above, so this remains secure.
-    #
-    # Fixes #534.
-    #
-    # Revert when build.openvpn.net has a valid certificate again.
-    repo: 'deb http://build.openvpn.net/debian/openvpn/stable {{ ansible_lsb.codename }} main'
+    repo: 'deb https://build.openvpn.net/debian/openvpn/stable {{ ansible_lsb.codename }} main'
     state: present
 
 - name: Install OpenVPN and its dependencies from APT

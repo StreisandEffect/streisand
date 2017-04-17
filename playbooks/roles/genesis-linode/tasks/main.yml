@@ -3,12 +3,6 @@
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
 
-- name: Get the latest Ubuntu 16.04 image ID from the Linode API
-  shell: curl -s 'https://api.linode.com/?api_key={{ linode_api_key }}&api_action=avail.distributions' | {{ ansible_python_interpreter }} -c 'import json; import sys; j = json.loads(sys.stdin.read()); print [img for img in j["DATA"] if img["LABEL"]=="Ubuntu 16.04 LTS"][0]["DISTRIBUTIONID"]'
-  args:
-    warn: no
-  register: linode_ubuntu_distribution_id
-
 - name: Create the server
   linode:
     api_key: "{{ linode_api_key }}"
@@ -39,4 +33,4 @@
 
 - name: Set the streisand_server_name variable
   set_fact:
-    streisand_server_name: "{{ linode_server_name }}"
+    streisand_server_name: "{{ linode_server_name | regex_replace('\\s', '_') }}"

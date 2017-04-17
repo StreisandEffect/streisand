@@ -72,7 +72,7 @@
       private: no
 
     - name: "gce_json_file_location"
-      prompt: "\n\nThe full path of your unique service account credentials file. Details on generating this can be found at \nhttp://docs.ansible.com/guide_gce.html#credentials\n and \nhttps://support.google.com/cloud/answer/6158849?hl=en&ref_topic=6262490#serviceaccounts\n"
+      prompt: "\n\nThe full path of your unique service account credentials file. Details on generating this can be found at \nhttps://docs.ansible.com/ansible/guide_gce.html#credentials\n and \nhttps://support.google.com/cloud/answer/6158849?hl=en&ref_topic=6262490#serviceaccounts\n"
       default: "{{ lookup('env','HOME') }}/streisand.json"
       private: no
 

@@ -67,6 +67,10 @@
         from_port: "{{ shadowsocks_server_port }}"
         to_port: "{{ shadowsocks_server_port }}"
         cidr_ip: 0.0.0.0/0
+      - proto: udp
+        from_port: "{{ shadowsocks_server_port }}"
+        to_port: "{{ shadowsocks_server_port }}"
+        cidr_ip: 0.0.0.0/0
       # SSH
       # ---
       - proto: tcp
