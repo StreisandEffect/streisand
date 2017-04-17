@@ -12,6 +12,11 @@ Vagrant.configure(2) do |config|
       # NOTE: Uncomment the below line for verbose Ansible output
       # ansible.verbose = "v"
       ansible.playbook = "playbooks/streisand.yml"
+      ansible.host_vars = {
+        "streisand-host" => {
+          "noninteractive" => true
+        }
+      }
     end
   end
 end
