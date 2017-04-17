@@ -8,3 +8,14 @@ gateway_password_file: "/root/gateway-password.txt"
 gateway_test_url: "https://{{ streisand_ip }}"
 gateway_test_user: "streisand"
 gateway_test_cmd: "/usr/local/bin/end-to-end-test"
+
+# TODO(@cpu) - this should be based on an imported var too
+gateway_ssh_rsa_key: "{{ gateway_test_url }}/ssh/streisand_rsa"
+gateway_ssh_hosts: "{{ gateway_test_url }}/ssh/streisand.known_hosts"
+
+forward_ssh_key: "/root/.ssh/streisand_rsa"
+forward_ssh_config: "/root/.ssh/config"
+forward_ssh_hosts: "/root/.ssh/streisand.known_hosts"
+forward_ssh_user: "forward"
+forward_socks_port: 9876
+

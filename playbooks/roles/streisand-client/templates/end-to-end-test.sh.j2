@@ -10,3 +10,38 @@ curl --insecure -I -u "{{ gateway_test_user }}:badpassword" {{ gateway_test_url 
 
 # Confirm that using the correct password/username results in a 200 OK
 curl --insecure -I -u "{{ gateway_test_user }}:$password" {{ gateway_test_url }} | grep "200 OK"
+
+# Download the "forward" SSH key
+curl --insecure -u "{{ gateway_test_user }}:$password" {{ gateway_ssh_rsa_key }} > {{ forward_ssh_key }}
+
+# Fix the SSH key permissions
+chmod 600 {{ forward_ssh_key }}
+
+# Download the known hosts file
+curl --insecure -u "{{ gateway_test_user }}:$password" {{ gateway_ssh_hosts }} > {{ forward_ssh_hosts }}
+
+# Setup a SSH config
+cat >{{ forward_ssh_config }} <<EOL
+Host streisand-host
+  User         {{ forward_ssh_user }}
+  HostName     {{ streisand_ip }}
+  Port         22
+  DynamicForward {{ forward_socks_port }}
+  IdentitiesOnly yes
+  PasswordAuthentication no
+  IdentityFile {{ forward_ssh_key }}
+  UserKnownHostsFile {{ forward_ssh_hosts }}
+EOL
+
+# Start a SSH tunnel with a dynamic forward through the streisand-host
+ssh streisand-host -N -T &
+
+# Sleep to give the SSH connection a chance to start
+sleep 2
+
+# Check that the gateway website can be loaded through the forward SSH tunnel
+curl --socks5 localhost:{{ forward_socks_port }} --insecure -I -u "{{ gateway_test_user }}:$password" {{ gateway_test_url }} | grep "200 OK"
+
+# Kill the backgrounded SSH connection
+kill %%
+
