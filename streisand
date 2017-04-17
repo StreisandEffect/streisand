@@ -3,35 +3,30 @@
 
 set -e
 
-echo
-echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m"
-echo
+REQUIRED_ANSIBLE_VERSION="2.2.1.0"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+export PYTHONPATH="$SCRIPT_DIR/monkey:$PYTHONPATH"
 
-command -v ansible > /dev/null 2>&1 || {
-  echo "Ansible is not installed."
-  exit 1
-}
+echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 
-required_ansible_version="2.2.1.0"
+if ! command -v ansible > /dev/null 2>&1; then
+	echo "Ansible is not installed."
+	exit 1
+fi
 
-if [[ "$(ansible --version | grep -oe '2\(.[0-9]\)*')" < $required_ansible_version ]]
-then
-    echo "Ansible $required_ansible_version or higher is required."
+if [[ $(ansible --version | grep -oe '2\(.[0-9]\)*') < $REQUIRED_ANSIBLE_VERSION ]]; then
+    echo "Ansible $REQUIRED_ANSIBLE_VERSION or higher is required."
     exit 1
 fi
 
-echo -n "Which provider are you using?
+read -r -p "Which provider are you using?
   1. Amazon
   2. Azure
   3. DigitalOcean
   4. Google
   5. Linode
   6. Rackspace
-: "
-
-export PYTHONPATH="$(cd "$(dirname "$0")" && pwd -P)/monkey:$PYTHONPATH"
-
-read reply
+: " reply
 
 case "$reply" in
   1) echo; echo; ansible-playbook playbooks/amazon.yml;;
