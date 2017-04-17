@@ -20,6 +20,12 @@ then
     exit 1
 fi
 
+read -p "Do you want to install L2TP/IPsec? Installing this is generally safe but it is easily detectable. <y/N> " prompt
+if [[ $prompt == "n" || $prompt == "N" || $prompt == "no" || $prompt == "NO" ]]
+then
+    sed -n '/l2tp/!p' ./playbooks/streisand.yml > ./playbooks/streisand.yml2 && mv ./playbooks/streisand.yml2 ./playbooks/streisand.yml
+fi
+
 echo -n "Which provider are you using?
   1. Amazon
   2. Azure
