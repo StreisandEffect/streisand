@@ -70,6 +70,13 @@
     - "{{ nginx_private_key }}"
     - "{{ streisand_gateway_password_file }}"
 
+- name: Copy the streisand gateway password file locally
+  fetch:
+    src: "{{ streisand_gateway_password_file }}"
+    dest: "{{ streisand_gateway_password_localpath }}"
+    fail_on_missing: yes
+    flat: yes
+
 - name: Register MITM mitigation fact (certificate serial number)
   command: openssl x509 -in {{ nginx_self_signed_certificate }} -noout -serial
   register: ssl_certificate_serial_number

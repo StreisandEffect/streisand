@@ -1,0 +1,12 @@
+#!/bin/bash -xe
+
+# Confirm that not sending a password/username results in a 401 error
+curl --insecure -I {{ gateway_test_url }} | grep "401 Unauthorized"
+
+password=$(cat "{{ gateway_password_file }}")
+
+# Confirm that sending the wrong password/username results in a 401 error
+curl --insecure -I -u "{{ gateway_test_user }}:badpassword" {{ gateway_test_url }} | grep "401 Unauthorized"
+
+# Confirm that using the correct password/username results in a 200 OK
+curl --insecure -I -u "{{ gateway_test_user }}:$password" {{ gateway_test_url }} | grep "200 OK"

@@ -1,0 +1,22 @@
+- name: Prepare the vagrant VM for Ansible
+# =========================================
+  hosts: streisand-host
+  gather_facts: no
+  remote_user: "root"
+  become: true
+
+  tasks:
+    - name: Install Python using a raw SSH command to enable the execution of Ansible modules
+      raw: apt update && apt install python -y
+      args:
+        executable: /bin/bash
+    # Ansible uses `ip -4 route get 8.8.8.8` to set the `ansible_default_ipv4`
+    # fact with an interface's details. Without the below route being added this
+    # results in enp0s3 being used when we want enp0s8 to be used. We work
+    # around this by setting a route for 8.8.8.8 through enp0s8.
+    - name: Workaround Ansible default ipv4 interface detection
+      raw: route add -net 8.8.8.8 netmask 255.255.255.255 enp0s8
+      args:
+        executable: /bin/bash
+
+- include: streisand.yml

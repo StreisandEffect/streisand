@@ -1,0 +1,10 @@
+---
+# TODO(@cpu) - import the vars files these are defined in instead of duplicating
+#              them here
+streisand_local_directory: "generated-docs"
+streisand_gateway_password_localpath: "../{{ streisand_local_directory }}/gateway-password.txt"
+
+gateway_password_file: "/root/gateway-password.txt"
+gateway_test_url: "https://{{ streisand_ip }}"
+gateway_test_user: "streisand"
+gateway_test_cmd: "/usr/local/bin/end-to-end-test"

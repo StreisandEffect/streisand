@@ -1,0 +1,26 @@
+---
+- name: "Copy gateway password file to client"
+  copy:
+    src: "{{ streisand_gateway_password_localpath }}"
+    dest: "{{ gateway_password_file }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: "Install end-to-end test script"
+  template:
+    src: "end-to-end-test.sh.j2"
+    dest: "{{ gateway_test_cmd }}"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Wait for streisand gateway"
+  wait_for:
+    host: "{{ streisand_ip }}"
+    port: 443
+    state: started
+    timeout: 60
+
+- name: "Run end-to-end test script"
+  command: "end-to-end-test"
