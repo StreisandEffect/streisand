@@ -31,3 +31,7 @@ shadowsocks_server_port: 8530
 shadowsocks_local_port: 1080
 shadowsocks_cipher: "AEAD_CHACHA20_POLY1305"
 shadowsocks_password: "oPGn1RPeZohpzEhoUbBRV+bmYT8KkeDb7vRCjdxA46vHs48uCTGXd4GuCMgSgOeY"
+
+gateway_wg_client: "{{ gateway_test_url }}/wireguard/wg0-client.conf"
+
+wireguard_client: "/etc/wireguard/wg0-client.conf"

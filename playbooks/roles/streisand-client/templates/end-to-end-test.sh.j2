@@ -70,3 +70,17 @@ curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gatewa
 # Kill the backgrounded shadowsocks connection
 kill %%
 
+add-apt-repository -y ppa:wireguard/wireguard
+apt-get update -y
+apt-get install -y wireguard-dkms wireguard-tools
+
+# Download the wireguard client config
+curl --insecure -u "{{ gateway_test_user }}:$password" {{ gateway_wg_client }} > {{ wireguard_client }}
+
+# Fix the perms on the wireguard client config
+chown -v root:root {{ wireguard_client }}
+chmod -v 600 {{ wireguard_client }}
+
+# Bring up the wg0-client interface
+wg-quick up wg0-client
+
