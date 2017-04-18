@@ -45,3 +45,28 @@ curl --socks5 localhost:{{ forward_socks_port }} --insecure -I -u "{{ gateway_te
 # Kill the backgrounded SSH connection
 kill %%
 
+# Download the Linux shadowsocks client zip from the mirror
+curl --insecure -u "{{ gateway_test_user }}:$password" {{ gateway_shadowsocks_client }} > {{ shadowsocks_client_zip }}
+
+# Extract the zip
+gunzip -f {{ shadowsocks_client_zip }}
+
+chmod +x {{ shadowsocks_client }}
+
+shadowsocksPassword=$(cat "{{ shadowsocks_password_file }}")
+
+# Run the client
+{{ shadowsocks_client }} -c {{ streisand_ip }}:{{ shadowsocks_server_port }} -password "$shadowsocksPassword" -socks localhost:{{ shadowsocks_local_port }} -verbose -cipher {{ shadowsocks_cipher }} &
+
+# Sleep to give shadowsocks a chance to start
+sleep 2
+
+# Check that the gateway website can be loaded through shadowsocks
+curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$password" {{ gateway_test_url }} | grep "200 OK"
+
+# Check that Google can be loaded through shadowsocks
+curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$password" google.com | grep "302 Found"
+
+# Kill the backgrounded shadowsocks connection
+kill %%
+

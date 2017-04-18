@@ -19,3 +19,15 @@ forward_ssh_hosts: "/root/.ssh/streisand.known_hosts"
 forward_ssh_user: "forward"
 forward_socks_port: 9876
 
+
+shadowsocks_password_localpath: "../{{ streisand_local_directory }}/shadowsocks-password.txt"
+shadowsocks_password_file: "/root/shadowsocks-password.txt"
+shadowsocks_client: "/root/shadowsocks2-linux-x64"
+shadowsocks_client_zip: "{{ shadowsocks_client }}.gz"
+
+gateway_shadowsocks_client: "{{ gateway_test_url }}/mirror/shadowsocks/shadowsocks2-linux-x64.gz"
+
+shadowsocks_server_port: 8530
+shadowsocks_local_port: 1080
+shadowsocks_cipher: "AEAD_CHACHA20_POLY1305"
+shadowsocks_password: "oPGn1RPeZohpzEhoUbBRV+bmYT8KkeDb7vRCjdxA46vHs48uCTGXd4GuCMgSgOeY"
