@@ -93,68 +93,68 @@ Complete all of these tasks on your local home machine.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
 
-            ssh-keygen
+        ssh-keygen
 * Install Git.
   * On Debian and Ubuntu
 
-            sudo apt-get install git
+        sudo apt-get install git
   * On Fedora
 
-            sudo yum install git
+        sudo yum install git
   * On OS X (via [Homebrew](http://brew.sh/))
 
-            brew install git
+        brew install git
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
   * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible and that are required by some modules)
 
-            sudo apt-get install python-paramiko python-pip python-pycurl python-dev build-essential
+        sudo apt-get install python-paramiko python-pip python-pycurl python-dev build-essential
   * On Fedora
 
-            sudo yum install python-pip
+        sudo yum install python-pip
   * On OS X
 
-            sudo easy_install pip
-            sudo pip install pycurl
+        sudo easy_install pip
+        sudo pip install pycurl
 
 * Install [Ansible](http://www.ansible.com/home).
   * On OS X (via [Homebrew](http://brew.sh/))
 
-            brew update && brew install ansible
+        brew update && brew install ansible
   * On BSD or Linux (via pip)
 
-            sudo pip install ansible markupsafe
+        sudo pip install ansible markupsafe
 * Install the necessary Python libraries for your chosen cloud provider.
   * Amazon EC2
 
-            sudo pip install boto
+        sudo pip install boto
   * Azure
 
-            sudo pip install msrest msrestazure azure==2.0.0rc5
+        sudo pip install msrest msrestazure azure==2.0.0rc5
   * DigitalOcean
 
-            sudo pip install dopy==0.3.5
+        sudo pip install dopy==0.3.5
   * Google
 
-            sudo pip install "apache-libcloud>=1.5.0"
+        sudo pip install "apache-libcloud>=1.5.0"
 
   * Linode
 
-            sudo pip install linode-python
+        sudo pip install linode-python
   * Rackspace Cloud
 
-            sudo pip install pyrax
+        sudo pip install pyrax
   * **Important note if you are using a Homebrew-installed version of Python** you should also run these commands to make sure it can find the necessary libraries:
 
-            mkdir -p ~/Library/Python/2.7/lib/python/site-packages
-            echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
+        mkdir -p ~/Library/Python/2.7/lib/python/site-packages
+        echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
 
 ### Execution ###
 1. Clone the Streisand repository and enter the directory.
 
-        git clone https://github.com/jlund/streisand.git && cd streisand
+       git clone https://github.com/jlund/streisand.git && cd streisand
 2. Execute the Streisand script.
 
-        ./streisand
+       ./streisand
 3. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
 4. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
 5. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
