@@ -31,7 +31,8 @@
     - shadowsocks
     - ssh
     - tinyproxy
-    - tor-bridge
+    - role: tor-bridge
+      when: not streisand_ci
     - sslh
     - monit
     - ufw
