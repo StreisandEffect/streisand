@@ -36,6 +36,9 @@ shadowsocks_password_file_localpath: "../{{ streisand_local_directory }}/shadows
 # TODO(@cpu): don't ship with -v, remove before PR
 shadowsocks_daemon_args: "-u -v"
 
+# Add -v for verbose mode to help with debugging
+shadowsocks_daemon_args: "-u"
+
 shadowsocks_gateway_location: "{{ streisand_gateway_location }}/shadowsocks"
 
 shadowsocks_markdown_instructions: "{{ shadowsocks_gateway_location }}/index.md"
