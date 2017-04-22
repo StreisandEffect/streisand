@@ -5,9 +5,11 @@ set idfile /var/lib/monit/id
 set statefile /var/lib/monit/state
 
 set httpd port 2812 and
-    use address localhost  # only accept connection from localhost
-    allow localhost        # allow localhost to connect to the server
+    use address localhost  # Bind monit to localhost
 
+    # Allow any ip to connect to monit. Binding monit to localhost
+    # and requiring basic auth (through nginx) should be sufficient to protect this interface.
+    allow 0.0.0.0/0.0.0.0 # allow any ip to connect to monit.
 
 # Nginx
 check process nginx with pidfile /var/run/nginx.pid
