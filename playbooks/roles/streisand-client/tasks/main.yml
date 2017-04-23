@@ -1,4 +1,10 @@
 ---
+- name: "Include the common vars"
+  include_vars: "../../common/vars/main.yml"
+
+- name: "Include the shadowsocks default vars"
+  include_vars: "../../shadowsocks/defaults/main.yml"
+
 - name: "Copy gateway password file to client"
   copy:
     src: "{{ streisand_gateway_password_localpath }}"

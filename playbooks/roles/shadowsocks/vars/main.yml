@@ -33,10 +33,6 @@ shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
 shadowsocks_password_file_localpath: "../{{ streisand_local_directory }}/shadowsocks-password.txt"
 
 # Add -v for verbose mode to help with debugging
-# TODO(@cpu): don't ship with -v, remove before PR
-shadowsocks_daemon_args: "-u -v"
-
-# Add -v for verbose mode to help with debugging
 shadowsocks_daemon_args: "-u"
 
 shadowsocks_gateway_location: "{{ streisand_gateway_location }}/shadowsocks"

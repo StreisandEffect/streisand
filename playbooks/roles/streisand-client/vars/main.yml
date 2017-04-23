@@ -1,37 +1,41 @@
 ---
-# TODO(@cpu) - import the vars files these are defined in instead of duplicating
-#              them here
-streisand_local_directory: "generated-docs"
+# Path to the gateway password on the Ansible host
 streisand_gateway_password_localpath: "../{{ streisand_local_directory }}/gateway-password.txt"
 
+# Path to the gateway password file on the streisand client
 gateway_password_file: "/root/gateway-password.txt"
+# URL for accessing the streisand server's HTTP gateway page
 gateway_test_url: "https://{{ streisand_ip }}"
+# User for accessing the streisand server HTTP gateway page
 gateway_test_user: "streisand"
+# The test command to create & execute on the striesand client
 gateway_test_cmd: "/usr/local/bin/end-to-end-test"
 
-# TODO(@cpu) - this should be based on an imported var too
+# The gateway URL for clients to download the forward user's RSA key
 gateway_ssh_rsa_key: "{{ gateway_test_url }}/ssh/streisand_rsa"
+# The gateway URL for clients to download the SSH known hosts file
 gateway_ssh_hosts: "{{ gateway_test_url }}/ssh/streisand.known_hosts"
 
+# Files created on the streisand client test for SSH config:
 forward_ssh_key: "/root/.ssh/streisand_rsa"
 forward_ssh_config: "/root/.ssh/config"
 forward_ssh_hosts: "/root/.ssh/streisand.known_hosts"
+
+# Forwarding SSH username
 forward_ssh_user: "forward"
+
+# Port on the streisand-client to use for the SOCKS SSH proxy
 forward_socks_port: 9876
 
-
+# Path to the shadowsocks password on the Ansible host
 shadowsocks_password_localpath: "../{{ streisand_local_directory }}/shadowsocks-password.txt"
-shadowsocks_password_file: "/root/shadowsocks-password.txt"
-shadowsocks_client: "/root/shadowsocks2-linux-x64"
-shadowsocks_client_zip: "{{ shadowsocks_client }}.gz"
 
+# Path to the shadowsocks password file on the streisand client
+shadowsocks_password_file: "/root/shadowsocks-password.txt"
+
+# The gateway URL for clients to download the shadowsocks2 linux source
 gateway_shadowsocks_client: "{{ gateway_test_url }}/mirror/shadowsocks/shadowsocks2-linux-x64.gz"
 
-shadowsocks_server_port: 8530
-shadowsocks_local_port: 1080
-shadowsocks_cipher: "AEAD_CHACHA20_POLY1305"
-shadowsocks_password: "oPGn1RPeZohpzEhoUbBRV+bmYT8KkeDb7vRCjdxA46vHs48uCTGXd4GuCMgSgOeY"
-
-gateway_wg_client: "{{ gateway_test_url }}/wireguard/wg0-client.conf"
-
-wireguard_client: "/etc/wireguard/wg0-client.conf"
+# Path to the shadowsocks2 client source on the streisand client
+shadowsocks_client: "/root/shadowsocks2-linux-x64"
+shadowsocks_client_zip: "{{ shadowsocks_client }}.gz"
