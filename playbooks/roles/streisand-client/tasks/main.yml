@@ -74,13 +74,17 @@
     path: "{{ shadowsocks_client }}"
     mode: 0700
 
-- name: "Install end-to-end test script"
+- name: "Install test scripts"
   template:
-    src: "end-to-end-test.sh.j2"
-    dest: "{{ gateway_test_cmd }}"
+    src: "{{ item.template }}"
+    dest: "{{ gateway_test_dir }}/{{ item.cmd }}"
     owner: root
     group: root
     mode: 0755
+  with_items:
+    - { template: 'streisand-gateway-test.sh.j2', cmd: 'streisand-gateway-test' }
+    - { template: 'streisand-ssh-forward-test.sh.j2', cmd: 'streisand-ssh-forward-test' }
+    - { template: 'streisand-shadowsocks-forward-test.sh.j2', cmd: 'streisand-shadowsocks-forward-test' }
 
 - name: "Wait for streisand gateway"
   wait_for:
@@ -89,5 +93,9 @@
     state: started
     timeout: 60
 
-- name: "Run end-to-end test script"
-  command: "end-to-end-test"
+- name: "Run test scripts"
+  command: "{{ item }}"
+  with_items:
+    - 'streisand-gateway-test'
+    - 'streisand-ssh-forward-test'
+    - 'streisand-shadowsocks-forward-test'

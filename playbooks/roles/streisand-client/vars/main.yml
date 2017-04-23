@@ -8,8 +8,8 @@ gateway_password_file: "/root/gateway-password.txt"
 gateway_test_url: "https://{{ streisand_ip }}"
 # User for accessing the streisand server HTTP gateway page
 gateway_test_user: "streisand"
-# The test command to create & execute on the striesand client
-gateway_test_cmd: "/usr/local/bin/end-to-end-test"
+# The directory to copy test scripts to
+gateway_test_dir: "/usr/local/bin/"
 
 # The gateway URL for clients to download the forward user's RSA key
 gateway_ssh_rsa_key: "{{ gateway_test_url }}/ssh/streisand_rsa"
