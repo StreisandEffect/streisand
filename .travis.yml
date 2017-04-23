@@ -18,13 +18,10 @@ install:
   - pip install ansible==2.3.0.0
   - pip install urllib3
   - ansible --version
-  # Install additional packages, configure lxc, start streisand container
-  - ansible-playbook tests/development-setup.yml -i tests/inventory
-  # Ensure we get added to the lxd group
-  - sudo chmod 777 /var/lib/lxd/unix.socket
 
 script:
   # Run syntax checks on playbooks and roles
-  - ansible-playbook tests/syntax-check.yml -i inventory --syntax-check
+  - ./tests/tests.sh syntax
+  # Install additional packages, configure lxc, start streisand container
   # Run entire playbook against lxc container
-  - ansible-playbook tests/run.yml -i tests/inventory
+  - ./tests/tests.sh ci

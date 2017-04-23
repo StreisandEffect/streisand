@@ -101,6 +101,8 @@
   command: base64 --wrap=0 {{ openssl_ca_certificate }}
   register: streisand_certificate_data_uri
 
+  # TODO:
+  #   Add to CI testing https://github.com/jlund/streisand/issues/643
 - block:
     - name: Generate the Markdown Gateway index, instructions, and firewall information
       template:

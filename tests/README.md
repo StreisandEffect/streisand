@@ -1,31 +1,31 @@
-# Streisand-CI testing
-Streisand CI testing. Uses travis-ci to test Ansible syntax and kick off a full playbook run.
-Full playbook run uses LXC to execute.
+# Streisand-CI Testing
+Streisand CI testing uses Travis CI to test Ansible syntax and kick off a full playbook run.
+The Full playbook run is executed against an LXC container.
 
-## Limitations
-The TOR playbook role is skipped. Turns out the travis-ci environment doesn't like being added to the tor network (even temporarily for testing purposes).
-Streisand doc generation is also skipped for now until some mock variables are added for the skipped TOR role.
+## Testing Limitations
+There were some connectivity issues with the `tor-bridge` playbook in the Travis CI testing environment. Due to this, the role is curretnly skipped. 
+Streisand doc generation is also skipped until some mock variables and tasks are added.
 
 ## Local Testing
-You can use this testing framework locally as well (Locally, the TOR playbook will be ran).
+You can use this testing framework to test locally as well. Note that when testing locally, the `tor-bridge` role will be ran.
 
-Environment Expectations:
-  - *Fresh* trusty or xenial ubuntu install (Vagrant or digital ocean server, etc.)
+### Host Environment Expectations:
+  - **Fresh** Trusty or Xenial Ubuntu install (Vagrant or DigitalOcean server, etc.)
 
-Running the tests:
-Since LXC loads the hosts kernal modules, Libreswan is compiled and installed on the host. This allows the ipsec role to complete successfully
+Because LXC loads the host's kernal modules into the container. Libreswan needs to be compiled and installed on the host.
+This allows the ipsec role to complete successfully inside the LXC container.
 
-  Running all tests:
-    - Clone the Streisand repository
+#### Running the tests
+  - Clone the Streisand repository
     - Run test script
       - `./tests/test.sh full`
-        - This will setup LXD/LXC and dependencies locally. Then run streisand against the streisand LXC container.
-  Sytanx only:
-    - `./tests/test.sh syntax` 
+        - The `full` argument will run `development-setup.yml`, `syntax-check.yml`, and `run.yml`.
+
+#### Syntax only
+  - `./tests/test.sh syntax`
 
 # TODO
 - Vagrant file which can automate setting up a local test environment for use with development-setup.yml, and run.yml
-- Figure out a way to test the TOR role
+- Figure out a way to test the Tor role
 - Add some mock variables for the document generation task
-- Would be cool to automate tests with each provider( Example: Automatically spinning up an EC2 instance and testing)
 - Add some automated client testing (Example: Automatically test an openvpn client)

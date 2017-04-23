@@ -18,7 +18,6 @@
             id: 7635B973
             url: "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xD5495F657635B973"
             state: present
-          tags: deluge
 
         - name: Install lxc ppa
           apt_repository:
@@ -27,7 +26,6 @@
           with_items:
             - "deb http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
             - "deb-src http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
-          tags: deluge
 
         - name: Install the Libreswan dependencies that are required for compilation
           apt:
@@ -35,7 +33,7 @@
           with_items: "{{ libreswan_compilation_dependencies_trusty }}"
           when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
-      #Since LXC loads kernal modules from the host, we need to ensure libreswan is compiled and installed
+      # Since LXC loads kernal modules from the host, we need to ensure libreswan is compiled and installed
     - name: Include Libreswan vars
       include_vars: "../playbooks/roles/l2tp-ipsec/vars/main.yml"
 
@@ -52,7 +50,7 @@
 
     - name: Retrieve the Libreswan source code
       get_url:
-        url: https://download.libreswan.org/{{ libreswan_source_filename }}
+        url: https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_source_filename }}
         dest: "{{ libreswan_source_location }}"
         checksum: "{{ libreswan_checksum }}"
         owner: root
@@ -88,14 +86,6 @@
       pause:
         seconds: 5
 
-    - name: Debug ipsec start
-      debug:
-        msg: "{{ ipsec_start }}"
-
-    - name: Ipsec verify
-      command: ipsec verify
-      ignore_errors: yes
-
     - name: Install lxd
       apt:
         name: lxd
@@ -105,16 +95,15 @@
     - name: lxd new group
       shell: newgrp lxd
 
-    - name: lxd init config
-      shell: lxd init --auto --storage-backend dir
-      ignore_errors: yes
+    - block:
+        - name: lxd init config
+          shell: lxd init --auto --storage-backend dir
 
-    - name: lxd create network
-      shell: lxc network create testbr0
-      ignore_errors: yes
+        - name: lxd create network
+          shell: lxc network create testbr0
 
-    - name: lxd attach network to default profile
-      shell: lxc network attach-profile testbr0 default eth0
+        - name: lxd attach network to default profile
+          shell: lxc network attach-profile testbr0 default eth0
       ignore_errors: yes
 
     - name: restart lxd
