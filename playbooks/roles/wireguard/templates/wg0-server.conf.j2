@@ -4,6 +4,7 @@ SaveConfig = true
 ListenPort = {{ wireguard_port }}
 PrivateKey = {{ wireguard_server_private_key }}
 PresharedKey = {{ wireguard_preshared_key }}
+PostUp = linkMTU=$(ip link show $(ip route show default | sed -n 's/^default via .* \(dev [a-z0-9]\+\).*/\1/p' || true) | sed -n 's/.*mtu \([0-9]\+\).*/\1/p' || true); ip link set mtu $(( ${linkMTU:-1500} - 60 )) dev %i
 
 [Peer]
 PublicKey = {{ wireguard_client_public_key }}
