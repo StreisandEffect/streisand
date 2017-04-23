@@ -77,14 +77,11 @@
 - name: "Install test scripts"
   template:
     src: "{{ item.template }}"
-    dest: "{{ gateway_test_dir }}/{{ item.cmd }}"
+    dest: "{{ test_script_dir }}/{{ item.cmd }}"
     owner: root
     group: root
     mode: 0755
-  with_items:
-    - { template: 'streisand-gateway-test.sh.j2', cmd: 'streisand-gateway-test' }
-    - { template: 'streisand-ssh-forward-test.sh.j2', cmd: 'streisand-ssh-forward-test' }
-    - { template: 'streisand-shadowsocks-forward-test.sh.j2', cmd: 'streisand-shadowsocks-forward-test' }
+  with_items: "{{ test_scripts }}"
 
 - name: "Wait for streisand gateway"
   wait_for:
@@ -94,8 +91,5 @@
     timeout: 60
 
 - name: "Run test scripts"
-  command: "{{ item }}"
-  with_items:
-    - 'streisand-gateway-test'
-    - 'streisand-ssh-forward-test'
-    - 'streisand-shadowsocks-forward-test'
+  command: "{{ item.cmd }}"
+  with_items: "{{ test_scripts }}"

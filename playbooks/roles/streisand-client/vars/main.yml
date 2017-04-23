@@ -8,8 +8,15 @@ gateway_password_file: "/root/gateway-password.txt"
 gateway_test_url: "https://{{ streisand_ip }}"
 # User for accessing the streisand server HTTP gateway page
 gateway_test_user: "streisand"
+
 # The directory to copy test scripts to
-gateway_test_dir: "/usr/local/bin/"
+test_script_dir: "/usr/local/bin/"
+
+# Test scripts to install & run
+test_scripts:
+  - { template: 'streisand-gateway-test.sh.j2', cmd: 'streisand-gateway-test' }
+  - { template: 'streisand-ssh-forward-test.sh.j2', cmd: 'streisand-ssh-forward-test' }
+  - { template: 'streisand-shadowsocks-forward-test.sh.j2', cmd: 'streisand-shadowsocks-forward-test' }
 
 # The gateway URL for clients to download the forward user's RSA key
 gateway_ssh_rsa_key: "{{ gateway_test_url }}/ssh/streisand_rsa"
