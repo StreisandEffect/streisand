@@ -119,7 +119,7 @@ Complete all of these tasks on your local home machine.
 * Install [Ansible](http://www.ansible.com/home).
   * On OS X (via [Homebrew](http://brew.sh/))
 
-        brew update && brew install ansible
+        brew install ansible
   * On BSD or Linux (via pip)
 
         sudo pip install ansible markupsafe
