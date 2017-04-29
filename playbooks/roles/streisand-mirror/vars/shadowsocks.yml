@@ -40,4 +40,4 @@ shadowsocks_download_urls:
   - { url: "{{ shadowsocks_android_url }}", checksum: "{{ shadowsocks_android_checksum }}" }
   - { url: "{{ shadowsocks_gui_url }}",     checksum: "{{ shadowsocks_gui_checksum }}" }
   - { url: "{{ shadowsocks_x_ng_url }}",    checksum: "{{ shadowsocks_x_ng_checksum }}" }
-  - { url: "{{ shadowsocks_go_url }}",  checksum: "{{ shadowsocks_go_checksum }}" }
+  - { url: "{{ shadowsocks_go_url }}",      checksum: "{{ shadowsocks_go_checksum }}" }
