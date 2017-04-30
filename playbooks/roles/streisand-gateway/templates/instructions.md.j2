@@ -8,16 +8,17 @@ Your Streisand Gateway contains step-by-step instructions for the services it pr
   * [iOS](#ssl-ios)
   * [Chromium](#ssl-chromium)
   * [Firefox](#ssl-firefox)
-  * [Manual Certificate Verification](#ssl-manual)
+  * [Manual Certificate Authority Verification](#ssl-manual-ca)
+  * [Manual Server Certificate Verification](#ssl-manual)
 * [Connecting to your Streisand Gateway](#connecting)
   * [SSL](#connecting-ssl)
   * [Tor Hidden Service](#connecting-tor)
 
 
 <a name="ssl"></a>
-SSL Certificate Installation
+SSL Certificate Authority Installation
 ----------------------------
-You should install the Gateway's SSL certificate so your browser can automatically verify the integrity of the connection. This prevents anyone from tampering with your traffic and also protects your login credentials. The certificate has been embedded directly into this HTML file, and you can download it here:
+You should install the Gateway's SSL certificate authority so your browser can automatically verify the integrity of the connection. This prevents anyone from tampering with your traffic and also protects your login credentials. The certificate has been embedded directly into this HTML file, and you can download it here:
 <p><a download="{{ streisand_ipv4_address }}.crt" id="download" href="data:application/x-x509-ca-cert;base64,{{ streisand_certificate_data_uri.stdout }}">Download Certificate</a></p>
 
 
@@ -138,17 +139,32 @@ These instructions work for Chrome. Firefox for Android uses its own internal Ce
 1. Click *OK* to close the certificate manager, and then close the *Preferences* panel.
 1. You are ready to connect. See [Connecting to your Streisand Gateway](#connecting-ssl).
 
+<a name="ssl-manual-ca"></a>
+### Certificate Authority Verification ###
+*If you chose to install the Certificate authority using one of the methods above. You may also verify the fingerprints for additional security(This really only needs to be done once).*
+
+The certificate authority details should match the following information:
+
+##### Certificate Authority Serial Number #####
+`{{ ssl_certificate_authority_serial_number.stdout }}`
+
+##### Certificate Authority Fingerprints #####
+{% for fingerprint in ssl_certificate_authority_fingerprints.results %}
+    {{ fingerprint.stdout }}
+{% endfor %}
+
+If everything checks out, you are ready to connect. See [Connecting to your Streisand Gateway](#connecting-ssl).
 
 <a name="ssl-manual"></a>
-### Manual SSL Verification ###
-*The manual certificate verification option is significantly less secure than installing the certificate using one of the methods above. Your browser will display a warning message, and you are more vulnerable to man-in-the-middle attacks because the fingerprints must be verified on every connection attempt. It should be used with great care, and only as a last resort.*
+### Manual SSL Server Certificate Verification ###
+*The manual server certificate verification option is significantly less secure than installing the certificate authority using one of the methods above. Your browser will display a warning message, and you are more vulnerable to man-in-the-middle attacks because the fingerprints must be verified on every connection attempt. It should be used with great care, and only as a last resort.*
 
-The certificate details should match the following information:
+The server certificate details should match the following information:
 
-##### Serial Number #####
+##### Server Certificate Serial Number #####
 `{{ ssl_certificate_serial_number.stdout }}`
 
-##### Fingerprints #####
+##### Server Certificate Fingerprints #####
 {% for fingerprint in ssl_certificate_fingerprints.results %}
     {{ fingerprint.stdout }}
 {% endfor %}
@@ -166,7 +182,7 @@ Each connection option takes you to the same place and you can use whichever one
 ### SSL ###
 [{{ streisand_gateway_url }}]({{ streisand_gateway_url }})
 
-username: `{{ streisand_gateway_username }}`  
+username: `{{ streisand_gateway_username }}`
 password: `{{ streisand_gateway_password.stdout }}`
 
 <a name="connecting-tor"></a>
@@ -175,5 +191,5 @@ password: `{{ streisand_gateway_password.stdout }}`
 
 [{{ tor_hidden_service_url }}]({{ tor_hidden_service_url }})
 
-username: `{{ streisand_gateway_username }}`  
+username: `{{ streisand_gateway_username }}`
 password: `{{ streisand_gateway_password.stdout }}`
