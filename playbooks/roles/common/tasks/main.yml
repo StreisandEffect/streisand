@@ -17,6 +17,10 @@
     name: "{{ item }}"
   with_items: "{{ streisand_common_packages }}"
 
+- name: Perform a full system upgrade
+  apt:
+    upgrade: "safe"
+
 - name: Copy the HTML header and footer templates that are used during documentation generation
   copy:
     src: "{{ item.src }}"

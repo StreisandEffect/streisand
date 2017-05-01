@@ -3,7 +3,7 @@
   hosts: streisand-host
   gather_facts: no
 
-  remote_user: root
+  remote_user: "root"
   become: true
 
   tasks:

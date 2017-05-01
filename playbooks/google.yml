@@ -25,6 +25,8 @@
       "16": "asia-northeast1-a"
       "17": "asia-northeast1-b"
       "18": "asia-northeast1-c"
+      "19": "asia-southeast1-a"
+      "20": "asia-southeast1-b"
 
 
   # These variable files are included so the gce-network role
@@ -62,6 +64,8 @@
           16. Northeast Asia  (Tokyo A)
           17. Northeast Asia  (Tokyo B)
           18. Northeast Asia  (Tokyo C)
+          19. Southeast Asia  (Sinagapore A)
+          20. Southeast Asia  (Sinagapore B)
         Please choose the number of your zone. Press enter for default (#3) zone.
       default: "3"
       private: no
@@ -72,7 +76,7 @@
       private: no
 
     - name: "gce_json_file_location"
-      prompt: "\n\nThe full path of your unique service account credentials file. Details on generating this can be found at \nhttp://docs.ansible.com/guide_gce.html#credentials\n and \nhttps://support.google.com/cloud/answer/6158849?hl=en&ref_topic=6262490#serviceaccounts\n"
+      prompt: "\n\nThe full path of your unique service account credentials file. Details on generating this can be found at \nhttps://docs.ansible.com/ansible/guide_gce.html#credentials\n and \nhttps://support.google.com/cloud/answer/6158849?hl=en&ref_topic=6262490#serviceaccounts\n"
       default: "{{ lookup('env','HOME') }}/streisand.json"
       private: no
 

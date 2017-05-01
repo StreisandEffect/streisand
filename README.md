@@ -10,7 +10,7 @@ The Internet can be a little unfair. It's way too easy for ISPs, telecoms, polit
 Introducing Streisand
 ---------------------
 * A single command sets up a brand new Ubuntu 16.04 server running a [wide variety of anti-censorship software](#services-provided) that can completely mask and encrypt all of your Internet traffic.
-* Streisand natively supports the creation of new servers at [Amazon EC2](https://aws.amazon.com/ec2/), [DigitalOcean](https://www.digitalocean.com/), [Exoscale](https://www.exoscale.ch), [Google Compute Engine](https://cloud.google.com/compute/), [Linode](https://www.linode.com/), and [Rackspace](https://www.rackspace.com/)&mdash;with more providers coming soon! It also runs on any Ubuntu 16.04 server regardless of provider, and **hundreds** of instances can be configured simultaneously using this method.
+* Streisand natively supports the creation of new servers at [Amazon EC2](https://aws.amazon.com/ec2/), [Azure](https://azure.microsoft.com), [DigitalOcean](https://www.digitalocean.com/), [Exoscale](https://www.exoscale.ch), [Google Compute Engine](https://cloud.google.com/compute/), [Linode](https://www.linode.com/), and [Rackspace](https://www.rackspace.com/)&mdash;with more providers coming soon! It also runs on any Ubuntu 16.04 server regardless of provider, and **hundreds** of instances can be configured simultaneously using this method.
 * The process is completely automated and only takes about ten minutes, which is pretty awesome when you consider that it would require the average system administrator several days of frustration to set up even a small subset of what Streisand offers in its out-of-the-box configuration.
 * Once your Streisand server is running, you can give the custom connection instructions to friends, family members, and fellow activists. The connection instructions contain an embedded copy of the server's unique SSL certificate, so you only have to send them a single file.
 * Each server is entirely self-contained and comes with absolutely everything that users need to get started, including cryptographically verified mirrors of all common clients. This renders any attempted censorship of default download locations completely ineffective.
@@ -57,7 +57,7 @@ Services Provided
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
   * The high-performance [libev variant](https://github.com/shadowsocks/shadowsocks-libev) is installed. This version is capable of handling thousands of simultaneous connections.
   * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
-  * [One-time Authentication](https://shadowsocks.org/en/spec/one-time-auth.html) (OTA) is enabled for enhanced security and improved GFW evasion.
+  * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
 * [sslh](http://www.rutschle.net/tech/sslh.shtml)
   * Sslh is a protocol demultiplexer that allows Nginx, OpenSSH, and OpenVPN to share port 443. This provides an alternative connection option and means that you can still route traffic via OpenSSH and OpenVPN even if you are on a restrictive network that blocks all access to non-HTTP ports.
 * [Stunnel](https://www.stunnel.org/index.html)
@@ -81,9 +81,9 @@ Installation
 Please read all installation instructions **carefully** before proceeding.
 
 ### Important Clarification ###
-Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. That means when you run Streisand, it automatically sets up **another remote server** with the VPN packages and configuration.
+Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. Streisand automatically sets up **another remote server** with the VPN packages and configuration.
 
-This means that you run Streisand **on your home machine** (e.g. your laptop) and it will spin up and deploy **another server** on your chosen hosting provider. Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!). Support for local provisioning (i.e. Streisand locally configuring the system on which it is installed) will be added soon.
+Streisand will spin up and deploy **another server** on your chosen hosting provider when you run **on your home machine** (e.g. your laptop). Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!). Support for local provisioning (i.e. Streisand locally configuring the system on which it is installed) will be added soon.
 
 ### Prerequisites ###
 Complete all of these tasks on your local home machine.
@@ -93,69 +93,73 @@ Complete all of these tasks on your local home machine.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
 
-            ssh-keygen
+        ssh-keygen
 * Install Git.
   * On Debian and Ubuntu
 
-            sudo apt-get install git
+        sudo apt-get install git
   * On Fedora
 
-            sudo yum install git
+        sudo yum install git
   * On OS X (via [Homebrew](http://brew.sh/))
 
-            brew install git
+        brew install git
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
   * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible and that are required by some modules)
 
-            sudo apt-get install python-paramiko python-pip python-pycurl python-dev build-essential
+        sudo apt-get install python-paramiko python-pip python-pycurl python-dev build-essential
   * On Fedora
 
-            sudo yum install python-pip
+        sudo yum install python-pip
   * On OS X
 
-            sudo easy_install pip
-            sudo pip install pycurl
-            
+        sudo easy_install pip
+        sudo pip install pycurl
+
 * Install [Ansible](http://www.ansible.com/home).
   * On OS X (via [Homebrew](http://brew.sh/))
 
-            brew update && brew install ansible
+        brew install ansible
   * On BSD or Linux (via pip)
 
-            sudo pip install ansible markupsafe
+        sudo pip install ansible markupsafe
 * Install the necessary Python libraries for your chosen cloud provider.
   * Amazon EC2
 
-            sudo pip install boto
+        sudo pip install boto
+  * Azure
+
+        sudo pip install msrest msrestazure azure==2.0.0rc5
   * DigitalOcean
 
-            sudo pip install dopy==0.3.5
+        sudo pip install dopy==0.3.5
   * Exoscale
 
         sudo pip install cs
+        sudo pip install sshpubkeys
 
   * Google
 
-            sudo pip install "apache-libcloud>=0.17.0"
+        sudo pip install "apache-libcloud>=1.5.0"
 
   * Linode
 
-            sudo pip install linode-python
+        sudo pip install linode-python
   * Rackspace Cloud
 
-            sudo pip install pyrax
-  * If you are using a Homebrew-installed version of Python you should also run these commands to make sure it can find the necessary libraries:
+        sudo pip install pyrax
+  * **Important note if you are using a Homebrew-installed version of Python** you should also run these commands to make sure it can find the necessary libraries:
 
-            mkdir -p ~/Library/Python/2.7/lib/python/site-packages
-            echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
+        mkdir -p ~/Library/Python/2.7/lib/python/site-packages
+        echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
 
 ### Execution ###
 1. Clone the Streisand repository and enter the directory.
 
-        git clone https://github.com/jlund/streisand.git && cd streisand
+       git clone https://github.com/jlund/streisand.git && cd streisand
 2. Execute the Streisand script.
 
-        ./streisand
+       ./streisand
 3. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
 4. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
 5. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
@@ -170,7 +174,6 @@ The servers should be accessible using SSH keys, and *root* is used as the conne
 
 Upcoming Features
 -----------------
-* Native [Microsoft Azure](https://azure.microsoft.com/en-us/) support.
 * Role isolation and selection, allowing you to choose which daemons and services are installed.
 * Easier setup.
 

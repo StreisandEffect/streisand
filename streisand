@@ -3,40 +3,47 @@
 
 set -e
 
-echo
-echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m"
-echo
+REQUIRED_ANSIBLE_VERSION="2.2.1.0"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 
-command -v ansible > /dev/null 2>&1 || {
-  echo "Ansible is not installed."
-  exit 1
-}
+echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 
-required_ansible_version="2.2.1.0"
+if ! command -v ansible > /dev/null 2>&1; then
+	echo "Ansible is not installed."
+	exit 1
+fi
 
-if [[ "$(ansible --version | grep -oe '2\(.[0-9]\)*')" < $required_ansible_version ]]
-then
-    echo "Ansible $required_ansible_version or higher is required."
+if [[ $(ansible --version | grep -oe '2\(.[0-9]\)*') < $REQUIRED_ANSIBLE_VERSION ]]; then
+    echo "Ansible $REQUIRED_ANSIBLE_VERSION or higher is required."
     exit 1
 fi
 
-echo -n "Which provider are you using?
-  1. Amazon
-  2. DigitalOcean
-  3. Exoscale
-  4. Google
-  5. Linode
-  6. Rackspace
-: "
+PYTHON_VERSION="$(python --version 2>/dev/null)"
+if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 2\..* ]]; then
+	sed 's/=python$/=python2/' "$SCRIPT_DIR/inventory" > "$SCRIPT_DIR/inventory.new"
+	mv "$SCRIPT_DIR/inventory.new" "$SCRIPT_DIR/inventory"
+	git -C "$SCRIPT_DIR" update-index --assume-unchanged inventory 2>/dev/null || true
+fi
 
-read reply
+export PYTHONPATH="$SCRIPT_DIR/monkey:$PYTHONPATH"
+
+read -r -p "Which provider are you using?
+  1. Amazon
+  2. Azure
+  3. DigitalOcean
+  4. Exoscale
+  5. Google
+  6. Linode
+  7. Rackspace
+: " reply
 
 case "$reply" in
   1) echo; echo; ansible-playbook playbooks/amazon.yml;;
-  2) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
-  3) echo; echo; ansible-playbook playbooks/exoscale.yml;;
-  4) echo; echo; ansible-playbook playbooks/google.yml;;
-  5) echo; echo; ansible-playbook playbooks/linode.yml;;
-  6) echo; echo; ansible-playbook playbooks/rackspace.yml;;
+  2) echo; echo; ansible-playbook playbooks/azure.yml;;
+  3) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
+  4) echo; echo; ansible-playbook playbooks/exoscale.yml;;
+  5) echo; echo; ansible-playbook playbooks/google.yml;;
+  6) echo; echo; ansible-playbook playbooks/linode.yml;;
+  7) echo; echo; ansible-playbook playbooks/rackspace.yml;;
   *) echo; echo "Invalid provider selected."; exit 1;;
 esac

@@ -14,19 +14,25 @@
 {{ ocserv_firewall_rule }}
 
 # OpenVPN
+{% if openvpn_firewall_rules is defined %}
 {% for rule in openvpn_firewall_rules %}
 {{ rule }}
 {% endfor %}
+{% endif %}
 
 # L2TP/IPsec
+{% if l2tp_ipsec_firewall_rules is defined %}
 {% for rule in l2tp_ipsec_firewall_rules %}
 {{ rule }}
 {% endfor %}
+{% endif %}
 
 # WireGuard
+{% if wireguard_firewall_rules is defined %}
 {% for rule in wireguard_firewall_rules %}
 {{ rule }}
 {% endfor %}
+{% endif %}
 
 ipsec setup start
 /etc/init.d/xl2tpd restart
