@@ -1,0 +1,1 @@
+exo_security_group: "{{ exo_server_name | regex_replace('\\s', '_') }}"
