@@ -117,6 +117,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
    * Select `{{ openvpn_cipher }}` as the *Cipher*.
    * Select `{{ openvpn_auth_digest }}` as the *HMAC Authentication*.
 1. Go to the *TLS Authentication* tab.
+   * Under *Server Certificate Check* choose `verify name exactly` and enter `{{ openvpn_server_common_name.stdout }}` as its value. 
    * Check *Verify peer (server) certificate usage signature*.
    * Check *Use additional TLS authentication*.
      * Select the `ta.key` from the client-files directory for the *Key File*.
