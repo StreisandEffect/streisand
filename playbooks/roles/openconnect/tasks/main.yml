@@ -187,8 +187,10 @@
 
 - name: Generate the Markdown OpenConnect/AnyConnect instructions
   template:
-    src: instructions.md.j2
-    dest: "{{ ocserv_markdown_instructions }}"
+    src: instructions{{ item.value.file_suffix }}.md.j2
+    dest: "{{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
 
 - name: Convert the Markdown OpenConnect/AnyConnect instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ ocserv_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ ocserv_html_instructions }}
+  shell: markdown {{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"

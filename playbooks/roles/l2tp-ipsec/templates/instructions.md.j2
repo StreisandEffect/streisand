@@ -1,5 +1,12 @@
+- - -
+{% for key, value in streisand_languages.iteritems() %}
+  [{{ value.language_name }}](index{{ value.file_suffix }}.html)&nbsp;
+{% endfor %}
+- - -
+
 L2TP/IPsec
 ----------
+
 L2TP/IPsec is a great first choice. It is natively supported by Android, iOS, OS X, and Windows. There is no additional software to install. Setup should only take a few minutes.
 
 If the connection appears to time out, first check to make sure the passwords were entered correctly. If you still can't connect then it's possible that your country or ISP is blocking the L2TP/IPsec protocol. But don't worry, the [OpenVPN (stunnel)](/openvpn/stunnel.html), [Shadowsocks](/shadowsocks/), [SSH](/ssh/), and [Tor](/tor/) connection methods should still work for you.
@@ -64,7 +71,7 @@ You can connect to the VPN using the VPN icon in the menu bar, or by selecting t
 
 <a name="linux"></a>
 ### Linux ###
-L2TP/IPsec connections are not supported out-of-the-box on most Linux distributions without requiring the installation of additional software. This nullifies one of the biggest appeals of L2TP/IPsec (i.e. its native client-side support). It is recommended to use another connection method like OpenVPN instead, but if you would like to configure L2TP/IPsec on your Linux desktop, here are the settings you will need: 
+L2TP/IPsec connections are not supported out-of-the-box on most Linux distributions without requiring the installation of additional software. This nullifies one of the biggest appeals of L2TP/IPsec (i.e. its native client-side support). It is recommended to use another connection method like OpenVPN instead, but if you would like to configure L2TP/IPsec on your Linux desktop, here are the settings you will need:
 
     Server Address: {{ streisand_ipv4_address }}
 

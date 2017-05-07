@@ -12,40 +12,92 @@ tor_base_download_url: "https://dist.torproject.org/torbrowser"
 # Windows
 tor_browser_bundle_windows_filename: "torbrowser-install-{{ tor_browser_bundle_version }}_en-US.exe"
 tor_browser_bundle_windows_sig_filename: "{{ tor_browser_bundle_windows_filename }}.asc"
+
+tor_browser_bundle_windows_filename_fr: "torbrowser-install-{{ tor_browser_bundle_version }}_fr.exe"
+tor_browser_bundle_windows_sig_filename_fr: "{{ tor_browser_bundle_windows_filename_fr }}.asc"
+
 tor_browser_bundle_windows_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_windows_filename }}"
 tor_browser_bundle_windows_sig_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_windows_sig_filename }}"
+
+tor_browser_bundle_windows_href_fr: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_windows_filename_fr }}"
+tor_browser_bundle_windows_sig_href_fr: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_windows_sig_filename_fr }}"
+
 tor_browser_bundle_windows_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_windows_filename }}"
 tor_browser_bundle_windows_sig_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_windows_sig_filename }}"
+
+tor_browser_bundle_windows_url_fr: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_windows_filename_fr }}"
+tor_browser_bundle_windows_sig_url_fr: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_windows_sig_filename_fr }}"
 
 # OS X
 tor_browser_bundle_osx_filename: "TorBrowser-{{ tor_browser_bundle_version }}-osx64_en-US.dmg"
 tor_browser_bundle_osx_sig_filename: "{{ tor_browser_bundle_osx_filename }}.asc"
+
+tor_browser_bundle_osx_filename_fr: "TorBrowser-{{ tor_browser_bundle_version }}-osx64_fr.dmg"
+tor_browser_bundle_osx_sig_filename_fr: "{{ tor_browser_bundle_osx_filename_fr }}.asc"
+
 tor_browser_bundle_osx_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_osx_filename }}"
+tor_browser_bundle_osx_href_fr: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_osx_filename_fr }}"
+
 tor_browser_bundle_osx_sig_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_osx_sig_filename }}"
+tor_browser_bundle_osx_sig_href_fr: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_osx_sig_filename_fr }}"
+
 tor_browser_bundle_osx_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_osx_filename }}"
+tor_browser_bundle_osx_url_fr: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_osx_filename_fr }}"
+
 tor_browser_bundle_osx_sig_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_osx_sig_filename }}"
+tor_browser_bundle_osx_sig_url_fr: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_osx_sig_filename_fr }}"
 
 # Linux
 tor_browser_bundle_linux32_filename: "tor-browser-linux32-{{ tor_browser_bundle_version }}_en-US.tar.xz"
+tor_browser_bundle_linux32_filename_fr: "tor-browser-linux32-{{ tor_browser_bundle_version }}_fr.tar.xz"
+
 tor_browser_bundle_linux32_sig_filename: "{{ tor_browser_bundle_linux32_filename }}.asc"
+tor_browser_bundle_linux32_sig_filename_fr: "{{ tor_browser_bundle_linux32_filename_fr }}.asc"
+
 tor_browser_bundle_linux32_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_linux32_filename }}"
+tor_browser_bundle_linux32_href_fr: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_linux32_filename_fr }}"
+
 tor_browser_bundle_linux32_sig_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_linux32_sig_filename }}"
+tor_browser_bundle_linux32_sig_href_fr: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_linux32_sig_filename_fr }}"
+
 tor_browser_bundle_linux32_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux32_filename }}"
+tor_browser_bundle_linux32_url_fr: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux32_filename_fr }}"
+
 tor_browser_bundle_linux32_sig_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux32_sig_filename }}"
+tor_browser_bundle_linux32_sig_url_fr: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux32_sig_filename_fr }}"
 
 tor_browser_bundle_linux64_filename: "tor-browser-linux64-{{ tor_browser_bundle_version }}_en-US.tar.xz"
+tor_browser_bundle_linux64_filename_fr: "tor-browser-linux64-{{ tor_browser_bundle_version }}_fr.tar.xz"
+
 tor_browser_bundle_linux64_sig_filename: "{{ tor_browser_bundle_linux64_filename }}.asc"
+tor_browser_bundle_linux64_sig_filename_fr: "{{ tor_browser_bundle_linux64_filename_fr }}.asc"
+
 tor_browser_bundle_linux64_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_linux64_filename }}"
+tor_browser_bundle_linux64_href_fr: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_linux64_filename_fr }}"
+
 tor_browser_bundle_linux64_sig_href: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_linux64_sig_filename }}"
+tor_browser_bundle_linux64_sig_href_fr: "{{ tor_mirror_href_base }}/{{ tor_browser_bundle_linux64_sig_filename_fr }}"
+
 tor_browser_bundle_linux64_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux64_filename }}"
+tor_browser_bundle_linux64_url_fr: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux64_filename_fr }}"
+
 tor_browser_bundle_linux64_sig_url: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux64_sig_filename }}"
+tor_browser_bundle_linux64_sig_url_fr: "{{ tor_base_download_url }}/{{ tor_browser_bundle_version }}/{{ tor_browser_bundle_linux64_sig_filename_fr }}"
 
 tor_download_urls:
   - "{{ tor_browser_bundle_windows_url }}"
   - "{{ tor_browser_bundle_windows_sig_url }}"
+  - "{{ tor_browser_bundle_windows_url_fr }}"
+  - "{{ tor_browser_bundle_windows_sig_url_fr }}"
   - "{{ tor_browser_bundle_osx_url }}"
   - "{{ tor_browser_bundle_osx_sig_url }}"
+  - "{{ tor_browser_bundle_osx_url_fr }}"
+  - "{{ tor_browser_bundle_osx_sig_url_fr }}"
   - "{{ tor_browser_bundle_linux32_url }}"
   - "{{ tor_browser_bundle_linux32_sig_url }}"
+  - "{{ tor_browser_bundle_linux32_url_fr }}"
+  - "{{ tor_browser_bundle_linux32_sig_url_fr }}"
   - "{{ tor_browser_bundle_linux64_url }}"
   - "{{ tor_browser_bundle_linux64_sig_url }}"
+  - "{{ tor_browser_bundle_linux64_url_fr }}"
+  - "{{ tor_browser_bundle_linux64_sig_url_fr }}"

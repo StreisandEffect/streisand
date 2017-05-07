@@ -1,5 +1,12 @@
+- - -
+{% for key, value in streisand_languages.iteritems() %}
+  [{{ value.language_name }}](stunnel{{ value.file_suffix }}.html)&nbsp;
+{% endfor %}
+- - -
+
 OpenVPN (wrapped in stunnel)
 ----------------------------
+
 These instructions should only be used if OpenVPN connections are being actively blocked in your country or by your ISP. Performance will be better if you are able to connect directly, but certain countries (notably China and Iran) employ Deep Packet Inspection to detect and thwart OpenVPN connections. Some companies do the same. If you do not fall into this category, please refer to the standard [OpenVPN instructions](/openvpn/) instead.
 
 Following these steps will wrap your OpenVPN traffic in an encrypted tunnel so it looks like standard SSL traffic being directed to a port where this type of traffic would be expected. This prevents DPI from identifying the true nature of the packets, thereby allowing you to freely use OpenVPN.
@@ -8,11 +15,11 @@ Following these steps will wrap your OpenVPN traffic in an encrypted tunnel so i
 For security reasons, OpenVPN clients typically have their own unique certificate and private key. The server you will be connecting to has been configured to allow clients to share the same certificate and private key, but you may still wish to give your phone and laptop different keys, for example.
 
 ---
-* Platforms
+* Plateformes
   * [Windows](#windows)
   * [OS X](#osx)
   * [Linux](#linux)
-  * [Android](#android)
+  * [Androïde](#android)
   * [iOS](#ios)
 
 <a name="windows"></a>
