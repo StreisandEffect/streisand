@@ -3,7 +3,7 @@
 
 set -e
 
-REQUIRED_ANSIBLE_VERSION="2.3.0.0"
+REQUIRED_ANSIBLE_VERSION="2.3.0"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 
 echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
