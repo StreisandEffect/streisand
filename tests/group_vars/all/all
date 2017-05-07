@@ -1,5 +1,5 @@
 ---
-streisand_ci: yes
+streisand_ci: true
 
 upstream_dns_servers:
   - 8.8.8.8

@@ -12,35 +12,34 @@
   remote_user: root
   become: yes
   tasks:
-    - block:
-        - name: Install lxc ppa key
-          apt_key:
-            id: 7635B973
-            url: "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xD5495F657635B973"
-            state: present
+    - name: Install lxc ppa key
+      apt_key:
+        id: 7635B973
+        url: "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xD5495F657635B973"
+        state: present
 
-        - name: Install lxc ppa
-          apt_repository:
-            repo: "{{ item }}"
-            state: present
-          with_items:
-            - "deb http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
-            - "deb-src http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
-
-        - name: Install the Libreswan dependencies that are required for compilation
-          apt:
-            name: "{{ item }}"
-          with_items: "{{ libreswan_compilation_dependencies_trusty }}"
-          when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+    - name: Install lxc ppa
+      apt_repository:
+        repo: "{{ item }}"
+        state: present
+      with_items:
+        - "deb http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
+        - "deb-src http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
 
       # Since LXC loads kernal modules from the host, we need to ensure libreswan is compiled and installed
+    - name: Install the Libreswan dependencies that are required for compilation
+      apt:
+        name: "{{ item }}"
+      with_items: "{{ libreswan_compilation_dependencies_trusty }}"
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+
     - name: Include Libreswan vars
       include_vars: "../playbooks/roles/l2tp-ipsec/vars/main.yml"
 
     - name: Install the Libreswan dependencies that are required for compilation
       apt:
         name: "{{ item }}"
-      with_items: "{{ libreswan_compilation_dependencies_trusty }}"
+      with_items: "{{ libreswan_compilation_dependencies }}"
       when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
 
     - name: Install xmlto (without the extraordinarily large number of packages it normally recommends)
@@ -89,7 +88,7 @@
     - name: Install lxd
       apt:
         name: lxd
-        state: present
+        state: latest
         update_cache: yes
 
     - name: lxd new group
@@ -120,7 +119,7 @@
         path: /var/lib/lxd/unix.socket
         mode: "0777"
 
-    - name: Launch streisand container
+    - name: Launch streisand container(This will take a while)
       lxd_container:
         name: streisand
         state: started

@@ -20,8 +20,8 @@ fi
 
 if [ -z "$*" ]; then ansible-playbook -i $DIR/inventory $DIR/syntax-check.yml --syntax-check -vv ; fi
 
-if [[ $1 = "ci" ]]; then  ansible-playbook -i $DIR/inventory $DIR/development-setup.yml && ansible-playbook -i $DIR/inventory $DIR/run.yml -e streisand_ci=yes; fi
-if [[ $1 = "full" ]]; then  ansible-playbook -i $DIR/inventory $DIR/development-setup.yml -vv && ansible-playbook -i $DIR/inventory $DIR/run.yml -vv -e streisand_ci=no; fi
-if [[ $1 = "run" ]]; then  ansible-playbook -i $DIR/inventory $DIR/run.yml -e streisand_ci=no -vv; fi
+if [[ $1 = "ci" ]]; then  ansible-playbook -i $DIR/inventory $DIR/development-setup.yml && ansible-playbook -i $DIR/inventory $DIR/run.yml -e streisand_ci=true; fi
+if [[ $1 = "full" ]]; then  ansible-playbook -i $DIR/inventory $DIR/development-setup.yml -vv && ansible-playbook -i $DIR/inventory $DIR/run.yml -vv -e streisand_ci=false; fi
+if [[ $1 = "run" ]]; then  ansible-playbook -i $DIR/inventory $DIR/run.yml -e streisand_ci=false -vv; fi
 if [[ $1 = "setup" ]]; then  ansible-playbook -i $DIR/inventory $DIR/development-setup.yml -vv; fi
 if [[ $1 = "syntax" ]]; then ansible-playbook -i $DIR/inventory $DIR/syntax-check.yml --syntax-check -vv ; fi

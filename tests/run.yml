@@ -27,6 +27,7 @@
           file:
             path: "/tmp/id_rsa_insecure"
             mode: "0666"
+          when: streisand_ci
       delegate_to: 127.0.0.1
 
     - name: Ensure openssh is installed
