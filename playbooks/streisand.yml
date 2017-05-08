@@ -31,7 +31,10 @@
     - shadowsocks
     - ssh
     - tinyproxy
-    - tor-bridge
+    # tor-bridge is skipped in our full Ansible run on Travis CI due to
+    # connectivity issues.
+    - role: tor-bridge
+      when: not streisand_ci
     - sslh
     - monit
     - ufw

@@ -4,6 +4,7 @@
     name: net.ipv4.tcp_fastopen
     value: 3
     state: present
+  when: ansible_virtualization_type != 'lxc'
 
 - name: Install the shadowsocks-libev dependencies
   apt:

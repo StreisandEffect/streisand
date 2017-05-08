@@ -2,3 +2,5 @@
 upstream_dns_servers:
   - 8.8.8.8
   - 8.8.4.4
+
+streisand_ci: no

@@ -1,0 +1,58 @@
+---
+#Run main playbook
+- hosts: streisand
+  gather_facts: no
+  remote_user: root
+  become: yes
+  pre_tasks:
+    - name: Ensure python is installed
+      raw: sudo apt update && apt install python -y
+
+- hosts: streisand
+  gather_facts: yes
+  remote_user: root
+  become: yes
+  tasks:
+    - block:
+        - name: Generate SSH Key's for CI run
+          shell: "ssh-keygen -b 2048 -t rsa -f /tmp/id_rsa_insecure -q -N ''"
+          args:
+            creates: "/tmp/id_rsa_insecure"
+
+        - name: Get the default SSH key
+          command: "cat /tmp/id_rsa_insecure.pub"
+          register: ssh_key
+
+        - name: Ensure permissions on insecure key are correct
+          file:
+            path: "/tmp/id_rsa_insecure"
+            mode: "0666"
+          when: streisand_ci
+      delegate_to: 127.0.0.1
+
+    - name: Ensure openssh is installed
+      apt:
+        name: openssh-server
+
+    - name: Add authorized key
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ ssh_key.stdout }}"
+
+    - name: Create the in-memory inventory group
+      add_host:
+        name: "{{ ansible_default_ipv4.address }}"
+        groups: streisand-host
+        ansible_ssh_private_key_file: "/tmp/id_rsa_insecure"
+
+    - name: Set the streisand_ipv4_address variable
+      set_fact:
+        streisand_ipv4_address: "{{ ansible_default_ipv4.address }}"
+
+    - name: Set the streisand_server_name variable
+      set_fact:
+        streisand_server_name: "{{ server_name | regex_replace('\\s', '_') }}"
+
+- name: Include streisand.yml
+  include: ../playbooks/streisand.yml
