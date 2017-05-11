@@ -13,7 +13,7 @@
         executable: /bin/bash
 
 - name: Configure the client server as a Streisand test client
-  hosts: test-client
+  hosts: streisand-client
   remote_user: "root"
   become: true
   roles:
