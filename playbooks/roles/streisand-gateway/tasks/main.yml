@@ -70,12 +70,13 @@
     - "{{ nginx_private_key }}"
     - "{{ streisand_gateway_password_file }}"
 
-- name: Copy the streisand gateway password file locally
+- name: Copy the Streisand gateway password file locally
   fetch:
     src: "{{ streisand_gateway_password_file }}"
     dest: "{{ streisand_gateway_password_localpath }}"
     fail_on_missing: yes
     flat: yes
+  when: streisand_client_test
 
 - name: Register MITM mitigation fact (certificate serial number)
   command: openssl x509 -in {{ nginx_self_signed_certificate }} -noout -serial
@@ -172,5 +173,5 @@
         local_action: command open ../{{ streisand_local_directory }}/{{ streisand_server_name }}.html
         when: hostvars['127.0.0.1']['ansible_system'] == "Darwin"
         become: no
-      when: noninteractive != "true"
+      when: not streisand_noninteractive
   when: not streisand_ci

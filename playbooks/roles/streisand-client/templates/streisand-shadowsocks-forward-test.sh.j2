@@ -3,11 +3,9 @@
 # NOTE: This test script relies on the -e argument to bash in the shebang above.
 #
 # Streisand Shadowsocks Client Test
-#   - Confirms the gateway mirror for the linux Shadowsocks client works
+#   - Confirms the gateway mirror for the Linux Shadowsocks client works
 #   - Confirms that the Linux shadowsocks client can connect & route a HTTP request
 #
-# TODO: This script makes an external request to google.com - this should
-#       probably be replaced by a resource under the control of the project.
 
 # Read the shadowsocks password into a var
 shadowsocksPassword=$(cat "{{ shadowsocks_password_file }}")
@@ -15,12 +13,12 @@ shadowsocksPassword=$(cat "{{ shadowsocks_password_file }}")
 # Read the gateway password into a var
 gatewayPassword=$(cat "{{ gateway_password_file }}")
 
-# Connect the shadowsocks client to the server
+# Connect the Shadowsocks client to the server
 {{ shadowsocks_client }} -c {{ streisand_ip }}:{{ shadowsocks_server_port }} -password "$shadowsocksPassword" -socks localhost:{{ shadowsocks_local_port }} -verbose -cipher {{ shadowsocks_encryption_method }} &
 CLIENT_PID=$!
 
 function cleanup {
-  # Kill the backgrounded shadowsocks client
+  # Kill the backgrounded Shadowsocks client
   echo "Killing PID $CLIENT_PID"
   kill $CLIENT_PID
   echo "Waiting for clean up to finish..."
@@ -28,11 +26,11 @@ function cleanup {
 }
 trap cleanup EXIT
 
-# Sleep to give the shadowsocks client a chance to start
+# Sleep to give the Shadowsocks client a chance to start
 sleep 2
 
-# Check that the gateway website can be loaded through the shadowsocks proxy
+# Check that the gateway website can be loaded through the Shadowsocks proxy
 curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$gatewayPassword" {{ gateway_test_url }} | grep "200 OK"
 
-# Check that Google can be loaded through the shadowsocks proxy
-curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$gatewayPassword" google.com | grep "302 Found"
+# Check that Github can be loaded through the Shadowsocks proxy
+curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$gatewayPassword" github.com | grep "302 Found"

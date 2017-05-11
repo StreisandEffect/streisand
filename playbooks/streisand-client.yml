@@ -12,7 +12,7 @@
       args:
         executable: /bin/bash
 
-- name: Configure the client server as a streisand client
+- name: Configure the client server as a Streisand client
   hosts: streisand-client
   remote_user: "root"
   become: true

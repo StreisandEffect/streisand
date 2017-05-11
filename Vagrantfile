@@ -14,7 +14,10 @@ Vagrant.configure(2) do |config|
       ansible.playbook = "playbooks/vagrant.yml"
       ansible.host_vars = {
         "streisand-host" => {
-          "noninteractive" => true,
+          # Don't prompt or pause during the playbook runs
+          "streisand_noninteractive" => true,
+          # Do copy the files required by the client test locally
+          "streisand_client_test" => true,
           "streisand_ipv4_address" => "10.0.0.10"
         }
       }

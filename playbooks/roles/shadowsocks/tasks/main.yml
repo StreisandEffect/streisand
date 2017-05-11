@@ -98,6 +98,7 @@
     dest: "{{ shadowsocks_password_file_localpath }}"
     fail_on_missing: yes
     flat: yes
+  when: streisand_client_test
 
 - name: Generate Shadowsocks config file
   template:
