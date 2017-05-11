@@ -1,0 +1,136 @@
+---
+- hosts: localhost
+  gather_facts: no
+  remote_user: root
+  become: yes
+  pre_tasks:
+    - name:
+      raw:  sudo apt update && apt install python python-apt aptitude -y
+
+- hosts: localhost
+  gather_facts: yes
+  remote_user: root
+  become: yes
+  tasks:
+    - name: Install lxc ppa key
+      apt_key:
+        id: 7635B973
+        url: "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xD5495F657635B973"
+        state: present
+
+    - name: Install lxc ppa
+      apt_repository:
+        repo: "{{ item }}"
+        state: present
+      with_items:
+        - "deb http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
+        - "deb-src http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
+
+      # Since LXC loads kernal modules from the host, we need to ensure libreswan is compiled and installed
+    - name: Install the Libreswan dependencies that are required for compilation
+      apt:
+        name: "{{ item }}"
+      with_items: "{{ libreswan_compilation_dependencies_trusty }}"
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+
+    - name: Include Libreswan vars
+      include_vars: "../playbooks/roles/l2tp-ipsec/vars/main.yml"
+
+    - name: Install the Libreswan dependencies that are required for compilation
+      apt:
+        name: "{{ item }}"
+      with_items: "{{ libreswan_compilation_dependencies }}"
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+
+    - name: Install xmlto (without the extraordinarily large number of packages it normally recommends)
+      apt:
+        name: xmlto
+        install_recommends: no
+
+    - name: Retrieve the Libreswan source code
+      get_url:
+        url: https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_source_filename }}
+        dest: "{{ libreswan_source_location }}"
+        checksum: "{{ libreswan_checksum }}"
+        owner: root
+        group: root
+        mode: 0644
+      register: libreswan_get_result
+      until: libreswan_get_result|success
+      retries: 3
+      delay: 5
+
+    - name: Extract the Libreswan source code
+      unarchive:
+        copy: no
+        src: "{{ libreswan_source_location }}"
+        dest: /usr/local/src
+        owner: root
+        group: root
+        creates: "{{ libreswan_compilation_directory }}/README"
+
+    - name: Compile and install Libreswan (this will take a while)
+      shell: make -j {{ ansible_processor_cores }} programs && make install
+      args:
+        chdir: "{{ libreswan_compilation_directory }}"
+
+    - name: Start ipsec
+      service:
+        name: ipsec
+        state: started
+        enabled: yes
+      register: ipsec_start
+
+    - name: Pause for a few seconds to let ipsec start
+      pause:
+        seconds: 5
+
+    - name: Install lxd
+      apt:
+        name: lxd
+        state: latest
+        update_cache: yes
+
+    - name: lxd new group
+      shell: newgrp lxd
+
+    - block:
+        - name: lxd init config
+          shell: lxd init --auto --storage-backend dir
+
+        - name: lxd create network
+          shell: lxc network create testbr0
+
+        - name: lxd attach network to default profile
+          shell: lxc network attach-profile testbr0 default eth0
+      ignore_errors: yes
+
+    - name: restart lxd
+      service:
+        name: lxd
+        state: restarted
+
+    - name: pause
+      pause:
+        seconds: 10
+
+    - name: set permission on lxd daemon
+      file:
+        path: /var/lib/lxd/unix.socket
+        mode: "0777"
+
+    - name: Launch streisand container(This will take a while)
+      lxd_container:
+        name: streisand
+        state: started
+        source:
+          type: image
+          mode: pull
+          server: https://images.linuxcontainers.org
+          protocol: lxd
+          alias: ubuntu/xenial/amd64
+        profiles: ["default"]
+        config:
+          security.privileged: "true"
+        wait_for_ipv4_addresses: true
+        timeout: 300

@@ -1,0 +1,27 @@
+---
+dist: trusty
+language: python
+python: "2.7"
+
+# Use isolated GCE instance
+sudo: required
+
+env:
+  global:
+    - ANSIBLE_CONFIG=tests/ansible.cfg
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install python-pip python-dev ca-certificates -qq
+
+install:
+  - pip install ansible==2.3.0.0
+  - pip install urllib3
+  - ansible --version
+
+script:
+  # Run syntax checks on playbooks and roles
+  - ./tests/tests.sh syntax
+  # Install additional packages, configure lxc, start streisand container
+  # Run entire playbook against lxc container
+  - ./tests/tests.sh ci
