@@ -173,4 +173,4 @@
         when: hostvars['127.0.0.1']['ansible_system'] == "Darwin"
         become: no
       when: noninteractive != "true"
-  when: streisand_ci != "true"
+  when: not streisand_ci

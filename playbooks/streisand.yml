@@ -21,7 +21,7 @@
     # tor-bridge is skipped in our full Ansible run on Travis CI due to
     # connectivity issues.
     - role: tor-bridge
-      when: streisand_ci != "yes"
+      when: not streisand_ci
     - sslh
     - monit
     - ufw
