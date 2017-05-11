@@ -31,7 +31,7 @@ Vagrant.configure(2) do |config|
     client.vm.provision "ansible" do |ansible|
       # NOTE: Uncomment the below line for verbose Ansible output
       #ansible.verbose = "v"
-      ansible.playbook = "playbooks/streisand-client.yml"
+      ansible.playbook = "playbooks/test-client.yml"
       ansible.host_vars = {
         "streisand-client" => {
           "streisand_ip" => "10.0.0.10",
