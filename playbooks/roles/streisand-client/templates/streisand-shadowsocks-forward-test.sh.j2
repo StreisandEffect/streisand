@@ -33,4 +33,4 @@ sleep 2
 curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$gatewayPassword" {{ gateway_test_url }} | grep "200 OK"
 
 # Check that Github can be loaded through the Shadowsocks proxy
-curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$gatewayPassword" github.com | grep "302 Found"
+curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$gatewayPassword" https://github.com | grep "200 OK"
