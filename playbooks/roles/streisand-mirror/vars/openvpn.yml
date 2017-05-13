@@ -32,7 +32,7 @@ openvpn_download_urls:
 
 # OS X
 tunnelblick_version: "3.7.1"
-tunnelblick_build: "4820"
+tunnelblick_build: "4811"
 tunnelblick_filename: "Tunnelblick_{{ tunnelblick_version }}_build_{{ tunnelblick_build }}.dmg"
 tunnelblick_href: "{{ openvpn_mirror_href_base }}/{{ tunnelblick_filename }}"
 tunnelblick_url: "https://tunnelblick.net/release/{{ tunnelblick_filename }}"
