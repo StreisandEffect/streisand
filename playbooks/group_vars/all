@@ -4,3 +4,5 @@ upstream_dns_servers:
   - 8.8.4.4
 
 streisand_ci: no
+
+streisand_client_test: no

@@ -1,6 +1,8 @@
 ---
 streisand_ci: true
 
+streisand_client_test: false
+
 upstream_dns_servers:
   - 8.8.8.8
   - 8.8.4.4

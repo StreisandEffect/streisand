@@ -73,3 +73,8 @@
   command: puttygen {{ forward_location }}/.ssh/id_rsa -o {{ ssh_putty_rsa_key }}
   args:
     creates: "{{ ssh_putty_rsa_key }}"
+
+- name: Generate a SSH known hosts file
+  shell: 'ssh-keyscan {{ streisand_server_name }} {{ streisand_ipv4_address }} > {{ ssh_known_hosts }}'
+  args:
+    creates: '{{ ssh_known_hosts }}'

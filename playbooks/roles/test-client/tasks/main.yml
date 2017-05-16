@@ -1,0 +1,95 @@
+---
+- name: "Include the common vars"
+  include_vars: "../../common/vars/main.yml"
+
+- name: "Include the Shadowsocks default vars"
+  include_vars: "../../shadowsocks/defaults/main.yml"
+
+- name: "Copy gateway password file to client"
+  copy:
+    src: "{{ streisand_gateway_password_localpath }}"
+    dest: "{{ gateway_password_file }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: "Copy Shadowsocks password file to client"
+  copy:
+    src: "{{ shadowsocks_password_localpath }}"
+    dest: "{{ shadowsocks_password_file }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: "Download the forward user SSH key to the client"
+  get_url:
+    url: "{{ gateway_ssh_key }}"
+    dest: "{{ forward_ssh_key }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Download the Streisand server SSH known hosts file"
+  get_url:
+    url: "{{ gateway_ssh_hosts }}"
+    dest: "{{ forward_ssh_hosts }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Install an SSH config file for a SSH SOCKS connection with the forward user"
+  template:
+    src: "ssh-config.j2"
+    dest: "{{ forward_ssh_config }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: "Download the Linux Shadowsocks client zip to the client machine"
+  get_url:
+    url: "{{ gateway_shadowsocks_client }}"
+    dest: "{{ shadowsocks_client_zip }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Extract the Shadowsocks client on the client machine"
+  # NOTE(@cpu): It's tempting to try and use the `unarchive` module here but with
+  # a brief test it seemed to barf trying to use `unzip` on a `.gz` file. This
+  # isn't a `tar.gz` and is probably too edge-case for `unarchive` so `command`
+  # it is!
+  command: "gunzip -f {{ shadowsocks_client_zip }}"
+  args:
+    chdir: "/root"
+    creates: "{{ shadowsocks_client }}"
+
+- name: "Set executable mode on Shadowsocks client"
+  file:
+    path: "{{ shadowsocks_client }}"
+    mode: 0700
+
+- name: "Install test scripts"
+  template:
+    src: "{{ item.template }}"
+    dest: "{{ test_script_dir }}/{{ item.cmd }}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items: "{{ test_scripts }}"
+
+- name: "Wait for Streisand gateway"
+  wait_for:
+    host: "{{ streisand_ip }}"
+    port: 443
+    state: started
+    timeout: 60
+
+- name: "Run test scripts"
+  command: "{{ item.cmd }}"
+  with_items: "{{ test_scripts }}"

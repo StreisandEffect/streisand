@@ -1,0 +1,20 @@
+- include: python.yml
+
+- name: Prepare the vagrant VM for Ansible
+# =========================================
+  hosts: streisand-host
+  remote_user: "root"
+  become: true
+
+  tasks:
+    # Ansible uses `ip -4 route get 8.8.8.8` to set the `ansible_default_ipv4`
+    # fact with an interface's details. Without the below route being added this
+    # results in enp0s3 being used when we want enp0s8 to be used. We work
+    # around this by setting a route for 8.8.8.8 through enp0s8.
+    - name: Workaround Ansible default ipv4 interface detection
+      raw: route add -net 8.8.8.8 netmask 255.255.255.255 enp0s8
+      args:
+        executable: /bin/bash
+      when: ansible_default_ipv4.alias != "enp0s8"
+
+- include: streisand.yml

@@ -3,6 +3,7 @@ streisand_gateway_url: "https://{{ streisand_ipv4_address }}"
 
 streisand_gateway_htpasswd_file: "/etc/nginx/htpasswd"
 streisand_gateway_password_file: "/etc/nginx/gateway-password.txt"
+streisand_gateway_password_localpath: "../{{ streisand_local_directory }}/gateway-password.txt"
 
 streisand_gateway_markdown_firewall_information: "/tmp/{{ streisand_server_name }}-firewall-information.md"
 streisand_gateway_html_firewall_information: "/tmp/{{ streisand_server_name }}-firewall-information.html"
