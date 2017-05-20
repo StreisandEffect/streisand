@@ -73,8 +73,7 @@ Services Provided
 * [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
   * Your Streisand server is configured to automatically install new security updates.
 * [WireGuard](https://www.wireguard.io/)
-  * Linux users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast.
-  * In addition to the public-key crypto that WireGuard uses by default, a pre-shared key is also configured to help provide post-quantum resistance. Use the VPN of the future with an eye towards the future!
+  * Linux users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast and uses modern cryptographic principles that all other highspeed VPN solutions lack.
 
 Installation
 ------------
