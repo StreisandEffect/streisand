@@ -2,6 +2,7 @@ SocksPort 0
 ORPort {{ tor_orport }}
 ExtORPort auto
 BridgeRelay 1
+PublishServerDescriptor 0
 ExitPolicy reject *:*
 
 Nickname {{ tor_bridge_nickname.stdout }}
