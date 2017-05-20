@@ -24,11 +24,6 @@
     - { private: "{{ wireguard_server_private_key_file }}", public: "{{ wireguard_server_public_key_file }}" }
     - { private: "{{ wireguard_client_private_key_file }}", public: "{{ wireguard_client_public_key_file }}" }
 
-- name: Generate a pre-shared key
-  shell: umask 077; wg genpsk > {{ wireguard_preshared_key_file }}
-  args:
-    creates: "{{ wireguard_preshared_key_file }}"
-
 - name: Register the key file contents
   command: cat {{ item }}
   register: wireguard_key_files
@@ -37,7 +32,6 @@
     - "{{ wireguard_client_public_key_file }}"
     - "{{ wireguard_server_private_key_file }}"
     - "{{ wireguard_server_public_key_file }}"
-    - "{{ wireguard_preshared_key_file }}"
 
 - name: Set the key material facts
   set_fact:
@@ -45,7 +39,6 @@
     wireguard_client_public_key:  "{{ wireguard_key_files.results[1].stdout }}"
     wireguard_server_private_key: "{{ wireguard_key_files.results[2].stdout }}"
     wireguard_server_public_key:  "{{ wireguard_key_files.results[3].stdout }}"
-    wireguard_preshared_key:      "{{ wireguard_key_files.results[4].stdout }}"
 
 - name: Generate the client and server configuration files
   template:

@@ -11,6 +11,5 @@ PrivateKey = {{ wireguard_client_private_key }}
 
 [Peer]
 PublicKey = {{ wireguard_server_public_key }}
-PresharedKey = {{ wireguard_preshared_key }}
 AllowedIPs = 0.0.0.0/0
 Endpoint = {{ streisand_ipv4_address }}:{{ wireguard_port }}
