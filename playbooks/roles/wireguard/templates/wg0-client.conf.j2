@@ -5,8 +5,16 @@ Address = 10.192.122.2/32
 #
 # The IP address of the DNS server that is available via the encrypted
 # WireGuard interface is {{ dnsmasq_wireguard_ip }}.
+{% if streisand_client_test %}
+# NOTE(@cpu): we use the suffix `|| true` for the PostUp/PostDown when
+# generating this template with streisand_client_test enabled. See
+# https://github.com/jlund/streisand/pull/696
+PostUp = echo nameserver {{ dnsmasq_wireguard_ip }} | resolvconf -a %i -m 0 -x || true
+PostDown = resolvconf -d %i || true
+{% else %}
 PostUp = echo nameserver {{ dnsmasq_wireguard_ip }} | resolvconf -a %i -m 0 -x
 PostDown = resolvconf -d %i
+{% endif %}
 PrivateKey = {{ wireguard_client_private_key }}
 
 [Peer]

@@ -18,6 +18,9 @@ test_scripts:
   - { template: 'streisand-ssh-forward-test.sh.j2',         cmd: 'streisand-ssh-forward-test' }
   - { template: 'streisand-shadowsocks-forward-test.sh.j2', cmd: 'streisand-shadowsocks-forward-test' }
 
+# An external URL used to test connectivity through Shadowsocks/Wireguard/etc
+external_test_url: "https://github.com"
+
 # The gateway URL for clients to download the forward user's RSA key
 gateway_ssh_key: "{{ gateway_test_url }}/ssh/streisand_rsa"
 # The gateway URL for clients to download the SSH known hosts file
@@ -46,3 +49,9 @@ gateway_shadowsocks_client: "{{ gateway_test_url }}/mirror/shadowsocks/shadowsoc
 # Path to the Shadowsocks2 client source on the Streisand client
 shadowsocks_client: "/root/shadowsocks2-linux-x64"
 shadowsocks_client_zip: "{{ shadowsocks_client }}.gz"
+
+# The gateway URL for clients to download the Wireguard config file
+gateway_wireguard_config: "{{ gateway_test_url }}/wireguard/wg0-client.conf"
+
+# Path to the wireguard config file on the Streisand client
+wireguard_config: "/etc/wireguard/wg0-client.conf"

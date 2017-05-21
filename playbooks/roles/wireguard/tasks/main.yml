@@ -1,20 +1,7 @@
 ---
-- name: Determine the running kernel release
-  command: uname -r
-  register: kernel_release
 
-- name: Add the WireGuard PPA
-  apt_repository:
-    repo: 'ppa:wireguard/wireguard'
-
-- name: Install the WireGuard packages
-  apt:
-    name: "{{ item }}"
-  with_items:
-    - linux-headers-{{ kernel_release.stdout }}
-    - linux-headers-generic
-    - wireguard-dkms
-    - wireguard-tools
+# Set up the PPA and install packages
+- include: install.yml
 
 - name: Generate private and public keys for the client and server
   shell: umask 077; wg genkey | tee {{ item.private }} | wg pubkey > {{ item.public }}
