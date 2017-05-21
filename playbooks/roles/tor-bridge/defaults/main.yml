@@ -1,3 +1,17 @@
 ---
 tor_orport: 8443
 tor_obfs4_port: 9443
+
+# By default Streisand does *not* publish the Tor relay's service descriptor to
+# the tor network. Using a value of 0 ensures the relay is private to the
+# streisand operator and their users. See the Tor documentation[0] for more
+# information:
+# [0]: https://www.torproject.org/docs/tor-manual.html.en#PublishServerDescriptor
+#
+tor_publish_service_desc: 0
+
+# If you would like to contribute to the overall health of the Tor network by
+# submitting your bridge relay for use by others comment out the
+# `tor_publish_service_desc: 0` line above and uncomment the following line:
+#
+# tor_publish_service_desc: "bridge"
