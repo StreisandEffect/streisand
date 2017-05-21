@@ -4,6 +4,7 @@
     name: net.ipv4.tcp_fastopen
     value: 3
     state: present
+  when: ansible_virtualization_type != 'lxc'
 
 - name: Install the shadowsocks-libev dependencies
   apt:
@@ -90,6 +91,14 @@
 - name: Register Shadowsocks password
   command: cat {{ shadowsocks_password_file }}
   register: shadowsocks_password
+
+- name: Copy the Shadowsocks password file locally
+  fetch:
+    src: "{{ shadowsocks_password_file }}"
+    dest: "{{ shadowsocks_password_file_localpath }}"
+    fail_on_missing: yes
+    flat: yes
+  when: streisand_client_test
 
 - name: Generate Shadowsocks config file
   template:

@@ -1,0 +1,18 @@
+# Connection profile for a SOCKS proxy over a SSH connection to the forward user
+# on a Streisand server instance
+Host streisand-host
+  User         {{ forward_ssh_user }}
+  HostName     {{ streisand_ip }}
+  Port         22
+  # Open a SOCKS proxy port equivalent to using `-D {{ forward_socks_port }}` on
+  # the command line
+  DynamicForward {{ forward_socks_port }}
+  # Only use keys specified in this config
+  IdentitiesOnly yes
+  # Never try password authentication
+  PasswordAuthentication no
+  # Use the specified key for the connection
+  IdentityFile {{ forward_ssh_key }}
+  # Use the preconfigured SSH known hosts fingerprints to avoid having to make
+  # a trust-on-first use decision
+  UserKnownHostsFile {{ forward_ssh_hosts }}

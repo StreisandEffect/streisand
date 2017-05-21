@@ -18,8 +18,8 @@ shadowsocks_dependencies:
   # Shadowsocks may complain about lack of entropy without rng-tools installed
   - rng-tools
 
-shadowsocks_checksum: "sha256:961ddbe06c2fd6299d0f181a371af16463d59e146228c53769f24e08a1d95f2e"
-shadowsocks_version: "3.0.5"
+shadowsocks_checksum: "sha256:7d9b43b0235a57c115bfe160efd54abef96bffcbfff61c5496e7c2800f0734ca"
+shadowsocks_version: "3.0.6"
 shadowsocks_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ shadowsocks_version }}"
 shadowsocks_source_filename: "shadowsocks-libev-{{ shadowsocks_version }}.tar.gz"
 shadowsocks_source_location: "/usr/local/src/{{ shadowsocks_source_filename }}"
@@ -30,6 +30,7 @@ shadowsocks_configure_flags: "--disable-documentation --prefix=/usr"
 
 shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
+shadowsocks_password_file_localpath: "../{{ streisand_local_directory }}/shadowsocks-password.txt"
 
 # Add -v for verbose mode to help with debugging
 shadowsocks_daemon_args: "-u"

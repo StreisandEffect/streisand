@@ -57,7 +57,7 @@ Services Provided
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
   * The high-performance [libev variant](https://github.com/shadowsocks/shadowsocks-libev) is installed. This version is capable of handling thousands of simultaneous connections.
   * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
-  * [One-time Authentication](https://shadowsocks.org/en/spec/one-time-auth.html) (OTA) is enabled for enhanced security and improved GFW evasion.
+  * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
 * [sslh](http://www.rutschle.net/tech/sslh.shtml)
   * Sslh is a protocol demultiplexer that allows Nginx, OpenSSH, and OpenVPN to share port 443. This provides an alternative connection option and means that you can still route traffic via OpenSSH and OpenVPN even if you are on a restrictive network that blocks all access to non-HTTP ports.
 * [Stunnel](https://www.stunnel.org/index.html)
@@ -73,8 +73,7 @@ Services Provided
 * [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
   * Your Streisand server is configured to automatically install new security updates.
 * [WireGuard](https://www.wireguard.io/)
-  * Linux users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast.
-  * In addition to the public-key crypto that WireGuard uses by default, a pre-shared key is also configured to help provide post-quantum resistance. Use the VPN of the future with an eye towards the future!
+  * Linux users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast and uses modern cryptographic principles that all other highspeed VPN solutions lack.
 
 Installation
 ------------
@@ -119,7 +118,7 @@ Complete all of these tasks on your local home machine.
 * Install [Ansible](http://www.ansible.com/home).
   * On OS X (via [Homebrew](http://brew.sh/))
 
-        brew update && brew install ansible
+        brew install ansible
   * On BSD or Linux (via pip)
 
         sudo pip install ansible markupsafe

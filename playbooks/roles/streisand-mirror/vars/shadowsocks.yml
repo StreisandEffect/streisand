@@ -5,11 +5,11 @@ shadowsocks_mirror_location: "{{ streisand_mirror_location }}/shadowsocks"
 shadowsocks_mirror_href_base: "/mirror/shadowsocks"
 
 # Android
-shadowsocks_android_version: "4.1.4"
+shadowsocks_android_version: "4.1.7"
 shadowsocks_android_filename: "shadowsocks-nightly-{{ shadowsocks_android_version }}.apk"
 shadowsocks_android_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_android_filename }}"
 shadowsocks_android_url: "https://github.com/shadowsocks/shadowsocks-android/releases/download/v{{ shadowsocks_android_version }}/shadowsocks-nightly-{{ shadowsocks_android_version }}.apk"
-shadowsocks_android_checksum: "sha256:e34824ff92a4aa9395eedd3a7b53ff080a97590794edd3725b97e29779dd7042"
+shadowsocks_android_checksum: "sha256:4daa0a15992df1e9b2bde451d0e90cc75dea5c57d73e3e000bb68618bef00d45"
 
 # Windows
 shadowsocks_gui_version: "4.0.1"
@@ -40,4 +40,4 @@ shadowsocks_download_urls:
   - { url: "{{ shadowsocks_android_url }}", checksum: "{{ shadowsocks_android_checksum }}" }
   - { url: "{{ shadowsocks_gui_url }}",     checksum: "{{ shadowsocks_gui_checksum }}" }
   - { url: "{{ shadowsocks_x_ng_url }}",    checksum: "{{ shadowsocks_x_ng_checksum }}" }
-  - { url: "{{ shadowsocks_go_url }}",  checksum: "{{ shadowsocks_go_checksum }}" }
+  - { url: "{{ shadowsocks_go_url }}",      checksum: "{{ shadowsocks_go_checksum }}" }
