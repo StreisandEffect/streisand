@@ -21,9 +21,3 @@ openvpn_firewall_rules:
   - iptables -t nat -A POSTROUTING -s 10.9.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
 
 openvpn_gateway_location: "{{ streisand_gateway_location }}/openvpn"
-
-openvpn_markdown_instructions: "{{ openvpn_gateway_location }}/index.md"
-openvpn_html_instructions: "{{ openvpn_gateway_location }}/index.html"
-
-openvpn_stunnel_markdown_instructions: "{{ openvpn_gateway_location }}/stunnel.md"
-openvpn_stunnel_html_instructions: "{{ openvpn_gateway_location }}/stunnel.html"

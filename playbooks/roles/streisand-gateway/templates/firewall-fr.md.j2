@@ -1,0 +1,43 @@
+- - -
+{% for key, value in streisand_languages.iteritems() %}
+  [{{ value.language_name }}]({{ streisand_server_name }}-firewall-information{{ value.file_suffix }}.html)&nbsp;
+{% endfor %}
+- - -
+
+Informations à propos du pare-feu
+---------------------------------
+
+Ces ports sont ouverts par défaut lorsque Streisand crée un nouveau serveur à partir de zéro sur un fournisseur soutenu.
+
+Si vous installez Streisand sur un serveur existant ou un fournisseur alternatif, vous devez vous assurer que le pare-feu autorise les ports suivants:
+
+---
+* L2TP/IPsec
+  * UDP - 500
+  * UDP - 1701
+  * UDP - 4500
+* Nginx (Passerelle Streisand)
+  * TCP - {{ nginx_port }}
+* OpenConnect / Cisco AnyConnect
+  * TCP - {{ ocserv_port }}
+  * UDP - {{ ocserv_port }}
+* OpenSSH
+  * TCP - {{ ssh_port }}
+* OpenVPN
+  * UDP - 53 de/à `{{ dnsmasq_openvpn_tcp_ip }}`
+  * UDP - 53 de/à `{{ dnsmasq_openvpn_udp_ip }}`
+    * Dnsmasq écoute le trafic DNS sur ces adresses IP et répond aux requêtes des clients OpenVPN connectés.
+  * TCP - {{ openvpn_port }}
+  * UDP - {{ openvpn_port_udp }}
+* Shadowsocks
+  * TCP - {{ shadowsocks_server_port }}
+  * UDP - {{ shadowsocks_server_port }}
+* stunnel
+  * TCP - {{ stunnel_remote_port }}
+* Tor
+  * TCP - {{ tor_orport }} - Pont
+  * TCP - {{ tor_obfs4_port }} - obfs4 transport enfichable
+* WireGuard
+  * UDP - 53 de/à `{{ dnsmasq_wireguard_ip }}`
+    * Dnsmasq écoute le trafic DNS sur cette IP et répond aux requêtes des clients WireGuard connectés.
+  * UDP - {{ wireguard_port }}

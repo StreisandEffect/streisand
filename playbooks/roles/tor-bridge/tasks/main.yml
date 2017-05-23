@@ -89,8 +89,10 @@
 
 - name: Generate the Markdown Tor instructions
   template:
-    src: instructions.md.j2
-    dest: "{{ tor_markdown_instructions }}"
+    src: instructions{{ item.value.file_suffix }}.md.j2
+    dest: "{{ tor_gateway_location }}/index{{ item.value.file_suffix}}.md"
+  with_dict: "{{ streisand_languages }}"
 
 - name: Convert the Markdown Tor instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ tor_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ tor_html_instructions }}
+  shell: markdown {{ tor_gateway_location }}/index{{ item.value.file_suffix}}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ tor_gateway_location }}/index{{ item.value.file_suffix}}.html
+  with_dict: "{{ streisand_languages }}"

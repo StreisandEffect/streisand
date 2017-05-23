@@ -36,7 +36,4 @@ l2tp_ipsec_firewall_rules:
 
 l2tp_ipsec_gateway_location: "{{ streisand_gateway_location }}/l2tp-ipsec"
 
-l2tp_ipsec_markdown_instructions: "{{ l2tp_ipsec_gateway_location }}/index.md"
-l2tp_ipsec_html_instructions: "{{ l2tp_ipsec_gateway_location }}/index.html"
-
 ppp_options_file: "/etc/ppp/options.xl2tpd"

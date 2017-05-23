@@ -10,5 +10,3 @@ wireguard_firewall_rules:
   - iptables -t nat -A POSTROUTING -s 10.192.122.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
 
 wireguard_gateway_location:      "{{ streisand_gateway_location }}/wireguard"
-wireguard_markdown_instructions: "{{ wireguard_gateway_location }}/index.md"
-wireguard_html_instructions:     "{{ wireguard_gateway_location }}/index.html"

@@ -78,8 +78,10 @@
 
 - name: Generate the Markdown WireGuard instructions
   template:
-    src: instructions.md.j2
-    dest: "{{ wireguard_markdown_instructions }}"
+    src: instructions{{ item.value.file_suffix }}.md.j2
+    dest: "{{ wireguard_gateway_location }}/index{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
 
 - name: Convert the Markdown WireGuard instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ wireguard_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ wireguard_html_instructions }}
+  shell: markdown {{ wireguard_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ wireguard_gateway_location }}/index{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"
