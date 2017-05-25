@@ -1,5 +1,12 @@
+- - -
+{% for key, value in streisand_languages.iteritems() %}
+  [{{ value.language_name }}]({{ streisand_server_name }}-firewall-information{{ value.file_suffix }}.html)&nbsp;
+{% endfor %}
+- - -
+
 Firewall Information
 --------------------
+
 These ports are open by default when Streisand creates a new server from scratch on a supported provider.
 
 If you are installing Streisand on an existing server or alternate provider then you need to make sure the firewall allows traffic to the new server on the following ports:

@@ -1,5 +1,9 @@
 ![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
 
+- - -
+[English](README.md), [Français](README-fr.md)
+- - -
+
 Streisand
 =========
 

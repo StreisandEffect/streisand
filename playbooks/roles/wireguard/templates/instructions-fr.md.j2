@@ -1,0 +1,31 @@
+WireGuard
+---------
+
+Si vous êtes un utilisateur Linux, [WireGuard](https://www.wireguard.io/) est presque certainement la meilleure option de connexion que Streisand fournit. Ceci est dû à sa [performance incroyable](https://www.wireguard.io/performance/), [cryptographie de pointe](https://www.wireguard.io/protocol/), et beaucoup, beaucoup d'autres avantages.
+
+WireGuard n'est actuellement disponible que pour Linux, mais support [multi-plateforme](https://www.wireguard.io/xplatform/) et les implémentations portables sont en cours de développement.
+
+---
+
+<a name="linux"></a>
+### Linux ###
+1. [Installer WireGuard](https://www.wireguard.io/install/)
+1. Téléchargez le fichier de configuration du client:
+   * [wg0-client.conf](/wireguard/wg0-client.conf)
+1. Définir les autorisations sur le fichier de configuration du client:
+
+   `sudo chown -v root:root ~/Downloads/wg0-client.conf; sudo chmod -v 600 ~/Downloads/wg0-client.conf`
+1. Déplacez le fichier de configuration du client dans le répertoire correct:
+
+   `sudo mv -i -v ~/Downloads/wg0-client.conf /etc/wireguard/`
+1. Utilisez l'utilitaire `wg-quick` pour démarrer l'interface WireGuard:
+
+   `sudo wg-quick up wg0-client`
+1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+1. Pour arrêter de routé votre trafic via Wire Guard, simplement arrêtez l'interface:
+
+   `sudo wg-quick down wg0-client`
+
+#### Une note sur la configuration DNS ####
+Le fichier `wg0-client.conf` inlcure des commandes `PostUp` et `PostDown` simples qui utilisent `resolvconf` afin de diriger le trafic DNS vers le serveur dnsmasq qui est disponible via l'interface cryptée WireGuard à `{{ dnsmasq_wireguard_ip }}`. Bien que `resolvconf` soit un utilitaire commun, vous devrez peut-être modifier ces lignes pour votre distribution ou votre configuration réseau particulière.

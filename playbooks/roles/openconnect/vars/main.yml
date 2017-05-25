@@ -44,5 +44,3 @@ ocserv_password_file: "{{ ocserv_path }}/ocserv-password"
 ocserv_pkcs12_password_file: "{{ ocserv_path }}/ocserv-pkcs12-password"
 
 ocserv_gateway_location: "{{ streisand_gateway_location }}/openconnect"
-ocserv_markdown_instructions: "{{ ocserv_gateway_location }}/index.md"
-ocserv_html_instructions: "{{ ocserv_gateway_location }}/index.html"

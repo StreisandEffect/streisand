@@ -1,6 +1,7 @@
 OpenVPN
 -------
-If OpenVPN connections are being blocked in your country, please refer to the [OpenVPN (stunnel)](/openvpn/stunnel.html) instructions instead which will help you wrap your OpenVPN traffic in an encrypted tunnel so it looks like standard SSL traffic.
+
+If OpenVPN connections are being blocked in your country, please refer to the [OpenVPN (stunnel)](/openvpn/stunnel.html) instructions instead which will help you wrap your OpenVPN traffic in an encrypted tunnel so it looks like standard TLS traffic.
 
 #### A note on client files ####
 For security reasons, OpenVPN clients typically have their own unique certificate and private key. The server you will be connecting to has been configured to allow clients to share the same certificate and private key, but you may still wish to give your phone and laptop different keys, for example.
@@ -117,7 +118,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
    * Select `{{ openvpn_cipher }}` as the *Cipher*.
    * Select `{{ openvpn_auth_digest }}` as the *HMAC Authentication*.
 1. Go to the *TLS Authentication* tab.
-   * Under *Server Certificate Check* choose `verify name exactly` and enter `{{ openvpn_server_common_name.stdout }}` as its value. 
+   * Under *Server Certificate Check* choose `verify name exactly` and enter `{{ openvpn_server_common_name.stdout }}` as its value.
    * Check *Verify peer (server) certificate usage signature*.
    * Check *Use additional TLS authentication*.
      * Select the `ta.key` from the client-files directory for the *Key File*.
