@@ -5,8 +5,8 @@ Address = 10.192.122.2/32
 #
 # The IP address of the DNS server that is available via the encrypted
 # WireGuard interface is {{ dnsmasq_wireguard_ip }}.
-PostUp = echo nameserver {{ dnsmasq_wireguard_ip }} | resolvconf -a %i -m 0 -x
-PostDown = resolvconf -d %i
+PostUp = echo nameserver {{ dnsmasq_wireguard_ip }} | resolvconf -a tun.%i -m 0 -x
+PostDown = resolvconf -d tun.%i
 PrivateKey = {{ wireguard_client_private_key }}
 
 [Peer]
