@@ -94,6 +94,8 @@
   command: "{{ item.cmd }}"
   with_items: "{{ test_scripts }}"
 
-# Run the Wireguard tests
+# Run the WireGuard tests
 - include: wireguard.yml
+  tags:
+    - wireguard
 
