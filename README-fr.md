@@ -15,8 +15,8 @@ Présentation de Streisand
 -------------------------
 * Une seule commande configure un tout nouveau serveur Ubuntu 16.04 exécutant une [grande variété de logiciels anti-censure](#services-provided) qui peuvent masquer et chiffrer totalement votre trafic Internet.
 * Streisand supporte nativement la création de nouveaux serveurs chez [Amazon EC2](https://aws.amazon.com/ec2/), [Azure](https://azure.microsoft.com/fr-fr/), [DigitalOcean](https://www.digitalocean.com/), [Google Compute Engine](Https://cloud.google.com/compute/), [Linode](https://www.linode.com/) et [Rackspace](https://www.rackspace.com/)&mdash; et plus de fournisseurs à venir! Il fonctionne également sur n'importe quel serveur Ubuntu 16.04 quel que soit le fournisseur, et des **centaines** d'instances peuvent être configurés simultanément en utilisant cette méthode.
-* Le processus est entièrement automatisé et ne prend que quelques dizaines de minutes, ce qui est assez génial quand vous considérez qu'il faudrait un administrateur système moyen plusieurs jours de frustration pour mettre en place même un petit sous-ensemble de ce que Streisand offre dans son out-of-the -box configuration.
-* Une fois que votre serveur Streisand est en cours d'exécution, vous pouvez donner les instructions de connexion personnalisée à vos amis, membres de la famille et autres activistes. Les instructions de connexion contiennent une copie intégrée du certificat SSL unique du serveur, il vous suffit de leur envoyer un seul fichier.
+* Le processus est entièrement automatisé et ne prend que quelques dizaines de minutes, ce qui est assez remarquable si vous considérez qu'il faudrait un administrateur système au moins plusieurs jours de contrainte pour mettre en place un petit sous-ensemble de ce que Streisand offre dans sa configuration.
+* Une fois que votre serveur Streisand est en cours d'exécution, vous pouvez donner les instructions de connexion personnalisée à vos amis, membres de la famille et activistes. Les instructions de connexion contiennent une copie intégrée du certificat SSL unique du serveur, il vous suffit de leur envoyer un seul fichier.
 * Chaque serveur est entièrement autonome et comprend tout ce dont les utilisateurs ont besoin pour démarrer, y compris les miroirs cryptographiquement vérifiés de tous les clients communs. Cela rend toute tentative de censure des emplacements de téléchargement par défaut complètement inefficace.
 * Mais attendez, il y a plus ..
 
@@ -34,7 +34,6 @@ Plus de fonctionnalités
 * Chaque tâche a été bien documentée et a donné une description détaillée. Streisand est simultanément le HOWTO le plus complet en existance pour l'installation de tous les logiciels qu'il installe, et aussi l'antidote pour avoir à faire jamais tout cela à la main de nouveau.
 * Tous les logiciels fonctionnent sur des ports qui ont été délibérément choisis pour rendre le blocage de ports simpliste irréaliste sans causer de dommages collatéraux massifs. OpenVPN, par exemple, ne fonctionne pas sur le port défaut de 1194, mais utilise le port standard 636 pour les connexions LDAP/SSL qui sont aimés par des entreprises du monde entier.
   * *L2TP/IPsec est une exception notable à cette règle car les ports ne peuvent pas être modifiés sans rompre la compatibilité client*
-* Les adresses IP des clients connectés ne sont jamais consignées. Il n'y a rien à trouver si un serveur est saisi ou arrêté.
 
 <a name="services-provided"></a>
 Services fournis
@@ -130,7 +129,7 @@ Effectuez toutes ces tâches sur votre machine locale.
   * Amazon EC2
 
             sudo pip install boto
-  +  * Azure
+  * Azure
 
             sudo pip install msrest msrestazure azure==2.0.0rc5
   * DigitalOcean
