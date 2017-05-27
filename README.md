@@ -4,6 +4,8 @@
 [English](README.md), [Français](README-fr.md)
 - - -
 
+[![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand)
+
 Streisand
 =========
 
