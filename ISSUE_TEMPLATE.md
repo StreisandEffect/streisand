@@ -8,7 +8,8 @@
 1. 
 
 ### Additional Details:
+#### *Log output from Ansible or other relevant services (link to Gist for longer output):*
 ##### *Target Cloud Provider:*
 ##### *Operating System of target host:*
 ##### *Operating System of client:*
-##### *Version of Ansible:*
+##### *Version of Ansible, using `ansible --version` :*
