@@ -7,26 +7,29 @@
 
   vars:
     zones:
-      "1": "us-central1-a"
-      "2": "us-central1-b"
-      "3": "us-central1-c"
-      "4": "us-central1-f"
-      "5": "us-east1-b"
-      "6": "us-east1-c"
-      "7": "us-east1-d"
-      "8": "us-west1-a"
-      "9": "us-west1-b"
-      "10": "europe-west1-b"
-      "11": "europe-west1-c"
-      "12": "europe-west1-d"
-      "13": "asia-east1-a"
-      "14": "asia-east1-b"
-      "15": "asia-east1-c"
-      "16": "asia-northeast1-a"
-      "17": "asia-northeast1-b"
-      "18": "asia-northeast1-c"
-      "19": "asia-southeast1-a"
-      "20": "asia-southeast1-b"
+      "1":  "us-central1-a"
+      "2":  "us-central1-b"
+      "3":  "us-central1-c"
+      "4":  "us-central1-f"
+      "5":  "us-east1-b"
+      "6":  "us-east1-c"
+      "7":  "us-east1-d"
+      "8":  "us-east4-b"
+      "9":  "us-east4-c"
+      "10": "us-east1-d"
+      "11": "us-west1-a"
+      "12": "us-west1-b"
+      "13": "europe-west1-b"
+      "14": "europe-west1-c"
+      "15": "europe-west1-d"
+      "16": "asia-east1-a"
+      "17": "asia-east1-b"
+      "18": "asia-east1-c"
+      "19": "asia-northeast1-a"
+      "20": "asia-northeast1-b"
+      "21": "asia-northeast1-c"
+      "22": "asia-southeast1-a"
+      "23": "asia-southeast1-b"
 
 
   # These variable files are included so the gce-network role
@@ -50,22 +53,25 @@
           2. Central US       (Iowa B)
           3. Central US       (Iowa C)
           4. Central US       (Iowa F)
-          5. Eastern US       (South Carolina B)
-          6. Eastern US       (South Carolina C)
-          7. Eastern US       (South Carolina D)
-          8. Western US       (Oregon A)
-          9. Western US       (Oregon B)
-          10. Western Europe  (Belgium B)
-          11. Western Europe  (Belgium C)
-          12. Western Europe  (Belgium D)
-          13. East Asia       (Taiwan A)
-          14. East Asia       (Taiwan B)
-          15. East Asia       (Taiwan C)
-          16. Northeast Asia  (Tokyo A)
-          17. Northeast Asia  (Tokyo B)
-          18. Northeast Asia  (Tokyo C)
-          19. Southeast Asia  (Sinagapore A)
-          20. Southeast Asia  (Sinagapore B)
+          5. Eastern US       (Northern Virginia B)
+          6. Eastern US       (Northern Virginia C)
+          7. Eastern US       (Northern Virginia D)
+          8. Eastern US       (South Carolina B)
+          9. Eastern US       (South Carolina C)
+          10. Eastern US      (South Carolina D)
+          11. Western US      (Oregon A)
+          12. Western US      (Oregon B)
+          13. Western Europe  (Belgium B)
+          14. Western Europe  (Belgium C)
+          15. Western Europe  (Belgium D)
+          16. East Asia       (Taiwan A)
+          17. East Asia       (Taiwan B)
+          18. East Asia       (Taiwan C)
+          19. Northeast Asia  (Tokyo A)
+          20. Northeast Asia  (Tokyo B)
+          21. Northeast Asia  (Tokyo C)
+          22. Southeast Asia  (Sinagapore A)
+          23. Southeast Asia  (Sinagapore B)
         Please choose the number of your zone. Press enter for default (#3) zone.
       default: "3"
       private: no
