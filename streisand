@@ -3,6 +3,10 @@
 
 set -e
 
+if command -v pyenv &>/dev/null; then
+  eval "$(pyenv init - bash)";
+fi;
+
 REQUIRED_ANSIBLE_VERSION="2.3.0"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 
