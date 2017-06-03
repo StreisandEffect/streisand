@@ -1,0 +1,22 @@
+---
+- name: Prepare the localhost for Streisand
+# =========================================
+  hosts: streisand-host
+  remote_user: "root"
+  become: true
+
+  tasks:
+    # It is neccesary to set the streisand_ipv4_address for localhost
+    # provisioning in order for the documentation to have the correct addresses.
+    # No genesis role will be setting it for us.
+    - name: "Set the Streisand IPv4 address to the Ansible default: interface: {{ ansible_default_ipv4.alias }} address: {{ ansible_default_ipv4.address }}"
+      set_fact:
+        # The ansible_default_ipv4 address is calculated based on the default
+        # ipv4 route to 8.8.8.8 for the system, and for local provisioning on
+        # Ubuntu 16.04 seems to work well for finding the external facing IP.
+        # Some non-standard providers may need to explicitly override the
+        # ansible_default_ipv4 address/interface, see `playbooks/vagrant.yml`
+        # for an example of how to do this.
+        streisand_ipv4_address: "{{ ansible_default_ipv4.address }}"
+
+- include: streisand.yml
