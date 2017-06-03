@@ -3,3 +3,6 @@ generated-docs
 *.pyc
 .vagrant/
 ubuntu-xenial-16.04-cloudimg-console.log
+
+# Ignore changes to the existing server inventory to allow users to modify it
+inventories/inventory-existing

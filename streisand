@@ -2,7 +2,7 @@
 # Streisand provisioning script
 
 # Set errexit option to exit immediately on any non-zero status return
-set -e
+set -ex
 
 echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 
@@ -71,29 +71,73 @@ function run_genesis() {
   echo; echo; ansible-playbook -i inventories/inventory "playbooks/$GENESIS_PLAYBOOK"
 }
 
+# be_careful_friend asks you to pay attention because you're about to do
+# something that might be impossible to undo!
+function be_careful_friend() {
+  read -r -p "$1" confirm
+  case "$confirm" in
+    streisand) echo; echo "Confirmed. Continuing";;
+    *) echo; echo "Cancelling & exiting."; exit 1;;
+  esac
+}
+
 # local_provision handles provisioning the same machine as is running the
 # Streisand script/Ansible. It performs an additional "ARE YOU SURE" step before
 # invoking ansible-playbook. It uses the `inventory-local-provision` inventory
 # file from the inventories directory as the Ansible inventory.
 function local_provision() {
-  read -r -p "
+  be_careful_friend "
 LOCAL PROVISIONING WILL OVERWRITE CONFIGURATION ON **THIS** MACHINE.
 THE MACHINE YOU ARE CURRENTLY EXECUTING THIS SHELL SCRIPT ON.
 ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
 
-Please enter the word 'streisand' to continue: " confirm
+Please enter the word 'streisand' to continue: "
 
-  case "$confirm" in
-    streisand) echo; echo "Confirmed. Continuing local provisioning";;
-    *) echo; echo "Cancelling & exiting."; exit 1;;
-  esac
-
+  check_python
   echo; echo; ansible-playbook -i inventories/inventory-local-provision playbooks/localhost.yml
+}
+
+function existing_server() {
+  read -r -p "What is the IP of the existing server: " SERVER_IP
+
+  be_careful_friend "
+THIS WILL OVERWRITE CONFIGURATION ON THE EXISTING SERVER.
+STREISAND ASSUMES $SERVER_IP IS A BRAND NEW UBUNTU INSTANCE AND WILL
+NOT PRESERVE EXISTING CONFIGURATION OR DATA.
+
+ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
+
+Please enter the word 'streisand' to continue: "
+
+  # If ANSIBLE_SSH_USER is empty, default to root
+  if [ -z "${ANSIBLE_SSH_USER}" ]; then
+    SSH_USER='root'
+  # Otherwise, use whatever ANSIBLE_SSH_USER is set to as the SSH_USER
+  else
+    SSH_USER=${ANSIBLE_SSH_USER}
+  fi
+
+  # Create an inventory file string on the fly
+  read -r -d '' TEMPL << EOF || true
+[localhost]
+localhost ansible_connection=local ansible_python_interpreter=python
+[streisand-host]
+$SERVER_IP ansible_user=$SSH_USER
+EOF
+
+  # Test a SSH connection to the server using the key Streisand assumes will be
+  # used for server access
+  ssh -i ~/.ssh/id_rsa "$SSH_USER@$SERVER_IP" -o BatchMode=yes -t true
+
+  # Create the inventory file
+  echo "$TEMPL" > inventories/inventory-existing
+  check_python
+  # Invoke the Streisand playbook on the existing server inventory
+  echo; echo; ansible-playbook -i inventories/inventory-existing playbooks/streisand.yml
 }
 
 # Make sure the system is ready for the Streisand playbooks
 check_ansible
-check_python
 check_ssh_key
 
 # Figure out which genesis role to invoke
@@ -105,6 +149,7 @@ read -r -p "Which provider are you using?
   5. Linode
   6. Rackspace
   7. Localhost (Advanced)
+  8. Existing Server (Advanced)
 : " reply
 
 case "$reply" in
@@ -115,5 +160,6 @@ case "$reply" in
   5) run_genesis linode.yml;;
   6) run_genesis rackspace.yml;;
   7) local_provision;;
+  8) existing_server;;
   *) echo; echo "Invalid provider selected."; exit 1;;
 esac
