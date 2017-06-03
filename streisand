@@ -64,7 +64,7 @@ Please create this keypair by running 'ssh-keygen'"
 # to the function, or `streisand.yml` if none is provided.
 function run_genesis() {
   local GENESIS_PLAYBOOK=${$1:-streisand.yml}
-  echo; echo; ansible-playbook playbooks/$GENESIS_PLAYBOOK
+  echo; echo; ansible-playbook "playbooks/$GENESIS_PLAYBOOK"
 }
 
 # local_provision handles provisioning the same machine as is running the
