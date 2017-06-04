@@ -87,7 +87,9 @@ Please read all installation instructions **carefully** before proceeding.
 ### Important Clarification ###
 Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. Streisand automatically sets up **another remote server** with the VPN packages and configuration.
 
-Streisand will spin up and deploy **another server** on your chosen hosting provider when you run **on your home machine** (e.g. your laptop). Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!). Support for local provisioning (i.e. Streisand locally configuring the system on which it is installed) will be added soon.
+Streisand will spin up and deploy **another server** on your chosen hosting provider when you run **on your home machine** (e.g. your laptop). Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!).
+
+In some circumstances advanced users may opt to use the local provisioning mode to have the system running Streisand/Ansible configuring itself as a Streisand server. This is a configuration mode best reserved for when it isn't possible to install Ansible on your home machine or when your connection to a cloud provider is too unreliable for Ansible's SSH connections.
 
 ### Prerequisites ###
 Complete all of these tasks on your local home machine.
@@ -127,7 +129,9 @@ Complete all of these tasks on your local home machine.
   * On BSD or Linux (via pip)
 
         sudo pip install ansible markupsafe
-* Install the necessary Python libraries for your chosen cloud provider.
+* Install the necessary Python libraries for your chosen cloud provider. If you
+    are using the advanced local provisioning mode or the existing server mode
+    you can skip this section.
   * Amazon EC2
 
         sudo pip install boto
@@ -163,13 +167,19 @@ Complete all of these tasks on your local home machine.
 4. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
 5. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
 
-### Running Streisand on Other Providers ###
+### Running Streisand to Provision Localhost (Advanced) ###
 
-You can also run Streisand on any number of new Ubuntu 16.04 servers. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do this, simply edit the `inventory` file and uncomment the final two lines. Replace the sample IP with the address (or addresses) of the servers you wish to configure. Make sure you read through all of the documentation in the `inventory` file and update the `ansible.cfg` file if necessary. Then run the Streisand playbook directly:
+If you can not run Streisand in the normal manner (running from your client home machine/laptop to configure a remote server) Streisand supports a local provisioning mode. Simply choose "Localhost (Advanced)" from the menu after running `./streisand`.
 
-    ansible-playbook playbooks/streisand.yml
+**Note:** Running Streisand against localhost can be a destructive action! You will be potentially overwriting configuration files and must be certain that you are affecting the correct machine.
 
-The servers should be accessible using SSH keys, and *root* is used as the connecting user by default (though this is simple to change while editing the inventory file).
+### Running Streisand on Other Providers (Advanced) ###
+
+You can also run Streisand on new Ubuntu 16.04 server. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do so, simply choose "Existing Server (Advanced)" from the menu after running `./streisand` and provide the IP address of the existing server when prompted.
+
+The server must be accessible using the `$HOME/id_rsa` SSH Key, and *root* is used as the connecting user by default. If your provider requires you to SSH with a different user than root (e.g. `ubuntu`) specify the `ANSIBLE_SSH_USER` environmental variable (e.g. `ANSIBLE_SSH_USER=ubuntu`) when you run `./streisand`.
+
+**Note:** Running Streisand against an existing server can be a destructive action! You will be potentially overwriting configuration files and must be certain that you are affecting the correct machine.
 
 Upcoming Features
 -----------------
