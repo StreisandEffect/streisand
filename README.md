@@ -89,7 +89,7 @@ Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool
 
 Streisand will spin up and deploy **another server** on your chosen hosting provider when you run **on your home machine** (e.g. your laptop). Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!).
 
-In some circumstances advanced users may opt to use the local provisioning mode to have the system running Streisand/Ansible configuring itself as a Streisand server. This is a configuration mode best reserved for when it isn't possible to install Ansible on your home machine or when your connection to a cloud provider is too unreliable for Ansible's SSH connections.
+In some circumstances advanced users may opt to use the local provisioning mode to have the system running Streisand/Ansible configure itself as a Streisand server. This is a configuration mode best reserved for when it isn't possible to install Ansible on your home machine or when your connection to a cloud provider is too unreliable for Ansible's SSH connections.
 
 ### Prerequisites ###
 Complete all of these tasks on your local home machine.
@@ -175,9 +175,9 @@ If you can not run Streisand in the normal manner (running from your client home
 
 ### Running Streisand on Other Providers (Advanced) ###
 
-You can also run Streisand on new Ubuntu 16.04 server. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do so, simply choose "Existing Server (Advanced)" from the menu after running `./streisand` and provide the IP address of the existing server when prompted.
+You can also run Streisand on a new Ubuntu 16.04 server. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do so, simply choose "Existing Server (Advanced)" from the menu after running `./streisand` and provide the IP address of the existing server when prompted.
 
-The server must be accessible using the `$HOME/id_rsa` SSH Key, and *root* is used as the connecting user by default. If your provider requires you to SSH with a different user than root (e.g. `ubuntu`) specify the `ANSIBLE_SSH_USER` environmental variable (e.g. `ANSIBLE_SSH_USER=ubuntu`) when you run `./streisand`.
+The server must be accessible using the `$HOME/id_rsa` SSH Key, and **root** is used as the connecting user by default. If your provider requires you to SSH with a different user than root (e.g. `ubuntu`) specify the `ANSIBLE_SSH_USER` environmental variable (e.g. `ANSIBLE_SSH_USER=ubuntu`) when you run `./streisand`.
 
 **Note:** Running Streisand against an existing server can be a destructive action! You will be potentially overwriting configuration files and must be certain that you are affecting the correct machine.
 
