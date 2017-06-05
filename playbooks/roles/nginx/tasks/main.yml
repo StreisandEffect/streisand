@@ -4,6 +4,9 @@
     name: "{{ item }}"
     state: absent
   with_items: "{{ apache_packages_to_remove }}"
+  
+- name: Stop nginx for configuration
+  service: name=nginx state=stopped
 
 - name: Add the official Nginx APT key
   apt_key:
