@@ -35,7 +35,7 @@
           # there isn't a way to `register` a `get_url` call and it seems
           # hackier overall to add an intermediate step using a file on disk
           #
-          # MetaData URL & the required "Metadata-Flavor" are explained in the 
+          # Metadata URL & the required "Metadata-Flavor" are explained in the 
           # Google Cloud Platform documentation[0].
           # [0]: https://cloud.google.com/compute/docs/storing-retrieving-metadata#querying
           command: curl -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
@@ -43,4 +43,22 @@
         - name: "Set the Streiand IPv4 address to the GCE external IP: {{ streisand_gce_external_ip.stdout }}"
           set_fact:
             streisand_ipv4_address: "{{ streisand_gce_external_ip.stdout }}"
-      when: streisand_bios_name == "Google"
+      when: "streisand_bios_name == 'Google'"
+
+    # Amazon EC2 specific work-arounds:
+    #   * None of the interfaces have the external IP bound, so this must be set
+    #     from the EC2 medatadata service.
+    - block:
+        - name: Warn about manual provisioning of EC2 instances
+          pause:
+            prompt: "You are running Streisand in an advanced mode against an existing Amazon EC2 instance. Unlike the standard EC2 provisioning mode this means Streisand *CAN NOT* open ports on your behalf. It is assumed you have manually opened all required ports by assinging this machine to a security group with the correct settings. The Streisand maintainers aren't able to support you if you are unable to do this. Press [enter] to continue"
+
+            # EC2 Instance Metadata API is explained in the EC2 docs[0].
+            # [0]: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+        - name: "Find the external EC2 IP from Metadata"
+          command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+          register: streisand_ec2_external_ip
+        - name: "Set the Streiand IPv4 address to the EC2 external IP: {{ streisand_ec2_external_ip.stdout }}"
+          set_fact:
+            streisand_ipv4_address: "{{ streisand_ec2_external_ip.stdout }}"
+      when: "'amazon' in streisand_bios_name"
