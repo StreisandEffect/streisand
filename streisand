@@ -67,7 +67,10 @@ Please create this keypair by running 'ssh-keygen'"
 # to the function, or `streisand.yml` if none is provided. It uses the default
 # `inventory` file from the inventories directory as the Ansible inventory.
 function run_genesis() {
-  local GENESIS_PLAYBOOK=${$1:-streisand.yml}
+  local GENESIS_PLAYBOOK=$1
+  if [ -z "${GENESIS_PLAYBOOK}" ]; then
+    GENESIS_PLAYBOOK=streisand.yml
+  fi
   echo; echo; ansible-playbook -i inventories/inventory "playbooks/$GENESIS_PLAYBOOK"
 }
 
