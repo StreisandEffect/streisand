@@ -1,4 +1,10 @@
 ---
+# localhost.yml is an advanced provisioning option that doesn't use a genesis
+# role to create a new server and instead applies Streisand to the localhost.
+#
+# Try and detect localhost's provider & apply required workarounds
+- include: provider-detect.yml
+
 - name: Prepare the localhost for Streisand
 # =========================================
   hosts: streisand-host
@@ -6,17 +12,16 @@
   become: true
 
   tasks:
-    # It is neccesary to set the streisand_ipv4_address for localhost
-    # provisioning in order for the documentation to have the correct addresses.
-    # No genesis role will be setting it for us.
+    # If there's no streisand_ipv4_address set then we try our best using
+    # the interface Ansible thinks is the default.
     - name: "Set the Streisand IPv4 address to the Ansible default: interface: {{ ansible_default_ipv4.alias }} address: {{ ansible_default_ipv4.address }}"
       set_fact:
         # The ansible_default_ipv4 address is calculated based on the default
         # ipv4 route to 8.8.8.8 for the system, and for local provisioning on
-        # Ubuntu 16.04 seems to work well for finding the external facing IP.
-        # Some non-standard providers may need to explicitly override the
-        # ansible_default_ipv4 address/interface, see `playbooks/vagrant.yml`
-        # for an example of how to do this.
+        # _most_ providers, seems to work well for finding the external facing IP.
+        # See `provider-detect.yml` for cases where this approach doesn't work
+        # (e.g. GCE) and workarounds.
         streisand_ipv4_address: "{{ ansible_default_ipv4.address }}"
+      when: streisand_ipv4_address is not defined
 
 - include: streisand.yml

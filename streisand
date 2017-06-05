@@ -133,7 +133,7 @@ EOF
   echo "$TEMPL" > inventories/inventory-existing
   check_python
   # Invoke the Streisand playbook on the existing server inventory
-  echo; echo; ansible-playbook -i inventories/inventory-existing playbooks/streisand.yml
+  echo; echo; ansible-playbook -i inventories/inventory-existing playbooks/existing-server.yml
 }
 
 # Make sure the system is ready for the Streisand playbooks
