@@ -5,11 +5,11 @@ shadowsocks_mirror_location: "{{ streisand_mirror_location }}/shadowsocks"
 shadowsocks_mirror_href_base: "/mirror/shadowsocks"
 
 # Android
-shadowsocks_android_version: "4.1.7"
+shadowsocks_android_version: "4.1.8"
 shadowsocks_android_filename: "shadowsocks-nightly-{{ shadowsocks_android_version }}.apk"
 shadowsocks_android_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_android_filename }}"
 shadowsocks_android_url: "https://github.com/shadowsocks/shadowsocks-android/releases/download/v{{ shadowsocks_android_version }}/shadowsocks-nightly-{{ shadowsocks_android_version }}.apk"
-shadowsocks_android_checksum: "sha256:4daa0a15992df1e9b2bde451d0e90cc75dea5c57d73e3e000bb68618bef00d45"
+shadowsocks_android_checksum: "sha256:0ae7293e2437078ce05e55e0bf1bd27c2d4f4d3f3e7d5b41ac77706f792dd59d"
 
 # Windows
 shadowsocks_gui_version: "4.0.4"
