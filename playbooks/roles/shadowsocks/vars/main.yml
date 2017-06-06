@@ -30,7 +30,7 @@ shadowsocks_configure_flags: "--disable-documentation --prefix=/usr"
 
 shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
-shadowsocks_password_file_localpath: "../{{ streisand_local_directory }}/shadowsocks-password.txt"
+#shadowsocks_password_file_localpath: "../{{ streisand_local_directory }}/shadowsocks-password.txt"
 
 # Add -v for verbose mode to help with debugging
 shadowsocks_daemon_args: "-u"
