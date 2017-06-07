@@ -38,22 +38,20 @@ Vagrantifle. As compared to the stock `Vagrantfile` for local testing the
 machine. This remotetest variant is useful to "smoke test" an existing
 Streisand server, or to provide end-to-end testing of a cloud provisioner.
 
-Presently you will need to manually create two files that are used as input from
-the client that are normally produced for local testing when the
-`streisand_client_test` host variable is true:
+Using Vagrant for Remote Testing (Easy Way)
+--------------------------------------------
 
-1. `generated-docs/gateway-password.txt`
+1. [Install Vagrant](https://www.vagrantup.com/docs/installation/)
+2. Clone the Streisand repository and enter the directory.
 
-      This file should contain the gateway password for the remote Streisand
-      server
-2. `generated-docs/shadowsocks-password.txt`
+       git clone https://github.com/jlund/streisand.git && cd streisand
+3. Run the `remote_test.sh` helper script and give it the remote server IP
+   & gateway password when prompted:
 
-      This file should contain the shadowsocks client password from the
-      `/etc/shadowsocks-libev/config.json` file on the Streisand server
+       ./tests/remote_test.sh
 
-Using Vagrant for Remote Testing
---------------------------------
-
+Using Vagrant for Remote Testing (Hard Way)
+--------------------------------------------
 1. [Install Vagrant](https://www.vagrantup.com/docs/installation/)
 2. Clone the Streisand repository and enter the directory.
 
@@ -62,19 +60,20 @@ Using Vagrant for Remote Testing
    with the IP of the remote server.
 4. Create the `generated-docs/gateway-password.txt` file with the gateway
    password of the Streisand server
-5. Create the `generated-docs/shadowsocks-password.txt` file with the
-   Shadowsocks password of the Streisand server
-6. If this is your first time following these steps, create & start the
+5. If this is your first time following these steps, create & start the
    `streisand-client` virtual machine with:
 
-       `VAGRANT_VAGRANTFILE=Vagrantfile.remotetest vagrant up`
-7. If you have already created the client virtual machine and wish to re-run the
+       VAGRANT_VAGRANTFILE=Vagrantfile.remotetest vagrant up
+6. If you have already created the client virtual machine and wish to re-run the
    client test playbooks then re-provision the client machine with:
 
-       `VAGRANT_VAGRANTFILE=Vagrantfile.remotetest vagrant up --provision`
+       VAGRANT_VAGRANTFILE=Vagrantfile.remotetest vagrant up --provision
 
 Misc Tricks
 ==========================
 
 * Uncomment the lines setting the `ansible.verbose` value in the Vagrantfiles to
   increase the verbosity of the Ansible playbook runs.
+* Skip the `./tests/remote_test.sh` prompts using `printf`:
+
+       STREISAND_SERVER_IP=XX.XX.XX.XX; STREISAND_PASSWORD='gateway-password-goes-here'; printf "$STREISAND_SERVER_IP\n$STREISAND_PASSWORD\n" | ./tests/remote_test.sh
