@@ -42,18 +42,9 @@ function set_gateway_pass() {
   echo "$GATEWAY_PASS" > $GATEWAY_PASS_FILE
 }
 
-function set_shadowsocks_pass() {
-  local SHADOWSOCKS_PASS_FILE="$GENERATED_DOCS_DIR/shadowsocks-password.txt"
-
-  read -r -p "What is the Streisand Shadowsocks password? " SHADOWSOCKS_PASS
-
-  echo "$SHADOWSOCKS_PASS" > $SHADOWSOCKS_PASS_FILE
-}
-
 backup_vagrantfile
 set_remote_ip
 set_gateway_pass
-set_shadowsocks_pass
 
 pushd "$SCRIPT_DIR/.."
   VAGRANT_VAGRANTFILE=$VAGRANT_FILENAME vagrant up --provision

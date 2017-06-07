@@ -37,11 +37,11 @@ forward_ssh_user: "forward"
 # Port on the Streisand client to use for the SOCKS SSH proxy
 forward_socks_port: 9876
 
-# Path to the Shadowsocks password on the Ansible host
-shadowsocks_password_localpath: "../{{ streisand_local_directory }}/shadowsocks-password.txt"
+# The gateway URL for clients to download the Shadowsocks QR code image
+gateway_shadowsocks_qr: "{{ gateway_test_url }}/shadowsocks/shadowsocks-qr-code.png"
 
-# Path to the Shadowsocks password file on the Streisand client
-shadowsocks_password_file: "/root/shadowsocks-password.txt"
+# Path to the Shadowsocks QR code image on the client machine
+shadowsocks_qr_file: "/root/shadowsocks-qr-code.png"
 
 # The gateway URL for clients to download the Shadowsocks2 Linux source
 gateway_shadowsocks_client: "{{ gateway_test_url }}/mirror/shadowsocks/shadowsocks2-linux-x64.gz"
