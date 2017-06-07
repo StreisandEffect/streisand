@@ -171,6 +171,15 @@ You can also run Streisand on any number of new Ubuntu 16.04 servers. Dedicated 
 
 The servers should be accessible using SSH keys, and *root* is used as the connecting user by default (though this is simple to change while editing the inventory file).
 
+### Upgrading a Streisand instance ###
+
+If all you wish to do is make sure installed packages are up to date, you can run `apt-get update` and then `apt-get upgrade` on your Streisand server.    
+Otherwise, if you wish to upgdate Streisand's web pages & documentation, or install new services provided by Streisand in a recent update, you can do so by re-running the `streisand.yml` playbook on an existing server. For example:
+
+    ansible-playbook playbooks/streisand.yml
+
+**Note:** re-running the `streisand.yml` playbook may result in duplicate firewall entries, but this should not affect security or performance.
+
 Upcoming Features
 -----------------
 * Role isolation and selection, allowing you to choose which daemons and services are installed.
