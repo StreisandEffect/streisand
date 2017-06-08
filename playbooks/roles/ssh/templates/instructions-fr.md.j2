@@ -45,7 +45,7 @@ Vous êtes maintenant connecté à un proxy SOCKS qui est prêt à transférer v
 1. Allez à l'onglet *Réseau*.
 1. Cliquez le bouton *Paramètres* pour *Configurer la façon dont Firefox se connecte à Internet*.
 1. Choisissez *Configuration manuelle de proxy*.
-1. Saisissez `127.0.0.1` et port `{{ shadowsocks_local_port }}` pour la ligne *Hôte SOCKS*.
+1. Saisissez `127.0.0.1` et port `{{ ssh_default_socks_port }}` pour la ligne *Hôte SOCKS*.
 1. Sélectionnez *Utiliser un DNS distant lorsque SOCKS v5 est actif*. Cela configure Firefox pour envoyer toutes les requêtes DNS via le proxy SOCKS. Cela vous protégera contre l'empoisonnement du DNS et vous garantira que les fausses entrées DNS ne peuvent pas être utilisées pour censurer votre accès.
 1. Cliquez *OK*.
 1. Cliquez *OK* encore pour fermer la fenêtre de paramètres de Firefox..
