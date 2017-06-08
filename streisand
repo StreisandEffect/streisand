@@ -31,17 +31,19 @@ read -r -p "Which provider are you using?
   1. Amazon
   2. Azure
   3. DigitalOcean
-  4. Google
-  5. Linode
-  6. Rackspace
+  4. Exoscale
+  5. Google
+  6. Linode
+  7. Rackspace
 : " reply
 
 case "$reply" in
   1) echo; echo; ansible-playbook playbooks/amazon.yml;;
   2) echo; echo; ansible-playbook playbooks/azure.yml;;
   3) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
-  4) echo; echo; ansible-playbook playbooks/google.yml;;
-  5) echo; echo; ansible-playbook playbooks/linode.yml;;
-  6) echo; echo; ansible-playbook playbooks/rackspace.yml;;
+  4) echo; echo; ansible-playbook playbooks/exoscale.yml;;
+  5) echo; echo; ansible-playbook playbooks/google.yml;;
+  6) echo; echo; ansible-playbook playbooks/linode.yml;;
+  7) echo; echo; ansible-playbook playbooks/rackspace.yml;;
   *) echo; echo "Invalid provider selected."; exit 1;;
 esac
