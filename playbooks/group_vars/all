@@ -7,3 +7,5 @@ streisand_ci: no
 
 streisand_client_test: no
 streisand_noninteractive: no
+
+streisand_shadowsocks_enabled: yes

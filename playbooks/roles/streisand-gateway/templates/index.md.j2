@@ -16,7 +16,9 @@ There are multiple ways to bypass censorship, and Streisand provides several cho
 * [OpenConnect / Cisco AnyConnect](/openconnect/)
 * [OpenVPN (direct)](/openvpn/)
 * [OpenVPN (stunnel)](/openvpn/stunnel.html)
+{% if streisand_shadowsocks_enabled %}
 * [Shadowsocks](/shadowsocks/)
+{% endif %}
 * [SSH](/ssh/)
 * [Tor](/tor/)
 * [WireGuard](/wireguard/)
@@ -29,7 +31,9 @@ You can download the necessary client software directly from Streisand in case t
 
 * [OpenConnect](/mirror/#openconnect)
 * [OpenVPN](/mirror/#openvpn)
-* [Shadowsocks](/mirror/#shadowsocks)
+{% if streisand_shadowsocks_enabled %}
+* [Shadowsocks](/mirror/shadowsocks/)
+{% endif %}
 * [SSH](/mirror/#ssh)
 * [stunnel](/mirror/#stunnel)
 * [Tor Browser Bundle](/mirror/#tor)

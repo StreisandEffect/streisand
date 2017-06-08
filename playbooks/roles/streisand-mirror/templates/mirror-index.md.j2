@@ -7,7 +7,9 @@ The files mirrored below have all been cryptographically verified. Where possibl
 * Clients
   * [OpenConnect](#openconnect)
   * [OpenVPN](#openvpn)
-  * [Shadowsocks](#shadowsocks)
+{% if streisand_shadowsocks_enabled %}
+  * [Shadowsocks](shadowsocks/)
+{% endif %}
   * [OpenSSH](#ssh)
   * [Stunnel](#stunnel)
   * [Tor Browser Bundle](#tor)
@@ -41,28 +43,6 @@ The files mirrored below have all been cryptographically verified. Where possibl
 
 * [{{ openvpn_windows_installer_filename }}]({{ openvpn_windows_installer_href }}) ([sig]({{ openvpn_windows_installer_sig_href }}))
 
-<a name="shadowsocks"></a>
-### Shadowsocks ###
-
-**Linux x64**
-
-* [{{ shadowsocks_go_filename }}]({{ shadowsocks_go_href }})
-  * Checksum: *{{ shadowsocks_go_checksum }}*
-
-**Android**
-
-* [{{ shadowsocks_android_filename }}]({{ shadowsocks_android_href }})
-  * Checksum: *{{ shadowsocks_android_checksum }}*
-
-**OS X**
-
-* [{{ shadowsocks_x_ng_filename }}]({{ shadowsocks_x_ng_href }})
-  * Checksum: *{{ shadowsocks_x_ng_checksum }}*
-
-**Windows**
-
-* [{{ shadowsocks_gui_filename }}]({{ shadowsocks_gui_href }})
-  * Checksum: *{{ shadowsocks_gui_checksum }}*
 
 <a name="ssh"></a>
 ### SSH ###
