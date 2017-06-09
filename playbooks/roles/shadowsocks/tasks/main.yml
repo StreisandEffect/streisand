@@ -107,8 +107,8 @@
     state: started
 
 # For some providers (e.g. GCE/AWS) the streisand_ipv4_address != the
-# ansible_default_ipv4.address, and the shadowsocks service is bound to the
-# later instead of the former. We check both, tolerating errors checking the
+# ansible_default_ipv4.address, and the Shadowsocks service is bound to the
+# latter instead of the former. We check both, tolerating errors checking the
 # former. This mess should probably be addressed in a more forward facing
 # manner.
 - block:

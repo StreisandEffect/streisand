@@ -30,7 +30,7 @@ This system has Ansible $(ansible --version)."
   fi
 }
 
-# check_python checks whether the 'python' interpretter is Python 2 or Python 3.
+# check_python checks whether the 'python' interpreter is Python 2 or Python 3.
 # If it is Python 2 then the inventory file is updated to set the
 # ansible_interpretter host var explicitly
 function check_python() {
