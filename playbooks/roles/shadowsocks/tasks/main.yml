@@ -114,12 +114,26 @@
     enabled: yes
     state: started
 
-- name: Ensure the Shadowsocks service is started
-  wait_for:
-    host: "{{ streisand_ipv4_address }}"
-    port: "{{ shadowsocks_server_port }}"
-    state: started
-    timeout: 60
+# For some providers (e.g. GCE/AWS) the streisand_ipv4_address != the
+# ansible_default_ipv4.address, and the Shadowsocks service is bound to the
+# latter instead of the former. We check both, tolerating errors checking the
+# former. This mess should probably be addressed in a more forward facing
+# manner.
+- block:
+    - name: "Check that the Shadowsocks service started ({{ streisand_ipv4_address }})"
+      wait_for:
+        host: "{{ streisand_ipv4_address }}"
+        port: "{{ shadowsocks_server_port }}"
+        state: started
+        timeout: 30
+      ignore_errors: yes
+  rescue:
+    - name: "Check that the Shadowsocks service started ({{ ansible_default_ipv4.address }})"
+      wait_for:
+        host: "{{ ansible_default_ipv4.address }}"
+        port: "{{ shadowsocks_server_port }}"
+        state: started
+        timeout: 30
 
 - name: Create the Shadowsocks Gateway directory
   file:

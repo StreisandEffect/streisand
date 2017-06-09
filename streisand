@@ -1,32 +1,149 @@
 #!/usr/bin/env bash
 # Streisand provisioning script
 
+# Set errexit option to exit immediately on any non-zero status return
 set -e
-
-REQUIRED_ANSIBLE_VERSION="2.3.0"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 
 echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 
-if ! command -v ansible > /dev/null 2>&1; then
-	echo "Ansible is not installed."
-	exit 1
-fi
-
-if [[ $(ansible --version | grep -oe '2\(.[0-9]\)*') < $REQUIRED_ANSIBLE_VERSION ]]; then
-    echo "Ansible $REQUIRED_ANSIBLE_VERSION or higher is required."
-    exit 1
-fi
-
-PYTHON_VERSION="$(python --version 2>/dev/null)"
-if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 2\..* ]]; then
-	sed 's/=python$/=python2/' "$SCRIPT_DIR/inventory" > "$SCRIPT_DIR/inventory.new"
-	mv "$SCRIPT_DIR/inventory.new" "$SCRIPT_DIR/inventory"
-	git -C "$SCRIPT_DIR" update-index --assume-unchanged inventory 2>/dev/null || true
-fi
-
+# Update the PYTHONPATH to include the monkey patch directory for Streisand
+# workarounds packaged as Python monkey patches
 export PYTHONPATH="$SCRIPT_DIR/monkey:$PYTHONPATH"
 
+# check_ansible checks that Ansible is installed on the local system
+# and that it is a supported version.
+function check_ansible() {
+  local REQUIRED_ANSIBLE_VERSION="2.3.0"
+
+  if ! command -v ansible > /dev/null 2>&1; then
+    echo "
+Streisand requires Ansible and it is not installed.
+Please see the README Installation section on Prerequisites"
+    exit 1
+  fi
+
+  if [[ $(ansible --version | grep -oe '2\(.[0-9]\)*') < $REQUIRED_ANSIBLE_VERSION ]]; then
+      echo "
+Streisand requires Ansible version $REQUIRED_ANSIBLE_VERSION or higher.
+This system has Ansible $(ansible --version)."
+      exit 1
+  fi
+}
+
+# check_python checks whether the 'python' interpreter is Python 2 or Python 3.
+# If it is Python 2 then the inventory file is updated to set the
+# ansible_interpretter host var explicitly
+function check_python() {
+  local PYTHON_VERSION
+  local SCRIPT_DIR
+  PYTHON_VERSION="$(python --version 2>/dev/null)"
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+
+  if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 2\..* ]]; then
+    local INVENTORY_DIR="$SCRIPT_DIR/inventories/"
+    for INV_FILE in $INVENTORY_DIR/*; do
+      sed 's/=python$/=python2/' "$INV_FILE" > "$INV_FILE.new"
+      mv "$INV_FILE.new" "$INV_FILE"
+      git -C "$INVENTORY_DIR" update-index --assume-unchanged "$INV_FILE" 2>/dev/null || true
+    done
+  fi
+}
+
+# check_ssh_key checks that there is a `~/.ssh/id_rsa.pub` file present.
+# Streisand requires this key be present.
+function check_ssh_key() {
+  local STREISAND_SSH_KEY="$HOME/.ssh/id_rsa.pub"
+
+  if [ ! -f "$STREISAND_SSH_KEY" ]
+  then
+    echo "
+Streisand requires a RSA SSH key be present at '$HOME/.ssh/id_rsa.pub'.
+Please create this keypair by running 'ssh-keygen'"
+    exit 1
+  fi
+}
+
+# run_genesis invokes the genesis playbook file specified by the first argument
+# to the function, or `streisand.yml` if none is provided. It uses the default
+# `inventory` file from the inventories directory as the Ansible inventory.
+function run_genesis() {
+  local GENESIS_PLAYBOOK=$1
+  if [ -z "${GENESIS_PLAYBOOK}" ]; then
+    GENESIS_PLAYBOOK=streisand.yml
+  fi
+  echo; echo; ansible-playbook -i inventories/inventory "playbooks/$GENESIS_PLAYBOOK"
+}
+
+# be_careful_friend asks you to pay attention because you're about to do
+# something that might be impossible to undo!
+function be_careful_friend() {
+  read -r -p "$1" confirm
+  case "$confirm" in
+    streisand) echo; echo "Confirmed. Continuing";;
+    *) echo; echo "Cancelling & exiting."; exit 1;;
+  esac
+}
+
+# local_provision handles provisioning the same machine as is running the
+# Streisand script/Ansible. It performs an additional "ARE YOU SURE" step before
+# invoking ansible-playbook. It uses the `inventory-local-provision` inventory
+# file from the inventories directory as the Ansible inventory.
+function local_provision() {
+  be_careful_friend "
+LOCAL PROVISIONING WILL OVERWRITE CONFIGURATION ON **THIS** MACHINE.
+THE MACHINE YOU ARE CURRENTLY EXECUTING THIS SHELL SCRIPT ON.
+ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
+
+Please enter the word 'streisand' to continue: "
+
+  check_python
+  echo; echo; ansible-playbook -i inventories/inventory-local-provision playbooks/localhost.yml
+}
+
+function existing_server() {
+  read -r -p "What is the IP of the existing server: " SERVER_IP
+
+  be_careful_friend "
+THIS WILL OVERWRITE CONFIGURATION ON THE EXISTING SERVER.
+STREISAND ASSUMES $SERVER_IP IS A BRAND NEW UBUNTU INSTANCE AND WILL
+NOT PRESERVE EXISTING CONFIGURATION OR DATA.
+
+ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
+
+Please enter the word 'streisand' to continue: "
+
+  # If ANSIBLE_SSH_USER is empty, default to root
+  if [ -z "${ANSIBLE_SSH_USER}" ]; then
+    SSH_USER='root'
+  # Otherwise, use whatever ANSIBLE_SSH_USER is set to as the SSH_USER
+  else
+    SSH_USER=${ANSIBLE_SSH_USER}
+  fi
+
+  # Create an inventory file string on the fly
+  read -r -d '' TEMPL << EOF || true
+[localhost]
+localhost ansible_connection=local ansible_python_interpreter=python
+[streisand-host]
+$SERVER_IP ansible_user=$SSH_USER
+EOF
+
+  # Test a SSH connection to the server using the key Streisand assumes will be
+  # used for server access
+  ssh -i ~/.ssh/id_rsa "$SSH_USER@$SERVER_IP" -o BatchMode=yes -t true
+
+  # Create the inventory file
+  echo "$TEMPL" > inventories/inventory-existing
+  check_python
+  # Invoke the Streisand playbook on the existing server inventory
+  echo; echo; ansible-playbook -i inventories/inventory-existing playbooks/existing-server.yml
+}
+
+# Make sure the system is ready for the Streisand playbooks
+check_ansible
+check_ssh_key
+
+# Figure out which genesis role to invoke
 read -r -p "Which provider are you using?
   1. Amazon
   2. Azure
@@ -34,14 +151,18 @@ read -r -p "Which provider are you using?
   4. Google
   5. Linode
   6. Rackspace
+  7. Localhost (Advanced)
+  8. Existing Server (Advanced)
 : " reply
 
 case "$reply" in
-  1) echo; echo; ansible-playbook playbooks/amazon.yml;;
-  2) echo; echo; ansible-playbook playbooks/azure.yml;;
-  3) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
-  4) echo; echo; ansible-playbook playbooks/google.yml;;
-  5) echo; echo; ansible-playbook playbooks/linode.yml;;
-  6) echo; echo; ansible-playbook playbooks/rackspace.yml;;
+  1) run_genesis amazon.yml;;
+  2) run_genesis azure.yml;;
+  3) run_genesis digitalocean.yml;;
+  4) run_genesis google.yml;;
+  5) run_genesis linode.yml;;
+  6) run_genesis rackspace.yml;;
+  7) local_provision;;
+  8) existing_server;;
   *) echo; echo "Invalid provider selected."; exit 1;;
 esac

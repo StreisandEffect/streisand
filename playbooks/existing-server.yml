@@ -1,0 +1,18 @@
+---
+# existing-server.yml is an advanced provisioning option that doesn't use a genesis
+# role to create a new server and instead applies Streisand to an existing
+# remote server.
+
+# Ensure Python is installed on the system
+- include: python.yml
+
+# Try and detect the remote server's provider & apply required workarounds
+- include: provider-detect.yml
+
+- name: Prepare the remote server for Streisand
+# =========================================
+  hosts: streisand-host
+  remote_user: "root"
+  become: true
+
+- include: streisand.yml
