@@ -64,7 +64,7 @@ except:
 # Second capture group: password
 # Third capture group: server address
 # Fourth capture group: server port
-shadowsocksURLRegexStr = r'^([\w\-]+):([\w+=]+)@([\w\-\.]+):([\d]+)$'
+shadowsocksURLRegexStr = r'^([\w\-]+):([\w+=\/]+)@([\w\-\.]+):([\d]+)$'
 shadowsocksURLRegex = re.compile(shadowsocksURLRegexStr)
 
 match = shadowsocksURLRegex.match(shadowsocksURL)
