@@ -83,9 +83,11 @@ Installation
 Veuillez lire *attentivement* toutes les instructions d'installation avant de poursuivre.
 
 ### Clarification importante ###
-Streisand est basé sur [Ansible](http://www.ansible.com/home), un outil d'automatisation qui est généralement utilisé pour fournir et configurer des fichiers et des paquets sur des serveurs distants. Cela signifie que lorsque vous exécutez Streisand, il configure automatiquement **un autre serveur distant** avec les paquets VPN et configurations.
+Streisand est basé sur [Ansible](http://www.ansible.com/home), un outil d'automatisation qui est généralement utilisé pour fournir et configurer des fichiers et des paquets sur des serveurs distants. Cela signifie que lorsque vous exécutez Streisand, il configure automatiquement **un autre serveur distant** avec les paquets VPN et ses configurations.
 
-Cela signifie que vous exécutez Streisand **sur votre machine à la maison** (par exemple, votre ordinateur portable) et il va tourner et déployer **un autre serveur** sur votre fournisseur d'hébergement choisi. Habituellement, vous n'effectuez pas Streisand sur le serveur distant car par défaut cela entraînerait le déploiement d'un autre serveur à partir de votre serveur et rendrait redondant le premier serveur (ouf!). Le support du provisionnement local (c'est-à-dire que Streisand configure localement le système sur lequel il est installé) sera ajouté bientôt.
+Streisand va déployer **un autre serveur** sur votre fournisseur d'hébergement choisi lorsque vous exécutez **sur votre ordinateur local** (par exemple, votre ordinateur portable). Habituellement, vous **n'utilisez pas Streisand sur le serveur distant** car, par défaut, cela entraînerait le déploiement d'un autre serveur à partir de votre serveur et rendrait le premier serveur redondant (Ouf!).
+
+Dans certains cas, les utilisateurs avancés peuvent opter pour le mode de provisionnement local pour que le système fonctionne avec Streisand/Ansible se configure comme un serveur Streisand. Il s'agit d'un mode de configuration mieux réservé quand ce n'est pas possible d'installer Ansible sur votre ordinateur local ou lorsque votre connexion à un fournisseur de cloud est peu fiable pour les connexions SSH requis par Ansible.
 
 ### Prérequis ###
 Effectuez toutes ces tâches sur votre machine locale.
@@ -144,7 +146,7 @@ Effectuez toutes ces tâches sur votre machine locale.
   * Rackspace Cloud
 
             sudo pip install pyrax
-  * Si vous utilisez une version de Python installée sur Homebrew, vous devez également exécuter ces commandes pour vous assurer qu'il peut trouver les bibliothèques nécessaires:
+  * Si vous utilisez une version de Python installée avec Homebrew, vous devez également exécuter ces commandes pour vous assurer qu'il peut trouver les bibliothèques nécessaires:
 
             mkdir -p ~/Library/Python/2.7/lib/python/site-packages
             echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
@@ -160,13 +162,19 @@ Effectuez toutes ces tâches sur votre machine locale.
 4. Une fois les informations de connexion et les clés d'API saisies, Streisand commencera à faire tourner un nouveau serveur distant.
 5. Attendez que l'installation soit terminée (cela prend habituellement environ dix minutes) et recherchez les fichiers correspondants dans le dossier 'generated-docs' dans le répertoire du dépôt Streisand. Le fichier HTML expliquera comment se connecter à la passerelle via SSL ou via le service caché Tor. Toutes les instructions, les fichiers, les clients en miroir et les clés du nouveau serveur se trouvent alors sur la passerelle. Vous avez fini!
 
-### Exécution de Streisand sur d'autres fournisseurs ###
+### Installation de Streisand sur localhost (Avancé) ###
 
-Vous pouvez également exécuter Streisand sur n'importe quel nombre de nouveaux serveurs Ubuntu 16.04. Serveur dédié? Génial! Fournisseur de cloud ésotérique? Fantastique! Pour ce faire, il suffit de modifier le fichier `inventory` et de décommenter les deux dernières lignes. Remplacez l'exemple IP par l'adresse (ou les adresses) des serveurs que vous souhaitez configurer. Assurez-vous de lire toute la documentation du fichier `inventory` et mettez à jour le fichier `ansible.cfg` si nécessaire. Ensuite, exécutez le Streisand playbook directement:
+Si vous ne pouvez pas exécuter Streisand de la manière normale (à partir de votre ordinateur client/ordinateur portable pour configurer un serveur distant), Streisand prend en charge un mode de provisionnement local. Choisissez simplement "Localhost (Advanced)" dans le menu après avoir exécuté `./streisand`.
 
-    ansible-playbook playbooks/streisand.yml
+**Note:** L'installation de Streisand sur localhost peut être une action destructive! Vous pourriez potentiellement écraser des fichiers de configuration; vous devez être certain que vous affectez la machine correcte.
 
-Les serveurs doivent être accessibles à l'aide des clés SSH et *root* est utilisé comme utilisateur de connexion par défaut (bien que cela soit simple à modifier lors de l'édition du fichier d'inventaire).
+### Exécution de Streisand sur d'autres fournisseurs (Avancé) ###
+
+Vous pouvez également exécuter Streisand sur un nouveau serveur Ubuntu 16.04. Serveur dédié? Génial! Fournisseur de cloud ésotérique? Fantastique! Pour ce faire, choisissez simplement `Existing server (Advanced)` dans le menu après avoir exécuté `./streisand` et fournissez l'adresse IP du serveur existant lorsque vous y êtes invité.
+
+Le serveur doit être accessible en utilisant la clé SSH `$HOME/id_rsa`, avec **root** comme utilisateur de connexion par défaut. Si votre fournisseur vous demande un utilisateur SSH au lieu de `root` (par exemple, `ubuntu`), spécifiez la variable environnementale `ANSIBLE_SSH_USER` (par exemple `ANSIBLE_SSH_USER=ubuntu`) lorsque vous exécutez `./streisand`.
+
+**Note:** L'installation de Streisand sur localhost peut être une action destructive! Vous pourriez potentiellement écraser des fichiers de configuration; vous devez être certain que vous affectez la machine correcte.
 
 Nouvelles fonctionnalités à venir
 ---------------------------------
