@@ -10,6 +10,10 @@
   become: true
 
   tasks:
+    - name: "Install dmidecode to use for BIOS version detection"
+      apt:
+        name: dmidecode
+
     - name: "Try to determine localhost Cloud provider name from BIOS version"
       # Looking into ways to detect EC2/GCE instances without relying on
       # connections to metadata IPs this solution[0] seemed the most
