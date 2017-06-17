@@ -1,0 +1,9 @@
+---
+- name: Register GPG signature verification results
+  shell: for file in *.asc; do gpg --verify $file; done
+  args:
+    chdir: "{{ tor_mirror_location }}"
+  register: gpg_verification_results
+
+- name: Make sure the {{ tor_project_name }} files all passed GPG signature verfication
+  assert: { that: "'BAD signature' not in gpg_verification_results.stderr" }
