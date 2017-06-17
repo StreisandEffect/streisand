@@ -18,7 +18,6 @@ shadowsocks_dependencies:
   # Shadowsocks may complain about lack of entropy without rng-tools installed
   - rng-tools
 
-shadowsocks_checksum: "sha256:7d9b43b0235a57c115bfe160efd54abef96bffcbfff61c5496e7c2800f0734ca"
 shadowsocks_version: "3.0.6"
 shadowsocks_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ shadowsocks_version }}"
 shadowsocks_source_filename: "shadowsocks-libev-{{ shadowsocks_version }}.tar.gz"
