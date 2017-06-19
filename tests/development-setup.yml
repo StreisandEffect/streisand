@@ -48,17 +48,15 @@
         install_recommends: no
 
     - name: Retrieve the Libreswan source code
-      get_url:
-        url: https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_source_filename }}
-        dest: "{{ libreswan_source_location }}"
-        checksum: "{{ libreswan_checksum }}"
-        owner: root
-        group: root
-        mode: 0644
-      register: libreswan_get_result
-      until: libreswan_get_result|success
-      retries: 3
-      delay: 5
+      include_role:
+        name: download-and-verify
+      vars:
+        project_name: "The Libreswan Project"
+        project_signer: "The Libreswan team"
+        project_signing_key: "{{ libreswan_developers_key_id }}"
+        project_expected_fingerprint: "{{ libreswan_developers_expected_fingerprint }}"
+        project_download_location: "{{ libreswan_src_directory }}"
+        project_download_urls: "{{ libreswan_download_urls }}"
 
     - name: Extract the Libreswan source code
       unarchive:

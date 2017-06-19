@@ -17,11 +17,15 @@ libreswan_compilation_dependencies:
   - libsystemd-dev
   - libunbound-dev
   - pkg-config
-libreswan_checksum: "sha256:2f0931c11ea0b9303ce1e4ee76ffe9db6f3bd70ceead51fe4ec11e2f40a9ae2e"
+
 libreswan_version: "3.20"
-libreswan_compilation_directory: "/usr/local/src/libreswan-{{ libreswan_version }}"
+libreswan_src_directory: "/usr/local/src"
+libreswan_compilation_directory: "{{ libreswan_src_directory }}/libreswan-{{ libreswan_version }}"
 libreswan_source_filename: "libreswan-{{ libreswan_version }}.tar.gz"
+libreswan_sig_filename: "{{ libreswan_source_filename }}.asc"
 libreswan_source_location: "/usr/local/src/{{ libreswan_source_filename }}"
+libreswan_developers_key_id: "0x85FF4B43B30FC6F9"
+libreswan_developers_expected_fingerprint: "Key fingerprint = 907E 790F 25C1 E8E5 61CD  73B5 85FF 4B43 B30F C6F9"
 
 l2tp_ipsec_firewall_rules:
   - iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -37,3 +41,10 @@ l2tp_ipsec_firewall_rules:
 l2tp_ipsec_gateway_location: "{{ streisand_gateway_location }}/l2tp-ipsec"
 
 ppp_options_file: "/etc/ppp/options.xl2tpd"
+
+libreswan_download_urls:
+  # This CDN mirrors the Libreswan source code, and helps
+  # mitigate connection errors that were occurring when
+  # using the project's official download location.
+  - https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_source_filename }}
+  - https://download.libreswan.org/{{ libreswan_sig_filename }}

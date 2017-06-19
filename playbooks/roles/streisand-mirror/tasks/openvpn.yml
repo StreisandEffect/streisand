@@ -20,13 +20,14 @@
         group: www-data
         mode: 0644
 
-    - include: download-and-verify.yml
+    - include_role:
+        name: download-and-verify
       vars:
         project_name: "OpenVPN Community"
         project_signer: "Samuli Seppanen"
         project_signing_key: "{{ openvpn_samuli_seppanen_key_id }}"
         project_expected_fingerprint: "{{ openvpn_samuli_seppanen_expected_fingerprint }}"
-        project_mirror_location: "{{ openvpn_mirror_location }}"
+        project_download_location: "{{ openvpn_mirror_location }}"
         project_download_urls: "{{ openvpn_download_urls }}"
   rescue:
     - name: "{{ streisand_mirror_warning }}"

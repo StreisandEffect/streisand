@@ -27,13 +27,14 @@
       set_fact:
         tor_browser_bundle_version: "{{ tor_latest_recommended_check.stdout }}"
 
-    - include: download-and-verify.yml
+    - include_role:
+        name: download-and-verify
       vars:
         project_name: "Tor Browser Bundle"
         project_signer: "Tor Browser Developers"
         project_signing_key: "{{ tor_browser_developers_key_id }}"
         project_expected_fingerprint: "{{ tor_browser_developers_expected_fingerprint }}"
-        project_mirror_location: "{{ tor_mirror_location }}"
+        project_download_location: "{{ tor_mirror_location }}"
         project_download_urls: "{{ tor_download_urls }}"
   rescue:
     - name: "{{ streisand_mirror_warning }}"

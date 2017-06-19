@@ -16,7 +16,7 @@
 - name: Mirror the {{ project_name }} files and signatures
   get_url:
     url: "{{ item }}"
-    dest: "{{ project_mirror_location }}"
+    dest: "{{ project_download_location }}"
     owner: www-data
     group: www-data
     mode: 0644
@@ -25,13 +25,13 @@
 - name: If necessary, rename signature files to match the GPG default of '.asc'
   shell: for file in *.{{ signature_extension }}; do mv $file ${file%.*}.asc; done
   args:
-    chdir: "{{ project_mirror_location }}"
+    chdir: "{{ project_download_location }}"
   when: signature_extension != "asc"
 
 - name: Register GPG signature verification results
   shell: for file in *.asc; do gpg --verify $file; done
   args:
-    chdir: "{{ project_mirror_location }}"
+    chdir: "{{ project_download_location }}"
   register: gpg_verification_results
 
 - name: Make sure the {{ project_name }} files all passed GPG signature verfication

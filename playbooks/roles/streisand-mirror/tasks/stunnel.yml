@@ -11,13 +11,14 @@
     state: directory
 
 - block:
-    - include: download-and-verify.yml
+    - include_role:
+        name: download-and-verify
       vars:
         project_name: "stunnel"
         project_signer: "Michal Trojnara"
         project_signing_key: "{{ stunnel_michal_trojnara_key_id }}"
         project_expected_fingerprint: "{{ stunnel_michal_trojnara_expected_fingerprint }}"
-        project_mirror_location: "{{ stunnel_mirror_location }}"
+        project_download_location: "{{ stunnel_mirror_location }}"
         project_download_urls: "{{ stunnel_download_urls }}"
   rescue:
     - name: "{{ streisand_mirror_warning }}"
