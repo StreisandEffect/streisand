@@ -32,7 +32,7 @@ shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
 shadowsocks_password_file_localpath: "../{{ streisand_local_directory }}/shadowsocks-password.txt"
 
-#simple-obfs vars
+# simple-obfs vars
 simple_obfs_version: "0.0.2"
 simple_obfs_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ simple_obfs_version }}"
 simple_obfs_configure_flags: "--disable-documentation"

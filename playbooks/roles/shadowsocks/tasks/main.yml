@@ -100,7 +100,7 @@
     flat: yes
   when: streisand_client_test
 
-#simple-obfs begins here
+# simple-obfs begins here
 
 - name: Clone the simple-obfs source code at tag {{ simple_obfs_version }}
   git:
@@ -140,7 +140,7 @@
     chdir: "{{ simple_obfs_compilation_directory }}"
     creates: "/usr/local/bin/obfs-server"
 
-#simple-obfs ends here
+# simple-obfs ends here
 
 - name: Generate Shadowsocks config file
   template:
