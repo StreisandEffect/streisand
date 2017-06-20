@@ -70,7 +70,7 @@ For users on unreliable or hostile networks (esp. experiencing quality-of-servic
         Port: {{ shadowsocks_server_port }}
         Password: {{ shadowsocks_password.stdout }}
         Encryption Method: {{ shadowsocks_encryption_method }}
-        Plugin: {{ shadowsocks_obfs_plugin }}
+        Plugin: {{ shadowsocks_client_obfs_plugin }}
         Plugin_Options: {{ shadowsocks_obfs_client_plugin_opts }}
 
 Your Shadowsocks traffic will now be obfuscated as HTTP traffic from `www.cloudfront.com`.
