@@ -34,6 +34,11 @@ streisand_common_packages:
   # (yet typeable!) passphrases
   - wamerican-huge
 
+# Services that are running by default but not needed by Streisand
+streisand_unneeded_packages:
+  - lxd
+  - snapd
+
 streisand_gateway_location: "/var/www/streisand"
 
 streisand_local_directory: "generated-docs"

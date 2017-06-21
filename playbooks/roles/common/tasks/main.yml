@@ -17,6 +17,14 @@
     name: "{{ item }}"
   with_items: "{{ streisand_common_packages }}"
 
+- name: Purge unneeded services
+  apt:
+    name: "{{ item }}"
+    state: "absent"
+    purge: yes
+    autoremove: yes
+  with_items: "{{ streisand_unneeded_packages }}"
+
 - name: Perform a full system upgrade
   apt:
     upgrade: "safe"
