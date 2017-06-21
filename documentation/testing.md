@@ -24,8 +24,8 @@ Using Vagrant for Local Testing
    `streisand-host` and `streisand-client` virtual machines with:
 
        `vagrant up`
-4. If you have already created the virtual machines and wish to re-run the
-   Streisand playbooks then re-provision the virtual machines with:
+4. To re-run the Streisand playbooks, the virtual machines can be re-provisioned
+   with:
 
        `vagrant up --provision`
 
@@ -64,8 +64,8 @@ Using Vagrant for Remote Testing (Hard Way)
    `streisand-client` virtual machine with:
 
        VAGRANT_VAGRANTFILE=Vagrantfile.remotetest vagrant up
-6. If you have already created the client virtual machine and wish to re-run the
-   client test playbooks then re-provision the client machine with:
+4. To re-run the Streisand playbooks, the virtual machines can be re-provisioned
+   with:
 
        VAGRANT_VAGRANTFILE=Vagrantfile.remotetest vagrant up --provision
 
