@@ -3,6 +3,8 @@ dist: trusty
 language: python
 python: "2.7"
 
+group: edge
+
 # Use isolated GCE instance
 sudo: required
 
@@ -15,7 +17,7 @@ before_install:
   - sudo apt-get install python-pip python-dev ca-certificates shellcheck -qq
 
 install:
-  - pip install ansible==2.3.0.0
+  - pip install ansible==2.3.1.0
   - pip install urllib3
   - ansible --version
 
