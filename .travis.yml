@@ -3,6 +3,8 @@ dist: trusty
 language: python
 python: "2.7"
 
+group: edge
+
 # Use isolated GCE instance
 sudo: required
 
