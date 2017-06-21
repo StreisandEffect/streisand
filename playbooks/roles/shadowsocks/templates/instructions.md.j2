@@ -64,7 +64,7 @@ For reference, this is the configuration specified:
         Password: {{ shadowsocks_password.stdout }}
         Encryption Method: {{ shadowsocks_encryption_method }}
 
-For users on unreliable or hostile networks (esp. experiencing quality-of-service (QOS) throttling), further configuration of Shadowsocks to use the simple-obfs plugin can be carried out via following configuration:
+For users on unreliable or hostile networks (esp. experiencing quality-of-service (QOS) throttling), further configuration of Shadowsocks to use the simple-obfs plugin can be carried out via the following configuration:
 
         Server: {{ streisand_ipv4_address }}
         Port: {{ shadowsocks_server_port }}
@@ -73,7 +73,7 @@ For users on unreliable or hostile networks (esp. experiencing quality-of-servic
         Plugin: {{ shadowsocks_client_obfs_plugin }}
         Plugin_Options: {{ shadowsocks_obfs_client_plugin_opts }}
 
-Your Shadowsocks traffic will now be obfuscated as HTTP traffic from `www.cloudfront.com`.
+Your Shadowsocks traffic will now be obfuscated as HTTP traffic from `{{ shadowsocks_obfs_cover_domain }}`.
 
 Once you have Shadowsocks running locally, you'll need to forward your browser traffic through the SOCKS proxy it provides
 
