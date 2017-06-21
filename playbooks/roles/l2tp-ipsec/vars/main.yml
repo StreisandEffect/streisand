@@ -43,8 +43,8 @@ l2tp_ipsec_gateway_location: "{{ streisand_gateway_location }}/l2tp-ipsec"
 ppp_options_file: "/etc/ppp/options.xl2tpd"
 
 libreswan_download_urls:
-  # This CDN mirrors the Libreswan source code, and helps
-  # mitigate connection errors that were occurring when
-  # using the project's official download location.
+  # This CDN mirrors the Libreswan source code and signature, and
+  # helps mitigate connection errors that were occurring when using
+  # the project's official download location.
   - https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_source_filename }}
-  - https://download.libreswan.org/{{ libreswan_sig_filename }}
+  - https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_sig_filename }}
