@@ -5,6 +5,11 @@
 - name: "Include the Shadowsocks default vars"
   include_vars: "../../shadowsocks/defaults/main.yml"
 
+- name: "Remove existing gateway password file from client if required"
+  file:
+    path: "{{ gateway_password_file }}"
+    state: absent
+
 - name: "Copy gateway password file to client"
   copy:
     src: "{{ streisand_gateway_password_localpath }}"
@@ -13,13 +18,10 @@
     group: root
     mode: 0600
 
-- name: "Copy Shadowsocks password file to client"
-  copy:
-    src: "{{ shadowsocks_password_localpath }}"
-    dest: "{{ shadowsocks_password_file }}"
-    owner: root
-    group: root
-    mode: 0600
+- name: "Remove existing forward SSH key from client if required"
+  file:
+    path: "{{ forward_ssh_key }}"
+    state: absent
 
 - name: "Download the forward user SSH key to the client"
   get_url:
@@ -31,6 +33,11 @@
     validate_certs: no
     mode: 0600
 
+- name: "Remove any existing Streisand SSH known hosts files"
+  file:
+    path: "{{ forward_ssh_hosts }}"
+    state: absent
+
 - name: "Download the Streisand server SSH known hosts file"
   get_url:
     url: "{{ gateway_ssh_hosts }}"
@@ -40,6 +47,11 @@
     url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
     validate_certs: no
     mode: 0600
+
+- name: "Remove existing forward SSH config from client if required"
+  file:
+    path: "{{ forward_ssh_config }}"
+    state: absent
 
 - name: "Install an SSH config file for a SSH SOCKS connection with the forward user"
   template:
@@ -73,6 +85,34 @@
   file:
     path: "{{ shadowsocks_client }}"
     mode: 0700
+
+- name: "Remove existing Shadowsocks QR code from client if required"
+  file:
+    path: "{{ shadowsocks_qr_file }}"
+    state: absent
+
+- name: "Download the Shadowsocks QR code to the client machine"
+  get_url:
+    url: "{{ gateway_shadowsocks_qr }}"
+    dest: "{{ shadowsocks_qr_file }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Install zbar-tools"
+  apt:
+    name: zbar-tools
+    force: yes
+
+- name: "Copy Shadowsocks QR code parser tool to client machine"
+  copy:
+    src: shadowsocks-qr-decode.py
+    dest: "{{ test_script_dir }}/shadowsocks-qr-decode"
+    owner: root
+    group: root
+    mode: 0755
 
 - name: "Install test scripts"
   template:
