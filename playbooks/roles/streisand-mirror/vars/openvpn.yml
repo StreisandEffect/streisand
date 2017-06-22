@@ -31,9 +31,9 @@ openvpn_download_urls:
 
 
 # OS X
-tunnelblick_version: "3.7.1a"
-tunnelblick_build: "4812"
+tunnelblick_version: "3.7.1b"
+tunnelblick_build: "4813"
 tunnelblick_filename: "Tunnelblick_{{ tunnelblick_version }}_build_{{ tunnelblick_build }}.dmg"
 tunnelblick_href: "{{ openvpn_mirror_href_base }}/{{ tunnelblick_filename }}"
 tunnelblick_url: "https://tunnelblick.net/release/{{ tunnelblick_filename }}"
-tunnelblick_checksum: "sha256:66f99c50a8cad2985ecc224e378dbd79bb01c3d6b66ae7b16f69b780ee76b6c9"
+tunnelblick_checksum: "sha256:60419937cb72ebe59d40e13a80c4e5c31231a7c5fb8f3affbcbc95b9b41295b1"
