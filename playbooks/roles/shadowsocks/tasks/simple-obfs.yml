@@ -1,0 +1,37 @@
+- name: Clone the simple-obfs source code at tag {{ simple_obfs_version }}
+  git:
+    repo: "https://github.com/shadowsocks/simple-obfs"
+    dest: "{{ simple_obfs_compilation_directory }}"
+    version: "v{{simple_obfs_version}}"
+
+- name: Update the simple-obfs source code submodules
+  command: git submodule update --init --recursive
+  args:
+    chdir: "{{ simple_obfs_compilation_directory }}"
+    # if one of the submodules (libcork) has been populated we assume all of
+    # the submodules were updated.
+    creates: "{{ simple_obfs_compilation_directory }}/libcork/Makefile.am"
+
+- name: Autogen simple-obfs {{ simple_obfs_version }} source
+  command: ./autogen.sh
+  args:
+    chdir: "{{ simple_obfs_compilation_directory }}"
+    creates: "{{ simple_obfs_compilation_directory }}/configure"
+
+- name: Configure simple-obfs {{ simple_obfs_version }} source
+  command: ./configure {{ simple_obfs_configure_flags }}
+  args:
+    chdir: "{{ simple_obfs_compilation_directory }}"
+    creates: "{{ simple_obfs_compilation_directory }}/Makefile"
+
+- name: Compile simple-obfs {{ simple_obfs_version }} source
+  command: make -j{{ ansible_processor_cores }}
+  args:
+    chdir: "{{ simple_obfs_compilation_directory }}"
+    creates: "{{ simple_obfs_compilation_directory }}/src/obfs-server"
+
+- name: Install simple-obfs {{ simple_obfs_version }} binaries
+  command: make install
+  args:
+    chdir: "{{ simple_obfs_compilation_directory }}"
+    creates: "/usr/local/bin/obfs-server"
