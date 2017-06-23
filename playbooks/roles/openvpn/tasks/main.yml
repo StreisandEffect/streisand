@@ -17,6 +17,11 @@
     - openvpn
     - udev
 
+- name: "Configure DNSMasq to listen on {{ dnsmasq_openvpn_tcp_ip }}:53 and {{ dnsmasq_openvpn_udp_ip }}:53"
+  template:
+    src: openvpn_dnsmasq.conf.j2
+    dest: /etc/dnsmasq.d/openvpn.conf
+
 - name: Generate RSA keys for the CA and Server
   command: openssl genrsa -out {{ item }}.key {{ openvpn_key_size }}
   args:

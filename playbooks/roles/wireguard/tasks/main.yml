@@ -50,6 +50,11 @@
   # Temporary workaround for issue #500
   ignore_errors: yes
 
+- name: "Configure DNSMasq to listen on {{ dnsmasq_wireguard_ip }}:53"
+  template:
+    src: wireguard_dnsmasq.conf.j2
+    dest: /etc/dnsmasq.d/wireguard.conf
+
 - name: Create the WireGuard Gateway directory
   file:
     path: "{{ wireguard_gateway_location }}"
