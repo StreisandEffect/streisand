@@ -26,6 +26,7 @@
     - sslh
     - monit
     - ufw
-    - wireguard
+    - role: wireguard
+      when: streisand_wireguard_enabled
     - streisand-mirror
     - streisand-gateway

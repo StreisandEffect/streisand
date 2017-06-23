@@ -54,6 +54,7 @@
   template:
     src: wireguard_dnsmasq.conf.j2
     dest: /etc/dnsmasq.d/wireguard.conf
+  notify: Restart dnsmasq
 
 - name: Create the WireGuard Gateway directory
   file:
