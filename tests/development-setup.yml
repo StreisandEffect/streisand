@@ -18,15 +18,20 @@
         url: "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xD5495F657635B973"
         state: present
 
-    - name: Install lxc ppa
-      apt_repository:
-        repo: "{{ item }}"
-        state: present
-      with_items:
-        - "deb http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
-        - "deb-src http://ppa.launchpad.net/ubuntu-lxc/lxd-stable/ubuntu {{ansible_distribution_release}} main"
+    # NOTE(@cpu): We use the `command` module with the `add-apt-repository`
+    # command here because the `apt_repository` Ansible module at the time of
+    # writing will error on the ubuntu-lxc repo in some instances if a mirror is
+    # missing 32bit binary builds even though CI uses a 64bit architecture.
+    - name: Install LXC ppa
+      command: add-apt-repository ppa:ubuntu-lxc/lxd-stable
 
-      # Since LXC loads kernal modules from the host, we need to ensure libreswan is compiled and installed
+    - name: Ensure consistent & clean apt state
+      shell: "{{ item }}"
+      with_items:
+        - "apt-get clean"
+        - "apt-get update"
+
+    # Since LXC loads kernal modules from the host, we need to ensure libreswan is compiled and installed
     - name: Install the Libreswan dependencies that are required for compilation
       apt:
         name: "{{ item }}"
@@ -87,7 +92,6 @@
       apt:
         name: lxd
         state: latest
-        update_cache: yes
 
     - name: lxd new group
       shell: newgrp lxd
