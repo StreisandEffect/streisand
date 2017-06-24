@@ -25,6 +25,12 @@
     - name: Install LXC ppa
       command: add-apt-repository ppa:ubuntu-lxc/lxd-stable
 
+    - name: Ensure consistent & clean apt state
+      shell: "{{ item }}"
+      with_items:
+        - "apt-get clean"
+        - "apt-get update"
+
     # Since LXC loads kernal modules from the host, we need to ensure libreswan is compiled and installed
     - name: Install the Libreswan dependencies that are required for compilation
       apt:
@@ -86,7 +92,6 @@
       apt:
         name: lxd
         state: latest
-        update_cache: yes
 
     - name: lxd new group
       shell: newgrp lxd
