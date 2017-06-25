@@ -211,6 +211,15 @@
   command: "{{ item }}"
   with_items: "{{ openvpn_firewall_rules }}"
 
+- name: "Add OpenVPN firewall persistence service to init"
+  template:
+    src: streisand-openvpn.sh
+    dest: /etc/init.d/streisand-openvpn
+    mode: 0755
+
+- name: "Enable the streisand-openvpn init service"
+  command: "update-rc.d streisand-openvpn defaults"
+
 - name: Copy OpenVPN configuration file into place
   template:
     src: etc_openvpn_server.conf.j2

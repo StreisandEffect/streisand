@@ -3,4 +3,3 @@ dependencies:
   - { role: diffie-hellman-group }
   - { role: dnsmasq }
   - { role: ip-forwarding }
-  - { role: rc-local }

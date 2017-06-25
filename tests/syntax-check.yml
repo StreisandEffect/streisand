@@ -52,7 +52,6 @@
     - nginx
     - openconnect
     - openvpn
-    - rc-local
     - rsyslog
     - shadowsocks
     - ssh
