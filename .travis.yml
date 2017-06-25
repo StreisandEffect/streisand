@@ -3,7 +3,7 @@ dist: trusty
 language: python
 python: "2.7"
 
-# Use isolated GCE instance
+# Use isolated build instance
 sudo: required
 
 env:

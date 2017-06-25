@@ -1,3 +1,53 @@
+CI Testing
+==========================
+
+Streisand has a `.travis.yml` file that powers [continuous integration
+tests](https://travis-ci.org/jlund/streisand). It works by installing required
+test tools (e.g. shellcheck) and an Ansible environment on a Ubuntu Trusty
+(14.04) machine.
+
+The `test.sh` wrapper script
+--------------------------------
+
+The `test/test.sh` wrapper script is invoked to perform tests and supports
+a argument for specifying what actions should be taken. The following are
+supported arguments:
+
+* **"setup"** prepares the local environment for running a Streisand
+    [LXC](https://linuxcontainers.org/lxc/introduction/) instance. The instance
+    is managed via [LXD](https://linuxcontainers.org/lxd/).
+
+* **"syntax"** checks the Streisand playbooks for Ansible syntax errors.
+
+* **"run"** runs the CI tests. It assumes the local environment is already
+    prepared from a previous "setup" run.
+
+* **"ci"** combines "setup" and "run".
+
+* **"ful""** performs the same as "ci" but additionally adds verbose output to
+    the Ansible run. This is very verbose but can be useful for diagnosing
+    tricky broken builds.
+
+* By **default** the wrapper will run "syntax".
+
+Working around things that won't work in Travis
+-----------------------------------------------
+
+Some playbooks/tasks can't be run in CI because of limitations imposed by the
+containerization or Travis. One example of this is installing a Tor relay. To
+work around this playbooks/tasks that break in CI can be gated on the
+`streisand_ci` variable, which is `true` only for CI runs. Where possible it's
+best to minimize the use of this variable for conditional execution because we
+want as much code to be tested as possible!
+
+Kernel Modules
+---------------------
+
+By design LXC containers share the Linux kernel they use with the host machine.
+This means playbooks/services that require a kernel module (e.g. Libreswan) must
+build the kernel module on the host machine.
+
+
 Local Testing
 ==========================
 
