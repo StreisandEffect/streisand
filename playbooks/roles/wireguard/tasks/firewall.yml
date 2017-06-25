@@ -1,0 +1,17 @@
+---
+- name: Ensure UFW allows DNS requests from WireGuard clients
+  ufw:
+    to_port: "53"
+    proto: "udp"
+    rule: "allow"
+    from_ip: "10.192.122.0/24"
+
+- name: Ensure UFW allows WireGuard
+  ufw:
+    to_port: "{{ wireguard_port }}"
+    proto: "udp"
+    rule: "allow"
+
+- name: Allow WireGuard through the firewall
+  command: "{{ item }}"
+  with_items: "{{ wireguard_firewall_rules }}"

@@ -1,0 +1,23 @@
+---
+- name: Create the WireGuard Gateway directory
+  file:
+    path: "{{ wireguard_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- name: Copy the client configuration file to the WireGuard Gateway directory
+  command: cp {{ wireguard_path }}/wg0-client.conf {{ wireguard_gateway_location }}
+  args:
+    creates: "{{ wireguard_gateway_location }}/wg0-client.conf"
+
+- name: Generate the Markdown WireGuard instructions
+  template:
+    src: instructions{{ item.value.file_suffix }}.md.j2
+    dest: "{{ wireguard_gateway_location }}/index{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
+
+- name: Convert the Markdown WireGuard instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ wireguard_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ wireguard_gateway_location }}/index{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"

@@ -73,6 +73,7 @@
         access: Allow
         direction: Inbound
         priority: 106
+        when: streisand_shadowsocks_enabled
       # Shadowsocks UDP
       # ---
       - name: "AllowShadowsocksUDP"
@@ -81,6 +82,7 @@
         access: Allow
         direction: Inbound
         priority: 107
+        when: streisand_shadowsocks_enabled
       # SSH
       # ---
       - name: "AllowSSHTCP"
@@ -113,7 +115,7 @@
         access: Allow
         direction: Inbound
         priority: 111
-      # Tor wireguard port
+      # WireGuard port
       # ---
       - name: "AllowWireguard"
         destination_port_range: "{{ wireguard_port }}"
@@ -121,6 +123,7 @@
         access: Allow
         direction: Inbound
         priority: 112
+        when: streisand_wireguard_enabled
       # Tor L2TP/IPsec ports
       # ---
       - name: "AllowL2TPPort500"

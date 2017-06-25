@@ -67,10 +67,12 @@
         from_port: "{{ shadowsocks_server_port }}"
         to_port: "{{ shadowsocks_server_port }}"
         cidr_ip: 0.0.0.0/0
+        when: streisand_shadowsocks_enabled
       - proto: udp
         from_port: "{{ shadowsocks_server_port }}"
         to_port: "{{ shadowsocks_server_port }}"
         cidr_ip: 0.0.0.0/0
+        when: streisand_shadowsocks_enabled
       # SSH
       # ---
       - proto: tcp
@@ -101,6 +103,7 @@
         from_port: "{{ wireguard_port }}"
         to_port: "{{ wireguard_port }}"
         cidr_ip: 0.0.0.0/0
+        when: streisand_wireguard_enabled
     rules_egress:
       - proto: all
         from_port: 1
