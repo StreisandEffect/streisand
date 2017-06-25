@@ -107,6 +107,7 @@
     # The nobody user in nogroup needs to be able to read the config file
     group: nogroup
     mode: 0640
+  notify: Restart shadowsocks-libev
 
 - name: Enable the Shadowsocks service so it starts at boot, and bring it up
   systemd:
