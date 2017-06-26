@@ -8,6 +8,7 @@ echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 
 # Update the PYTHONPATH to include the monkey patch directory for Streisand
 # workarounds packaged as Python monkey patches
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 export PYTHONPATH="$SCRIPT_DIR/monkey:$PYTHONPATH"
 
 # check_ansible checks that Ansible is installed on the local system
