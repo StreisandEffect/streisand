@@ -36,9 +36,7 @@ This system has Ansible $(ansible --version)."
 # ansible_interpretter host var explicitly
 function check_python() {
   local PYTHON_VERSION
-  local SCRIPT_DIR
   PYTHON_VERSION="$(python --version 2>/dev/null)"
-  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 
   if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 2\..* ]]; then
     local INVENTORY_DIR="$SCRIPT_DIR/inventories/"
