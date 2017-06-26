@@ -17,8 +17,8 @@ shadowsocks_dependencies:
   - libudns-dev
   # Shadowsocks may complain about lack of entropy without rng-tools installed
   - rng-tools
+  - libssl-dev
 
-shadowsocks_checksum: "sha256:7d9b43b0235a57c115bfe160efd54abef96bffcbfff61c5496e7c2800f0734ca"
 shadowsocks_version: "3.0.6"
 shadowsocks_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ shadowsocks_version }}"
 shadowsocks_source_filename: "shadowsocks-libev-{{ shadowsocks_version }}.tar.gz"
@@ -30,6 +30,11 @@ shadowsocks_configure_flags: "--disable-documentation --prefix=/usr"
 
 shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
+
+# simple-obfs vars
+simple_obfs_version: "0.0.3"
+simple_obfs_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ simple_obfs_version }}"
+simple_obfs_configure_flags: "--disable-documentation"
 
 # Add -v for verbose mode to help with debugging
 shadowsocks_daemon_args: "-u"

@@ -92,6 +92,9 @@
   command: cat {{ shadowsocks_password_file }}
   register: shadowsocks_password
 
+# Add simple-obfs task file
+- include: simple-obfs.yml
+
 - name: Generate Shadowsocks config file
   template:
     src: config.json.j2

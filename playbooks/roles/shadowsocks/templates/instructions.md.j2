@@ -8,6 +8,8 @@ Shadowsocks
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
+* Plugins
+  * [simple-obfs](#simple-obfs)
 
 <a name="windows"></a>
 ### Windows ###
@@ -112,3 +114,16 @@ This should return a 301 Found response **not** a connection refused error.
 1. Toggle the connection switch located to the right of the *Not Connected* text on the *Home* tab.
    * If this is your first time running Shadowrocket, iOS will ask you to verify that the application should have permission to add VPN configurations. Tap *Allow* and follow the instructions.
 1. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+<a name="simple-obfs"></a>
+### simple-obfs for unreliable/hostile networks ###
+For users on unreliable or hostile networks (esp. experiencing quality-of-service (QOS) throttling), further configuration of Shadowsocks to use the simple-obfs plugin can be carried out via the following configuration:
+
+        Server: {{ streisand_ipv4_address }}
+        Port: {{ shadowsocks_server_port }}
+        Password: {{ shadowsocks_password.stdout }}
+        Encryption Method: {{ shadowsocks_encryption_method }}
+        Plugin: {{ shadowsocks_client_obfs_plugin }}
+        Plugin_Options: {{ shadowsocks_obfs_client_plugin_opts }}
+
+Your Shadowsocks traffic will now be obfuscated as `{{ shadowsocks_obfs_cover_protocol }}` traffic to `{{ shadowsocks_obfs_cover_domain }}`.
