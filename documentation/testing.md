@@ -24,7 +24,7 @@ supported arguments:
 
 * **"ci"** combines "setup" and "run".
 
-* **"full""** performs the same as "ci" but additionally adds verbose output to
+* **"full"** performs the same as "ci" but additionally adds verbose output to
     the Ansible run. This is very verbose but can be useful for diagnosing
     tricky broken builds.
 
