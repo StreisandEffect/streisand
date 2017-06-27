@@ -10,7 +10,7 @@ The `test.sh` wrapper script
 --------------------------------
 
 The `test/test.sh` wrapper script is invoked to perform tests and supports
-a argument for specifying what actions should be taken. The following are
+an argument for specifying what actions should be taken. The following are
 supported arguments:
 
 * **"setup"** prepares the local environment for running a Streisand
@@ -24,7 +24,7 @@ supported arguments:
 
 * **"ci"** combines "setup" and "run".
 
-* **"ful""** performs the same as "ci" but additionally adds verbose output to
+* **"full""** performs the same as "ci" but additionally adds verbose output to
     the Ansible run. This is very verbose but can be useful for diagnosing
     tricky broken builds.
 
