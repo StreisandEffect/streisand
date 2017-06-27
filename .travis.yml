@@ -3,7 +3,7 @@ dist: trusty
 language: python
 python: "2.7"
 
-# Use isolated GCE instance
+# Use isolated build instance
 sudo: required
 
 env:
@@ -20,10 +20,13 @@ install:
   - ansible --version
 
 script:
-  # Run shellcheck lint on streisand script
-  - shellcheck ./streisand
-  # Run syntax checks on playbooks and roles
-  - ./tests/tests.sh syntax
-  # Install additional packages, configure lxc, start streisand container
-  # Run entire playbook against lxc container
-  - ./tests/tests.sh ci
+  # Travis will run all `script` tasks even if one fails. In order to have the
+  # first failure terminate the build we list each script step with the shell
+  # `&&` operator as one script task.
+  #
+  # https://docs.travis-ci.com/user/customizing-the-build/#Customizing-the-Build-Step
+  #
+  # * shellcheck tests for common shell script errors
+  # * ./tests/test.sh syntax will check for Ansible syntax errors
+  # * ./tests/test.sh ci will install dev dependencies and run the ci playbooks
+  - shellcheck -x ./streisand && shellcheck -x ./tests/tests.sh && ./tests/tests.sh syntax && ./tests/tests.sh ci
