@@ -1,0 +1,12 @@
+---
+- name: Include the Tor download variables for locale ({{ locale }})
+  include_vars: tor-download.yml
+
+- name: Downloading {{ tor_project_name }} files and signatures for locale ({{ locale }})
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ tor_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0644
+  with_items: "{{ tor_download_urls }}"

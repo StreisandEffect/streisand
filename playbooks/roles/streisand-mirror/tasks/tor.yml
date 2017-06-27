@@ -1,41 +1,17 @@
 ---
-- name: Include the Tor mirror variables
-  include_vars: tor.yml
-
-- name: Make the directory where the Tor Project's mirrored files will be stored
-  file:
-    path: "{{ tor_mirror_location }}"
-    owner: www-data
-    group: www-data
-    mode: 0755
-    state: directory
+- name: Include the Tor common variables
+  include_vars: tor-common.yml
 
 - block:
-    - name: Discover the latest stable version of the Tor Browser Bundle
-      # The Python code below can be cleaned up once the Tor Project has
-      # finished transitioning away from putting the OS suffix in the
-      # RecommendedTBBVersions file. This check should work with both
-      # formats though.
-      #
-      # https://trac.torproject.org/projects/tor/ticket/8940#comment:28
-      shell: curl -s 'https://www.torproject.org/projects/torbrowser/RecommendedTBBVersions' | python -c 'import json; import re; import sys; j = json.load(sys.stdin); print [re.sub(r"-.*$", "", tbb) for tbb in j if "a" not in tbb and "b" not in tbb][-1];'
-      args:
-        warn: no
-      register: tor_latest_recommended_check
+    - include: tor-common.yml
 
-    - name: Set the target Tor Browser Bundle version
-      set_fact:
-        tor_browser_bundle_version: "{{ tor_latest_recommended_check.stdout }}"
+    - include: tor-download.yml
+      with_items: "{{ streisand_languages.values() | map(attribute='tor_locale') | list }}"
+      when: locale in tor_available_locales
+      loop_control:
+        loop_var: locale
 
-    - include_role:
-        name: download-and-verify
-      vars:
-        project_name: "Tor Browser Bundle"
-        project_signer: "Tor Browser Developers"
-        project_signing_key: "{{ tor_browser_developers_key_id }}"
-        project_expected_fingerprint: "{{ tor_browser_developers_expected_fingerprint }}"
-        project_download_location: "{{ tor_mirror_location }}"
-        project_download_urls: "{{ tor_download_urls }}"
+    - include: tor-verify.yml
   rescue:
     - name: "{{ streisand_mirror_warning }}"
       pause:

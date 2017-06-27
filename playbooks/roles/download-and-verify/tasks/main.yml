@@ -1,6 +1,6 @@
 ---
 - name: "{{ project_signer }} signs the {{ project_name }} downloads. Import the correct GPG key."
-  command: gpg --keyserver x-hkp://pool.sks-keyservers.net --recv-keys {{ project_signing_key }}
+  command: gpg --keyserver {{ gpg_key_server_address }} --recv-keys {{ project_signing_key }}
   register: gpg_recv_keys_result
   until: gpg_recv_keys_result | success
   retries: 10
@@ -13,7 +13,7 @@
 - name: Make sure the retrieved fingerprint perfectly matches the expected fingerprint
   assert: { that: "project_expected_fingerprint in retrieved_fingerprint.stdout" }
 
-- name: Mirror the {{ project_name }} files and signatures
+- name: Download the {{ project_name }} files and signatures
   get_url:
     url: "{{ item }}"
     dest: "{{ project_download_location }}"
