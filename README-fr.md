@@ -179,7 +179,7 @@ Le serveur doit être accessible en utilisant la clé SSH `$HOME/id_rsa`, avec *
 
 Nouvelles fonctionnalités à venir
 ---------------------------------
-* Seélection et isolement des rôles, vous permettant de choisir quels services sont installés.
+* Sélection et isolement des rôles, vous permettant de choisir quels services sont installés.
 * Configuration simplifiée.
 
 S'il ya quelque chose que vous pensez que Streisand devrait faire, ou si vous trouviez un bug dans sa documentation ou son exécution, s'il vous plaît déposer un rapport sur le [Issue Tracker](https://github.com/jlund/streisand/issues).
