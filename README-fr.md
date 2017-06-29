@@ -18,7 +18,7 @@ Présentation de Streisand
 * Le processus est entièrement automatisé et ne prend que quelques dizaines de minutes, ce qui est assez remarquable si vous considérez qu'il faudrait un administrateur système au moins plusieurs jours de contrainte pour mettre en place un petit sous-ensemble de ce que Streisand offre dans sa configuration.
 * Une fois que votre serveur Streisand est en cours d'exécution, vous pouvez donner les instructions de connexion personnalisée à vos amis, membres de la famille et activistes. Les instructions de connexion contiennent une copie intégrée du certificat SSL unique du serveur, il vous suffit de leur envoyer un seul fichier.
 * Chaque serveur est entièrement autonome et comprend tout ce dont les utilisateurs ont besoin pour démarrer, y compris les miroirs cryptographiquement vérifiés de tous les clients communs. Cela rend toute tentative de censure des emplacements de téléchargement par défaut complètement inefficace.
-* Mais attendez, il y a plus ..
+* Mais attendez, il y a plus..
 
 Plus de fonctionnalités
 -----------------------
@@ -33,7 +33,7 @@ Plus de fonctionnalités
   * OpenConnect/AnyConnect, OpenSSH, OpenVPN (enveloppé dans stunnel), Shadowsocks et Tor (avec obfsproxy et obfs4 transports enfichables) sont tous actuellement efficace contre le grand pare-feu de la Chine.
 * Chaque tâche a été bien documentée et a donné une description détaillée. Streisand est simultanément le HOWTO le plus complet en existance pour l'installation de tous les logiciels qu'il installe, et aussi l'antidote pour avoir à faire jamais tout cela à la main de nouveau.
 * Tous les logiciels fonctionnent sur des ports qui ont été délibérément choisis pour rendre le blocage de ports simpliste irréaliste sans causer de dommages collatéraux massifs. OpenVPN, par exemple, ne fonctionne pas sur le port défaut de 1194, mais utilise le port standard 636 pour les connexions LDAP/SSL qui sont aimés par des entreprises du monde entier.
-  * *L2TP/IPsec est une exception notable à cette règle car les ports ne peuvent pas être modifiés sans rompre la compatibilité client*
+  * *L2TP/IPsec est une exception notable à cette règle car les ports ne peuvent pas être modifiés sans rompre la compatibilité du client*
 
 <a name="services-provided"></a>
 Services fournis
@@ -60,7 +60,8 @@ Services fournis
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
   * La [variante libev](https://github.com/shadowsocks/shadowsocks-libev) haute performance est installée. Cette version est capable de gérer des milliers de connexions simultanées.
   * Un code QR est généré qui peut être utilisé pour configurer automatiquement les clients Androïde et iOS en prenant simplement une photo. Vous pouvez étiqueter "8.8.8.8" sur ce mur de béton, ou vous pouvez coller les instructions de Shadowsocks et quelques codes QR à la place!
-  * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
+  * [AEAD](https://shadowsocks.org/fr/spec/AEAD-Ciphers.html) est activé avec ChaCha20 et Poly1305 pour un contournement plus efficace du GFW.
+  * Le plugin [simple-obfs](https://github.com/shadowsocks/simple-obfs) est installé afin de fournir une techique d'évasion du votre trafic sur des réseaux hostiles (en particulier ceux qui appliquent la limitation de la qualité de service (QOS)).
 * [sslh](http://www.rutschle.net/tech/sslh.shtml)
   * Sslh est un démultiplexeur de protocole qui permet à Nginx, OpenSSH et OpenVPN de partager le port 443. Cela fournit une autre option de connexion et signifie que vous pouvez toujours acheminer le trafic via OpenSSH et OpenVPN même si vous êtes sur un réseau restrictif qui bloque tout accès à des ports non HTTP.
 * [Stunnel](https://www.stunnel.org/index.html)
@@ -98,7 +99,7 @@ Effectuez toutes ces tâches sur votre machine locale.
   * Si vous n'avez pas de clé SSH, vous pouvez en générer une en utilisant cette commande et en suivant les valeurs par défaut:
 
             ssh-keygen
-* Installer Git.
+* Installez Git.
   * Sur Debian et Ubuntu
 
             sudo apt-get install git
@@ -120,7 +121,7 @@ Effectuez toutes ces tâches sur votre machine locale.
             sudo easy_install pip
             sudo pip install pycurl
 
-* Installer [Ansible](http://www.ansible.com/home).
+* Installez [Ansible](http://www.ansible.com/home).
   * Sur OS X (via [Homebrew](http://brew.sh/))
 
             brew install ansible
@@ -178,7 +179,7 @@ Le serveur doit être accessible en utilisant la clé SSH `$HOME/id_rsa`, avec *
 
 Nouvelles fonctionnalités à venir
 ---------------------------------
-* Rôle d'isolement et de sélection, vous permettant de choisir quels daemons et services sont installés.
+* Sélection et isolement des rôles, vous permettant de choisir quels services sont installés.
 * Configuration simplifiée.
 
 S'il ya quelque chose que vous pensez que Streisand devrait faire, ou si vous trouviez un bug dans sa documentation ou son exécution, s'il vous plaît déposer un rapport sur le [Issue Tracker](https://github.com/jlund/streisand/issues).
