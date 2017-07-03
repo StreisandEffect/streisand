@@ -1,0 +1,7 @@
+# Site-specific additions and overrides for system_tor.
+# For more details, please see /etc/apparmor.d/local/README.
+
+# Workaround https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=862993
+# Tor v0.3.0.9 fails to read /var/lib/tor/hidden_service without this
+# app armor capability override
+capability dac_read_search,
