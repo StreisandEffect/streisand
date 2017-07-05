@@ -30,3 +30,10 @@ Unattended-Upgrade::Automatic-Reboot "true";
 // time instead of immediately
 //  Default: "now"
 Unattended-Upgrade::Automatic-Reboot-Time "00:00";
+
+// Avoid conffile dpkg prompt by *always* leaving the modified configuration in
+// place and putting the new package configuration in a .dpkg-dist file
+Dpkg::Options {
+   "--force-confdef";
+   "--force-confold";
+};
