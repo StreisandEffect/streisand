@@ -29,4 +29,4 @@ script:
   # * shellcheck tests for common shell script errors
   # * ./tests/test.sh syntax will check for Ansible syntax errors
   # * ./tests/test.sh ci will install dev dependencies and run the ci playbooks
-  - shellcheck -x ./streisand && shellcheck -x ./tests/tests.sh && ./tests/tests.sh syntax && ./tests/tests.sh ci
+  - shellcheck -x ./streisand && shellcheck -x ./tests/tests.sh && shellcheck -x ./tests/remote_test.sh && ./tests/tests.sh syntax && ./tests/tests.sh ci
