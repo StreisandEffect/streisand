@@ -1,3 +1,4 @@
+---
 # provider-detect.yml is used for the advanced existing/localhost provisioning
 # to try and determine if a given host is from a specific cloud provider. If
 # the cloud provider is detected, some facts/workarounds may be set to aid in
@@ -39,7 +40,7 @@
           # there isn't a way to `register` a `get_url` call and it seems
           # hackier overall to add an intermediate step using a file on disk
           #
-          # Metadata URL & the required "Metadata-Flavor" are explained in the 
+          # Metadata URL & the required "Metadata-Flavor" are explained in the
           # Google Cloud Platform documentation[0].
           # [0]: https://cloud.google.com/compute/docs/storing-retrieving-metadata#querying
           command: curl -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
@@ -66,3 +67,4 @@
           set_fact:
             streisand_ipv4_address: "{{ streisand_ec2_external_ip.stdout }}"
       when: "'amazon' in streisand_bios_name"
+...

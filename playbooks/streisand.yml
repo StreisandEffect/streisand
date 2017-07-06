@@ -1,3 +1,4 @@
+---
 - include: python.yml
 
 - name: Configure the Server and install required software
@@ -28,3 +29,4 @@
     - wireguard
     - streisand-mirror
     - streisand-gateway
+...
