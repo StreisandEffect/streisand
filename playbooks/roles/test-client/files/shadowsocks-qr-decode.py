@@ -6,8 +6,8 @@
 # contains an encoded `ss://` URL for the Shadowsocks protocol[0]
 # then it is processed and the constituent parts (method, password, server
 # address, etc) are output to stdout.
-# This allows other tools (e.g. a test script) to configure itself based on a QR
-# code from a Shadowsocks server.
+# This allows other tools (e.g. a test script) to configure itself based on
+# a QR code from a Shadowsocks server.
 #
 # This script requires `zbar-tools` be installed from apt. You might ask
 # yourself "Why not use the `qrtools` Python package?" The answer is that
@@ -18,7 +18,11 @@
 # TODO(@cpu) - update for python3 compatibility. The `urlparse` module was
 #              moved.
 
-import urlparse, sys, base64, re, argparse
+import urlparse
+import sys
+import base64
+import re
+import argparse
 from subprocess import check_output
 
 parser = argparse.ArgumentParser(description="Process a Shadowsocks QR Code")
@@ -49,7 +53,8 @@ except:
     sys.exit(1)
 
 if parts.scheme != "ss":
-    print("URL had scheme {0}, which isn't 'ss' and is unsupported\n".format(parts.scheme))
+    print("URL had scheme {0}, which isn't 'ss' and is unsupported\n".format(
+        parts.scheme))
     sys.exit(1)
 
 encodedData = parts.netloc
@@ -89,5 +94,6 @@ if match:
         print("server: {0}".format(server))
         print("port: {0}".format(port))
 else:
-    print("Decoded Shadowsocks URL '{0}' did not match regex.\n".format(shadowsocksURL))
+    print("Decoded Shadowsocks URL '{0}' did not match regex.\n".format(
+        shadowsocksURL))
     sys.exit(1)
