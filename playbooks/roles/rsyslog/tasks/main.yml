@@ -1,3 +1,4 @@
+---
 - name: Copy the modified rsyslog configuration into place that prevents Libreswan and OpenConnect traffic from being logged
   copy:
     src: "{{ item }}"
@@ -9,3 +10,4 @@
     - 40-ipsec.conf
     - 41-openconnect.conf
   notify: Restart rsyslog
+...

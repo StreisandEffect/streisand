@@ -1,3 +1,4 @@
+---
 - name: Checking instance status
 # =========================================
   hosts: streisand-host
@@ -11,3 +12,4 @@
       raw: bash -c "for i in {1..30}; do if [ -f /var/lib/cloud/instance/boot-finished ]; then exit 0; fi; sleep 1; done; exit 1;"
       register: result
       failed_when: result.rc != 0
+...

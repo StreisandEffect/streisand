@@ -1,3 +1,4 @@
+---
 - name: Clone the simple-obfs source code at tag {{ simple_obfs_version }}
   git:
     repo: "https://github.com/shadowsocks/simple-obfs"
@@ -35,3 +36,4 @@
   args:
     chdir: "{{ simple_obfs_compilation_directory }}"
     creates: "/usr/local/bin/obfs-server"
+...

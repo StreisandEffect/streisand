@@ -1,3 +1,4 @@
+---
 - include: python.yml
 
 - name: Prepare the vagrant VM for Ansible
@@ -18,3 +19,4 @@
       when: ansible_default_ipv4.alias != "enp0s8"
 
 - include: streisand.yml
+...
