@@ -31,7 +31,7 @@ shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
 
 # simple-obfs vars
 simple_obfs_version: "0.0.3"
-simple_obfs_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ simple_obfs_version }}"
+simple_obfs_compilation_directory: "/usr/local/src/shadowsocks-simple-obfs-{{ simple_obfs_version }}"
 simple_obfs_configure_flags: "--disable-documentation"
 
 # Add -v for verbose mode to help with debugging
