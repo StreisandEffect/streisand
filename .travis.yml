@@ -26,7 +26,7 @@ script:
   #
   # https://docs.travis-ci.com/user/customizing-the-build/#Customizing-the-Build-Step
   #
-  # * shellcheck tests for common shell script errors
+  # * ./util/shellcheck.sh tests for shell script errors for all *.sh files
   # * ./tests/test.sh syntax will check for Ansible syntax errors
   # * ./tests/test.sh ci will install dev dependencies and run the ci playbooks
-  - shellcheck -x ./streisand && shellcheck -x ./tests/tests.sh && shellcheck -x ./tests/remote_test.sh && ./tests/tests.sh syntax && ./tests/tests.sh ci
+  - ./util/shellcheck.sh && ./tests/tests.sh syntax && ./tests/tests.sh ci
