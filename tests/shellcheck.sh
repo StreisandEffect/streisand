@@ -2,7 +2,7 @@
 #
 # Streisand shellcheck wrapper
 #
-# This util script finds all of the *.sh shell files in the project tree and
+# This test script finds all of the *.sh shell files in the project tree and
 # runs shellcheck against them. 
 #
 
@@ -18,7 +18,7 @@ fi
 # Determine the absolute path of this script file
 thisScript=$(realpath "$0")
 
-# Move backwards into the Streisand project directory from util/
+# Move backwards into the Streisand project directory from tests/ subdir
 pushd "$(dirname "$thisScript")/.."
   # Run shellcheck against all of the `.sh` script files in the Streisand
   # project directory.
