@@ -16,7 +16,7 @@ before_install:
 
 install:
   - pip install ansible==2.3.0.0
-  - pip install urllib3
+  - pip install urllib3 yamllint
   - ansible --version
 
 script:
