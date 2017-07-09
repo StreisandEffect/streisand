@@ -1,2 +1,0 @@
----
-go_download_location: "https://storage.googleapis.com/golang/{{ go_tarball }}"
