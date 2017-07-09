@@ -15,11 +15,11 @@ if ! command -v shellcheck > /dev/null 2>&1; then
     exit 1
 fi
 
-# Determine the absolute path of this script file
-thisScript=$(realpath "$0")
+# Determine the absolute path of this script file's directory
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 
 # Move backwards into the Streisand project directory from tests/ subdir
-pushd "$(dirname "$thisScript")/.."
+pushd "$SCRIPT_DIR/.."
   # Run shellcheck against all of the `.sh` script files in the Streisand
   # project directory.
   # NOTE(@cpu): We use -x to follow `source` directives across files
