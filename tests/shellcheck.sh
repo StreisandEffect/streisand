@@ -16,7 +16,7 @@ if ! command -v shellcheck > /dev/null 2>&1; then
 fi
 
 # NOTE(@cpu): We use -x to follow `source` directives across files
-SHELLCHECK_ARGS="-x"
+SHELLCHECK_ARGS=(-x)
 
 # Determine the absolute path of this script file's directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
@@ -30,9 +30,9 @@ pushd "$PROJECT_DIR"
   # NOTE(@cpu): While tempting to -exec shellcheck directly from find this will
   # eat-up any non-zero exit codes :-( Instead we find the files first and then
   # xargs shellcheck on the found files.
-  find ./ -name '*.sh' -print0 | xargs -0 -n1 shellcheck $SHELLCHECK_ARGS
+  find ./ -name '*.sh' -print0 | xargs -0 -n1 shellcheck "${SHELLCHECK_ARGS[@]}"
 
   # Also explicitly run `shellcheck` against the streisand wrapper script since
   # it doesn't end in .sh
-  shellcheck $SHELLCHECK_ARGS "$PROJECT_DIR/streisand"
+  shellcheck "${SHELLCHECK_ARGS[@]}" "$PROJECT_DIR/streisand"
 popd

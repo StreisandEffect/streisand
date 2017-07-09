@@ -22,7 +22,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 PROJECT_DIR="$SCRIPT_DIR/.."
 
 # Streisand specifies a custom yamllint config to adjust what rules are applied
-YAMLLINT_ARGS="-c $SCRIPT_DIR/yamllint-config.yml"
+YAMLLINT_ARGS=(-c "$SCRIPT_DIR/yamllint-config.yml")
 
 pushd "$PROJECT_DIR"
   # Run yamllint against all of the `.yml` files in the Streisand
@@ -31,5 +31,5 @@ pushd "$PROJECT_DIR"
   # NOTE(@cpu): While tempting to -exec shellcheck directly from find this will
   # eat-up any non-zero exit codes :-( Instead we find the files first and then
   # xargs yamllint on the found files.
-  find ./ -name '*.yml' -print0 | xargs -0 -n1 yamllint $YAMLLINT_ARGS
+  find ./ -name '*.yml' -print0 | xargs -0 -n1 yamllint "${YAMLLINT_ARGS[@]}"
 popd
