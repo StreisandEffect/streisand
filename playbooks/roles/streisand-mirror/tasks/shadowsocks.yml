@@ -22,5 +22,5 @@
       with_items: "{{ shadowsocks_download_urls }}"
   rescue:
     - name: "{{ streisand_mirror_warning }}"
-      pause: 
+      pause:
         seconds: "{{ streisand_mirror_warning_seconds }}"

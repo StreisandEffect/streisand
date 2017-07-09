@@ -8,6 +8,8 @@ Shadowsocks
   * [Linux](#linux)
   * [Androïde](#android)
   * [iOS](#ios)
+* Plugins
+  * [simple-obfs](#simple-obfs)
 
 <a name="windows"></a>
 ### Windows ###
@@ -84,7 +86,7 @@ Une fois que vous avez Shadowsocks fonctionnant localement, vous devrez transfé
 
 
 <a name="android"></a>
-### Android ###
+### Androïde ###
 1. Téléchargez Shadowsocks pour Androïde à partir de [Google Play](https://play.google.com/store/apps/details?id=com.github.shadowsocks&hl=fr). Si Google Play est bloqué dans votre pays, vous pouvez [télécharger une copie en miroir](/mirror/shadowsocks/index-fr.html) de ce serveur!
 1. Lancez l'application.
 1. Tapez sur l'icône Shadowsocks en haut à gauche de l'écran.
@@ -110,3 +112,16 @@ Une fois que vous avez Shadowsocks fonctionnant localement, vous devrez transfé
 1. Mettez le commutateur de connexion situé à droite du texte *Not connected* sur l'onglet *Home*.
    * Si c'est la première fois que vous utilisez Shadowrocket, iOS vous demandera de vérifier que l'application devrait avoir la permission d'ajouter des configurations VPN. Tapez *Permettre* et suivez les instructions.
 1. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+<a name="simple-obfs"></a>
+### simple-obfs pour les réseaux peu fiables/hostiles ###
+Pour les utilisateurs sur des réseaux peu fiables ou hostiles (en particulier l'optimisation de la qualité de service (QOS)), une configuration supplémentaire de Shadowsocks pour utiliser le plugin simple-obfs peut être effectuée via la configuration suivante:
+        
+        Server: {{ streisand_ipv4_address }}
+        Port: {{ shadowsocks_server_port }}
+        Password: {{ shadowsocks_password.stdout }}
+        Encryption Method: {{ shadowsocks_encryption_method }}
+        Plugin: {{ shadowsocks_client_obfs_plugin }}
+        Plugin_Options: {{ shadowsocks_obfs_client_plugin_opts }}
+
+Votre trafic Shadowsocks sera maintenant obscurci comme `{{ shadowsocks_obfs_cover_protocol }}` à `{{ shadowsocks_obfs_cover_domain }}`.

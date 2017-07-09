@@ -1,0 +1,31 @@
+---
+# Tor common variables
+# --------------------
+
+tor_project_name: "Tor Browser Bundle"
+
+tor_mirror_location: "{{ streisand_mirror_location }}/tor"
+tor_mirror_href_base: "/mirror/tor"
+
+tor_browser_developers_key_id: "0x4E2C6E8793298290"
+tor_browser_developers_expected_fingerprint: "Key fingerprint = EF6E 286D DA85 EA2A 4BA7  DE68 4E2C 6E87 9329 8290"
+
+tor_base_download_url: "https://dist.torproject.org/torbrowser"
+
+tor_available_locales:
+  - ar
+  - de
+  - en-US
+  - es-ES
+  - fa
+  - fr
+  - it
+  - ja
+  - ko
+  - nl
+  - pl
+  - pt-BR
+  - ru
+  - tr
+  - vi
+  - zh-CN

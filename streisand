@@ -8,36 +8,18 @@ echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 
 # Update the PYTHONPATH to include the monkey patch directory for Streisand
 # workarounds packaged as Python monkey patches
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 export PYTHONPATH="$SCRIPT_DIR/monkey:$PYTHONPATH"
 
-# check_ansible checks that Ansible is installed on the local system
-# and that it is a supported version.
-function check_ansible() {
-  local REQUIRED_ANSIBLE_VERSION="2.3.0"
+# Include the check_ansible function from ansible_check.sh
+source util/ansible_check.sh
 
-  if ! command -v ansible > /dev/null 2>&1; then
-    echo "
-Streisand requires Ansible and it is not installed.
-Please see the README Installation section on Prerequisites"
-    exit 1
-  fi
-
-  if [[ $(ansible --version | grep -oe '2\(.[0-9]\)*') < $REQUIRED_ANSIBLE_VERSION ]]; then
-      echo "
-Streisand requires Ansible version $REQUIRED_ANSIBLE_VERSION or higher.
-This system has Ansible $(ansible --version)."
-      exit 1
-  fi
-}
-
-# check_python checks whether the 'python' interpretter is Python 2 or Python 3.
+# check_python checks whether the 'python' interpreter is Python 2 or Python 3.
 # If it is Python 2 then the inventory file is updated to set the
 # ansible_interpretter host var explicitly
 function check_python() {
   local PYTHON_VERSION
-  local SCRIPT_DIR
   PYTHON_VERSION="$(python --version 2>/dev/null)"
-  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 
   if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 2\..* ]]; then
     local INVENTORY_DIR="$SCRIPT_DIR/inventories/"

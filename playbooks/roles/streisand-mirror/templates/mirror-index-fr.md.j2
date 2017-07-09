@@ -71,13 +71,13 @@ Les fichiers reflétés ci-dessous ont tous été cryptographiquement vérifiés
 
 **Linux**
 
-* [{{ tor_browser_bundle_linux32_filename }}]({{ tor_browser_bundle_linux32_href }}) ([sig]({{ tor_browser_bundle_linux32_sig_href }}))
-* [{{ tor_browser_bundle_linux64_filename }}]({{ tor_browser_bundle_linux64_href }}) ([sig]({{ tor_browser_bundle_linux64_sig_href }}))
+* [{{ tor_linux32_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_linux32_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_linux32_sig_href | regex_replace('locale', item.value.tor_locale) }}))
+* [{{ tor_linux64_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_linux64_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_linux64_sig_href | regex_replace('locale', item.value.tor_locale) }}))
 
 **OS X**
 
-* [{{ tor_browser_bundle_osx_filename }}]({{ tor_browser_bundle_osx_href }}) ([sig]({{ tor_browser_bundle_osx_sig_href }}))
+* [{{ tor_osx_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_osx_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_osx_sig_href | regex_replace('locale', item.value.tor_locale) }}))
 
 **Windows**
 
-* [{{ tor_browser_bundle_windows_filename }}]({{ tor_browser_bundle_windows_href }}) ([sig]({{ tor_browser_bundle_windows_sig_href }}))
+* [{{ tor_windows_filename_template |  regex_replace('locale', item.value.tor_locale) }}]({{ tor_windows_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_windows_sig_href | regex_replace('locale', item.value.tor_locale) }}))

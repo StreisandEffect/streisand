@@ -4,17 +4,21 @@
 #
 # Streisand Shadowsocks Client Test
 #   - Confirms the gateway mirror for the Linux Shadowsocks client works
+#   - Confirms the gateway Shadowsocks QR has correct information (password, cipher, etc)
 #   - Confirms that the Linux shadowsocks client can connect & route a HTTP request
 #
 
-# Read the shadowsocks password into a var
-shadowsocksPassword=$(cat "{{ shadowsocks_password_file }}")
+# Read the Shadowsocks QR code attributes into vars
+shadowsocksCipher=$(shadowsocks-qr-decode --cipher "{{ shadowsocks_qr_file }}" 2>/dev/null)
+shadowsocksPassword=$(shadowsocks-qr-decode --password "{{ shadowsocks_qr_file }}" 2>/dev/null)
+shadowsocksServer=$(shadowsocks-qr-decode --server "{{ shadowsocks_qr_file }}" 2>/dev/null)
+shadowsocksPort=$(shadowsocks-qr-decode --port "{{ shadowsocks_qr_file }}" 2>/dev/null)
 
 # Read the gateway password into a var
 gatewayPassword=$(cat "{{ gateway_password_file }}")
 
 # Connect the Shadowsocks client to the server
-{{ shadowsocks_client }} -c {{ streisand_ip }}:{{ shadowsocks_server_port }} -password "$shadowsocksPassword" -socks localhost:{{ shadowsocks_local_port }} -verbose -cipher {{ shadowsocks_encryption_method }} &
+{{ shadowsocks_client }} -c "$shadowsocksServer:$shadowsocksPort" -password "$shadowsocksPassword" -socks localhost:{{ shadowsocks_local_port }} -verbose -cipher "$shadowsocksCipher" &
 CLIENT_PID=$!
 
 function cleanup {
