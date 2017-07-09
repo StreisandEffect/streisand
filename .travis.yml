@@ -27,6 +27,7 @@ script:
   # https://docs.travis-ci.com/user/customizing-the-build/#Customizing-the-Build-Step
   #
   # * ./tests/shellcheck.sh tests for shell script errors for all *.sh files
+  # * ./tests/yamlcheck.sh tests for yaml errors for all *.yml files
   # * ./tests/test.sh syntax will check for Ansible syntax errors
   # * ./tests/test.sh ci will install dev dependencies and run the ci playbooks
-  - ./tests/shellcheck.sh && ./tests/tests.sh syntax && ./tests/tests.sh ci
+  - ./tests/shellcheck.sh && ./tests/yamlcheck.sh && ./tests/tests.sh syntax && ./tests/tests.sh ci
