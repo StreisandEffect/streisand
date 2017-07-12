@@ -10,7 +10,6 @@
 # Download and verify client files
 - include: openconnect.yml
 - include: openvpn.yml
-- include: shadowsocks.yml
 - include: ssh.yml
 - include: stunnel.yml
 - include: tor.yml

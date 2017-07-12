@@ -1,0 +1,4 @@
+---
+dependencies:
+  # Shadowsocks needs to be added to the firewall
+  - { role: ufw }

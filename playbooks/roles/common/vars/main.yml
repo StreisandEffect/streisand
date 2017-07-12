@@ -41,6 +41,8 @@ streisand_unneeded_packages:
 
 streisand_gateway_location: "/var/www/streisand"
 
+streisand_mirror_location: "{{ streisand_gateway_location }}/mirror"
+
 streisand_local_directory: "generated-docs"
 
 streisand_header_template: "/tmp/header.html"

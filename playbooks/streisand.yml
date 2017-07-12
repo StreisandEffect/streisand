@@ -16,7 +16,8 @@
     - l2tp-ipsec
     - openvpn
     - stunnel
-    - shadowsocks
+    - role: shadowsocks
+      when: streisand_shadowsocks_enabled
     - ssh
     - tinyproxy
     # tor-bridge is skipped in our full Ansible run on Travis CI due to
