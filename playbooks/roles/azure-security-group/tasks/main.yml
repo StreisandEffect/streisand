@@ -65,24 +65,6 @@
         access: Allow
         direction: Inbound
         priority: 105
-      # Shadowsocks TCP
-      # ---
-      - name: "AllowShadowsocksTCP"
-        destination_port_range: "{{ shadowsocks_server_port }}"
-        protocol: Tcp
-        access: Allow
-        direction: Inbound
-        priority: 106
-        when: streisand_shadowsocks_enabled
-      # Shadowsocks UDP
-      # ---
-      - name: "AllowShadowsocksUDP"
-        destination_port_range: "{{ shadowsocks_server_port }}"
-        protocol: Udp
-        access: Allow
-        direction: Inbound
-        priority: 107
-        when: streisand_shadowsocks_enabled
       # SSH
       # ---
       - name: "AllowSSHTCP"
@@ -115,15 +97,6 @@
         access: Allow
         direction: Inbound
         priority: 111
-      # WireGuard port
-      # ---
-      - name: "AllowWireguard"
-        destination_port_range: "{{ wireguard_port }}"
-        protocol: Udp
-        access: Allow
-        direction: Inbound
-        priority: 112
-        when: streisand_wireguard_enabled
       # Tor L2TP/IPsec ports
       # ---
       - name: "AllowL2TPPort500"
@@ -148,6 +121,48 @@
         access: Allow
         direction: Inbound
         priority: 115
+
+# Shadowsocks
+# ---
+- name: Open Shadowsocks ports in the Azure security group
+  azure_rm_securitygroup:
+    name: "{{ azure_resource_group_name }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+    rules:
+      # Shadowsocks TCP
+      # ---
+      - name: "AllowShadowsocksTCP"
+        destination_port_range: "{{ shadowsocks_server_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 106
+      # Shadowsocks UDP
+      # ---
+      - name: "AllowShadowsocksUDP"
+        destination_port_range: "{{ shadowsocks_server_port }}"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 107
+  when: streisand_shadowsocks_enabled
+
+# Wireguard
+# ---
+- name: Open Wireguard ports in the Azure security group
+  azure_rm_securitygroup:
+    name: "{{ azure_resource_group_name }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+    rules:
+      - name: "AllowWireguard"
+        destination_port_range: "{{ wireguard_port }}"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 112
+  when: streisand_wireguard_enabled
 
 - name: Create Azure network interface
   azure_rm_networkinterface:

@@ -92,13 +92,8 @@
   command: cat {{ shadowsocks_password_file }}
   register: shadowsocks_password
 
-- name: Copy the Shadowsocks password file locally
-  fetch:
-    src: "{{ shadowsocks_password_file }}"
-    dest: "{{ shadowsocks_password_file_localpath }}"
-    fail_on_missing: yes
-    flat: yes
-  when: streisand_client_test
+# Add simple-obfs task file
+- include: simple-obfs.yml
 
 - name: Generate Shadowsocks config file
   template:
@@ -107,7 +102,6 @@
     # The nobody user in nogroup needs to be able to read the config file
     group: nogroup
     mode: 0640
-  notify: Restart shadowsocks-libev
 
 - name: Enable the Shadowsocks service so it starts at boot, and bring it up
   systemd:
@@ -116,8 +110,8 @@
     state: started
 
 # For some providers (e.g. GCE/AWS) the streisand_ipv4_address != the
-# ansible_default_ipv4.address, and the shadowsocks service is bound to the
-# later instead of the former. We check both, tolerating errors checking the
+# ansible_default_ipv4.address, and the Shadowsocks service is bound to the
+# latter instead of the former. We check both, tolerating errors checking the
 # former. This mess should probably be addressed in a more forward facing
 # manner.
 - block:
@@ -144,3 +138,4 @@
 
 # Mirror the Shadowsocks clients
 - include: mirror.yml
+

@@ -18,7 +18,7 @@ Présentation de Streisand
 * Le processus est entièrement automatisé et ne prend que quelques dizaines de minutes, ce qui est assez remarquable si vous considérez qu'il faudrait un administrateur système au moins plusieurs jours de contrainte pour mettre en place un petit sous-ensemble de ce que Streisand offre dans sa configuration.
 * Une fois que votre serveur Streisand est en cours d'exécution, vous pouvez donner les instructions de connexion personnalisée à vos amis, membres de la famille et activistes. Les instructions de connexion contiennent une copie intégrée du certificat SSL unique du serveur, il vous suffit de leur envoyer un seul fichier.
 * Chaque serveur est entièrement autonome et comprend tout ce dont les utilisateurs ont besoin pour démarrer, y compris les miroirs cryptographiquement vérifiés de tous les clients communs. Cela rend toute tentative de censure des emplacements de téléchargement par défaut complètement inefficace.
-* Mais attendez, il y a plus ..
+* Mais attendez, il y a plus..
 
 Plus de fonctionnalités
 -----------------------
@@ -33,7 +33,7 @@ Plus de fonctionnalités
   * OpenConnect/AnyConnect, OpenSSH, OpenVPN (enveloppé dans stunnel), Shadowsocks et Tor (avec obfsproxy et obfs4 transports enfichables) sont tous actuellement efficace contre le grand pare-feu de la Chine.
 * Chaque tâche a été bien documentée et a donné une description détaillée. Streisand est simultanément le HOWTO le plus complet en existance pour l'installation de tous les logiciels qu'il installe, et aussi l'antidote pour avoir à faire jamais tout cela à la main de nouveau.
 * Tous les logiciels fonctionnent sur des ports qui ont été délibérément choisis pour rendre le blocage de ports simpliste irréaliste sans causer de dommages collatéraux massifs. OpenVPN, par exemple, ne fonctionne pas sur le port défaut de 1194, mais utilise le port standard 636 pour les connexions LDAP/SSL qui sont aimés par des entreprises du monde entier.
-  * *L2TP/IPsec est une exception notable à cette règle car les ports ne peuvent pas être modifiés sans rompre la compatibilité client*
+  * *L2TP/IPsec est une exception notable à cette règle car les ports ne peuvent pas être modifiés sans rompre la compatibilité du client*
 
 <a name="services-provided"></a>
 Services fournis
@@ -60,7 +60,8 @@ Services fournis
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
   * La [variante libev](https://github.com/shadowsocks/shadowsocks-libev) haute performance est installée. Cette version est capable de gérer des milliers de connexions simultanées.
   * Un code QR est généré qui peut être utilisé pour configurer automatiquement les clients Androïde et iOS en prenant simplement une photo. Vous pouvez étiqueter "8.8.8.8" sur ce mur de béton, ou vous pouvez coller les instructions de Shadowsocks et quelques codes QR à la place!
-  * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
+  * [AEAD](https://shadowsocks.org/fr/spec/AEAD-Ciphers.html) est activé avec ChaCha20 et Poly1305 pour un contournement plus efficace du GFW.
+  * Le plugin [simple-obfs](https://github.com/shadowsocks/simple-obfs) est installé afin de fournir une techique d'évasion du votre trafic sur des réseaux hostiles (en particulier ceux qui appliquent la limitation de la qualité de service (QOS)).
 * [sslh](http://www.rutschle.net/tech/sslh.shtml)
   * Sslh est un démultiplexeur de protocole qui permet à Nginx, OpenSSH et OpenVPN de partager le port 443. Cela fournit une autre option de connexion et signifie que vous pouvez toujours acheminer le trafic via OpenSSH et OpenVPN même si vous êtes sur un réseau restrictif qui bloque tout accès à des ports non HTTP.
 * [Stunnel](https://www.stunnel.org/index.html)
@@ -83,9 +84,11 @@ Installation
 Veuillez lire *attentivement* toutes les instructions d'installation avant de poursuivre.
 
 ### Clarification importante ###
-Streisand est basé sur [Ansible](http://www.ansible.com/home), un outil d'automatisation qui est généralement utilisé pour fournir et configurer des fichiers et des paquets sur des serveurs distants. Cela signifie que lorsque vous exécutez Streisand, il configure automatiquement **un autre serveur distant** avec les paquets VPN et configurations.
+Streisand est basé sur [Ansible](http://www.ansible.com/home), un outil d'automatisation qui est généralement utilisé pour fournir et configurer des fichiers et des paquets sur des serveurs distants. Cela signifie que lorsque vous exécutez Streisand, il configure automatiquement **un autre serveur distant** avec les paquets VPN et ses configurations.
 
-Cela signifie que vous exécutez Streisand **sur votre machine à la maison** (par exemple, votre ordinateur portable) et il va tourner et déployer **un autre serveur** sur votre fournisseur d'hébergement choisi. Habituellement, vous n'effectuez pas Streisand sur le serveur distant car par défaut cela entraînerait le déploiement d'un autre serveur à partir de votre serveur et rendrait redondant le premier serveur (ouf!). Le support du provisionnement local (c'est-à-dire que Streisand configure localement le système sur lequel il est installé) sera ajouté bientôt.
+Streisand va déployer **un autre serveur** sur votre fournisseur d'hébergement choisi lorsque vous exécutez **sur votre ordinateur local** (par exemple, votre ordinateur portable). Habituellement, vous **n'utilisez pas Streisand sur le serveur distant** car, par défaut, cela entraînerait le déploiement d'un autre serveur à partir de votre serveur et rendrait le premier serveur redondant (Ouf!).
+
+Dans certains cas, les utilisateurs avancés peuvent opter pour le mode de provisionnement local pour que le système fonctionne avec Streisand/Ansible se configure comme un serveur Streisand. Il s'agit d'un mode de configuration mieux réservé quand ce n'est pas possible d'installer Ansible sur votre ordinateur local ou lorsque votre connexion à un fournisseur de cloud est peu fiable pour les connexions SSH requis par Ansible.
 
 ### Prérequis ###
 Effectuez toutes ces tâches sur votre machine locale.
@@ -96,7 +99,7 @@ Effectuez toutes ces tâches sur votre machine locale.
   * Si vous n'avez pas de clé SSH, vous pouvez en générer une en utilisant cette commande et en suivant les valeurs par défaut:
 
             ssh-keygen
-* Installer Git.
+* Installez Git.
   * Sur Debian et Ubuntu
 
             sudo apt-get install git
@@ -118,7 +121,7 @@ Effectuez toutes ces tâches sur votre machine locale.
             sudo easy_install pip
             sudo pip install pycurl
 
-* Installer [Ansible](http://www.ansible.com/home).
+* Installez [Ansible](http://www.ansible.com/home).
   * Sur OS X (via [Homebrew](http://brew.sh/))
 
             brew install ansible
@@ -144,7 +147,7 @@ Effectuez toutes ces tâches sur votre machine locale.
   * Rackspace Cloud
 
             sudo pip install pyrax
-  * Si vous utilisez une version de Python installée sur Homebrew, vous devez également exécuter ces commandes pour vous assurer qu'il peut trouver les bibliothèques nécessaires:
+  * Si vous utilisez une version de Python installée avec Homebrew, vous devez également exécuter ces commandes pour vous assurer qu'il peut trouver les bibliothèques nécessaires:
 
             mkdir -p ~/Library/Python/2.7/lib/python/site-packages
             echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
@@ -160,17 +163,23 @@ Effectuez toutes ces tâches sur votre machine locale.
 4. Une fois les informations de connexion et les clés d'API saisies, Streisand commencera à faire tourner un nouveau serveur distant.
 5. Attendez que l'installation soit terminée (cela prend habituellement environ dix minutes) et recherchez les fichiers correspondants dans le dossier 'generated-docs' dans le répertoire du dépôt Streisand. Le fichier HTML expliquera comment se connecter à la passerelle via SSL ou via le service caché Tor. Toutes les instructions, les fichiers, les clients en miroir et les clés du nouveau serveur se trouvent alors sur la passerelle. Vous avez fini!
 
-### Exécution de Streisand sur d'autres fournisseurs ###
+### Installation de Streisand sur localhost (Avancé) ###
 
-Vous pouvez également exécuter Streisand sur n'importe quel nombre de nouveaux serveurs Ubuntu 16.04. Serveur dédié? Génial! Fournisseur de cloud ésotérique? Fantastique! Pour ce faire, il suffit de modifier le fichier `inventory` et de décommenter les deux dernières lignes. Remplacez l'exemple IP par l'adresse (ou les adresses) des serveurs que vous souhaitez configurer. Assurez-vous de lire toute la documentation du fichier `inventory` et mettez à jour le fichier `ansible.cfg` si nécessaire. Ensuite, exécutez le Streisand playbook directement:
+Si vous ne pouvez pas exécuter Streisand de la manière normale (à partir de votre ordinateur client/ordinateur portable pour configurer un serveur distant), Streisand prend en charge un mode de provisionnement local. Choisissez simplement "Localhost (Advanced)" dans le menu après avoir exécuté `./streisand`.
 
-    ansible-playbook playbooks/streisand.yml
+**Note:** L'installation de Streisand sur localhost peut être une action destructive! Vous pourriez potentiellement écraser des fichiers de configuration; vous devez être certain que vous affectez la machine correcte.
 
-Les serveurs doivent être accessibles à l'aide des clés SSH et *root* est utilisé comme utilisateur de connexion par défaut (bien que cela soit simple à modifier lors de l'édition du fichier d'inventaire).
+### Exécution de Streisand sur d'autres fournisseurs (Avancé) ###
+
+Vous pouvez également exécuter Streisand sur un nouveau serveur Ubuntu 16.04. Serveur dédié? Génial! Fournisseur de cloud ésotérique? Fantastique! Pour ce faire, choisissez simplement `Existing server (Advanced)` dans le menu après avoir exécuté `./streisand` et fournissez l'adresse IP du serveur existant lorsque vous y êtes invité.
+
+Le serveur doit être accessible en utilisant la clé SSH `$HOME/id_rsa`, avec **root** comme utilisateur de connexion par défaut. Si votre fournisseur vous demande un utilisateur SSH au lieu de `root` (par exemple, `ubuntu`), spécifiez la variable environnementale `ANSIBLE_SSH_USER` (par exemple `ANSIBLE_SSH_USER=ubuntu`) lorsque vous exécutez `./streisand`.
+
+**Note:** L'installation de Streisand sur localhost peut être une action destructive! Vous pourriez potentiellement écraser des fichiers de configuration; vous devez être certain que vous affectez la machine correcte.
 
 Nouvelles fonctionnalités à venir
 ---------------------------------
-* Rôle d'isolement et de sélection, vous permettant de choisir quels daemons et services sont installés.
+* Sélection et isolement des rôles, vous permettant de choisir quels services sont installés.
 * Configuration simplifiée.
 
 S'il ya quelque chose que vous pensez que Streisand devrait faire, ou si vous trouviez un bug dans sa documentation ou son exécution, s'il vous plaît déposer un rapport sur le [Issue Tracker](https://github.com/jlund/streisand/issues).

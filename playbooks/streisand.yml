@@ -1,3 +1,4 @@
+---
 - include: python.yml
 
 - name: Configure the Server and install required software
@@ -30,3 +31,4 @@
       when: streisand_wireguard_enabled
     - streisand-mirror
     - streisand-gateway
+...

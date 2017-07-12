@@ -192,19 +192,19 @@
     - meta: flush_handlers
 
     - block:
-      - name: Success!
-        pause:
-          prompt: "Server setup is complete. The `{{ streisand_server_name }}.html` instructions file in the generated-docs folder is ready to give to friends, family members, and fellow activists. Press Enter to continue."
+        - name: Success!
+          pause:
+            prompt: "Server setup is complete. The `{{ streisand_server_name }}.html` instructions file in the generated-docs folder is ready to give to friends, family members, and fellow activists. Press Enter to continue."
 
-      - name: Attempt to open the instructions on Linux (if applicable). Errors in this task are ignored because the `xdg-open` command is not always available.
-        local_action: command xdg-open ../{{ streisand_local_directory }}/{{ streisand_server_name }}.html
-        ignore_errors: yes
-        when: hostvars['127.0.0.1']['ansible_system'] == "Linux"
-        become: no
+        - name: Attempt to open the instructions on Linux (if applicable). Errors in this task are ignored because the `xdg-open` command is not always available.
+          local_action: command xdg-open ../{{ streisand_local_directory }}/{{ streisand_server_name }}.html
+          ignore_errors: yes
+          when: hostvars['127.0.0.1']['ansible_system'] == "Linux"
+          become: no
 
-      - name: Open the instructions on OS X (if applicable)
-        local_action: command open ../{{ streisand_local_directory }}/{{ streisand_server_name }}.html
-        when: hostvars['127.0.0.1']['ansible_system'] == "Darwin"
-        become: no
+        - name: Open the instructions on OS X (if applicable)
+          local_action: command open ../{{ streisand_local_directory }}/{{ streisand_server_name }}.html
+          when: hostvars['127.0.0.1']['ansible_system'] == "Darwin"
+          become: no
       when: not streisand_noninteractive
   when: not streisand_ci

@@ -37,18 +37,33 @@
     group: root
     mode: 0644
 
-- name: Copy the fixed AppArmor abstraction into place
+# TODO(@cpu) - This should be removed once it isn't required, maybe in the next
+# release after tor 0.3.0.9
+- name: Copy a local override for the Tor AppArmor profile in place
   copy:
-    src: tor-apparmor-abstraction
-    dest: /etc/apparmor.d/abstractions/tor
+    src: apparmor-local-override
+    dest: /etc/apparmor.d/local/system_tor
     owner: root
     group: root
     mode: 0644
 
-- name: Restart AppArmor so the abstraction takes effect
-  service:
-    name: apparmor
-    state: restarted
+# TODO(@cpu) - In theory it seems like it should be possible to add the
+# following to the local override from above:
+#     /usr/bin/obfsproxy ix,
+#     /usr/bin/obfs4proxy ix,
+# but doing so results in an error from the existing `PUx` modifiers:
+#     profile system_tor: has merged rule /usr/bin/obfs4proxy with conflicting x modifiers
+# in the interest of fixing a regression we work around this by changing the
+# dist provided `/etc/apparmor.d/abstractions/tor` file.
+- name: Fix the distro Tor apparmor abstraction
+  replace:
+    path: /etc/apparmor.d/abstractions/tor
+    regexp: '^([\s]*)/usr/bin/(obfs4?proxy) PUx,$'
+    replace: '\1/usr/bin/\2 ix,'
+    backup: yes
+
+- name: Reload the system_tor AppArmor profile for the override to take effect
+  command: apparmor_parser -r /etc/apparmor.d/system_tor
 
 - name: Restart Tor so the server fingerprint will be available in the state file, and the hidden service for the Gateway will start running
   service:
@@ -57,23 +72,27 @@
 
 - name: Wait until obfs4proxy information has shown up in its state file
   wait_for:
-    path: /var/lib/tor/pt_state/obfs4_state.json
+    path: "{{ tor_obfs_state_directory }}/obfs4_state.json"
     search_regex: "node-id"
 
 - name: Wait until the hidden service is online
   wait_for:
     path: "{{ tor_hidden_service_directory }}/hostname"
 
+- name: Wait until the server fingerprint file is generated
+  wait_for:
+    path: "{{ tor_state_directory }}/fingerprint"
+
 - name: Register the Tor Hidden Service hostname
   command: cat {{ tor_hidden_service_directory }}/hostname
   register: tor_hidden_service_hostname
 
 - name: Discover the server fingerprint
-  command: awk '{ print $2 }' /var/lib/tor/fingerprint
+  command: "awk '{ print $2 }' {{ tor_state_directory }}/fingerprint"
   register: tor_fingerprint
 
 - name: Discover the obfs4 certificate details
-  shell: cat /var/lib/tor/pt_state/obfs4_bridgeline.txt | grep 'Bridge obfs4' | sed -e 's/^.*cert=\(.*\) .*$/\1/'
+  shell: cat "{{ tor_obfs_state_directory }}/obfs4_bridgeline.txt" | grep 'Bridge obfs4' | sed -e 's/^.*cert=\(.*\) .*$/\1/'
   register: tor_obfs4_certificate
 
 - name: Create the Tor Gateway directory

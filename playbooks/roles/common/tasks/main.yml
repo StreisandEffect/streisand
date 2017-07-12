@@ -2,7 +2,7 @@
 - name: Warn users if the server's Linux distribution is not Ubuntu 16.04
   pause:
     prompt: "Ubuntu 16.04 is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
-  when: ansible_distribution != "Ubuntu" or ansible_distribution_major_version != "16"
+  when: ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04"
 
 # Set default variables
 - include: set-default-variables.yml
@@ -16,6 +16,14 @@
   apt:
     name: "{{ item }}"
   with_items: "{{ streisand_common_packages }}"
+
+- name: Purge unneeded services
+  apt:
+    name: "{{ item }}"
+    state: "absent"
+    purge: yes
+    autoremove: yes
+  with_items: "{{ streisand_unneeded_packages }}"
 
 - name: Perform a full system upgrade
   apt:
