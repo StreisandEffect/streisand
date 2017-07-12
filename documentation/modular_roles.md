@@ -12,7 +12,7 @@ services" approach has two large downsides: many moving parts & a very large
 externally facing attack surface.
 
 The solution: Allowing users to selectively disable Streisand services they
-don't require, creating custom profiles that suit their needs.
+don't require, creating custom profiles that suits their needs.
 
 The challenge: Streisand was initially designed as a monolithic deploy. That is,
 the Ansible roles responsible for each service inter-depend on one another. To
@@ -31,28 +31,28 @@ Rough Plan
 
 1. One role at a time, convert it to be stand alone (e.g. create its own
    firewall rules, do its own client mirroring, etc).
-2. Add an enable flag var for the role, default to on (e.g. Streisand by default
-   remains ship-it-all-by-default).
+2. Add an enable flag variable for the role, default to on (e.g. Streisand by
+   default remains ship-it-all-by-default).
 3. Once all roles are converted, add infrastructure for selecting roles (helper
    script modifications).
 4. Discuss which roles should be enabled by default to perhaps pare down the
    base install.
-5. Update this documentation
+5. Update this documentation.
 
 Implementation
 --------------
 
-Each service has a enable bool var defined in `playbooks/group_vars/all` to
+Each service has an enable bool variable defined in `playbooks/group_vars/all` to
 control whether the service is going to be included or not. E.g.
 `streisand_shadowsocks_enabled: yes` would include Shadowsocks when provisioning
 a server.
 
 Every Streisand service has to handle the following responsibilities:
 
-* Installing & setting up server software/configurations
-* Updating firewall rules/access controls
-* Generating client connection instructions & config files
-* Mirroring client software
+* Installing & setting up server software/configurations.
+* Updating firewall rules/access controls.
+* Generating client connection instructions & config files.
+* Mirroring client software.
 
 For the purpose of connection instructions & client software each service has
 two directories it must create & populate:
@@ -81,45 +81,45 @@ service/
 ```
 
 * `meta/main.yml` is used for declaring dependencies (e.g. on `ufw` for
-firewall rules). Nothing special there!
+  firewall rules). Nothing special there!
 
 * `tasks/main.yml` handles the base responsibilities of installing
-software/configs etc. and includes the subtask files: `docs.yml`,
-`firewall.yml` and `mirror.yml`.
+  software/configs etc. and includes the subtask files: `docs.yml`,
+  `firewall.yml` and `mirror.yml`.
 
 * `tasks/docs.yml` handles generating connection instructions for the service
-under its documentation root.
+  under its documentation root.
 
 * `tasks/firewall.yml` handles adding `ufw`/`iptables` rules as required by the
-service.
+  service.
 
 * `tasks/mirror.yml` handles downloading client software to the service's mirror
-root and generating any required client install documentation.
+  root and generating any required client install documentation.
 
-* `vars/main.yml` are the vars required for the service's configuration/etc.
+* `vars/main.yml` are the variables required for the service's configuration/etc.
 
-* `vars/mirror.yml` are mirror specific vars (client software versions, download
-    URLs, expected hashes/signatures, etc)
+* `vars/mirror.yml` are mirror-specific variables (client software versions,
+   download URLs, expected hashes/signatures, etc)
 
 For Shadowsocks, initially the `ufw` role was responsible for adding a firewall
-rule for the `shadowsocks-libev` port. This created a cross-role dependence
+rule for the `shadowsocks-libev` port. This created a cross-role dependency
 where if the `shadowsocks` role was disabled the `ufw` role would open a port
-unnecessarily, or reference a var that didn't exist. 
+unnecessarily, or reference a variable that didn't exist. 
 
 To remove this cross-dependency the `shadowsocks` role was updated to declare
 a meta dependency on the generic firewall role (to ensure the package is
 installed and ready) in `meta/main.yml`. Then a `tasks/firewall.yml` subtask
 file was added that uses `ufw` to add the required rules.
 
-Similarly, initially the `streisand-mirror` role downloaded all of the
+Similarly, the initial `streisand-mirror` role downloaded all of the
 Shadowsocks clients for the mirror using a distinct tasks `.yml` with its own
-vars `.yml`. This made it fairly easy to move the mirror subtasks from
+variables `.yml`. This made it fairly easy to move the mirror subtasks from
 `streisand-mirror/tasks/shadowsocks.yml` to
 `shadowsocks/tasks/mirror.yml` and `streisand-mirror/vars/shadowsocks.yml` to
 `shadowsocks/vars/mirror.yml`. Now the `shadowsocks` role can be responsible for
 preparing its own client mirror.
 
-Gateway & Mirror Indexes
+Gateway & Mirror Indices
 ------------------------------
 
 While the Gateway & Mirror documentation can be largely agnostic of which
@@ -127,9 +127,9 @@ services are included in a given build by outsourcing the management of
 subfolders of `/var/www/streisand` and `/var/www/streisand/mirror` eventually
 a consistent set of docs to navigate must be created based on the included
 services. This is done by conditionally adding links to the connection
-instruction & mirror indexes of each subservice using the enable bool vars in
-the docs and mirror index files.  This is the one place where the "if spaghetti"
-is required in order to stitch things together.
+instruction & mirror indices of each subservice using the enable bool variables
+in the docs and mirror index files.  This is the one place where the "if
+spaghetti" is required in order to stitch things together.
 
 As a concrete example, consider the `shadowsocks` role. Previously the
 `streisand-gateway` and `streisand-mirror` roles were responsible for all
