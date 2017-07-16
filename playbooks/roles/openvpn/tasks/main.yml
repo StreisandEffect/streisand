@@ -213,7 +213,7 @@
 
 - name: "Add OpenVPN firewall persistence service to init"
   template:
-    src: streisand-openvpn.sh
+    src: streisand-openvpn-service.sh.j2
     dest: /etc/init.d/streisand-openvpn
     mode: 0755
 

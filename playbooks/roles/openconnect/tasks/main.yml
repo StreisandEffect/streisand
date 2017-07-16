@@ -169,7 +169,7 @@
 
 - name: "Add Openconnect firewall persistence service to init"
   template:
-    src: streisand-openconnect.sh
+    src: streisand-openconnect-service.sh.j2
     dest: /etc/init.d/streisand-openconnect
     mode: 0755
 
