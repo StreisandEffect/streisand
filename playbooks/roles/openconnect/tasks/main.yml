@@ -174,7 +174,9 @@
     mode: 0755
 
 - name: "Enable the streisand-openconnect init service"
-  command: "update-rc.d streisand-openconnect defaults"
+  service:
+    name: streisand-openconnect
+    enabled: yes
 
 - name: Create the OpenConnect/AnyConnect Gateway directory
   file:

@@ -148,9 +148,9 @@
         priority: 107
   when: streisand_shadowsocks_enabled
 
-# Wireguard
+# WireGuard
 # ---
-- name: Open Wireguard ports in the Azure security group
+- name: Open WireGuard ports in the Azure security group
   azure_rm_securitygroup:
     name: "{{ azure_resource_group_name }}"
     resource_group: "{{ azure_resource_group_name }}"

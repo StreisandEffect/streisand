@@ -12,4 +12,6 @@
     mode: 0755
 
 - name: "Enable the streisand-ipforward init service"
-  command: "update-rc.d streisand-ipforward defaults"
+  service:
+    name: streisand-ipforward
+    enabled: yes

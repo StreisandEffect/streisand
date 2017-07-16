@@ -116,9 +116,9 @@
         cidr_ip: 0.0.0.0/0
   when: streisand_shadowsocks_enabled
 
-# Wireguard
+# WireGuard
 # ---
-- name: Open the Wireguard ports in the EC2 security group
+- name: Open the WireGuard ports in the EC2 security group
   ec2_group:
     name: "{{ aws_security_group }}"
     description: Security group for Streisand

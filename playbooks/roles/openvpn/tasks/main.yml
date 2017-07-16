@@ -218,7 +218,9 @@
     mode: 0755
 
 - name: "Enable the streisand-openvpn init service"
-  command: "update-rc.d streisand-openvpn defaults"
+  service:
+    name: "streisand-openvpn"
+    enabled: yes
 
 - name: Copy OpenVPN configuration file into place
   template:
