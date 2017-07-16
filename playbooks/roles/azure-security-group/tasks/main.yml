@@ -97,14 +97,6 @@
         access: Allow
         direction: Inbound
         priority: 111
-      # Tor wireguard port
-      # ---
-      - name: "AllowWireguard"
-        destination_port_range: "{{ wireguard_port }}"
-        protocol: Udp
-        access: Allow
-        direction: Inbound
-        priority: 112
       # Tor L2TP/IPsec ports
       # ---
       - name: "AllowL2TPPort500"
@@ -155,6 +147,22 @@
         direction: Inbound
         priority: 107
   when: streisand_shadowsocks_enabled
+
+# WireGuard
+# ---
+- name: Open WireGuard ports in the Azure security group
+  azure_rm_securitygroup:
+    name: "{{ azure_resource_group_name }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+    rules:
+      - name: "AllowWireguard"
+        destination_port_range: "{{ wireguard_port }}"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 112
+  when: streisand_wireguard_enabled
 
 - name: Create Azure network interface
   azure_rm_networkinterface:

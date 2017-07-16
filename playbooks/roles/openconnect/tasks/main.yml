@@ -167,6 +167,17 @@
 - name: Enable NAT
   command: "{{ ocserv_firewall_rule }}"
 
+- name: "Add Openconnect firewall persistence service to init"
+  template:
+    src: streisand-openconnect-service.sh.j2
+    dest: /etc/init.d/streisand-openconnect
+    mode: 0755
+
+- name: "Enable the streisand-openconnect init service"
+  service:
+    name: streisand-openconnect
+    enabled: yes
+
 - name: Create the OpenConnect/AnyConnect Gateway directory
   file:
     path: "{{ ocserv_gateway_location }}"

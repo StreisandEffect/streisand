@@ -5,6 +5,8 @@ wireguard_client_public_key_file:  "{{ wireguard_path }}/client.pub"
 wireguard_server_private_key_file: "{{ wireguard_path }}/server.key"
 wireguard_server_public_key_file:  "{{ wireguard_path }}/server.pub"
 
+dnsmasq_wireguard_ip: "10.192.122.1"
+
 wireguard_firewall_rules:
   - iptables -A FORWARD -s 10.192.122.0/24 -j ACCEPT
   - iptables -t nat -A POSTROUTING -s 10.192.122.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE

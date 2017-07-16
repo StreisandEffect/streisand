@@ -85,12 +85,6 @@
         from_port: "{{ tor_obfs4_port }}"
         to_port: "{{ tor_obfs4_port }}"
         cidr_ip: 0.0.0.0/0
-      # WireGuard
-      # ---
-      - proto: udp
-        from_port: "{{ wireguard_port }}"
-        to_port: "{{ wireguard_port }}"
-        cidr_ip: 0.0.0.0/0
     rules_egress:
       - proto: all
         from_port: 1
@@ -121,3 +115,20 @@
         to_port: "{{ shadowsocks_server_port }}"
         cidr_ip: 0.0.0.0/0
   when: streisand_shadowsocks_enabled
+
+# WireGuard
+# ---
+- name: Open the WireGuard ports in the EC2 security group
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    rules:
+      - proto: udp
+        from_port: "{{ wireguard_port }}"
+        to_port: "{{ wireguard_port }}"
+        cidr_ip: 0.0.0.0/0
+  when: streisand_wireguard_enabled

@@ -17,6 +17,12 @@
     - openvpn
     - udev
 
+- name: "Configure DNSMasq to listen on {{ dnsmasq_openvpn_tcp_ip }}:53 and {{ dnsmasq_openvpn_udp_ip }}:53"
+  template:
+    src: openvpn_dnsmasq.conf.j2
+    dest: /etc/dnsmasq.d/openvpn.conf
+  notify: Restart dnsmasq
+
 - name: Generate RSA keys for the CA and Server
   command: openssl genrsa -out {{ item }}.key {{ openvpn_key_size }}
   args:
@@ -204,6 +210,17 @@
 - name: Allow OpenVPN through the firewall
   command: "{{ item }}"
   with_items: "{{ openvpn_firewall_rules }}"
+
+- name: "Add OpenVPN firewall persistence service to init"
+  template:
+    src: streisand-openvpn-service.sh.j2
+    dest: /etc/init.d/streisand-openvpn
+    mode: 0755
+
+- name: "Enable the streisand-openvpn init service"
+  service:
+    name: "streisand-openvpn"
+    enabled: yes
 
 - name: Copy OpenVPN configuration file into place
   template:

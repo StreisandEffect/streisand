@@ -138,6 +138,17 @@
   command: "{{ item }}"
   with_items: "{{ l2tp_ipsec_firewall_rules }}"
 
+- name: "Add L2TP/IPsec firewall persistence service to init"
+  template:
+    src: streisand-l2tp-service.sh.j2
+    dest: /etc/init.d/streisand-l2tp
+    mode: 0755
+
+- name: "Enable the streisand-l2tp init service"
+  service:
+    name: streisand-l2tp
+    enabled: yes
+
 - name: Generate a certificate database file
   script: generate-certificate-database.sh
   args:

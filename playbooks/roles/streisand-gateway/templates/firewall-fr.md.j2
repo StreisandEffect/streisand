@@ -29,15 +29,19 @@ Si vous installez Streisand sur un serveur existant ou un fournisseur alternatif
     * Dnsmasq écoute le trafic DNS sur ces adresses IP et répond aux requêtes des clients OpenVPN connectés.
   * TCP - {{ openvpn_port }}
   * UDP - {{ openvpn_port_udp }}
+{% if streisand_shadowsocks_enabled %}
 * Shadowsocks
   * TCP - {{ shadowsocks_server_port }}
   * UDP - {{ shadowsocks_server_port }}
+{% endif %}
 * stunnel
   * TCP - {{ stunnel_remote_port }}
 * Tor
   * TCP - {{ tor_orport }} - Pont
   * TCP - {{ tor_obfs4_port }} - obfs4 transport enfichable
+{% if streisand_wireguard_enabled %}
 * WireGuard
   * UDP - 53 de/à `{{ dnsmasq_wireguard_ip }}`
     * Dnsmasq écoute le trafic DNS sur cette IP et répond aux requêtes des clients WireGuard connectés.
   * UDP - {{ wireguard_port }}
+{% endif %}
