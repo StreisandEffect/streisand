@@ -25,7 +25,7 @@
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-other"
-    allowed: "tcp:{{ nginx_port }},{{ stunnel_remote_port }}
+    allowed: "tcp:{{ nginx_port }},{{ stunnel_remote_port }}"
     state: "present"
     mode: auto
     src_range: 0.0.0.0/0
