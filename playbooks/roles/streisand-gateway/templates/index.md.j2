@@ -14,8 +14,10 @@ There are multiple ways to bypass censorship, and Streisand provides several cho
 
 * [L2TP/IPsec](/l2tp-ipsec/)
 * [OpenConnect / Cisco AnyConnect](/openconnect/)
+{% if streisand_openvpn_enabled %}
 * [OpenVPN (direct)](/openvpn/)
 * [OpenVPN (stunnel)](/openvpn/stunnel.html)
+{% endif %}
 {% if streisand_shadowsocks_enabled %}
 * [Shadowsocks](/shadowsocks/)
 {% endif %}
@@ -32,7 +34,9 @@ Client Mirrors
 You can download the necessary client software directly from Streisand in case the official websites are blocked. These versions could be slightly out of date (depending on when this server was set up) but they can be easily updated once you have connected to the open Internet.
 
 * [OpenConnect](/mirror/#openconnect)
-* [OpenVPN](/mirror/#openvpn)
+{% if streisand_openvpn_enabled %}
+* [OpenVPN](/mirror/openvpn/)
+{% endif %}
 {% if streisand_shadowsocks_enabled %}
 * [Shadowsocks](/mirror/shadowsocks/)
 {% endif %}

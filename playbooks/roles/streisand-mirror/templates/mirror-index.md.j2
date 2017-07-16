@@ -6,7 +6,9 @@ The files mirrored below have all been cryptographically verified. Where possibl
 ---
 * Clients
   * [OpenConnect](#openconnect)
-  * [OpenVPN](#openvpn)
+{% if streisand_openvpn_enabled %}
+  * [OpenVPN](openvpn/)
+{% endif %}
 {% if streisand_shadowsocks_enabled %}
   * [Shadowsocks](shadowsocks/)
 {% endif %}
@@ -26,23 +28,6 @@ The files mirrored below have all been cryptographically verified. Where possibl
 
 * [{{ openconnect_windows_filename }}]({{ openconnect_windows_href }})
   * Checksum: *{{ openconnect_windows_checksum }}*
-
-<a name="openvpn"></a>
-### OpenVPN ###
-
-**Source**
-
-* [{{ openvpn_source_filename }}]({{ openvpn_source_href }}) ([sig]({{ openvpn_source_sig_href }}))
-
-**OS X**
-
-* [Tunnelblick\_{{ tunnelblick_version }}.dmg]({{ tunnelblick_href }})
-  * Checksum: *{{ tunnelblick_checksum }}*
-
-**Windows**
-
-* [{{ openvpn_windows_installer_filename }}]({{ openvpn_windows_installer_href }}) ([sig]({{ openvpn_windows_installer_sig_href }}))
-
 
 <a name="ssh"></a>
 ### SSH ###
