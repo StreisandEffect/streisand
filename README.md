@@ -1,12 +1,4 @@
-![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
-
-- - -
-[English](README.md), [Français](README-fr.md), | [Mirror](https://area51.threeletter.agency)
-- - -
-
-[![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand)
-
-
+![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect") - - - [English](README.md), [Français](README-fr.md), | [Mirror](https://area51.threeletter.agency) - - - [![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand) 
 Streisand
 =========
 
@@ -163,7 +155,7 @@ Complete all of these tasks on your local home machine.
 
        git clone https://github.com/jlund/streisand.git && cd streisand
 
-   Or clone from the external mirror if Github is blocked.
+   Or clone from the external mirror if GitHub is blocked.
 
        git clone https://area51.threeletter.agency/mirrors/streisand.git && cd streisand
 2. Execute the Streisand script.
