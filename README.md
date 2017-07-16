@@ -1,4 +1,11 @@
-![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect") - - - [English](README.md), [Français](README-fr.md), | [Mirror](https://area51.threeletter.agency) - - - [![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand) 
+![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
+
+- - -
+[English](README.md), [Français](README-fr.md) | [Mirror](https://area51.threeletter.agency)
+- - -
+
+[![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand)
+
 Streisand
 =========
 
