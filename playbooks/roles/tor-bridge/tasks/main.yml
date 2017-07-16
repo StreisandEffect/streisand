@@ -91,7 +91,26 @@
 
 - name: Register the Tor Hidden Service hostname
   command: cat {{ tor_hidden_service_directory }}/hostname
-  register: tor_hidden_service_hostname
+  register: tor_hidden_service_hostname_output
+
+- name: Register the Tor Hidden Service URL fact
+  set_fact:
+    tor_hidden_service_url: "http://{{ tor_hidden_service_hostname_output.stdout }}"
+
+- name: Generate the hidden service virtual host and restart Nginx if it is updated
+  template:
+    src: hidden-service-vhost.j2
+    dest: /etc/nginx/sites-available/streisand-hidden-service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Nginx
+
+- name: Enable the virtual host
+  file:
+    path: /etc/nginx/sites-enabled/streisand-hidden-service
+    src: /etc/nginx/sites-available/streisand-hidden-service
+    state: link
 
 - name: Discover the server fingerprint
   command: "awk '{ print $2 }' {{ tor_state_directory }}/fingerprint"

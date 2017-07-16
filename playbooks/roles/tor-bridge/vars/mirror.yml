@@ -1,6 +1,7 @@
 ---
 # Tor mirror variables
 # --------------------
+tor_mirror_location: "{{ streisand_mirror_location }}/tor"
 
 tor_windows_filename_base: "torbrowser-install-{{ tor_browser_bundle_version }}"
 tor_windows_filename_template: "{{ tor_windows_filename_base }}_locale.exe"

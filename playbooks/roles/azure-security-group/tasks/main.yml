@@ -155,22 +155,23 @@
     name: "{{ azure_resource_group_name }}"
     resource_group: "{{ azure_resource_group_name }}"
     location: "{{ azure_region }}"
-    # Tor TCP
-    # ---
-    - name: "AllowTorTCP"
-      destination_port_range: "{{ tor_orport }}"
-      protocol: Tcp
-      access: Allow
-      direction: Inbound
-      priority: 110
-    # Tor obfs4 TCP port
-    # ---
-    - name: "AllowOBFS4TCP"
-      destination_port_range: "{{ tor_obfs4_port }}"
-      protocol: Tcp
-      access: Allow
-      direction: Inbound
-      priority: 111
+    rules:
+      # Tor TCP
+      # ---
+      - name: "AllowTorTCP"
+        destination_port_range: "{{ tor_orport }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 110
+      # Tor obfs4 TCP port
+      # ---
+      - name: "AllowOBFS4TCP"
+        destination_port_range: "{{ tor_obfs4_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 111
   when: streisand_tor_enabled
 
 - name: Create Azure network interface
