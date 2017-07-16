@@ -4,7 +4,7 @@
 {% endfor %}
 - - -
 
-Votre passerelle Streisand contient des instructions étape par étape pour les services qu'elle fournit, et des miroirs de tous les logiciels clients nécessaires. La passerelle est accessible via le protocole SSL ou via un service caché Tor.
+Votre passerelle Streisand contient des instructions étape par étape pour les services qu'elle fournit, et des miroirs de tous les logiciels clients nécessaires. This document covers the SSL Certificate installation instructions and will show you how to connect to the Gateway to learn how to configure clients to use the Streisand services.
 
 ---
 * [Installation du certificat SSL](#ssl)
@@ -17,7 +17,9 @@ Votre passerelle Streisand contient des instructions étape par étape pour les 
   * [Vérification du certificat](#ssl-manual)
 * [Connexion à votre passerelle Streisand](#connecting)
   * [SSL](#connecting-ssl)
+{% if streisand_tor_enabled %}
   * [Service Caché Tor](#connecting-tor)
+{% endif %}
 
 
 <a name="ssl"></a>
@@ -185,6 +187,7 @@ Chaque option de connexion vous emmène au même endroit et vous pouvez utiliser
 username: `{{ streisand_gateway_username }}`
 password: `{{ streisand_gateway_password.stdout }}`
 
+{% if streisand_tor_enabled %}
 <a name="connecting-tor"></a>
 ### Service Caché Tor ###
 *Toutes les connexions aux services cachés Tor sont entièrement chiffrées.*
@@ -193,3 +196,4 @@ password: `{{ streisand_gateway_password.stdout }}`
 
 username: `{{ streisand_gateway_username }}`
 password: `{{ streisand_gateway_password.stdout }}`
+{% endif %}

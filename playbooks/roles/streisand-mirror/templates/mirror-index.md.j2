@@ -1,7 +1,7 @@
 Client Mirrors
 --------------
 
-The files mirrored below have all been cryptographically verified. Where possible, each project's official GPG signing keys were used. SHA-256 checksums verified the integrity of all other files.
+The files mirrored below have all been cryptographically verified. Where possible, each project's official GPG signing keys were used. SHA-256 checksums verified the integrity of all other files. This document covers the SSL Certificate installation instructions and will show you how to connect to the Gateway to learn how to configure clients to use the Streisand services.
 
 ---
 * Clients
@@ -12,7 +12,9 @@ The files mirrored below have all been cryptographically verified. Where possibl
 {% endif %}
   * [OpenSSH](#ssh)
   * [Stunnel](#stunnel)
-  * [Tor Browser Bundle](#tor)
+{% if streisand_tor_enabled %}
+  * [Tor Browser Bundle](tor/)
+{% endif %}
 
 <a name="openconnect"></a>
 ### OpenConnect ###
@@ -66,19 +68,3 @@ The files mirrored below have all been cryptographically verified. Where possibl
 **Windows**
 
 * [{{ stunnel_installer_filename }}]({{ stunnel_installer_href }}) ([sig]({{ stunnel_installer_sig_href }}))
-
-<a name="tor"></a>
-### Tor Browser Bundle ###
-
-**Linux**
-
-* [{{ tor_linux32_filename_template | regex_replace('locale', item.value.tor_locale)  }}]({{ tor_linux32_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_linux32_sig_href | regex_replace('locale', item.value.tor_locale) }}))
-* [{{ tor_linux64_filename_template | regex_replace('locale', item.value.tor_locale)  }}]({{ tor_linux64_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_linux64_sig_href | regex_replace('locale', item.value.tor_locale) }}))
-
-**OS X**
-
-* [{{ tor_osx_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_osx_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_osx_sig_href | regex_replace('locale', item.value.tor_locale) }}))
-
-**Windows**
-
-* [{{ tor_windows_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_windows_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_windows_sig_href | regex_replace('locale', item.value.tor_locale) }}))

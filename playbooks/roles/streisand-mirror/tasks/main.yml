@@ -12,7 +12,6 @@
 - include: openvpn.yml
 - include: ssh.yml
 - include: stunnel.yml
-- include: tor.yml
 
 - name: Generate the Markdown mirror page
   template:

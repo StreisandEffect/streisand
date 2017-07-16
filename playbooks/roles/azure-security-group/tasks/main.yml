@@ -81,23 +81,7 @@
         access: Allow
         direction: Inbound
         priority: 109
-      # Tor
-      # ---
-      - name: "AllowTorTCP"
-        destination_port_range: "{{ tor_orport }}"
-        protocol: Tcp
-        access: Allow
-        direction: Inbound
-        priority: 110
-      # Tor obfs4 port
-      # ---
-      - name: "AllowOBFS4TCP"
-        destination_port_range: "{{ tor_obfs4_port }}"
-        protocol: Tcp
-        access: Allow
-        direction: Inbound
-        priority: 111
-      # Tor L2TP/IPsec ports
+      # L2TP/IPsec UDP ports
       # ---
       - name: "AllowL2TPPort500"
         destination_port_range: "500"
@@ -105,7 +89,7 @@
         access: Allow
         direction: Inbound
         priority: 113
-      # Tor L2TP/IPsec ports
+      # L2TP/IPsec UDP ports
       # ---
       - name: "AllowL2TPPort1701"
         destination_port_range: "1701"
@@ -113,7 +97,7 @@
         access: Allow
         direction: Inbound
         priority: 114
-      # Tor L2TP/IPsec ports
+      # L2TP/IPsec UDP ports
       # ---
       - name: "AllowL2TPPort4500"
         destination_port_range: "4500"
@@ -163,6 +147,31 @@
         direction: Inbound
         priority: 112
   when: streisand_wireguard_enabled
+
+# Tor
+# ---
+- name: Open Tor ports in the Azure security group
+  azure_rm_securitygroup:
+    name: "{{ azure_resource_group_name }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+    # Tor TCP
+    # ---
+    - name: "AllowTorTCP"
+      destination_port_range: "{{ tor_orport }}"
+      protocol: Tcp
+      access: Allow
+      direction: Inbound
+      priority: 110
+    # Tor obfs4 TCP port
+    # ---
+    - name: "AllowOBFS4TCP"
+      destination_port_range: "{{ tor_obfs4_port }}"
+      protocol: Tcp
+      access: Allow
+      direction: Inbound
+      priority: 111
+  when: streisand_tor_enabled
 
 - name: Create Azure network interface
   azure_rm_networkinterface:

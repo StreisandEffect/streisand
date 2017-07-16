@@ -1,17 +1,17 @@
 ---
 - name: Include the Tor common variables
-  include_vars: tor-common.yml
+  include_vars: mirror-common.yml
 
 - block:
-    - include: tor-common.yml
+    - include: mirror-common.yml
 
-    - include: tor-download.yml
+    - include: mirror-download.yml
       with_items: "{{ streisand_languages.values() | map(attribute='tor_locale') | list }}"
       when: locale in tor_available_locales
       loop_control:
         loop_var: locale
 
-    - include: tor-verify.yml
+    - include: mirror-verify.yml
   rescue:
     - name: "{{ streisand_mirror_warning }}"
       pause:
