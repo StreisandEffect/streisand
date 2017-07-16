@@ -25,13 +25,26 @@
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-other"
-    allowed: "tcp:{{ nginx_port }},{{ stunnel_remote_port }},{{ tor_orport }},{{ tor_obfs4_port }}"
+    allowed: "tcp:{{ nginx_port }},{{ stunnel_remote_port }}
     state: "present"
     mode: auto
     src_range: 0.0.0.0/0
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
+
+- name: Open necessary Tor ports in the GCE firewall
+  gce_net:
+    name: "{{ gce_network }}"
+    fwname: "streisand-{{ gce_server_name }}-other"
+    allowed: "tcp:{{ tor_orport }},{{ tor_obfs4_port }}"
+    state: "present"
+    mode: auto
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: "{{ gce_json_file_location }}"
+    project_id: "{{ gce_project_id }}"
+  when: streisand_tor_enabled
 
 - name: Open the L2TP/IPsec ports in the GCE firewall
   gce_net:
