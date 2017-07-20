@@ -37,20 +37,6 @@
         access: Allow
         direction: Inbound
         priority: 101
-      # OpenConnect (ocserv)
-      # ---
-      - name: "AllowOCServTCP"
-        destination_port_range: "{{ ocserv_port }}"
-        protocol: Tcp
-        access: Allow
-        direction: Inbound
-        priority: 102
-      - name: "AllowOCServUDP"
-        destination_port_range: "{{ ocserv_port }}"
-        protocol: Udp
-        access: Allow
-        direction: Inbound
-        priority: 103
       # SSH
       # ---
       - name: "AllowSSHTCP"
@@ -100,6 +86,32 @@
         direction: Inbound
         priority: 115
 
+# OpenConnect (ocserv)
+# ---
+- name: Open the OpenConnect ports in the Azure security group
+  azure_rm_securitygroup:
+    name: "{{ azure_resource_group_name }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+    rules:
+      # OpenConnect TCP
+      # ---
+      - name: "AllowOCServTCP"
+        destination_port_range: "{{ ocserv_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 102
+      # OpenConnect UDP
+      # ---
+      - name: "AllowOCServUDP"
+        destination_port_range: "{{ ocserv_port }}"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 103
+  when: streisand_openconnect_enabled
+
 # Shadowsocks
 # ---
 - name: Open Shadowsocks ports in the Azure security group
@@ -126,21 +138,32 @@
         priority: 107
   when: streisand_shadowsocks_enabled
 
-# WireGuard
+# OpenVPN
 # ---
-- name: Open WireGuard ports in the Azure security group
+- name: Open the OpenConnect ports in the Azure security group
   azure_rm_securitygroup:
     name: "{{ azure_resource_group_name }}"
     resource_group: "{{ azure_resource_group_name }}"
     location: "{{ azure_region }}"
     rules:
-      - name: "AllowWireguard"
-        destination_port_range: "{{ wireguard_port }}"
+      # OpenConnect TCP
+      # ---
+      - name: "AllowOCServTCP"
+        destination_port_range: "{{ ocserv_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 102
+      # OpenConnect UDP
+      # ---
+      - name: "AllowOCServUDP"
+        destination_port_range: "{{ ocserv_port }}"
         protocol: Udp
         access: Allow
         direction: Inbound
-        priority: 112
-  when: streisand_wireguard_enabled
+        priority: 103
+  when: streisand_openconnect_enabled
+
 
 # OpenVPN
 # ---
@@ -168,21 +191,21 @@
         priority: 105
   when: streisand_openvpn_enabled
 
-# stunnel
+# WireGuard
 # ---
-- name: Open the stunnel port in the Azure security group
+- name: Open WireGuard ports in the Azure security group
   azure_rm_securitygroup:
     name: "{{ azure_resource_group_name }}"
     resource_group: "{{ azure_resource_group_name }}"
     location: "{{ azure_region }}"
     rules:
-      - name: "AllowStunnelTCP"
-        destination_port_range: "{{ stunnel_remote_port }}"
-        protocol: Tcp
+      - name: "AllowWireguard"
+        destination_port_range: "{{ wireguard_port }}"
+        protocol: Udp
         access: Allow
         direction: Inbound
-        priority: 109
-  when: streisand_openvpn_enabled and streisand_stunnel_enabled
+        priority: 112
+  when: streisand_wireguard_enabled
 
 - name: Create Azure network interface
   azure_rm_networkinterface:

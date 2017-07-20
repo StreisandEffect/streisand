@@ -8,6 +8,7 @@ streisand_shadowsocks_enabled: yes
 streisand_wireguard_enabled: yes
 streisand_openvpn_enabled: yes
 streisand_stunnel_enabled: yes
+streisand_openconnect_enabled: yes
 
 upstream_dns_servers:
   - 8.8.8.8

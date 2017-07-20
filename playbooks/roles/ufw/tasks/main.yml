@@ -43,19 +43,6 @@
     proto: "tcp"
     rule: "allow"
 
-- name: Ensure UFW allows DNS requests from OpenConnect clients
-  ufw:
-    to_port: "53"
-    proto: "udp"
-    rule: "allow"
-    from_ip: "192.168.1.0/24"
-
-- name: Ensure UFW allows OpenConnect (ocserv)
-  ufw:
-    to_port: "{{ ocserv_port }}"
-    proto: "any"
-    rule: "allow"
-
 - name: Ensure UFW allows Tor bridge
   ufw:
     to_port: "{{ tor_orport }}"

@@ -8,7 +8,6 @@
     state: directory
 
 # Download and verify client files
-- include: openconnect.yml
 - include: ssh.yml
 - include: tor.yml
 
