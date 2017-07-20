@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PayloadIdentifier</key>
-	<string>streisand.mdm.{{ l2tp_mobileconfig_package_uuid }}.alacarte</string>
+	<string>streisand.mdm.{{ l2tp_mobileconfig_package_uuid.stdout }}.alacarte</string>
 	<key>PayloadRemovalDisallowed</key>
 	<false/>
 	<key>PayloadScope</key>
@@ -11,15 +11,15 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>{{ l2tp_mobileconfig_package_uuid }}</string>
+	<string>{{ l2tp_mobileconfig_package_uuid.stdout }}</string>
 	<key>PayloadOrganization</key>
-	<string>Streisand Effects Department</string>
+	<string>Streisand Effect Department</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 	<key>PayloadDisplayName</key>
-	<string>Streisand L2TP ({{ streisand_server_name }})</string>
+	<string>Streisand L2TP config for({{ streisand_server_name }})</string>
 	<key>PayloadDescription</key>
-	<string>This is a VPN configuration for the Streisand server "{{ streisand_server_name }}" running at {{ streisand_ipv4_address }}. It uses Apple's native using L2TP/IPsec protocol. This profile can be removed at any time.</string>
+	<string>This profile is a VPN configuration for the Streisand server "{{ streisand_server_name }}" running at {{ streisand_ipv4_address }}. It uses Apple's native L2TP/IPsec protocol. This profile can be removed at any time.</string>
 	<key>PayloadContent</key>
 	<array>
 		<dict>
@@ -28,9 +28,9 @@
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>PayloadIdentifier</key>
-			<string>streisand.mdm.{{ l2tp_mobileconfig_package_uuid }}.{{ l2tp_mobileconfig_vpn_uuid }}</string>
+			<string>streisand.mdm.{{ l2tp_mobileconfig_package_uuid.stdout }}.{{ l2tp_mobileconfig_vpn_uuid.stdout }}</string>
 			<key>PayloadUUID</key>
-			<string>{{ l2tp_mobileconfig_vpn_uuid }}</string>
+			<string>{{ l2tp_mobileconfig_vpn_uuid.stdout }}</string>
 			<key>PayloadEnabled</key>
 			<true/>
 			<key>PayloadDisplayName</key>
@@ -60,7 +60,7 @@
 				<integer>0</integer>
 				<key>SharedSecret</key>
 				<data>
-				{{ ipsec_preshared_key_base64|e }}
+				{{ ipsec_preshared_key_base64.stdout|e }}
 				</data>
 			</dict>
 			<key>ikev2IKESADiffieHellmanGroup</key>
