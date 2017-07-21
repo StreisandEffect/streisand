@@ -22,6 +22,7 @@ check process nginx with pidfile /var/run/nginx.pid
     status = 401
   then restart
 
+{% if streisand_openvpn_enabled %}
 
 # OpenVPN
 check process vpn-network with pidfile /var/run/openvpn/server.pid
@@ -46,6 +47,7 @@ check host tun1 with address 10.9.0.1
         icmp type echo count 5 with timeout 15 seconds
     then restart
 
+{% endif %}
 
 # OpenSSH
 check process sshd with pidfile /var/run/sshd.pid
