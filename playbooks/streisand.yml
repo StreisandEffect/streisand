@@ -16,7 +16,6 @@
     - l2tp-ipsec
     - role: openvpn
       when: streisand_openvpn_enabled
-    - stunnel
     - role: shadowsocks
       when: streisand_shadowsocks_enabled
     - ssh

@@ -209,6 +209,10 @@
     - "{{ openvpn_clients }}"
     - ["ca.crt", "ta.key"]
 
+# Install stunnel
+- include_role:
+    name: stunnel
+
 # Set up the OpenVPN firewall rules
 - include: firewall.yml
 

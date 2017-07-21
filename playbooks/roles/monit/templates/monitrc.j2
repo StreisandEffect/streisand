@@ -57,14 +57,6 @@ check process sshd with pidfile /var/run/sshd.pid
    # if 5 restarts within 5 cycles then timeout
 
 
-# stunnel
-check process stunnel4 with pidfile /var/run/stunnel4.pid
-	start program = "/etc/init.d/stunnel4 start" with timeout 20 seconds
-	stop program = "/etc/init.d/stunnel4 stop"
-	if failed host 127.0.0.1 port {{ stunnel_remote_port }} with timeout 20 seconds then restart
-	if 3 restarts within 5 cycles then unmonitor
-
-
 # dnsmasq
 check process dnsmasq with pidfile /var/run/dnsmasq/dnsmasq.pid
   start program = "/etc/init.d/dnsmasq start" with timeout 60 seconds
