@@ -180,6 +180,7 @@
     - "{{ openvpn_client_keys.results }}"
   loop_control:
     label: "{{ item[0] }}"
+  when: streisand_stunnel_enabled
 
 - name: Create the combined client configuration profiles that will be used to connect from the fastest to the most compatible
   template:
@@ -212,6 +213,7 @@
 # Install stunnel
 - include_role:
     name: stunnel
+  when: streisand_stunnel_enabled
 
 # Set up the OpenVPN firewall rules
 - include: firewall.yml

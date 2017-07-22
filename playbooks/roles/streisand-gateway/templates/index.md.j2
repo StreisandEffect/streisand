@@ -16,7 +16,9 @@ There are multiple ways to bypass censorship, and Streisand provides several cho
 * [OpenConnect / Cisco AnyConnect](/openconnect/)
 {% if streisand_openvpn_enabled %}
 * [OpenVPN (direct)](/openvpn/)
+{% if streisand_stunnel_enabled %}
 * [OpenVPN (stunnel)](/openvpn/stunnel.html)
+{% endif %}
 {% endif %}
 {% if streisand_shadowsocks_enabled %}
 * [Shadowsocks](/shadowsocks/)
