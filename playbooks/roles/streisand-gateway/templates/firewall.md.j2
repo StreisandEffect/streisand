@@ -30,14 +30,14 @@ If you are installing Streisand on an existing server or alternate provider then
     * Dnsmasq listens for DNS traffic on these IPs and responds to requests from connected OpenVPN clients.
   * TCP - {{ openvpn_port }}
   * UDP - {{ openvpn_port_udp }}
+* stunnel
+  * TCP - {{ stunnel_remote_port }}
 {% endif %}
 {% if streisand_shadowsocks_enabled %}
 * Shadowsocks
   * TCP - {{ shadowsocks_server_port }}
   * UDP - {{ shadowsocks_server_port }}
 {% endif %}
-* stunnel
-  * TCP - {{ stunnel_remote_port }}
 * Tor
   * TCP - {{ tor_orport }} - Bridge
   * TCP - {{ tor_obfs4_port }} - obfs4 pluggable transport

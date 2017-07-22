@@ -59,14 +59,6 @@
         access: Allow
         direction: Inbound
         priority: 108
-      # Stunnel
-      # ---
-      - name: "AllowStunnelTCP"
-        destination_port_range: "{{ stunnel_remote_port }}"
-        protocol: Tcp
-        access: Allow
-        direction: Inbound
-        priority: 109
       # Tor
       # ---
       - name: "AllowTorTCP"
@@ -166,6 +158,14 @@
         access: Allow
         direction: Inbound
         priority: 104
+      # Stunnel
+      # ---
+      - name: "AllowStunnelTCP"
+        destination_port_range: "{{ stunnel_remote_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 109
       # OpenVPN UDP
       # ---
       - name: "AllowOpenVPNUDP"
