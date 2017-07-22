@@ -8,9 +8,9 @@ streisand_ci: no
 streisand_client_test: no
 streisand_noninteractive: no
 
-streisand_shadowsocks_enabled: no
-streisand_wireguard_enabled: no
-streisand_openvpn_enabled: no
-streisand_stunnel_enabled: no
+streisand_shadowsocks_enabled: yes
+streisand_wireguard_enabled: yes
+streisand_openvpn_enabled: yes
+streisand_stunnel_enabled: yes
 
 gpg_key_server_address: "x-hkp://pool.sks-keyservers.net"
