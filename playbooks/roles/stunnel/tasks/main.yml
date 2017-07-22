@@ -41,3 +41,6 @@
   template:
     src: stunnel-local.conf.j2
     dest: "{{ openvpn_gateway_location }}/stunnel.conf"
+
+# Mirror the stunnel client
+- include: mirror.yml
