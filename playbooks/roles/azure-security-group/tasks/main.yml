@@ -158,14 +158,6 @@
         access: Allow
         direction: Inbound
         priority: 104
-      # Stunnel
-      # ---
-      - name: "AllowStunnelTCP"
-        destination_port_range: "{{ stunnel_remote_port }}"
-        protocol: Tcp
-        access: Allow
-        direction: Inbound
-        priority: 109
       # OpenVPN UDP
       # ---
       - name: "AllowOpenVPNUDP"
@@ -175,6 +167,22 @@
         direction: Inbound
         priority: 105
   when: streisand_openvpn_enabled
+
+# stunnel
+# ---
+- name: Open the stunnel port in the Azure security group
+  azure_rm_securitygroup:
+    name: "{{ azure_resource_group_name }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+    rules:
+      - name: "AllowStunnelTCP"
+        destination_port_range: "{{ stunnel_remote_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 109
+  when: streisand_openvpn_enabled and streisand_stunnel_enabled
 
 - name: Create Azure network interface
   azure_rm_networkinterface:

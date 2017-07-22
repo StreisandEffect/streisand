@@ -61,7 +61,7 @@
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-openvpn"
-    allowed: "tcp:{{ openvpn_port }},{{ stunnel_remote_port }};udp:{{ openvpn_port_udp }}"
+    allowed: "tcp:{{ openvpn_port }};udp:{{ openvpn_port_udp }}"
     state: "present"
     mode: auto
     src_range: 0.0.0.0/0
@@ -69,6 +69,19 @@
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
   when: streisand_openvpn_enabled
+
+- name: Open the OpenVPN stunnel port in the GCE firewall
+  gce_net:
+    name: "{{ gce_network }}"
+    fwname: "streisand-{{ gce_server_name }}-openvpn"
+    allowed: "tcp:{{ stunnel_remote_port }}"
+    state: "present"
+    mode: auto
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: "{{ gce_json_file_location }}"
+    project_id: "{{ gce_project_id }}"
+  when: streisand_openvpn_enabled and streisand_stunnel_enabled
 
 - name: Open the Shadowsocks ports in the GCE firewall
   gce_net:
