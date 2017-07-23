@@ -25,8 +25,7 @@ openvpn_firewall_rules:
 
 openvpn_gateway_location: "{{ streisand_gateway_location }}/openvpn"
 
-# If stunnel is enabled generating
-# OpenVPN stunnel profiles requires these variables
-# to be defined
+# If stunnel is enabled generating OpenVPN stunnel profiles requires these
+# variables to be defined
 stunnel_local_port: "41194"
 stunnel_remote_port: "993"

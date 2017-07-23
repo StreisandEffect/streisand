@@ -1,4 +1,3 @@
 ---
 dependencies:
-  - { role: ufw }
   - { role: diffie-hellman-group }
