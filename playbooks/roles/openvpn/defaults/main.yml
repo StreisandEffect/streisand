@@ -19,3 +19,8 @@ openvpn_cipher: "AES-256-CBC"
 openvpn_ncp_ciphers: "AES-256-GCM:AES-128-GCM"
 openvpn_auth_digest: "SHA256"
 openvpn_connect_timeout: 10 #seconds
+
+# If stunnel is enabled generating OpenVPN stunnel profiles requires these
+# variables to be defined
+stunnel_local_port: "41194"
+stunnel_remote_port: "993"

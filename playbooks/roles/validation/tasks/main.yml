@@ -1,0 +1,5 @@
+---
+- name: Validate that OpenVPN optional variables are rational
+  fail:
+    msg: "stunnel cannot be enabled if openvpn is disabled"
+  when: not streisand_openvpn_enabled and streisand_stunnel_enabled

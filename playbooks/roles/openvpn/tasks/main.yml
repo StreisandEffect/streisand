@@ -220,8 +220,8 @@
 - include: mirror.yml
 
 # Install stunnel
-# @alimakki - must be done after OpenVPN's Gateway
-# task since it depends on the OpenVPN gateway directory being present
+# NOTE (@alimakki) - must be done after OpenVPN's Gateway task
+# since it depends on the OpenVPN gateway directory being present
 - include_role:
     name: stunnel
   when: streisand_stunnel_enabled
