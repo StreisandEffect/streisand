@@ -28,7 +28,6 @@
   add_host:
     name: "{{ streisand_server.instance_data[0].public_ip }}"
     groups: streisand-host
-    ansible_become: yes
 
 - name: Set the streisand_ipv4_address variable
   set_fact:
