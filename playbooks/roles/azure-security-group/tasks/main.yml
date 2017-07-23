@@ -59,7 +59,45 @@
         access: Allow
         direction: Inbound
         priority: 108
+<<<<<<< HEAD
       # L2TP/IPsec UDP ports
+||||||| merged common ancestors
+      # Stunnel
+      # ---
+      - name: "AllowStunnelTCP"
+        destination_port_range: "{{ stunnel_remote_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 109
+      # Tor
+      # ---
+      - name: "AllowTorTCP"
+        destination_port_range: "{{ tor_orport }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 110
+      # Tor obfs4 port
+      # ---
+      - name: "AllowOBFS4TCP"
+        destination_port_range: "{{ tor_obfs4_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 111
+      # Tor L2TP/IPsec ports
+=======
+      # Stunnel
+      # ---
+      - name: "AllowStunnelTCP"
+        destination_port_range: "{{ stunnel_remote_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 109
+      # L2TP/IPsec UDP ports
+>>>>>>> upstream/master
       # ---
       - name: "AllowL2TPPort500"
         destination_port_range: "500"
