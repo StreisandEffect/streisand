@@ -24,8 +24,3 @@ openvpn_firewall_rules:
   - iptables -t nat -A POSTROUTING -s 10.9.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
 
 openvpn_gateway_location: "{{ streisand_gateway_location }}/openvpn"
-
-# If stunnel is enabled generating OpenVPN stunnel profiles requires these
-# variables to be defined
-stunnel_local_port: "41194"
-stunnel_remote_port: "993"
