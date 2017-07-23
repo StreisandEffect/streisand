@@ -42,9 +42,13 @@ Si vous installez Streisand sur un serveur existant ou un fournisseur alternatif
   * TCP - {{ shadowsocks_server_port }}
   * UDP - {{ shadowsocks_server_port }}
 {% endif %}
+* stunnel
+  * TCP - {{ stunnel_remote_port }}
+{% if streisand_tor_enabled %}
 * Tor
   * TCP - {{ tor_orport }} - Pont
   * TCP - {{ tor_obfs4_port }} - obfs4 transport enfichable
+{% endif %}
 {% if streisand_wireguard_enabled %}
 * WireGuard
   * UDP - 53 de/à `{{ dnsmasq_wireguard_ip }}`
