@@ -1,2 +1,3 @@
 ---
 streisand_ci: no
+streisand_noninteractive: no
