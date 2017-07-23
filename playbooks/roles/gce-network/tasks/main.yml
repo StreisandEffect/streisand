@@ -21,7 +21,7 @@
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
 
-- name: Open the nginx port across the GCE firewall
+- name: Open the Nginx port in the GCE firewall
   gce_net:
     name: "{{ gce_network }}"
     fwname: "streisand-{{ gce_server_name }}-nginx"
