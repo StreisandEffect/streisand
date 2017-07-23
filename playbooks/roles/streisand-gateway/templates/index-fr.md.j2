@@ -24,7 +24,9 @@ Il existe de multiples façons de contourner la censure, et Streisand vous propo
 * [Shadowsocks](/shadowsocks/index-fr.html)
 {% endif %}
 * [SSH](/ssh/index-fr.html)
+{% if streisand_tor_enabled %}
 * [Tor](/tor/index-fr.html)
+{% endif %}
 {% if streisand_wireguard_enabled %}
 * [WireGuard](/wireguard/index-fr.html)
 {% endif %}
@@ -46,4 +48,7 @@ Vous pouvez télécharger le logiciel client nécessaire directement auprès de 
 * [Shadowsocks](/mirror/shadowsocks/index-fr.html)
 {% endif %}
 * [SSH](/mirror/index-fr.html#ssh)
-* [Tor Browser Bundle](/mirror/index-fr.html#tor)
+* [stunnel](/mirror/index-fr.html#stunnel)
+{% if streisand_tor_enabled %}
+* [Tor Browser Bundle](/mirror/tor/index-fr.html)
+{% endif %}

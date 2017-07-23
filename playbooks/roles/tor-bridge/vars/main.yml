@@ -8,7 +8,6 @@ tor_obfs4_bridge_line: "obfs4 {{ streisand_ipv4_address }}:{{ tor_obfs4_port }} 
 tor_state_directory: "/var/lib/tor"
 
 tor_hidden_service_directory: "{{ tor_state_directory }}/hidden_service/"
-tor_hidden_service_url: "http://{{ tor_hidden_service_hostname.stdout }}"
 
 tor_obfs_state_directory: "{{ tor_state_directory }}/pt_state"
 
@@ -18,3 +17,5 @@ tor_markdown_instructions: "{{ tor_gateway_location }}/index.md"
 tor_html_instructions: "{{ tor_gateway_location }}/index.html"
 
 tor_obfs4_qr_code: "{{ tor_gateway_location }}/tor-obfs4-qr-code.png"
+
+tor_internal_hidden_service_address: "127.0.0.1:8181"

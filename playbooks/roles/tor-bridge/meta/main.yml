@@ -1,0 +1,6 @@
+---
+dependencies:
+  # Tor needs to be added to the firewall
+  - { role: ufw }
+  # Tor needs to ensure Nginx is installed to host the hidden service vhost
+  - { role: nginx }

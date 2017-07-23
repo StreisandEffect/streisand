@@ -40,9 +40,13 @@ If you are installing Streisand on an existing server or alternate provider then
   * TCP - {{ shadowsocks_server_port }}
   * UDP - {{ shadowsocks_server_port }}
 {% endif %}
+* stunnel
+  * TCP - {{ stunnel_remote_port }}
+{% if streisand_tor_enabled %}
 * Tor
   * TCP - {{ tor_orport }} - Bridge
   * TCP - {{ tor_obfs4_port }} - obfs4 pluggable transport
+{% endif %}
 {% if streisand_wireguard_enabled %}
 * WireGuard
   * UDP - 53 to/from `{{ dnsmasq_wireguard_ip }}`

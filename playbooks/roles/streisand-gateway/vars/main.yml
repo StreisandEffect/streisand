@@ -17,5 +17,3 @@ nginx_days_valid: "1825"
 nginx_self_signed_certificate: "/etc/ssl/certs/{{ streisand_server_name }}.crt"
 nginx_self_signed_certificate_request: "/etc/ssl/certs/{{ streisand_server_name }}.csr"
 nginx_private_key: "/etc/ssl/private/{{ streisand_server_name }}.key"
-
-nginx_internal_hidden_service_address: "127.0.0.1:8181"

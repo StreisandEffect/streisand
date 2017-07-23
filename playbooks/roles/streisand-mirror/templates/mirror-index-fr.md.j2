@@ -16,7 +16,9 @@ Les fichiers reflétés ci-dessous ont tous été cryptographiquement vérifiés
   * [Shadowsocks](shadowsocks/index-fr.html)
 {% endif %}
   * [OpenSSH](#ssh)
-  * [Tor Browser Bundle](#tor)
+{% if streisand_tor_enabled %}
+  * [Tor Browser Bundle](tor/index-fr.html)
+{% endif %}
 
 <a name="openconnect"></a>
 ### OpenConnect ###
@@ -42,19 +44,3 @@ Les fichiers reflétés ci-dessous ont tous été cryptographiquement vérifiés
 **Windows**
 
 * [{{ putty_filename }}]({{ putty_href }}) ([sig]({{ putty_sig_href }}))
-
-<a name="tor"></a>
-### Tor Browser Bundle (localisé en français) ###
-
-**Linux**
-
-* [{{ tor_linux32_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_linux32_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_linux32_sig_href | regex_replace('locale', item.value.tor_locale) }}))
-* [{{ tor_linux64_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_linux64_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_linux64_sig_href | regex_replace('locale', item.value.tor_locale) }}))
-
-**OS X**
-
-* [{{ tor_osx_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_osx_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_osx_sig_href | regex_replace('locale', item.value.tor_locale) }}))
-
-**Windows**
-
-* [{{ tor_windows_filename_template |  regex_replace('locale', item.value.tor_locale) }}]({{ tor_windows_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_windows_sig_href | regex_replace('locale', item.value.tor_locale) }}))

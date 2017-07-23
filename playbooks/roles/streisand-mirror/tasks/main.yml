@@ -10,7 +10,6 @@
 # Download and verify client files
 - include: openconnect.yml
 - include: ssh.yml
-- include: tor.yml
 
 - name: Generate the Markdown mirror page
   template:
