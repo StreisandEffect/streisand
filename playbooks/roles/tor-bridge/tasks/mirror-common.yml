@@ -1,5 +1,4 @@
 ---
-
 - name: Make the directory where the Tor Project's mirrored files will be stored
   file:
     path: "{{ tor_mirror_location }}"
@@ -39,4 +38,4 @@
   assert: { that: "tor_browser_developers_expected_fingerprint in retrieved_fingerprint.stdout" }
 
 - name: Include the mirror variables for Tor Browser Bundle
-  include_vars: tor-mirror.yml
+  include_vars: mirror.yml
