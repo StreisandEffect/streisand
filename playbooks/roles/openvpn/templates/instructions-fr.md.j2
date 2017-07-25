@@ -1,8 +1,8 @@
 OpenVPN
 -------
-
+{% if streisand_stunnel_enabled %}
 Si les connexions OpenVPN sont bloquées dans votre pays, reportez-vous aux instructions [OpenVPN (stunnel)](/openvpn/stunnel-fr.html) qui vous aideront à envelopper votre trafic OpenVPN dans un tunnel crypté afin qu'il ressemble à du trafic TLS standard.
-
+{% endif %}
 #### Une note sur les fichiers clients ####
 Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs propres certificats et clés privées. Le serveur auquel vous vous connectez a été configuré pour permettre aux clients de partager le même certificat et la même clé privée, mais vous pouvez donner votre téléphone et votre ordinateur portable des clés différentes, par exemple.
 
@@ -74,7 +74,7 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 1. Copiez le fichier `{{ openvpn_direct_profile_filename }}` téléchargé vers l'emplacement de votre choix. */etc/openvpn/* est une bonne option.
 1. Sur certaines distributions, l'option DNS DHCP poussée du serveur OpenVPN sera ignorée. Cela signifie que vos requêtes DNS seront toujours acheminées via les serveurs de votre FAI qui les rend vulnérables à ce que l'on appelle une fuite DNS.
    * Vous pouvez tester si votre DNS ou non est en train de fuir [içi](https://dnsleaktest.com/).
-   * Vous pouvez vous assurer que les serveurs DNS corrects sont utilisés en ajoutant les lignes suivantes au début du fichier `{{ openvpn_stunnel_profile_filename }}`:
+   * Vous pouvez vous assurer que les serveurs DNS corrects sont utilisés en ajoutant les lignes suivantes au début du fichier `{{ openvpn_direct_profile_filename }}`:
      * `script-security 2`
      * `up /etc/openvpn/update-resolv-conf`
      * `down /etc/openvpn/update-resolv-conf`
