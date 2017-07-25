@@ -22,6 +22,7 @@ check process nginx with pidfile /var/run/nginx.pid
     status = 401
   then restart
 
+{% if streisand_openvpn_enabled %}
 
 # OpenVPN
 check process vpn-network with pidfile /var/run/openvpn/server.pid
@@ -46,6 +47,16 @@ check host tun1 with address 10.9.0.1
         icmp type echo count 5 with timeout 15 seconds
     then restart
 
+{% if streisand_stunnel_enabled %}
+# stunnel
+check process stunnel4 with pidfile /var/run/stunnel4.pid
+	  start program = "/etc/init.d/stunnel4 start" with timeout 20 seconds
+	  stop program = "/etc/init.d/stunnel4 stop"
+	  if failed host 127.0.0.1 port {{ stunnel_remote_port }} with timeout 20 seconds then restart
+    if 3 restarts within 5 cycles then unmonitor
+{% endif %}
+
+{% endif %}
 
 # OpenSSH
 check process sshd with pidfile /var/run/sshd.pid
@@ -53,14 +64,6 @@ check process sshd with pidfile /var/run/sshd.pid
    stop program  "/etc/init.d/ssh stop"
    if failed port {{ ssh_port }} protocol ssh then restart
    # if 5 restarts within 5 cycles then timeout
-
-
-# stunnel
-check process stunnel4 with pidfile /var/run/stunnel4.pid
-	start program = "/etc/init.d/stunnel4 start" with timeout 20 seconds
-	stop program = "/etc/init.d/stunnel4 stop"
-	if failed host 127.0.0.1 port {{ stunnel_remote_port }} with timeout 20 seconds then restart
-	if 3 restarts within 5 cycles then unmonitor
 
 
 # dnsmasq

@@ -1,0 +1,6 @@
+---
+- name: Ensure UFW allows stunnel
+  ufw:
+    to_port: "{{ stunnel_remote_port }}"
+    proto: "tcp"
+    rule: "allow"
