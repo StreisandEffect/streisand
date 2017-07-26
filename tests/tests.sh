@@ -18,7 +18,7 @@ source util/ansible_check.sh
 function run_playbook {
   PLAYBOOK="$1"
   EXTRA_FLAGS=(${@:2})
-  ansible-playbook -i "$DIR/inventory" "$PLAYBOOK" "${EXTRA_FLAGS[@]}"
+  ansible-playbook -i "$DIR/inventory" --extra-vars=@global_vars/vars.yml "$PLAYBOOK" "${EXTRA_FLAGS[@]}"
 }
 
 # syntax_check runs `ansible-playbook` with `--syntax-check` to vet Ansible
