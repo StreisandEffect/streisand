@@ -180,11 +180,11 @@
   apt:
     name: uuid
 
-- name: Generate a UUID for this Apple .mobileconfig package
+- name: Generate a UUID for the Apple .mobileconfig package
   shell: uuid -v4
   register: l2tp_mobileconfig_package_uuid
 
-- name: Generate a UUID for this VPN for the Apple .mobileconfig package
+- name: Generate a UUID for the VPN for the Apple .mobileconfig package
   shell: uuid -v4
   register: l2tp_mobileconfig_vpn_uuid
 
