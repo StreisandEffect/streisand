@@ -23,6 +23,9 @@ Vagrant.configure(2) do |config|
           "streisand_ipv4_address" => "10.0.0.10"
         }
       }
+      ansible.raw_arguments  = [
+        "--extra-vars=@global_vars/vars.yml"
+      ]
     end
   end
 
