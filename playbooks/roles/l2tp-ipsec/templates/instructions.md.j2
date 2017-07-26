@@ -45,9 +45,17 @@ You can verify that your traffic is being routed properly by [looking up your IP
 <a name="osx"></a>
 ### OS X ###
 
-There are two ways to configure the OS X L2TP VPN to connect to this Streisand server. The easiest is to install an OS X *profile* containing the VPN definition. You can also set it up manually.
+There are two ways to configure the OS X L2TP VPN to connect to this Streisand server. The easier is to install an OS X *profile* containing the VPN definition. You can also set up the VPN manually.
 
-The profile is [available here](streisand.mobileconfig).
+To install via profile, click here:
+
+ [__`streisand.mobileconfig`__](streisand.mobileconfig)
+
+If the file is downloaded successfully, OS X will ask if you want to install it. Click "Continue" to do so.
+
+Your installed profiles are managed in the System Preferences "Profiles" pane. Streisand's profiles may be removed at any time.
+
+Please note that profiles are very powerful, and you should be careful installing unknown profiles. OS X will display which features would be configured by a profile before you install it. In Streisand's case, the only feature will be "VPN Service".
 
 If you'd prefer to set it up manually:
 
@@ -102,9 +110,17 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 <a name="ios"></a>
 ### iOS ###
 
-There are two ways to configure the iOS L2TP VPN to connect to this Streisand server. The easiest is to install an iOS *profile* containing the VPN definition. You can also set it up manually.
+There are two ways to configure the iOS L2TP VPN to connect to this Streisand server. The easier is to install an iOS *profile* containing the VPN definition. You can also set up the VPN manually.
 
-The profile is [available here](streisand.mobileconfig).
+To install via profile, tap here:
+
+ [__`streisand.mobileconfig`__](streisand.mobileconfig)
+
+If the file is downloaded successfully, iOS will will ask if you want to install the profile. Click "Install". iOS will prompt for your PIN to confirm it's you installing a profile. iOS will then (correctly) warn you that a VPN server like Streisand could monitor your network traffic. If this is acceptable to you, click "Install" again.
+
+Your installed profiles are managed in iOS Settings. Near the bottom of the "General" settings, there is a "Profiles" sub-menu listing all your installed profiles. Streisand's profiles may be removed at any time.
+
+Please note that profiles are very powerful, and you should be careful installing unknown profiles. iOS will display which features would be configured by a profile before you install it. In Streisand's case, the only feature will be "VPN Service".
 
 If you'd prefer to set it up manually:
 
