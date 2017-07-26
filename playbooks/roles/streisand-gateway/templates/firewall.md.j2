@@ -23,12 +23,18 @@ If you are installing Streisand on an existing server or alternate provider then
   * UDP - {{ ocserv_port }}
 * OpenSSH
   * TCP - {{ ssh_port }}
+{% if streisand_openvpn_enabled %}
 * OpenVPN
   * UDP - 53 to/from `{{ dnsmasq_openvpn_tcp_ip }}`
   * UDP - 53 to/from `{{ dnsmasq_openvpn_udp_ip }}`
     * Dnsmasq listens for DNS traffic on these IPs and responds to requests from connected OpenVPN clients.
   * TCP - {{ openvpn_port }}
   * UDP - {{ openvpn_port_udp }}
+{% if streisand_stunnel_enabled %}
+* stunnel
+  * TCP - {{ stunnel_remote_port }}
+{% endif %}
+{% endif %}
 {% if streisand_shadowsocks_enabled %}
 * Shadowsocks
   * TCP - {{ shadowsocks_server_port }}
@@ -36,9 +42,11 @@ If you are installing Streisand on an existing server or alternate provider then
 {% endif %}
 * stunnel
   * TCP - {{ stunnel_remote_port }}
+{% if streisand_tor_enabled %}
 * Tor
   * TCP - {{ tor_orport }} - Bridge
   * TCP - {{ tor_obfs4_port }} - obfs4 pluggable transport
+{% endif %}
 {% if streisand_wireguard_enabled %}
 * WireGuard
   * UDP - 53 to/from `{{ dnsmasq_wireguard_ip }}`

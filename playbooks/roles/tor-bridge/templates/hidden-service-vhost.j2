@@ -1,0 +1,14 @@
+# Streisand Tor Hidden Service Gateway
+server {
+  listen {{ tor_internal_hidden_service_address }};
+
+  auth_basic            "Authorization Required";
+  auth_basic_user_file  {{ streisand_gateway_htpasswd_file }};
+
+  # Disable all logging
+  access_log /dev/null;
+  error_log  /dev/null crit;
+
+  root  {{ streisand_gateway_location }};
+  index index.html index.htm;
+}

@@ -20,6 +20,12 @@
     - obfs4proxy
     - tor
 
+# Update the firewall to allow Tor and obfs4proxy
+# NOTE(@cpu): we do this early in the role because the Tor daemon will check if
+# the obfs4proxy port is externally accessible during startup and we want to
+# make sure it is.
+- include: firewall.yml
+
 - name: Generate a random Nickname for the bridge
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ //' | cut -c 1-16 > {{ tor_bridge_nickname_file }}
   args:
@@ -85,7 +91,26 @@
 
 - name: Register the Tor Hidden Service hostname
   command: cat {{ tor_hidden_service_directory }}/hostname
-  register: tor_hidden_service_hostname
+  register: tor_hidden_service_hostname_output
+
+- name: Register the Tor Hidden Service URL fact
+  set_fact:
+    tor_hidden_service_url: "http://{{ tor_hidden_service_hostname_output.stdout }}"
+
+- name: Generate the hidden service virtual host and restart Nginx if it is updated
+  template:
+    src: hidden-service-vhost.j2
+    dest: /etc/nginx/sites-available/streisand-hidden-service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Nginx
+
+- name: Enable the virtual host
+  file:
+    path: /etc/nginx/sites-enabled/streisand-hidden-service
+    src: /etc/nginx/sites-available/streisand-hidden-service
+    state: link
 
 - name: Discover the server fingerprint
   command: "awk '{ print $2 }' {{ tor_state_directory }}/fingerprint"
@@ -95,23 +120,8 @@
   shell: cat "{{ tor_obfs_state_directory }}/obfs4_bridgeline.txt" | grep 'Bridge obfs4' | sed -e 's/^.*cert=\(.*\) .*$/\1/'
   register: tor_obfs4_certificate
 
-- name: Create the Tor Gateway directory
-  file:
-    path: "{{ tor_gateway_location }}"
-    owner: www-data
-    group: www-data
-    mode: 0750
-    state: directory
+# Generate the docs gateway page
+- include: docs.yml
 
-- name: Generate the Tor obfs4 QR code
-  shell: echo -n '{{ tor_obfs4_bridge_line }}' | qrencode -s 6 -o {{ tor_obfs4_qr_code }}
-
-- name: Generate the Markdown Tor instructions
-  template:
-    src: instructions{{ item.value.file_suffix }}.md.j2
-    dest: "{{ tor_gateway_location }}/index{{ item.value.file_suffix}}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the Markdown Tor instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ tor_gateway_location }}/index{{ item.value.file_suffix}}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ tor_gateway_location }}/index{{ item.value.file_suffix}}.html
-  with_dict: "{{ streisand_languages }}"
+# Mirror the Tor browser bundle
+- include: mirror.yml

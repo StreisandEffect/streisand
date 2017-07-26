@@ -7,11 +7,15 @@ Unattended-Upgrade::Allowed-Origins {
     // Autoupdate Nginx
     "nginx:${distro_codename}";
 
+{% if streisand_openvpn_enabled %}
     // Autoupdate OpenVPN
     "Freight:${distro_codename}";
+{% endif %}
 
+{% if streisand_tor_enabled %}
     // Autoupdate Tor
     "TorProject:${distro_codename}";
+{% endif %}
 };
 
 // List of packages to not update

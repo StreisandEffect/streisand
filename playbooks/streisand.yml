@@ -9,13 +9,14 @@
   become: true
 
   roles:
+    - validation
     - common
     # OpenConnect must be set up before L2TP/IPsec in order to avoid
     # compilation issues.
     - openconnect
     - l2tp-ipsec
-    - openvpn
-    - stunnel
+    - role: openvpn
+      when: streisand_openvpn_enabled
     - role: shadowsocks
       when: streisand_shadowsocks_enabled
     - ssh
@@ -23,7 +24,7 @@
     # tor-bridge is skipped in our full Ansible run on Travis CI due to
     # connectivity issues.
     - role: tor-bridge
-      when: not streisand_ci
+      when: not streisand_ci and streisand_tor_enabled
     - sslh
     - monit
     - ufw
