@@ -41,16 +41,6 @@
         from_port: "1701"
         to_port: "1701"
         cidr_ip: 0.0.0.0/0
-      # OpenConnect (ocserv)
-      # ---
-      - proto: tcp
-        from_port: "{{ ocserv_port }}"
-        to_port: "{{ ocserv_port }}"
-        cidr_ip: 0.0.0.0/0
-      - proto: udp
-        from_port: "{{ ocserv_port }}"
-        to_port: "{{ ocserv_port }}"
-        cidr_ip: 0.0.0.0/0
       # SSH
       # ---
       - proto: tcp
@@ -62,6 +52,33 @@
         from_port: 1
         to_port: 65535
         cidr_ip: 0.0.0.0/0
+
+# OpenConnect
+# ---
+- name: Open the OpenConnect ports in the EC2 security group
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    purge_rules: no
+    purge_rules_egress: no
+    rules:
+      # OpenConnect TCP
+      # ---
+      - proto: tcp
+        from_port: "{{ ocserv_port }}"
+        to_port: "{{ ocserv_port }}"
+        cidr_ip: 0.0.0.0/0
+      # OpenConnect TCP
+      # ---
+      - proto: udp
+        from_port: "{{ ocserv_port }}"
+        to_port: "{{ ocserv_port }}"
+        cidr_ip: 0.0.0.0/0
+  when: streisand_openconnect_enabled
 
 # OpenVPN
 # ---
