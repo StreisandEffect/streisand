@@ -1,8 +1,10 @@
 ![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
 
 - - -
-[English](README.md), [Français](README-fr.md) | [Mirror](https://area51.threeletter.agency/mirrors/streisand)
+[English](README.md), [Français](README-fr.md) | [Mirror](https://area51.threeletter.agency/mirrors/streisand) | [Mirror 2](https://gitlab.com/alimakki/streisand)
 - - -
+
+[![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand)
 
 Streisand
 =========
