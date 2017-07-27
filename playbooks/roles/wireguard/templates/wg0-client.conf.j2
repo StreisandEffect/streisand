@@ -1,12 +1,13 @@
 [Interface]
 Address = 10.192.122.2/32
-# These PostUp and PostDown commands should work on most distributions,
-# but you may need to modify them if your network situation is unique.
-#
+# The use of DNS below effectively expands to:
+#   PostUp = echo nameserver {{ dnsmasq_wireguard_ip }} | resolvconf -a tun.%i -m 0 -x
+#   PostDown = resolvconf -d tun.%i
+# If the use of resolvconf is not desirable, simply remove the DNS line
+# and use a variant of the PostUp/PostDown lines above.
 # The IP address of the DNS server that is available via the encrypted
 # WireGuard interface is {{ dnsmasq_wireguard_ip }}.
-PostUp = echo nameserver {{ dnsmasq_wireguard_ip }} | resolvconf -a tun.%i -m 0 -x
-PostDown = resolvconf -d tun.%i
+DNS = {{ dnsmasq_wireguard_ip }}
 PrivateKey = {{ wireguard_client_private_key }}
 
 [Peer]

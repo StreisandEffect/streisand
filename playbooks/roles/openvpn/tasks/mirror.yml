@@ -10,6 +10,22 @@
     mode: 0755
     state: directory
 
+- name: Copy the OpenVPN security mailing list key
+  copy:
+    src:  "{{ openvpn_security_mailing_list_key_name }}"
+    dest: "{{ openvpn_mirror_location }}"
+    mode: 0600
+
+- name: Import the OpenVPN security mailing list key into the GPG keyring
+  command: "gpg --import {{ openvpn_mirror_location }}/{{ openvpn_security_mailing_list_key_name }}"
+
+- name: Register the gpg key fingerprints
+  command: "gpg --list-keys --fingerprint"
+  register: gpg_fingerprint_results
+
+- name: Ensure the OpenVPN security mailing list key fingerprint matches the expected fingerint
+  assert: { that: "openvpn_security_mailing_list_key_fingerprint in gpg_fingerprint_results.stdout" }
+
 - block:
     - name: Mirror Tunnelblick for OS X
       get_url:
