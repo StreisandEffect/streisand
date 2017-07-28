@@ -7,14 +7,4 @@
     group: root
     mode: 0644
   notify: Restart rsyslog
-
-- name: Copy the modified rsyslog configuration into place that prevents OpenConnect traffic from being logged
-  copy:
-    src: 41-openconnect.conf
-    dest: /etc/rsyslog.d/40-ipsec.conf
-    owner: root
-    group: root
-    mode: 0644
-  when: streisand_openconnect_enabled
-  notify: Restart rsyslog
 ...

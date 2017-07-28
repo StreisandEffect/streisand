@@ -4,17 +4,18 @@
     name: "{{ item }}"
   with_items: "{{ ocserv_dependencies }}"
 
-- name: Retrieve the ocserv source code
-  get_url:
-    # This CDN mirrors the ocserv source code, and helps
-    # mitigate connection errors that were occurring when
-    # using the project's official download location.
-    url: https://d25kfp60e9u1dw.cloudfront.net/{{ ocserv_source_filename }}
-    dest: "{{ ocserv_source_location }}"
-    checksum: "{{ ocserv_checksum }}"
-    owner: root
-    group: root
-    mode: 0644
+- name: Download the ocserv source code and signature file
+  include_role:
+    name: download-and-verify
+  vars:
+    project_name: "OpenConnect"
+    project_signer: "Nikos Mavrogiannopoulos"
+    project_signing_key: "{{ ocserv_gpg_key_id }}"
+    project_expected_fingerprint: "{{ ocserv_gpg_key_fingerprint }}"
+    project_download_location: "/usr/local/src/"
+    project_download_urls: "{{ ocserv_download_urls }}"
+    gpg_key_server_address: "{{ mit_gpg_keyserver_address }}"
+    signature_extension: "{{ ocserv_sig_extension }}"
 
 - name: Extract the ocserv source code
   unarchive:
@@ -30,3 +31,20 @@
   args:
     chdir: "{{ ocserv_compilation_directory }}"
     creates: "{{ ocserv_compilation_directory }}/config.log"
+
+- name: Create the OpenConnect rsyslog configuration directory
+  file:
+    path: /etc/rsyslog.d/openconnect.d/
+    owner: root
+    group: root
+    mode: 0644
+    state: directory
+
+- name: Copy the modified rsyslog configuration into place that prevents OpenConnect traffic from being logged
+  copy:
+    src: openconnect.conf
+    dest: /etc/rsyslog.d/openconnect.d/openconnect.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart rsyslog

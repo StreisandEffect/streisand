@@ -72,7 +72,7 @@
         from_port: "{{ ocserv_port }}"
         to_port: "{{ ocserv_port }}"
         cidr_ip: 0.0.0.0/0
-      # OpenConnect TCP
+      # OpenConnect UDP
       # ---
       - proto: udp
         from_port: "{{ ocserv_port }}"
