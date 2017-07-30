@@ -78,7 +78,7 @@ Services fournis
   * Les règles de pare-feu sont configurées pour chaque service et tout trafic qui est envoyé vers un port non autorisé sera bloqué.
 * [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
   * Votre serveur Streisand est configuré pour installer automatiquement de nouvelles mises à jour de sécurité.
-* [WireGuard](https://www.wireguard.io/)
+* [WireGuard](https://www.wireguard.com/)
   * Les utilisateurs Linux peuvent profiter d'un VPN de nouvelle génération qui est simple mais à la même fois moderne, basé dans le noyau, et utilise des principes cryptographiques modernes que toutes les autres solutions VPN ne fournissent pas.
 
 Installation
@@ -188,7 +188,7 @@ S'il ya quelque chose que vous pensez que Streisand devrait faire, ou si vous tr
 
 Remerciements
 -------------
-[Jason A. Donenfeld](https://www.zx2c4.com/) mérite beaucoup de crédit pour être assez courageux à réimaginer ce qu'est un VPN moderne devrait ressembler et pour mettre au monde quelque chose aussi épatant que [WireGuard](https://www.wireguard.io/). Il a mes sincères remerciements pour toute son aide, patience et ses commentaires.
+[Jason A. Donenfeld](https://www.zx2c4.com/) mérite beaucoup de crédit pour être assez courageux à réimaginer ce qu'est un VPN moderne devrait ressembler et pour mettre au monde quelque chose aussi épatant que [WireGuard](https://www.wireguard.com/). Il a mes sincères remerciements pour toute son aide, patience et ses commentaires.
 
 [Corban Raun](https://github.com/CorbanR) à eu la gentillesse de me prêter un ordinateur portable Windows qui m'a permi de tester et d'affiner les instructions pour cette plate-forme, aussi bien qu'il était un grand partisan du projet dès le début.
 
