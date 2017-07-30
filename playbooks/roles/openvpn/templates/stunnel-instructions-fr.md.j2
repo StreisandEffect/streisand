@@ -46,7 +46,7 @@ Maintenant, vous êtes prêt à installer OpenVPN et à le configurer pour achem
 1. Allez à l'onglet *Compatibilité* et cliquez sur la coche *Exécuter ce programme en tant qu'administrateur* dans la section *Niveau du privilège*.
 1. Double-cliquez sur l'icône OpenVPN GUI situé sur votre bureau afin de lancer l'application.
 1. Téléchargez l'un de ces profils OpenVPN unifiés:
-{% for client in openvpn_clients %}
+{% for client in vpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
 1. Ouvrez le directoire *config* situé dans le dossier de destination. Pour la plupart des utilisateurs, ça sera *C:\Programmes\OpenVPN\config* ou *C:\Program Files (x86)\OpenVPN\config*. Vous verrez un seul fichier README dans ce répertoire.
@@ -81,7 +81,7 @@ Maintenant, vous êtes prêt à installer OpenVPN et à le configurer pour achem
 1. Cliquez *Lancer* une fois l'installation est terminée.
 1. Cliquez *J'ai des fichiers de configuration*.
 1. Téléchargez l'un des profils unifiés d'OpenVPN:
-{% for client in openvpn_clients %}
+{% for client in vpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
 1. Double-cliquez le profile OpenVPN.
@@ -117,7 +117,7 @@ Maintenant, vous êtes prêt à installer OpenVPN et à le configurer pour achem
 
    * Si l'installation de OpenVPN via votre gestionnaire de paquetage n'est pas une option, vous pouvez également télécharger et compiler le [code source OpenVPN](/mirror/index-fr.html#openvpn).
 1. Téléchargez l'un de ces profils OpenVPN unifiés:
-{% for client in openvpn_clients %}
+{% for client in vpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
 1. Copiez le fichier `{{ openvpn_direct_profile_filename }}` téléchargé vers l'emplacement de votre choix. */etc/openvpn/* est une bonne option.
@@ -157,7 +157,7 @@ Maintenant, vous êtes prêt à installer OpenVPN pour Android et à le configur
 ### Installation OpenVPN ###
 1. Installez [OpenVPN pour Androïde](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=fr).
 1. Téléchargez l'un de ces profils OpenVPN unifiés:
-{% for client in openvpn_clients %}
+{% for client in vpn_clients %}
    * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
 1. Copiez le fichier `{{ openvpn_stunnel_profile_filename }}` sur votre téléphone.

@@ -11,7 +11,7 @@
   command: cp --recursive {{ openvpn_path }}/{{ item }} {{ openvpn_gateway_location }}
   args:
     creates: "{{ openvpn_gateway_location }}/{{ item }}/ca.crt"
-  with_items: "{{ openvpn_clients }}"
+  with_items: "{{ vpn_clients }}"
 
 - name: Generate the Markdown OpenVPN instructions
   template:
