@@ -4,9 +4,6 @@
   remote_user: root
   become: yes
   pre_tasks:
-    # NOTE(@alimakki): Due to key rotation, we pre-emptivley
-    # add the Google linux apt signing key required by some
-    # packages
     - name: Install the Google linux apt signing key
       shell: "{{ item }}"
       with_items:

@@ -8,10 +8,13 @@
     state: directory
 
 - name: Copy the client files to the OpenVPN Gateway directory
-  command: cp --recursive {{ openvpn_path }}/{{ item }} {{ openvpn_gateway_location }}
+  command: cp --recursive {{ openvpn_path }}/{{ client_name.stdout }} {{ openvpn_gateway_location }}
   args:
-    creates: "{{ openvpn_gateway_location }}/{{ item }}/ca.crt"
-  with_items: "{{ vpn_clients }}"
+    creates: "{{ openvpn_gateway_location }}/{{ client_name.stdout }}/ca.crt"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:   
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
 - name: Generate the Markdown OpenVPN instructions
   template:

@@ -1,18 +1,32 @@
 OpenConnect / Cisco AnyConnect
 ------------------------------
 
-OpenConnect is an extremely high-performance and lightweight VPN server that also features full compatibility with the official Cisco AnyConnect clients. The [protocol](http://www.infradead.org/ocserv/technical.html) is built on top of standards like HTTP, TLS, and DTLS, and it's one of the most popular and widely used VPN technologies among large multi-national corporations. This means that in addition to its ease-of-use and speed, OpenConnect is also highly resistant to censorship and is almost never blocked.
+OpenConnect is an extremely high-performance and lightweight VPN server that also features full compatibility with the official Cisco AnyConnect clients. The [protocol](http://www.infradead.org/ocserv/technical.html) is built on top of standards like HTTP, TLS, and DTLS, and it's one of the most popular and widely used VPN technologies. Due to its use among large multi-national corporations, it often means that at the protocol level, it is seldom targetted for censorship.
 
 ---
 * Platforms
+  * [Certificates](#clientcerts)
   * [Windows](#windows)
   * [OS X](#osx)
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
 
+<a name="clientcerts"></a>
+### Server and client Certifcates (OS X, Android, iOS) ###
+
+Certificates are a mechanism by which through [public key crypytography](https://en.wikipedia.org/wiki/Public-key_cryptography) allow for secure authentication to a given resource. OS X, Andoid and iOS OpenConnect/AnyConnect support this form of authentication, and is the recommended approach to connect to your Streisand OpenConnect VPN.
+
+1. Your OpenConnect server issues its own __public certificate__. This is used by your device's client software (such as AnyConnect for iOS) to securely identify the VPN server. Download this server's certificate.
+   * [ca-cert.pem](/openconnect/ca-cert.pem)
+1. Each device you wish to configure needs a __client certificate__ in addition to the public certificate above. A client certificate is used to securely identify and authenticate your device to the VPN server. Two devices can't use the same client certtifcate and be logged in at the same time (one client certificate per device). Each client certificate is protected by a password, which will be needed to unlock it once you import it into your device.
+{% for client in ocserv_client_pkcs12_password_list.results %}
+   * [{{ client.client_name.stdout }}.p12](/openconnect/{{ client.client_name.stdout }}.p12), password: `{{ client.stdout }}` 
+{% endfor %}
+
 <a name="windows"></a>
 ### Windows ###
+
 1. Download the [OpenConnect GUI installer](/mirror/#openconnect).
 1. Run the OpenConnect GUI installer.
 1. Complete the TAP-Windows Setup Wizard.
@@ -41,23 +55,24 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 
 <a name="osx"></a>
 ### OS X ###
+
 1. Install [Homebrew](https://brew.sh/), if you haven't already.
 1. Install OpenConnect using Homebrew:
 
    `brew install openconnect`
 
    * If installing Homebrew is not an option, you can also download and compile the [OpenConnect source code](/mirror/#openconnect).
-1. Download the CA and client certificate files:
-   * [ca-cert.pem](/openconnect/ca-cert.pem)
-   * [client.p12](/openconnect/client.p12)
-1. Place the downloaded files into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
+1. Download the [ca-cert.pem](/openconnect/ca-cert.pem) file, and a [client certificate file](#clientcerts) from the list above.
+1. Place the downloaded CA certificate a selected client certificate into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
 1. Run OpenConnect:
 
-   `sudo openconnect --cafile ca-cert.pem --certificate client.p12 --key-password '{{ ocserv_pkcs12_password.stdout }}' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
+  `sudo openconnect --cafile ca-cert.pem --certificate your-client-certificate.p12 --key-password 'your-client-certificate-password' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
 
 <a name="linux"></a>
 ### Linux ###
+
 1. Install the OpenConnect plugin for NetworkManager.
 
    `sudo apt-get install network-manager-openconnect-gnome`
@@ -79,8 +94,7 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 
 <a name="android"></a>
 ### Android ###
-1. Transfer the [client profile](/openconnect/client.p12) to your Android device.
-   * The profile can be downloaded on the device itself using the link above, or copied from your computer via USB.
+
 1. Download [Cisco AnyConnect](https://play.google.com/store/apps/details?id=com.cisco.anyconnect.vpn.android.avf) from Google Play.
 1. Launch the application.
 1. Tap *OK* to accept the "Supplemental End User License Agreement for AnyConnect&reg; Secure Mobility Client vx.x and other VPN-related Software".
@@ -93,9 +107,10 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. Tap *Server Address* and enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}`.
 1. Tap *Advanced Preferences*.
 1. Tap *Certificate*.
-1. Tap *Import*, tap *File System*, and select the `client.p12` file that you transferred in Step 1.
-   * Check the `Download` folder if you downloaded the file directly to the device. This is where Chrome places its files, for example.
-1. Enter `{{ ocserv_pkcs12_password.stdout }}` when the *Password* prompt is displayed, and tap *Connect*.
+  * Each profile can be downloaded on the device itself using the [links above](#clientcerts), or copied from your computer via USB.
+1. Check the `Download` folder if you downloaded the file directly to the device. This is where Chrome places its files, for example.
+1. Tap *Import*, tap *File System*, and select a [client certificate file](#clientcerts) from the list above that you transferred.
+1. Enter your client certificate password when the *Password* prompt is displayed, and tap *Connect*.
 1. You'll see a checkmark next to the newly imported certificate. Tap the back button.
 1. Tap *Done* twice to save the connection.
 1. Tap the back button to return to the main screen. You should see `{{ streisand_server_name }}` in the *Connection* section.
@@ -117,12 +132,14 @@ If you're affected, you can use this workaround:
 
 <a name="ios"></a>
 ### iOS ###
-1. Download and install the [client profile](/openconnect/client.p12) on your iOS device.
-   * The profile can be emailed to your device (simply tap the attachment), transferred via the [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12) utility, or downloaded directly by viewing these instructions on the device itself and tapping [here](/openconnect/client.p12).
-   * Follow the on-screen instructions.
-   * You will be prompted to enter your device password or pin.
-   * Enter `{{ ocserv_pkcs12_password.stdout }}` when the *ENTER THE PASSWORD FOR THE CERTIFICATE...* prompt is displayed.
-   * Once the profile is installed, you are ready to continue.
+
+1. Transfer a [client certificate](#clientcerts) for each device you wish to configure:
+  * The profile can be emailed to your device (simply tap the attachment), transferred via the [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12) utility, or downloaded directly by viewing these instructions on the device itself.
+1. Follow the on-screen instructions.
+1. You will be prompted to enter your device password or pin.
+1. Enter your client certificate password when the *ENTER THE PASSWORD FOR THE CERTIFICATE...* prompt is displayed.
+  * Once the profile is installed, you are ready to continue.
+
 1. Download [Cisco AnyConnect](https://itunes.apple.com/us/app/cisco-anyconnect/id392790924) from the App Store.
 1. Launch the application.
 1. Tap *OK* to enable the software when the dialog box appears.
