@@ -13,7 +13,8 @@
     - common
     # OpenConnect must be set up before L2TP/IPsec in order to avoid
     # compilation issues.
-    - openconnect
+    - role: openconnect
+      when: streisand_openconnect_enabled
     - l2tp-ipsec
     - role: openvpn
       when: streisand_openvpn_enabled

@@ -5,7 +5,9 @@ Les fichiers reflétés ci-dessous ont tous été cryptographiquement vérifiés
 
 ---
 * Les clients
-  * [OpenConnect](#openconnect)
+{% if streisand_openconnect_enabled %}
+  * [OpenConnect](openconnect/index-fr.html)
+{% endif %}
 {% if streisand_openvpn_enabled %}
   * [OpenVPN](openvpn/index-fr.html)
 {% if streisand_stunnel_enabled %}
@@ -19,19 +21,6 @@ Les fichiers reflétés ci-dessous ont tous été cryptographiquement vérifiés
 {% if streisand_tor_enabled %}
   * [Tor Browser Bundle](tor/index-fr.html)
 {% endif %}
-
-<a name="openconnect"></a>
-### OpenConnect ###
-
-**Source**
-
-* [{{ openconnect_source_filename }}]({{ openconnect_source_href }})
-  * Somme de contrôle: *{{ openconnect_source_checksum }}*
-
-**Windows**
-
-* [{{ openconnect_windows_filename }}]({{ openconnect_windows_href }})
-  * Somme de contrôle: *{{ openconnect_windows_checksum }}*
 
 <a name="ssh"></a>
 ### SSH ###
