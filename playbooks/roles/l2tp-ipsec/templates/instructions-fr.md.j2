@@ -44,6 +44,22 @@ Vous pouvez vérifier que votre trafic est correctement routé par [recherche de
 
 <a name="osx"></a>
 ### OS X ###
+
+Il existe deux façons de configurer le VPN OS X L2TP pour se connecter à votre serveur Streisand. Le moyen le plus simple est d'installer un *profil* OS X contenant la configuration VPN. Vous pouvez également configurer le VPN [manuellement](#osx_manual).
+
+Pour installer via le profil, cliquez ici:
+
+ [__`streisand.mobileconfig`__](streisand.mobileconfig)
+
+Si le fichier est téléchargé avec succès, OS X vous demandera si vous souhaitez l'installer. Cliquez sur *Continuer* pour le confirmer. Une fois installé, vous pouvez [activer le VPN](#osx_connect).
+
+Vos profils installés sont gérés dans le volet "Profils" des Préférences du système. Les profils de Streisand peuvent être retirés à tout moment.
+
+Notez que les profils sont très puissants et que vous devez faire attention à l'installation des profils inconnus. OS X affichera quelles fonctionnalités seraient configurées par un profil avant l'installation. Dans le cas de Streisand, la seule fonctionnalité devra être "Service VPN".
+
+<a name="osx_manual"></a>
+Si vous préférez le configurer manuellement:
+
 1. Ouvrir les préférences du système et aller à la section réseau
 1. Cliquez le bouton *+* dans le coin inférieur gauche de la fenêtre.
 1. Sélectionnez *VPN* dans le menu déroulant *Interface*.
@@ -61,7 +77,14 @@ Vous pouvez vérifier que votre trafic est correctement routé par [recherche de
 1. Cliquez l'onglet *TCP/IP* tab, et vérifiez que l'option *Lien locale uniquement* est sélectionné dans la section *Configurer IPv6*.
 1. Cliquez *OK* pour fermer le menu avancé, puis cliquez *Appliquer* pour sauvgarder le details du connexion VPN.
 
-Vous pouvez vous connecter au VPN à l'aide de l'icône VPN dans la barre de menus, Ou en sélectionnant le VPN dans la section Réseau des Préférences Système et choisir *Se connecter*. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+<a name="osx_connect"></a>
+#### Connexion sur OS X ####
+Pour activer le VPN:
+
+* Utilisez l'icône VPN dans la barre de menus, ou
+* Ouvrir *Réseau* dans *Préférences Système*. Cliquez sur l'entrée Streisand dans la liste des connexions. Appuyez sur le bouton *Se Connecter*.
+
+Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="linux"></a>
 ### Linux ###
@@ -93,7 +116,13 @@ Les connexions L2TP / IPsec ne sont pas prises en charge sur la plupart des dist
 
 <a name="ios"></a>
 ### iOS ###
-1. Lancez l'application Réglages -> Général -> VPN.
+
+Il existe deux façons de configurer le VPN iOS L2TP pour se connecter à votre serveur Streisand. Le moyen le plus simple est d'installer un *profil* iOS contenant la configuration VPN. Vous pouvez également configurer le VPN [manuellement](#ios_manual).
+
+<a name="ios_manual"></a>
+Si vous préférez le configurer manuellement:
+
+1. Ouvrez *Réglages* -> *Général* -> *VPN*.
 1. Tapez *Ajouter une configuration VPN...*.
 1. Tapez *Type*.
 1. Sélectionnez *L2TP* et retourner.
@@ -103,6 +132,14 @@ Les connexions L2TP / IPsec ne sont pas prises en charge sur la plupart des dist
 1. Tapez *Mot de passe* et saisissez `{{ chap_password.stdout }}`.
 1. Tapez *Secret* et saisissez `{{ ipsec_preshared_key.stdout }}`.
 1. Tapez *OK*.
+1. Faites glisser l'interrupteur *VPN* vers la position ON.
+1. Une fois connecté, vous verrez une icône VPN dans la barre d'état. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+<a name="ios_connect"></a>
+#### Connexion sur iOS ####
+Pour activer le VPN:
+
+1. Ouvrez *Réglages* -> *Général* -> *VPN*.
 1. Faites glisser l'interrupteur *VPN* vers la position ON.
 1. Une fois connecté, vous verrez une icône VPN dans la barre d'état. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
