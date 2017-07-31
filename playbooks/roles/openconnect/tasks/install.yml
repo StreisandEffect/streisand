@@ -10,7 +10,7 @@
     dest: /usr/local/src
     mode: 0600
 
-- name: Import the OpenVPN security mailing list key into the GPG keyring
+- name: Import the ocserv key into the GPG keyring
   command: "gpg --import /usr/local/src/ocserv_signing.key"
 
 - name: Register the gpg key fingerprints
