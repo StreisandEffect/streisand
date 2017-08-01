@@ -1,7 +1,7 @@
 ![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
 
 - - -
-[English](README.md), [Français](README-fr.md) | [Mirror](https://area51.threeletter.agency/mirrors/streisand)
+[English](README.md), [Français](README-fr.md) | [Mirror](https://area51.threeletter.agency/mirrors/streisand) | [Mirror 2](https://gitlab.com/alimakki/streisand)
 - - -
 
 [![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand)
@@ -78,7 +78,7 @@ Services Provided
   * Firewall rules are configured for every service, and any traffic that is sent to an unauthorized port will be blocked.
 * [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
   * Your Streisand server is configured to automatically install new security updates.
-* [WireGuard](https://www.wireguard.io/)
+* [WireGuard](https://www.wireguard.com/)
   * Linux users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast and uses modern cryptographic principles that all other highspeed VPN solutions lack.
 
 Installation
@@ -195,7 +195,7 @@ If there is something that you think Streisand should do, or if you find a bug i
 
 Acknowledgements
 ----------------
-[Jason A. Donenfeld](https://www.zx2c4.com/) deserves a lot of credit for being brave enough to reimagine what a modern VPN should look like and for coming up with something as good as [WireGuard](https://www.wireguard.io/). He has my sincere thanks for all of his patient help and high-quality feedback.
+[Jason A. Donenfeld](https://www.zx2c4.com/) deserves a lot of credit for being brave enough to reimagine what a modern VPN should look like and for coming up with something as good as [WireGuard](https://www.wireguard.com/). He has my sincere thanks for all of his patient help and high-quality feedback.
 
 [Corban Raun](https://github.com/CorbanR) was kind enough to lend me a Windows laptop that let me test and refine the instructions for that platform, and he was a big supporter of the project from the very beginning.
 

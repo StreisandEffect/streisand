@@ -64,9 +64,9 @@
   register: ipsec_preshared_key
 
 - name: Register the IPsec pre-shared key as base64
-  command: cat {{ ipsec_preshared_key_file }} | base64
+  shell: cat {{ ipsec_preshared_key_file }} | tr -d '\n' | base64
   register: ipsec_preshared_key_base64
-  
+
 - name: Generate IPsec secrets file
   template:
     src: ipsec.secrets.j2
@@ -179,12 +179,12 @@
 - name: Get a UUID generator with an explicit random function.
   apt:
     name: uuid
-  
-- name: Generate a UUID for this Apple .mobileconfig package
+
+- name: Generate a UUID for the Apple .mobileconfig package
   shell: uuid -v4
   register: l2tp_mobileconfig_package_uuid
 
-- name: Generate a UUID for this VPN for the Apple .mobileconfig package
+- name: Generate a UUID for the VPN for the Apple .mobileconfig package
   shell: uuid -v4
   register: l2tp_mobileconfig_vpn_uuid
 
@@ -192,5 +192,3 @@
   template:
     src: streisand.mobileconfig.j2
     dest: "{{ l2tp_ipsec_gateway_location }}/streisand.mobileconfig"
-
-    

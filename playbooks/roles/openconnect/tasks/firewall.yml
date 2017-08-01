@@ -1,0 +1,27 @@
+---
+- name: Ensure UFW allows DNS requests from OpenConnect clients
+  ufw:
+    to_port: "53"
+    proto: "udp"
+    rule: "allow"
+    from_ip: "192.168.1.0/24"
+
+- name: Ensure UFW allows OpenConnect (ocserv)
+  ufw:
+    to_port: "{{ ocserv_port }}"
+    proto: "any"
+    rule: "allow"
+
+- name: Enable NAT
+  command: "{{ ocserv_firewall_rule }}"
+
+- name: "Add Openconnect firewall persistence service to init"
+  template:
+    src: streisand-openconnect-service.sh.j2
+    dest: /etc/init.d/streisand-openconnect
+    mode: 0755
+
+- name: "Enable the streisand-openconnect init service"
+  service:
+    name: streisand-openconnect
+    enabled: yes

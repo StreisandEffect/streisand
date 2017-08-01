@@ -69,6 +69,7 @@
     service_account_email: "{{ gce_service_account_email }}"
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
+  when: streisand_openconnect_enabled
 
 - name: Open the OpenVPN ports in the GCE firewall
   gce_net:
