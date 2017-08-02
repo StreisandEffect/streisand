@@ -21,16 +21,11 @@ WireGuard is currently only available for Linux, but [cross-platform](https://ww
 1. Use the `wg-quick` utility to bring up the WireGuard interface:
 
    `sudo wg-quick up wg0-client`
-   Or if your Linux system using systemd instead of sysvinit. You could using systemd manage your Wireguard when booting.
-   
-   'sudo systemctl start wg-quick@wg0-client.service'
-   Check if active or not.
-   
-   'sudo systemctl status wg-quick@wg0-client.service'
-   if activing, you could make wireguard start when booting. 
-   
+
+1. For Linux systems using systemd you can also enable Wireguard at boot:
+
    'sudo systemctl enable wg-quick@wg0-client.service'
-   If not, using regular steps.
+
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 1. To stop routing your traffic through WireGuard, simply bring the interface back down:
 
