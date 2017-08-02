@@ -20,6 +20,8 @@
     - role: shadowsocks
       when: streisand_shadowsocks_enabled
     - ssh
+    - role: ssh-forward
+      when: streisand_ssh_forward_enabled
     - tinyproxy
     # tor-bridge is skipped in our full Ansible run on Travis CI due to
     # connectivity issues.

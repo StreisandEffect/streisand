@@ -9,7 +9,6 @@
 
 # Download and verify client files
 - include: openconnect.yml
-- include: ssh.yml
 
 - name: Generate the Markdown mirror page
   template:
