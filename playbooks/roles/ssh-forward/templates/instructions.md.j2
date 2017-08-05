@@ -6,7 +6,9 @@ SSH Tunnel
   * [Windows](#windows)
   * [Linux and OS X](#linux-and-osx)
   * [Linux and OS X (alternate)](#linux-and-osx-alternate)
+{% if streisand_tinyproxy_enabled %}
   * [Android](#android)
+{% endif %}
 
 <a name="windows"></a>
 ### Windows ###
@@ -114,7 +116,7 @@ Sshuttle offers significantly faster performance and is easier to set up, but th
 
    `{{ ssh_server_fingerprints.results[1].stdout }}`
 1. You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through SSH. The next step is to configure your web browser to use it. You can follow the same instructions contained in the Windows section above to configure Firefox to route its traffic through the SOCKS proxy.
-
+{% if streisand_tinyproxy_enabled %}
 <a name="android"></a>
 ### Android ###
 1. Install [SSH persistent tunnels](https://play.google.com/store/apps/details?id=org.ayal.SPT) by Shai Ayal. This application makes it easy to forward multiple ports through an SSH tunnel, and it does a decent job of ensuring that the tunnels remain active even when you switch back and forth regularly between LTE, 3G, and WiFi. The app is [open source](https://code.google.com/p/ssh-persistent-tunnel/) and can be compiled for free, but the Play Store version costs $1.50.
@@ -173,3 +175,4 @@ Some applications allow you to make these settings persistent for all networks. 
 5. Set the value of *network.proxy.socks\_port* to `1080`.
 6. Set the value of *network.proxy.socks\_remote\_dns* to `true`.
 7. Set the value of *network.proxy.type* to `1`.
+{% endif %}

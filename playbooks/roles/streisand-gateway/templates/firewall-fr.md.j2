@@ -1,5 +1,5 @@
 - - -
-{% for key, value in streisand_languages.iteritems() %}
+{% for key, value in streisand_languages.items() %}
   [{{ value.language_name }}]({{ streisand_server_name }}-firewall-information{{ value.file_suffix }}.html)&nbsp;
 {% endfor %}
 - - -
@@ -18,9 +18,11 @@ Si vous installez Streisand sur un serveur existant ou un fournisseur alternatif
   * UDP - 4500
 * Nginx (Passerelle Streisand)
   * TCP - {{ nginx_port }}
+{% if streisand_openconnect_enabled %}
 * OpenConnect / Cisco AnyConnect
   * TCP - {{ ocserv_port }}
   * UDP - {{ ocserv_port }}
+{% endif %}
 * OpenSSH
   * TCP - {{ ssh_port }}
 {% if streisand_openvpn_enabled %}

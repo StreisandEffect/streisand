@@ -1,19 +1,6 @@
 ---
-streisand_ci: true
-
-streisand_client_test: false
+streisand_ci: yes
 streisand_noninteractive: no
-
-streisand_shadowsocks_enabled: yes
-streisand_wireguard_enabled: yes
-streisand_openvpn_enabled: yes
-streisand_stunnel_enabled: yes
-streisand_tor_enabled: yes
-streisand_ssh_forward_enabled: yes
-
-upstream_dns_servers:
-  - 8.8.8.8
-  - 8.8.4.4
 
 server_name: streisand
 
@@ -34,5 +21,3 @@ libreswan_compilation_dependencies_trusty:
   - libunbound-dev
   - make
   - pkg-config
-
-gpg_key_server_address: "x-hkp://pool.sks-keyservers.net"

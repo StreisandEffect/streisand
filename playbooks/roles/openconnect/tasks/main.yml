@@ -1,35 +1,6 @@
 ---
-- name: Install the ocserv dependencies
-  apt:
-    name: "{{ item }}"
-  with_items: "{{ ocserv_dependencies }}"
-
-- name: Retrieve the ocserv source code
-  get_url:
-    # This CDN mirrors the ocserv source code, and helps
-    # mitigate connection errors that were occurring when
-    # using the project's official download location.
-    url: https://d25kfp60e9u1dw.cloudfront.net/{{ ocserv_source_filename }}
-    dest: "{{ ocserv_source_location }}"
-    checksum: "{{ ocserv_checksum }}"
-    owner: root
-    group: root
-    mode: 0644
-
-- name: Extract the ocserv source code
-  unarchive:
-    copy: no
-    src: "{{ ocserv_source_location }}"
-    dest: /usr/local/src
-    owner: root
-    group: root
-    creates: "{{ ocserv_compilation_directory }}/README.md"
-
-- name: Compile and install ocserv
-  shell: ./configure && make -j {{ ansible_processor_cores }} && make install
-  args:
-    chdir: "{{ ocserv_compilation_directory }}"
-    creates: "{{ ocserv_compilation_directory }}/config.log"
+# Download, compile and install ocserv and its dependencies
+- include: install.yml
 
 - name: Create the ocserv configuration directory
   file:
@@ -164,44 +135,11 @@
     mode: 0600
   notify: Restart ocserv
 
-- name: Enable NAT
-  command: "{{ ocserv_firewall_rule }}"
+# Set up the openconnect firewall rules
+- include: firewall.yml
 
-- name: "Add Openconnect firewall persistence service to init"
-  template:
-    src: streisand-openconnect-service.sh.j2
-    dest: /etc/init.d/streisand-openconnect
-    mode: 0755
+# Generate Gateway documentation
+- include: docs.yml
 
-- name: "Enable the streisand-openconnect init service"
-  service:
-    name: streisand-openconnect
-    enabled: yes
-
-- name: Create the OpenConnect/AnyConnect Gateway directory
-  file:
-    path: "{{ ocserv_gateway_location }}"
-    owner: www-data
-    group: www-data
-    mode: 0750
-    state: directory
-
-- name: Copy the CA certificate file to the OpenConnect Gateway directory
-  command: cp {{ ocserv_ca_certificate_file }} {{ ocserv_gateway_location }}
-  args:
-    creates: "{{ ocserv_gateway_location }}/ca-cert.pem"
-
-- name: "Copy the client PKCS #12 file to the OpenConnect Gateway directory"
-  command: cp {{ ocserv_client_pkcs12_file }} {{ ocserv_gateway_location }}
-  args:
-    creates: "{{ ocserv_gateway_location }}/client.p12"
-
-- name: Generate the Markdown OpenConnect/AnyConnect instructions
-  template:
-    src: instructions{{ item.value.file_suffix }}.md.j2
-    dest: "{{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the Markdown OpenConnect/AnyConnect instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
+# Mirror the OpenConnect clients
+- include: mirror.yml

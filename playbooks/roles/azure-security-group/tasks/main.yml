@@ -37,20 +37,6 @@
         access: Allow
         direction: Inbound
         priority: 101
-      # OpenConnect (ocserv)
-      # ---
-      - name: "AllowOCServTCP"
-        destination_port_range: "{{ ocserv_port }}"
-        protocol: Tcp
-        access: Allow
-        direction: Inbound
-        priority: 102
-      - name: "AllowOCServUDP"
-        destination_port_range: "{{ ocserv_port }}"
-        protocol: Udp
-        access: Allow
-        direction: Inbound
-        priority: 103
       # SSH
       # ---
       - name: "AllowSSHTCP"
@@ -125,6 +111,32 @@
         direction: Inbound
         priority: 112
   when: streisand_wireguard_enabled
+
+# OpenConnect (ocserv)
+# ---
+- name: Open the OpenConnect ports in the Azure security group
+  azure_rm_securitygroup:
+    name: "{{ azure_resource_group_name }}"
+    resource_group: "{{ azure_resource_group_name }}"
+    location: "{{ azure_region }}"
+    rules:
+      # OpenConnect TCP
+      # ---
+      - name: "AllowOCServTCP"
+        destination_port_range: "{{ ocserv_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 102
+      # OpenConnect UDP
+      # ---
+      - name: "AllowOCServUDP"
+        destination_port_range: "{{ ocserv_port }}"
+        protocol: Udp
+        access: Allow
+        direction: Inbound
+        priority: 103
+  when: streisand_openconnect_enabled
 
 # OpenVPN
 # ---

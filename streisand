@@ -53,7 +53,7 @@ function run_genesis() {
   if [ -z "${GENESIS_PLAYBOOK}" ]; then
     GENESIS_PLAYBOOK=streisand.yml
   fi
-  echo; echo; ansible-playbook -i inventories/inventory "playbooks/$GENESIS_PLAYBOOK"
+  echo; echo; ansible-playbook -i inventories/inventory --extra-vars=@global_vars/vars.yml "playbooks/$GENESIS_PLAYBOOK"
 }
 
 # be_careful_friend asks you to pay attention because you're about to do
@@ -79,7 +79,7 @@ ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
 Please enter the word 'streisand' to continue: "
 
   check_python
-  echo; echo; ansible-playbook -i inventories/inventory-local-provision playbooks/localhost.yml
+  echo; echo; ansible-playbook -i inventories/inventory-local-provision --extra-vars=@global_vars/vars.yml playbooks/localhost.yml
 }
 
 function existing_server() {
@@ -118,7 +118,7 @@ EOF
   echo "$TEMPL" > inventories/inventory-existing
   check_python
   # Invoke the Streisand playbook on the existing server inventory
-  echo; echo; ansible-playbook -i inventories/inventory-existing playbooks/existing-server.yml
+  echo; echo; ansible-playbook -i inventories/inventory-existing --extra-vars=@global_vars/vars.yml playbooks/existing-server.yml
 }
 
 # Make sure the system is ready for the Streisand playbooks
