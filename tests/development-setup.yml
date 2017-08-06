@@ -4,6 +4,16 @@
   remote_user: root
   become: yes
   pre_tasks:
+    # NOTE(@alimakki): Due to key rotation, we pre-emptivley
+    # add the Google linux apt signing key required by some
+    # packages
+    - name: Install the Google linux apt signing key
+      shell: "{{ item }}"
+      with_items:
+        - "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -"
+        - "apt-get clean"
+        - "apt-get update"
+
     - name:
       raw:  sudo apt update && apt install python python-apt aptitude -y
 
