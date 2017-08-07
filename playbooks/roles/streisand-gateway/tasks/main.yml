@@ -97,7 +97,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart Nginx
+  notify: Restart Nginx for the Gateway vhost
 
 - name: Enable the virtual host
   file:

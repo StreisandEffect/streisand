@@ -1,5 +1,5 @@
 ---
-- name: Restart Nginx
+- name: Restart Nginx for the Gateway vhost
   service:
     name: nginx
     state: restarted
