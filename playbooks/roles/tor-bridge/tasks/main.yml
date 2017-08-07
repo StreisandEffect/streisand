@@ -104,7 +104,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart Nginx
+  notify: Restart Nginx for the Tor hidden service vhost
 
 - name: Enable the virtual host
   file:
