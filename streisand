@@ -78,7 +78,6 @@ ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
 
 Please enter the word 'streisand' to continue: "
 
-  check_python
   echo; echo; ansible-playbook -i inventories/inventory-local-provision --extra-vars=@global_vars/vars.yml playbooks/localhost.yml
 }
 
@@ -116,12 +115,12 @@ EOF
 
   # Create the inventory file
   echo "$TEMPL" > inventories/inventory-existing
-  check_python
   # Invoke the Streisand playbook on the existing server inventory
   echo; echo; ansible-playbook -i inventories/inventory-existing --extra-vars=@global_vars/vars.yml playbooks/existing-server.yml
 }
 
 # Make sure the system is ready for the Streisand playbooks
+check_python
 check_ansible
 check_ssh_key
 
