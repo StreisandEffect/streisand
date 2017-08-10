@@ -1,0 +1,12 @@
+frontend=0.0.0.0,{{ nghttpx_port }}
+backend=127.0.0.1,{{ squid_port }}
+http2-proxy=yes
+certificate-file={{ nghttpx_server_certificate_file }}
+private-key-file={{ nghttpx_server_key_file }}
+workers={{ ansible_processor_cores }}
+add-x-forwarded-for=no
+no-via=yes
+no-ocsp=yes
+npn-list=h2
+tls-proto-list=TLSv1.2
+ciphers=ECDHE+AES128

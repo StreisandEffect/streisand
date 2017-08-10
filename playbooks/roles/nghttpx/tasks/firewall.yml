@@ -1,0 +1,7 @@
+---
+- name: Ensure UFW allows nghttpx
+  ufw:
+    to_port: "{{ nghttpx_port }}"
+    proto: "tcp"
+    rule: "allow"
+...

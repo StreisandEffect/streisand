@@ -1,0 +1,107 @@
+---
+# Download, compile and install nghttpx and its dependencies
+- include: install.yml
+
+- name: Create the nghttpx configuration directory
+  file:
+    path: "{{ nghttpx_path }}"
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
+
+- name: Enable the nghttpx to start at boot
+  systemd:
+    name: nghttpx
+    enabled: yes
+    daemon_reload: yes
+
+# For now, only copy Snakeoil cert and key for demostration purposes
+- name: Copy Snakeoil cert and key
+  copy:
+    src: snakeoil.pem
+    dest: "{{ item }}"
+    mode: 0600
+  with_items:
+    - "{{ nghttpx_server_certificate_file }}"
+    - "{{ nghttpx_server_key_file }}"
+
+#- name: Generate the CA template file
+#  template:
+#    src: ca.tmpl.j2
+#    dest: "{{ nghttpx_ca_template_file }}"
+#    owner: root
+#    group: root
+#    mode: 0600
+#
+#- name: Generate the client authentication CA key
+#  command: certtool --generate-privkey --outfile {{ nghttpx_ca_key_file }}
+#  args:
+#    creates: "{{ nghttpx_ca_key_file }}"
+#
+#- name: Generate the client authentication CA certificate
+#  command: certtool --generate-self-signed --load-privkey {{ nghttpx_ca_key_file }} --template {{ nghttpx_ca_template_file }} --outfile {{ nghttpx_ca_certificate_file }}
+#  args:
+#    creates: "{{ nghttpx_ca_certificate_file }}"
+#
+#- name: Generate the client template file
+#  template:
+#    src: client.tmpl.j2
+#    dest: "{{ nghttpx_client_template_file }}"
+#    owner: root
+#    group: root
+#    mode: 0600
+#
+#- name: Generate the client key
+#  command: certtool --generate-privkey --outfile {{ nghttpx_client_key_file }}
+#  args:
+#    creates: "{{ nghttpx_client_key_file }}"
+#
+#- name: Generate the client certificate
+#  command: certtool --generate-certificate --load-privkey {{ nghttpx_client_key_file }} --load-ca-certificate {{ nghttpx_ca_certificate_file }} --load-ca-privkey {{ nghttpx_ca_key_file }} --template {{ nghttpx_client_template_file }} --outfile {{ nghttpx_client_certificate_file }}
+#  args:
+#    creates: "{{ nghttpx_client_certificate_file }}"
+#
+#- name: "Generate a random password that will be used during the PKCS #12 conversion"
+#  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ nghttpx_pkcs12_password_file }}
+#  args:
+#    creates: "{{ nghttpx_pkcs12_password_file }}"
+#
+#- name: "Set permissions on the PKCS #12 password file"
+#  file:
+#    path: "{{ nghttpx_pkcs12_password_file }}"
+#    owner: root
+#    group: root
+#    mode: 0600
+#
+#- name: "Register the PKCS #12 password"
+#  command: cat {{ nghttpx_pkcs12_password_file }}
+#  register: nghttpx_pkcs12_password
+#
+#- name: "Convert the key and certificate into PKCS #12 format"
+#  expect:
+#    command: certtool --to-p12 --load-privkey {{ nghttpx_client_key_file }} --pkcs-cipher 3des-pkcs12 --load-certificate {{ nghttpx_client_certificate_file }} --outfile {{ nghttpx_client_pkcs12_file }} --outder
+#    responses:
+#      "Enter a name for the key": "{{ nghttpx_client_name }}"
+#      "Enter password": "{{ nghttpx_pkcs12_password.stdout }}"
+#      "Confirm password": "{{ nghttpx_pkcs12_password.stdout }}"
+#    creates: "{{ nghttpx_client_pkcs12_file }}"
+
+- name: Generate the nghttpx configuration file
+  template:
+    src: nghttpx.conf.j2
+    dest: "{{ nghttpx_config_file }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify: Restart nghttpx
+
+# Set up firewall rules
+- include: firewall.yml
+
+# Generate Gateway documentation
+#- include: docs.yml
+
+# nghttpx has only source code tarballs hosted on GitHub.
+# There is no need to mirror them.
+#- include: mirror.yml

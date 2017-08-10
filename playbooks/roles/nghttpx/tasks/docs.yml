@@ -1,0 +1,23 @@
+---
+- name: Create the nghttpx Gateway directory
+  file:
+    path: "{{ nghttpx_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- name: "Copy the client PKCS #12 file to the nghttpx Gateway directory"
+  command: cp {{ nghttpx_client_pkcs12_file }} {{ nghttpx_gateway_location }}
+  args:
+    creates: "{{ nghttpx_gateway_location }}/client.p12"
+
+- name: Generate the Markdown nghttpx instructions
+  template:
+    src: instructions{{ item.value.file_suffix }}.md.j2
+    dest: "{{ nghttpx_gateway_location }}/index{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
+
+- name: Convert the Markdown nghttpx instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ nghttpx_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ nghttpx_gateway_location }}/index{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"

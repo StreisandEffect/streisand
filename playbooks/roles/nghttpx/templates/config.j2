@@ -1,0 +1,39 @@
+auth = "plain[passwd={{ nghttpx_hashed_password_file }}]"
+enable-auth = "certificate"
+tcp-port = {{ nghttpx_port }}
+udp-port = {{ nghttpx_port }}
+run-as-user = nobody
+run-as-group = nogroup
+socket-file = {{ nghttpx_socket_file }}
+server-cert = {{ nghttpx_server_certificate_file }}
+server-key = {{ nghttpx_server_key_file }}
+ca-cert = {{ nghttpx_ca_certificate_file }}
+isolate-workers = true
+keepalive = 32400
+dpd = 240
+mobile-dpd = 1800
+try-mtu-discovery = true
+cert-user-oid = 2.5.4.3
+cert-group-oid = 2.5.4.11
+tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-VERS-SSL3.0"
+auth-timeout = 40
+min-reauth-time = 300
+max-ban-score = 50
+ban-reset-time = 300
+cookie-timeout = 300
+cookie-rekey-time = 14400
+deny-roaming = false
+rekey-time = 3600
+rekey-method = ssl
+use-occtl = true
+pid-file = {{ nghttpx_pid_file }}
+device = vpns
+default-domain = example.com
+ipv4-network = 192.168.1.0
+ipv4-netmask = 255.255.255.0
+ping-leases = false
+cisco-client-compat = true
+
+{% for item in upstream_dns_servers %}
+dns = {{ item }}
+{% endfor %}
