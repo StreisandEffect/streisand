@@ -1,0 +1,10 @@
+- name: Install Squid
+  apt:
+    name: squid
+
+- name: Configure Squid
+  template:
+    src: squid.conf.j2
+    dest: /etc/squid/squid.conf
+  notify:
+    - Restart Squid

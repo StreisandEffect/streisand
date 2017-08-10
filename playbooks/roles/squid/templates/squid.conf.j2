@@ -1,0 +1,9 @@
+http_port 127.0.0.1:{{ squid_port }}
+http_access allow localhost
+
+cache deny all
+access_log none
+
+dns_v4_first on
+via off
+forwarded_for delete
