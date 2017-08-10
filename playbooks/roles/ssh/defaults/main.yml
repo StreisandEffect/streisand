@@ -1,3 +1,2 @@
 ---
 ssh_port: 22
-ssh_default_socks_port: 8080

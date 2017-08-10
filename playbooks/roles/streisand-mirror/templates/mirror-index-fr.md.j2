@@ -17,19 +17,9 @@ Les fichiers reflétés ci-dessous ont tous été cryptographiquement vérifiés
 {% if streisand_shadowsocks_enabled %}
   * [Shadowsocks](shadowsocks/index-fr.html)
 {% endif %}
-  * [OpenSSH](#ssh)
+{% if streisand_ssh_forward_enabled %}
+  * [OpenSSH](ssh/index-fr.html)
+{% endif %}
 {% if streisand_tor_enabled %}
   * [Tor Browser Bundle](tor/index-fr.html)
 {% endif %}
-
-<a name="ssh"></a>
-### SSH ###
-
-**Linux et OS X**
-
-* [{{ sshuttle_filename }}]({{ sshuttle_href }})
-  * Somme de contrôle: *{{ sshuttle_checksum }}*
-
-**Windows**
-
-* [{{ putty_filename }}]({{ putty_href }}) ([sig]({{ putty_sig_href }}))

@@ -3,3 +3,8 @@
   fail:
     msg: "stunnel cannot be enabled if openvpn is disabled"
   when: not streisand_openvpn_enabled and streisand_stunnel_enabled
+
+- name: Validate that Tinyproxy optional variables are rational
+  fail:
+    msg: "tinyproxy cannot be enabled if ssh forward user is disabled"
+  when: not streisand_ssh_forward_enabled and streisand_tinyproxy_enabled

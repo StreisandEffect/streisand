@@ -25,7 +25,9 @@ There are multiple ways to bypass censorship, and Streisand provides several cho
 {% if streisand_shadowsocks_enabled %}
 * [Shadowsocks](/shadowsocks/)
 {% endif %}
+{% if streisand_ssh_forward_enabled %}
 * [SSH](/ssh/)
+{% endif %}
 {% if streisand_tor_enabled %}
 * [Tor](/tor/)
 {% endif %}
@@ -51,7 +53,9 @@ You can download the necessary client software directly from Streisand in case t
 {% if streisand_shadowsocks_enabled %}
 * [Shadowsocks](/mirror/shadowsocks/)
 {% endif %}
+{% if streisand_ssh_forward_enabled %}
 * [SSH](/mirror/#ssh)
+{% endif %}
 * [stunnel](/mirror/#stunnel)
 {% if streisand_tor_enabled %}
 * [Tor Browser Bundle](/mirror/tor/)

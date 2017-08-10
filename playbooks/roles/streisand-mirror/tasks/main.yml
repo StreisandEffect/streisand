@@ -7,9 +7,6 @@
     mode: 0755
     state: directory
 
-# Download and verify client files
-- include: ssh.yml
-
 - name: Generate the Markdown mirror page
   template:
     src: mirror-index{{ item.value.file_suffix }}.md.j2

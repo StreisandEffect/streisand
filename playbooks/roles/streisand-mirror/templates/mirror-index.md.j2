@@ -17,19 +17,9 @@ The files mirrored below have all been cryptographically verified. Where possibl
 {% if streisand_shadowsocks_enabled %}
   * [Shadowsocks](shadowsocks/)
 {% endif %}
-  * [OpenSSH](#ssh)
+{% if streisand_ssh_forward_enabled %}
+  * [OpenSSH](ssh/)
+{% endif %}
 {% if streisand_tor_enabled %}
   * [Tor Browser Bundle](tor/)
 {% endif %}
-
-<a name="ssh"></a>
-### SSH ###
-
-**Linux and OS X**
-
-* [{{ sshuttle_filename }}]({{ sshuttle_href }})
-  * Checksum: *{{ sshuttle_checksum }}*
-
-**Windows**
-
-* [{{ putty_filename }}]({{ putty_href }}) ([sig]({{ putty_sig_href }}))
