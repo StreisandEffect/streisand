@@ -30,6 +30,8 @@
     - sslh
     - monit
     - ufw
+    - role: nghttpx
+      when: streisand_nghttpx_enabled
     - role: wireguard
       when: streisand_wireguard_enabled
     - streisand-mirror

@@ -11,6 +11,7 @@ streisand_openvpn_enabled: yes
 streisand_stunnel_enabled: yes
 streisand_tor_enabled: yes
 streisand_openconnect_enabled: yes
+streisand_nghttpx_enabled: no
 streisand_tinyproxy_enabled: yes
 
 gpg_key_server_address: "x-hkp://pool.sks-keyservers.net"
