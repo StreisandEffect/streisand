@@ -109,7 +109,7 @@ Sshuttle offers significantly faster performance and is easier to set up, but th
 
 1. SSH into the server and forward a dynamic SOCKS port:
 
-   `ssh -D {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
+   `ssh -ND {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
 1. Verify that the fingerprint matches one of these:
 
    `{{ ssh_server_fingerprints.results[0].stdout }}`
