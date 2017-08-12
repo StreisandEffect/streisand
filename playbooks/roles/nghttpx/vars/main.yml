@@ -2,10 +2,6 @@
 nghttpx_path: "/etc/nghttpx"
 nghttpx_config_file: "{{ nghttpx_path }}/nghttpx.conf"
 
-nghttpx_days_valid: "1825"
-
-# The package name list for Ubuntu 16.04 is from official README.
-# But all we need is nghttpx, so we could drop some of them (commented out).
 nghttpx_dependencies:
   - g++
   - make
@@ -18,18 +14,11 @@ nghttpx_dependencies:
   - zlib1g-dev
   - libcunit1-dev
   - libssl-dev
-  #- libxml2-dev
   - libev-dev
-  #- libevent-dev
-  #- libjansson-dev
   - libc-ares-dev
   - libjemalloc-dev
   - libsystemd-dev
-  #- libspdylay-dev
-  #- cython
-  #- python3-dev
-  #- python-setuptools
-  - gnutls-bin  # certtool
+  - gnutls-bin
 
 # The author of nghttp2 project does not provide OpenPGP signatures. Using SHA-256 checksums.
 nghttpx_version:                "1.24.0"
@@ -43,22 +32,8 @@ nghttpx_source_location: "/usr/local/src/{{ nghttpx_source_filename }}"
 
 nghttpx_pid_file:    "/var/run/nghttpx.pid"
 
-nghttpx_ca_certificate_file: "{{ nghttpx_path }}/ca-cert.pem"
-nghttpx_ca_key_file:         "{{ nghttpx_path }}/ca-key.pem"
-nghttpx_ca_template_file:    "{{ nghttpx_path }}/ca.tmpl"
-
 nghttpx_server_certificate_file: "{{ nghttpx_path }}/server-cert.pem"
 nghttpx_server_key_file:         "{{ nghttpx_path }}/server-key.pem"
 nghttpx_server_template_file:    "{{ nghttpx_path }}/server.tmpl"
-
-nghttpx_client_name:             "streisand-openconnect-{{ streisand_ipv4_address }}"
-nghttpx_client_certificate_file: "{{ nghttpx_path }}/client-cert.pem"
-nghttpx_client_key_file:         "{{ nghttpx_path }}/client-key.pem"
-nghttpx_client_template_file:    "{{ nghttpx_path }}/client.tmpl"
-nghttpx_client_pkcs12_file:      "{{ nghttpx_path }}/client.p12"
-
-nghttpx_hashed_password_file:  "{{ nghttpx_path }}/ocpasswd"
-nghttpx_password_file:         "{{ nghttpx_path }}/nghttpx-password"
-nghttpx_pkcs12_password_file:  "{{ nghttpx_path }}/nghttpx-pkcs12-password"
 
 nghttpx_gateway_location: "{{ streisand_gateway_location }}/nghttpx"

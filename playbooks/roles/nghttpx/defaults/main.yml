@@ -1,5 +1,2 @@
 ---
-nghttpx_ca_cn: "Streisand"
-nghttpx_ca_organization: "Streisand Effect Automated Signing, Inc."
 nghttpx_port: "10443"
-nghttpx_server_organization: "Streisand Effect Servers, Inc."
