@@ -106,7 +106,11 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 1. If this is your first time using AnyConnect, you will need to accept the Connection Request dialog that Android displays.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
-Some users have reported that AnyConnect prompts for a username and password. This is a bug; please report it. If this happens to you, use these credentials as a workaround:
+#### Prompted for username? ####
+
+Some users [have reported](https://github.com/jlund/streisand/issues/847) that their Android AnyConnect clients prompt for a username and password. This is a known bug we don't understand. See the list of [Streisand AnyConnect open issues](https://github.com/jlund/streisand/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20anyconnect). If you're affected, you could help us understand the bug by reporting your details using the issue list's *New issue* button's template. Fixes are gratefully accepted too.
+
+If you're affected, you can use this workaround:
 
 1. When prompted for a user, enter `streisand`
 1. When prompted for a password, use `{{ ocserv_password.stdout }}`
