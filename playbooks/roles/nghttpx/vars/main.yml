@@ -1,6 +1,7 @@
 ---
 nghttpx_path: "/etc/nghttpx"
 nghttpx_config_file: "{{ nghttpx_path }}/nghttpx.conf"
+nghttpx_pac_file: "{{ nghttpx_path }}/proxy.pac"
 
 nghttpx_dependencies:
   - g++

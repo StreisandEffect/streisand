@@ -1,0 +1,73 @@
+HTTP/2 Proxy
+------------
+
+HTTP/2 Proxy is an secured (HTTPS) forward proxy that utilizes HTTP/2 protocol to provide high-performance proxying. An HTTP/2 Proxy can be used natively in modern web browsers like Chromium, Google Chrome, or Firefox. Additional software may be required if you want to use it in other software.
+
+---
+* Desktop browsers
+  * [Chromium, Google Chrome, or similar: the simple way](#chromium)
+  * [Chromium, Google Chrome, or similar: the customized way](#chromium-custom)
+  * [Firefox](#firefox)
+* Other software
+  * [Manual configuration (advanced)](#manual)
+
+<a name="chromium"></a>
+### Chromium, Google Chrome, or similar: the simple way###
+1. Launch the browser with an additional command-line parameter `--proxy-server=https://{{ nghttpx_domain }}:{{ nghttpx_port }}`.
+1. When prompted for a password, input username `{{ squid_username }}` and password `{{ squid_password.stdout }}`.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://www.google.com/search?q=my+ip+address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+<a name="chromium-custom"></a>
+### Chromium, Google Chrome, or similar: the customized way###
+1. Download and install [Proxy SwitchyOmega](https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif) plugin to manage your proxy settings.
+1. Add a new Proxy Profile in Proxy SwitchyOmega options:
+   * Set "Protocol" to "HTTPS"
+   * Set "Server" to "{{ nghttpx_domain }}"
+   * Set "Port" to "{{ nghttpx_port }}"
+   * Click on the little padlock icon and input username `{{ squid_username }}` and password `{{ squid_password.stdout }}`
+   * Save the profile
+1. Switch to your new Proxy Profile by clicking on the SwitchyOmega icon and choose your new profile.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://www.google.com/search?q=my+ip+address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. Unlike the simple way above, you could easily switch to other proxies, or turn off the proxy, by clicking on the SwitchyOmega icon, without relaunching the browser. And you do not have to type your password every time you launch your browser.
+
+<a name="firefox"></a>
+### Firefox ###
+1. Copy the following string:
+   ```
+   data:application/x-ns-proxy-autoconfig;base64,{{ nghttpx_pac_base64.stdout }}
+   ```
+1. Open Firefox settings, navigate to Advanced, Network, Connection, Settings.
+1. Choose "Automatic proxy configuration URL".
+1. Paste the string you just copied into to text box.
+1. Save the settings.
+1. When prompted for a password, input username `{{ squid_username }}` and password `{{ squid_password.stdout }}`.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://www.google.com/search?q=my+ip+address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+<a name="manual"></a>
+### Manual configuration (advanced) ###
+Very few software supports HTTP/2 (or even HTTPS proxy in general) natively as of year 2017. If you want to use HTTP/2 proxy in software other than modern browsers. You need to install additional software to convert the HTTP/2 proxy to a plain HTTP/1.1 proxy. The conversion happens on the client side so your traffic is always encrypted between your computer's local network and the Streisand server.
+
+The conversion is done by running another nghttpx daemon on the client side. For example, you could run nghttpx on your computer, or on your GNU/Linux router. And you configure your software to use the HTTP/1.1 produced by your local nghttpx daemon.
+
+The instructions here are brief but generic. Most, if not all, software nowadays support HTTP/1.1 proxy. So if you managed to do the conversion, you could benefit from HTTP/2 proxy in many software.
+
+1. Install nghttpx on your computer:
+   * If you use GNU/Linux, it's highly likely that nghttpx is availabe in your software repository. You could install them with your favourite package manager.
+   * If you use OS X, the nghttpx software is availabe in Homebrew.
+   * There is an official [Dockerfile](https://github.com/nghttp2/nghttp2/blob/master/Dockerfile.android) to compile a static Android bianry.
+   * Windows users could either: a) compile and run native Windows binaries, or b) run nghttpx on another GNU/Linux box (i.e. your router).
+1. Start your nghttpx daemon with the following minimal configuration:
+<pre>
+frontend=127.0.0.1,8080;no-tls
+backend={{ nghttpx_domain }},{{ nghttpx_port }};proto=h2;tls
+http2-proxy=yes
+workers=4  # adjust this according to your CPU cores and computing power
+add-x-forwarded-for=no
+no-via=yes
+no-ocsp=yes
+</pre>
+1. Verify if your local nghttpx is working:
+   ```
+   $ curl --proxy http://127.0.0.1:8080 --proxy-user {{ squid_username }}:{{ squid_password }} https://httpbin.org/ip
+   ```
+1. Configure your software to use the HTTP/1.1 proxy produced by your local nghttpx daemon with crendentials: `{{ squid_username }}:{{ squid_password }}`. For most CLI software, environment variables like `http_proxy` usually work.

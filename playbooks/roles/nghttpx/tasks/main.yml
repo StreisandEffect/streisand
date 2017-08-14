@@ -37,3 +37,6 @@
 
 # Set up firewall rules
 - include: firewall.yml
+
+# Generate docs
+- include: docs.yml

@@ -1,0 +1,3 @@
+function FindProxyForURL(url, host) {
+  return "HTTPS {{ nghttpx_domain }}:{{ nghttpx_port }}";
+}
