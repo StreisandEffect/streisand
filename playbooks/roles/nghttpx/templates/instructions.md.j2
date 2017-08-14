@@ -68,6 +68,6 @@ no-ocsp=yes
 </pre>
 1. Verify if your local nghttpx is working:
    ```
-   $ curl --proxy http://127.0.0.1:8080 --proxy-user {{ squid_username }}:{{ squid_password }} https://httpbin.org/ip
+   $ curl --proxy http://127.0.0.1:8080 --proxy-user {{ squid_username }}:{{ squid_password.stdout }} https://httpbin.org/ip
    ```
-1. Configure your software to use the HTTP/1.1 proxy produced by your local nghttpx daemon with crendentials: `{{ squid_username }}:{{ squid_password }}`. For most CLI software, environment variables like `http_proxy` usually work.
+1. Configure your software to use the HTTP/1.1 proxy produced by your local nghttpx daemon with crendentials: `{{ squid_username }}:{{ squid_password.stdout }}`. For most CLI software, environment variables like `http_proxy` usually work.
