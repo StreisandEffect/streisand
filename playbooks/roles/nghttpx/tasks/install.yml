@@ -1,0 +1,28 @@
+---
+- name: Install the nghttpx dependencies
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ nghttpx_dependencies }}"
+
+- name: Download the nghttpx source code
+  get_url:
+    url: "{{ nghttpx_download_url }}"
+    dest: "{{ nghttpx_source_location }}"
+    checksum: "{{ nghttpx_source_checksum }}"
+    mode: 0644
+
+- name: Extract the nghttpx source code
+  unarchive:
+    remote_src: yes
+    src: "{{ nghttpx_source_location }}"
+    dest: /usr/local/src
+    owner: root
+    group: root
+    creates: "{{ nghttpx_compilation_directory }}/README"
+
+- name: Compile and install nghttpx
+  shell: ./configure && make -j {{ ansible_processor_cores }} && make install && install -Dm755 contrib/nghttpx.service /lib/systemd/system/nghttpx.service
+  args:
+    chdir: "{{ nghttpx_compilation_directory }}"
+    creates: "{{ nghttpx_compilation_directory }}/config.log"
+...

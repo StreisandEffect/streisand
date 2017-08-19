@@ -1,0 +1,39 @@
+- name: Install Squid and its dependencies
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - squid
+    - apache2-utils  # htpasswd
+    - wamerican-huge  # password source
+
+- name: Generate a random password
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ squid_password_file }}
+  args:
+    creates: "{{ squid_password_file }}"
+
+- name: Register the password
+  command: cat {{ squid_password_file }}
+  register: squid_password
+  changed_when: False
+
+- name: Generate the htpasswd file
+  command: htpasswd -b -c {{ squid_htpasswd_file }} {{ squid_username }} {{ squid_password.stdout }}
+  args:
+    creates: "{{ squid_htpasswd_file }}"
+
+- name: Protect the password files with stricter permissions
+  file:
+    path: "{{ item }}"
+    owner: proxy
+    group: root
+    mode: 0600
+  with_items:
+    - "{{ squid_password_file }}"
+    - "{{ squid_htpasswd_file }}"
+
+- name: Configure Squid
+  template:
+    src: squid.conf.j2
+    dest: /etc/squid/squid.conf
+  notify:
+    - Restart Squid

@@ -1,0 +1,42 @@
+---
+# Download, compile and install nghttpx and its dependencies
+- include: install.yml
+
+- name: Create the nghttpx configuration directory
+  file:
+    path: "{{ nghttpx_path }}"
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
+
+- name: Enable the nghttpx to start at boot
+  systemd:
+    name: nghttpx
+    enabled: yes
+    daemon_reload: yes
+
+# For now, only copy Snakeoil cert and key for demostration purposes
+- name: Copy Snakeoil cert and key
+  copy:
+    src: snakeoil.pem
+    dest: "{{ item }}"
+    mode: 0600
+  with_items:
+    - "{{ nghttpx_server_certificate_file }}"
+    - "{{ nghttpx_server_key_file }}"
+
+- name: Generate the nghttpx configuration file
+  template:
+    src: nghttpx.conf.j2
+    dest: "{{ nghttpx_config_file }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify: Restart nghttpx
+
+# Set up firewall rules
+- include: firewall.yml
+
+# Generate docs
+- include: docs.yml

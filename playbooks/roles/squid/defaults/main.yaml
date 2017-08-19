@@ -1,0 +1,5 @@
+---
+squid_port: 3128
+squid_username: streisand
+squid_password_file: /etc/squid/password
+squid_htpasswd_file: /etc/squid/htpasswd

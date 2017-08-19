@@ -1,0 +1,40 @@
+---
+nghttpx_path: "/etc/nghttpx"
+nghttpx_config_file: "{{ nghttpx_path }}/nghttpx.conf"
+nghttpx_pac_file: "{{ nghttpx_path }}/proxy.pac"
+
+nghttpx_dependencies:
+  - g++
+  - make
+  - binutils
+  - autoconf
+  - automake
+  - autotools-dev
+  - libtool
+  - pkg-config
+  - zlib1g-dev
+  - libcunit1-dev
+  - libssl-dev
+  - libev-dev
+  - libc-ares-dev
+  - libjemalloc-dev
+  - libsystemd-dev
+  - gnutls-bin
+
+# The author of nghttp2 project does not provide OpenPGP signatures. Using SHA-256 checksums.
+nghttpx_version:                "1.24.0"
+nghttpx_compilation_directory:  "/usr/local/src/nghttp2-{{ nghttpx_version }}"
+nghttpx_source_filename:        "nghttp2-{{ nghttpx_version }}.tar.xz"
+nghttpx_source_checksum:        "sha256:0d443cd2f45593aa42e93163cb46a03cb4a28703712a8dd8cc9102d454727316"
+
+nghttpx_download_url: "https://github.com/nghttp2/nghttp2/releases/download/v{{ nghttpx_version }}/{{ nghttpx_source_filename }}"
+
+nghttpx_source_location: "/usr/local/src/{{ nghttpx_source_filename }}"
+
+nghttpx_pid_file:    "/var/run/nghttpx.pid"
+
+nghttpx_server_certificate_file: "{{ nghttpx_path }}/server-cert.pem"
+nghttpx_server_key_file:         "{{ nghttpx_path }}/server-key.pem"
+nghttpx_server_template_file:    "{{ nghttpx_path }}/server.tmpl"
+
+nghttpx_gateway_location: "{{ streisand_gateway_location }}/nghttpx"

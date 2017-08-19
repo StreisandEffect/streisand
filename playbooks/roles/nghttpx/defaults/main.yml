@@ -1,0 +1,3 @@
+---
+nghttpx_domain: "streisand.example.org"
+nghttpx_port: "10443"

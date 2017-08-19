@@ -1,0 +1,24 @@
+# Only listens for localhost connections
+http_port 127.0.0.1:{{ squid_port }}
+
+# Basic HTTP auth
+auth_param basic program /usr/lib/squid/basic_ncsa_auth {{ squid_htpasswd_file }}
+auth_param basic children 5
+auth_param basic realm Authentication required
+auth_param basic credentialsttl 4 hours
+auth_param basic casesensitive off
+
+# Allow only authenticated users
+acl basic_auth_users proxy_auth REQUIRED
+http_access allow basic_auth_users
+
+# Disable any caching and logging
+cache deny all
+access_log none
+
+# Workarounds for some datacenters with broken IPv6 implementions
+dns_v4_first on
+
+# Disable any headers that may expose your use of a proxy
+via off
+forwarded_for delete

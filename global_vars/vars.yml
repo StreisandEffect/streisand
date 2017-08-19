@@ -11,6 +11,7 @@ streisand_openvpn_enabled: yes
 streisand_stunnel_enabled: yes
 streisand_tor_enabled: yes
 streisand_openconnect_enabled: yes
+streisand_nghttpx_enabled: no
 streisand_tinyproxy_enabled: yes
 streisand_ssh_forward_enabled: yes
 
