@@ -48,7 +48,7 @@
   command: make install
   args:
     chdir: "{{ shadowsocks_compilation_directory }}"
-    creates: "/usr/local/bin/ss-server"
+    creates: "/usr/bin/ss-server"
 
 - name: Create the shadowsocks-libev config directory
   file:
