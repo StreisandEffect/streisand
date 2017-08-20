@@ -8,3 +8,8 @@
   fail:
     msg: "tinyproxy cannot be enabled if ssh forward user is disabled"
   when: not streisand_ssh_forward_enabled and streisand_tinyproxy_enabled
+
+- name: Validate that the maximum number of clients is set to a reasonable amount
+  fail:
+    msg: "Unreasonable number of VPN clients sepcified"
+  when: (vpn_clients > 20) or (vpn_clients < 1)
