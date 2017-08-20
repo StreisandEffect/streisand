@@ -12,7 +12,7 @@
   args:
     creates: "{{ openvpn_gateway_location }}/{{ client_name.stdout }}/ca.crt"
   with_items: "{{ vpn_client_names.results }}"
-  loop_control:   
+  loop_control:
     loop_var: "client_name"
     label: "{{ client_name.item }}"
 
