@@ -23,4 +23,3 @@
   service:
     name: streisand-l2tp
     enabled: yes
-
