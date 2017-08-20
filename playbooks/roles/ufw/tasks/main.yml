@@ -27,16 +27,6 @@
     policy: "deny"
     direction: "incoming"
 
-- name: Ensure UFW allows L2TP/IPSec
-  ufw:
-    to_port: "{{ item }}"
-    proto: "udp"
-    rule: "allow"
-  with_items:
-    - "500"
-    - "1701"
-    - "4500"
-
 - name: Ensure UFW allows nginx
   ufw:
     to_port: "{{ nginx_port }}"

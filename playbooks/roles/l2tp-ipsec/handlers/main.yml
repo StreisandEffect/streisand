@@ -12,3 +12,8 @@
   until: xl2tpd_restart_result|success
   retries: 3
   delay: 5
+
+- name: Restart rsyslog
+  service:
+    name: rsyslog
+    state: restarted
