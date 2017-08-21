@@ -1,11 +1,5 @@
-- - -
-{% for key, value in streisand_languages.items() %}
-  [{{ value.language_name }}](stunnel{{ value.file_suffix }}.html)&nbsp;
-{% endfor %}
-- - -
-
 OpenVPN (enveloppé dans stunnel)
------------------------------------
+--------------------------------
 
 Ces instructions ne doivent être utilisées que si les connexions OpenVPN sont bloquées activement dans votre pays ou par votre FAI. La performance sera meilleure si vous pouvez vous connecter directement, mais certains pays (notamment la Chine et l'Iran) emploient 'Deep Packet Inspection' pour détecter et affronter les connexions OpenVPN. Certaines entreprises font de même. Si vous ne rentrez pas dans cette catégorie, reportez-vous à la norme [instructions OpenVPN](/openvpn/index-fr.html) à la place.
 
