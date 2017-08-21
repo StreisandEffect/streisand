@@ -29,8 +29,16 @@
   apt:
     upgrade: "safe"
 
+- name: Copy the English BIP-0039 wordlist
+  copy:
+    src: english.txt
+    dest: /usr/share/dict
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Generate random VPN client names
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g'
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/english.txt | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g'
   register: "vpn_client_names"
   with_sequence: count={{ vpn_clients }}
 
