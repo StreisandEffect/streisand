@@ -62,10 +62,12 @@
 - name: Register the IPsec pre-shared key
   command: cat {{ ipsec_preshared_key_file }}
   register: ipsec_preshared_key
+  changed_when: False
 
 - name: Register the IPsec pre-shared key as base64
   shell: cat {{ ipsec_preshared_key_file }} | tr -d '\n' | base64
   register: ipsec_preshared_key_base64
+  changed_when: False
 
 - name: Generate IPsec secrets file
   template:
@@ -115,6 +117,7 @@
 - name: Register the CHAP password
   command: cat {{ chap_password_file }}
   register: chap_password
+  changed_when: False
 
 - name: Generate CHAP secrets file
   template:

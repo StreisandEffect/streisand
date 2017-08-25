@@ -103,6 +103,7 @@
     - name: Register JSON file contents
       command: cat {{ gce_json_file_location }}
       register: gce_json_file_contents
+      changed_when: False
 
     - name: Set JSON file contents fact
       set_fact:

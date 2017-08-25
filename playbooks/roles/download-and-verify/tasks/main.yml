@@ -2,6 +2,7 @@
 - name: "{{ project_signer }} signs the {{ project_name }} downloads. Import the correct GPG key."
   command: gpg --keyserver {{ gpg_key_server_address }} --recv-keys {{ project_signing_key }}
   register: gpg_recv_keys_result
+  changed_when: False
   until: gpg_recv_keys_result | success
   retries: 10
   delay: 5
@@ -9,6 +10,7 @@
 - name: Register the GPG Key fingerprint output
   command: gpg --fingerprint {{ project_signing_key }}
   register: retrieved_fingerprint
+  changed_when: False
 
 - name: Make sure the retrieved fingerprint perfectly matches the expected fingerprint
   assert: { that: "project_expected_fingerprint in retrieved_fingerprint.stdout" }
@@ -33,6 +35,7 @@
   args:
     chdir: "{{ project_download_location }}"
   register: gpg_verification_results
+  changed_when: False
 
 - name: Make sure the {{ project_name }} files all passed GPG signature verfication
   assert: { that: "'BAD signature' not in gpg_verification_results.stderr" }

@@ -22,6 +22,7 @@
         - name: Get the default SSH key
           command: "cat /tmp/id_rsa_insecure.pub"
           register: ssh_key
+          changed_when: False
 
         - name: Ensure permissions on insecure key are correct
           file:
