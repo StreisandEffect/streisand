@@ -2,8 +2,13 @@
 server {
   listen 127.0.0.1:{{ nginx_port }} default_server ssl;
 
+{% if le_ok %}
+  ssl_certificate      {{ le_certificate }};
+  ssl_certificate_key  {{ le_private_key }};
+{% else %}
   ssl_certificate      {{ nginx_self_signed_certificate }};
   ssl_certificate_key  {{ nginx_private_key }};
+{% endif %}
   add_header Strict-Transport-Security max-age=631138519;
 
   auth_basic            "Authorization Required";
