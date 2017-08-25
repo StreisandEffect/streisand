@@ -4,9 +4,16 @@
 {% endfor %}
 - - -
 
-Your Streisand Gateway contains step-by-step instructions for the services it provides, and mirrors of all necessary client software. This document covers the SSL Certificate installation instructions and will show you how to connect to the Gateway to learn how to configure clients to use the Streisand services.
+Your Streisand Gateway contains step-by-step instructions for the services it provides, and mirrors of all necessary client software.
+
+{% if le_ok %}
+This document will show you how to connect to the Gateway to learn how to configure clients to use the Streisand services.
+{% else %}
+This document covers the SSL Certificate installation instructions and will show you how to connect to the Gateway to learn how to configure clients to use the Streisand services.
+{% endif %}
 
 ---
+{% if not le_ok %}
 * [SSL Certificate Installation](#ssl)
   * [Windows](#ssl-windows)
   * [OS X](#ssl-osx)
@@ -15,6 +22,7 @@ Your Streisand Gateway contains step-by-step instructions for the services it pr
   * [Chromium](#ssl-chromium)
   * [Firefox](#ssl-firefox)
   * [Manual Certificate Verification](#ssl-manual)
+{% endif %}
 * [Connecting to your Streisand Gateway](#connecting)
   * [SSL](#connecting-ssl)
 {% if streisand_tor_enabled %}
@@ -22,6 +30,7 @@ Your Streisand Gateway contains step-by-step instructions for the services it pr
 {% endif %}
 
 
+{% if not le_ok %}
 <a name="ssl"></a>
 SSL Certificate Installation
 ----------------------------
@@ -162,6 +171,7 @@ The certificate details should match the following information:
 {% endfor %}
 
 If everything checks out, you are ready to connect. See [Connecting to your Streisand Gateway](#connecting-ssl).
+{% endif %}
 
 
 <a name="connecting"></a>
