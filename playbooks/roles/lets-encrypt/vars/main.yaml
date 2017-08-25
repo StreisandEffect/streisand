@@ -1,0 +1,4 @@
+---
+le_base: /var/lib/acme
+le_certificate: "{{ le_base }}/live/{{ streisand_domain }}/fullchain"
+le_private_key: "{{ le_base }}/live/{{ streisand_domain }}/privkey"

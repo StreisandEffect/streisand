@@ -1,0 +1,58 @@
+- name: Add the APT key for acmetool
+  apt_key:
+    id: 9862409EF124EC763B84972FF5AC9651EDB58DFA
+    data: "{{ item }}"
+  with_file: acmetool_ppa.pem
+
+- name: Add the official acmetool repository
+  apt_repository:
+    repo: "deb http://ppa.launchpad.net/hlandau/rhea/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main"
+
+- name: Install acmetool
+  apt:
+    name: acmetool
+
+- name: Prepare response file directory
+  file:
+    path: "{{ le_base }}/conf"
+    state: directory
+    recurse: yes
+
+- name: Put reponse file in place
+  template:
+    src: response.yaml.j2
+    dest: "{{ le_base }}/conf/responses"
+
+- name: Perform initial configuration of acmetool
+  command: acmetool quickstart
+  args:
+    creates: "{{ le_base }}/conf/target"
+
+# acmetool should now run in redirector mode listening on 80/tcp for HTTP
+# requests (including ACME chanllenges). All HTTP requests are simply
+# redirected to their HTTPS counterparts.
+
+- name: Ensure incoming HTTP traffic is allowed
+  ufw:
+    to_port: 80
+    proto: tcp
+    rule: allow
+
+# Now we try to request a certificate. If it fails. We print a warning and
+# fall back to self-signed certificates.
+- block:
+  - name: Request initial certificate from Let's Encrypt
+    command: "acmetool want {{ streisand_domain }}"
+    args:
+      creates: "{{ le_certificate }}"
+
+  - set_fact:
+      le_ok: True
+
+  rescue:
+    - set_fact:
+        le_ok: False
+
+    - name: Failed to get Let's Encrypt certificates. We are falling back to use self-signed ones. You could re-run the playbook to try again.
+      pause:
+        seconds: 10
