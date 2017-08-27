@@ -13,7 +13,7 @@
   retries: 3
   delay: 5
 
-- name: Restart rsyslog
+- name: Restart rsyslog for Libreswan
   service:
     name: rsyslog
     state: restarted
