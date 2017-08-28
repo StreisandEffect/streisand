@@ -15,11 +15,11 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 <a name="clientcerts"></a>
 ### Server and client Certifcates (OS X, Android, iOS) ###
 
-Certificates are a mechanism by which through [public key crypytography](https://en.wikipedia.org/wiki/Public-key_cryptography) allow for secure authentication to a given resource. OS X, Andoid and iOS OpenConnect/AnyConnect support this form of authentication, and is the recommended approach to connect to your Streisand OpenConnect VPN.
+Client certificates are a mechanism by which clients can authenticate themselves securely with the server.
 
-1. Your OpenConnect server issues its own __public certificate__. This is used by your device's client software (such as AnyConnect for iOS) to securely identify the VPN server. Download this server's certificate.
+1. Your OpenConnect server issues its own __server certificate__. This is used by your device's client software (such as AnyConnect for iOS) to securely identify the VPN server. Download this server's certificate.
    * [ca-cert.pem](/openconnect/ca-cert.pem)
-1. Each device you wish to configure needs a __client certificate__ in addition to the public certificate above. A client certificate is used to securely identify and authenticate your device to the VPN server. Two devices can't use the same client certifcate and be logged in at the same time (one client certificate per device). Each client certificate is protected by a password, which will be needed to unlock it once you import it into your device.
+1. Each device you wish to configure needs a __client certificate__ in addition to the server certificate above. A client certificate is used to securely identify and authenticate your device to the VPN server. Two devices can't use the same client certifcate and be logged in at the same time (one client certificate per device). Each client certificate is protected by a password, which will be needed to unlock it once you import it into your device.
 {% for client in ocserv_client_pkcs12_password_list.results %}
    * [{{ client.client_name.stdout }}.p12](/openconnect/{{ client.client_name.stdout }}.p12), password: `{{ client.stdout }}` 
 {% endfor %}
@@ -62,8 +62,8 @@ Certificates are a mechanism by which through [public key crypytography](https:/
    `brew install openconnect`
 
    * If installing Homebrew is not an option, you can also download and compile the [OpenConnect source code](/mirror/#openconnect).
-1. Download the [ca-cert.pem](/openconnect/ca-cert.pem) file, and a [client certificate file](#clientcerts) from the list above.
-1. Place the downloaded CA certificate a selected client certificate into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
+1. Download the [server certificate](/openconnect/ca-cert.pem) file, and a [client certificate file](#clientcerts) from the list above.
+1. Place the downloaded server certificate and a selected client certificate into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
 1. Run OpenConnect:
 
   `sudo openconnect --cafile ca-cert.pem --certificate your-client-certificate.p12 --key-password 'your-client-certificate-password' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
@@ -76,7 +76,7 @@ Certificates are a mechanism by which through [public key crypytography](https:/
 1. Install the OpenConnect plugin for NetworkManager.
 
    `sudo apt-get install network-manager-openconnect-gnome`
-1. Download the CA certificate file:
+1. Download the server certificate file:
    * [ca-cert.pem](/openconnect/ca-cert.pem)
 1. Open your *System Settings*.
 1. Click the *Network* icon.
@@ -133,14 +133,14 @@ If you're affected, you can use this workaround:
 <a name="ios"></a>
 ### iOS ###
 
-1. Transfer a [client certificate](#clientcerts) for each device you wish to configure:
+1. Transfer a [client certificate](#clientcerts) to each device you wish to configure:
   * The profile can be emailed to your device (simply tap the attachment), transferred via the [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12) utility, or downloaded directly by viewing these instructions on the device itself.
 1. Follow the on-screen instructions.
 1. You will be prompted to enter your device password or pin.
 1. Enter your client certificate password when the *ENTER THE PASSWORD FOR THE CERTIFICATE...* prompt is displayed.
   * Once the profile is installed, you are ready to continue.
 
-1. Download [Cisco AnyConnect](https://itunes.apple.com/us/app/cisco-anyconnect/id392790924) from the App Store.
+1. Download [Cisco Legacy AnyConnect](https://itunes.apple.com/us/app/cisco-legacy-anyconnect/id392790924?mt=8) from the App Store.
 1. Launch the application.
 1. Tap *OK* to enable the software when the dialog box appears.
 1. Tap *Settings*.

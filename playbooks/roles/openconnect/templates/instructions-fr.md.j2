@@ -15,11 +15,11 @@ OpenConnect est un serveur VPN extrêmement performant et léger qui offre une c
 <a name="clientcerts"></a>
 ### Certificats de serveur et des clients (OS X, Androïde, iOS) ###
 
-Les certificats sont un mécanisme par lequel, grâce à la [cryptographie asymétrique](https://fr.wikipedia.org/wiki/Cryptographie_asym%C3%A9trique), permet une authentification sécurisée à une ressource donnée. OS X, Andoïde et iOS OpenConnect/AnyConnect prennent en charge cette forme d'authentification et c'est l'approche recommandée pour se connecter à votre VPN Streisand OpenConnect.
+Les certificats clients sont un mécanisme par lequel les clients peuvent s'authentifier de manière sécurisée avec un serveur.
 
-1. Votre serveur OpenConnect émet son propre __certificat public__. Ceci est utilisé par le logiciel du client de votre appareil (tel que AnyConnect for iOS) pour identifier de manière sécurisée le serveur VPN. Téléchargez le certificat de ce serveur.
+1. Votre serveur OpenConnect émet son propre __certificat serveur__. Ceci est utilisé par le logiciel du client de votre appareil (tel que AnyConnect pour iOS) afin de  s'identifier de manière sécurisée avec le serveur VPN. Téléchargez le certificat de ce serveur.
    * [ca-cert.pem](/openconnect/ca-cert.pem)
-1. Chaque périphérique que vous souhaitez configurer nécessite un __certificat client__ en plus du certificat public ci-dessus. Un certificat client est utilisé pour identifier et authentifier de manière sécurisée votre appareil sur le serveur VPN. Deux périphériques ne peuvent pas utiliser le même certificat de client et être connectés simultanément (un certificat de client pour chaque périphérique). Chaque certificat client est protégé par une mot de passe, qui sera nécessaire pour le déverrouiller une fois que vous l'importez dans votre appareil.
+1. Chaque appareil que vous souhaitez configurer nécessite un __certificat client__ en plus du certificat serveur ci-dessus. Un certificat client est utilisé pour identifier et authentifier de manière sécurisée votre appareil sur le serveur VPN. Deux appareils ne peuvent pas utiliser le même certificat de client et être connectés simultanément (un certificat de client pour chaque appareil). Chaque certificat client est protégé par une mot de passe, qui sera nécessaire pour le déverrouiller une fois que vous l'importez dans votre appareil.
 {% for client in ocserv_client_pkcs12_password_list.results %}
    * [{{ client.client_name.stdout }}.p12](/openconnect/{{ client.client_name.stdout }}.p12), mot de passe: `{{ client.stdout }}` 
 {% endfor %}
@@ -43,7 +43,7 @@ Les certificats sont un mécanisme par lequel, grâce à la [cryptographie asym�
 1. La version bêta actuelle de l'interface graphique OpenConnect [ne supporte pas la modification automatique des paramètres DNS](https://github.com/openconnect/openconnect-gui/issues/48). Afin d'éviter les fuites de DNS, les étapes suivantes doivent être effectuées:
    1. Faites un clic droit sur le bouton Démarrer de Windows.
    1. Cliquez *Connexions réseau*.
-   1. Cliquez-driot sur le périphérique que vous utilisez pour vous connecter (Ethernet ou Wifi) et cliquez sur *Propriétés*.
+   1. Cliquez-driot sur le appareil que vous utilisez pour vous connecter (Ethernet ou Wifi) et cliquez sur *Propriétés*.
    1. Double-cliquez *Protocol Internet Version 4 (TCP/IPv4)*.
    1. Sélectionnez *Utiliser les adresses de serveur DNS suivante* et saisissez:
 {% for item in upstream_dns_servers %}
@@ -74,7 +74,7 @@ Les certificats sont un mécanisme par lequel, grâce à la [cryptographie asym�
 1. Installer le plugin OpenConnect pour NetworkManager.
 
    `sudo apt-get install network-manager-openconnect-gnome`
-1. Téléchargez le fichier CA:
+1. Téléchargez le certificat serveur:
    * [ca-cert.pem](/openconnect/ca-cert.pem)
 1. Ouvrez votre *Paramètres du système*.
 1. Cliquez sur l'icône *Réseau*.
@@ -131,7 +131,7 @@ Si vous êtes affecté, vous pouvez utiliser cette solution alternatif:
 <a name="ios"></a>
 ### iOS ###
 
-1. Transférer un [certificat client](#clientcerts) pour chaque périphérique que vous souhaitez configurer:
+1. Transférer un [certificat client](#clientcerts) à chaque appareil que vous souhaitez configurer:
    * Le profil peut être envoyé par courrier électronique sur votre appareil (simplement appuyez sur la pièce jointe), transféré via l'utilitaire [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12), ou téléchargé directement en regardant ces instructions sur l'appareil lui-même.
 
 1. Suivez les instructions à l'écran.
@@ -139,7 +139,7 @@ Si vous êtes affecté, vous pouvez utiliser cette solution alternatif:
 1. Saisissez mot de passe du certificat lorsque l'invite *MOT DE PASSE POUR LE CERTIFICAT...* s'affiche.
    * Une fois le profil installé, vous êtes prêt à continuer.
 
-1. Téléchargez l'application [Cisco AnyConnect](https://itunes.apple.com/fr/app/cisco-anyconnect/id392790924) depuis l'App Store.
+1. Téléchargez l'application [Cisco Legacy AnyConnect](https://itunes.apple.com/fr/app/cisco-legacy-anyconnect/id392790924) depuis l'App Store.
 1. Lancez l'application.
 1. Tapez *OK* pour activer le logiciel lorsque la boîte de dialogue apparaît.
 1. Tapez *Paramètres*.

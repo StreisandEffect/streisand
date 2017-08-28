@@ -11,5 +11,5 @@
 
 - name: Validate that the maximum number of clients is set to a reasonable amount
   fail:
-    msg: "Unreasonable number of VPN clients sepcified"
+    msg: "Too many VPN clients specified. vpn_clients must be greater than 0 and less than 20"
   when: (vpn_clients > 20) or (vpn_clients < 1)
