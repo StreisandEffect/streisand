@@ -41,13 +41,13 @@
 # Now we try to request a certificate. If it fails. We print a warning and
 # fall back to self-signed certificates.
 - block:
-  - name: Request initial certificate from Let's Encrypt
-    command: "acmetool want {{ streisand_domain }}"
-    args:
-      creates: "{{ le_certificate }}"
+    - name: Request initial certificate from Let's Encrypt
+      command: "acmetool want {{ streisand_domain }}"
+      args:
+        creates: "{{ le_certificate }}"
 
-  - set_fact:
-      le_ok: True
+    - set_fact:
+        le_ok: True
 
   rescue:
     - set_fact:
