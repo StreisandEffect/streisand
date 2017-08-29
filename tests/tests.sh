@@ -32,7 +32,7 @@ function dev_setup {
 }
 
 function run_tests {
-  run_playbook "$DIR/run.yml" -e streisand_ci=true "$1"
+  run_playbook "$DIR/run.yml" --extra-vars=@"$DIR/vars_ci.yml" "$1"
 }
 
 function ci_tests {
