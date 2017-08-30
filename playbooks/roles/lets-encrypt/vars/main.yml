@@ -1,0 +1,16 @@
+---
+le_base: /var/lib/acme
+le_port: 80
+# Currently Let's Encrypt does not provide a range of IP addresses they are
+# connecting from, so we have to open 80/tcp to the entire Internet. If they
+# provide a white list in the future, like BitBucket does, we can use the white
+# list here.
+#
+# Ref: https://community.letsencrypt.org/t/ip-addresses-le-is-validating-from-to-build-firewall-rule/5410
+#
+# However, currently the only thing that listens on 80/tcp is an ACME
+# challenge-response server (acmetool redirector mode) so this may not be a big
+# concern right now.
+le_cidr: "0.0.0.0/0"
+le_certificate: "{{ le_base }}/live/{{ streisand_domain }}/fullchain"
+le_private_key: "{{ le_base }}/live/{{ streisand_domain }}/privkey"
