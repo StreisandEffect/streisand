@@ -11,6 +11,7 @@
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
+  changed_when: False
 
 - name: Add the SSH key to Amazon under the name of 'streisand-ssh'
   ec2_key:

@@ -6,6 +6,7 @@
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
+  changed_when: False
 
 - block:
     - name: Add the SSH key to DigitalOcean if it doesn't already exist

@@ -92,6 +92,7 @@
 - name: "Register the PKCS #12 password"
   command: cat {{ ocserv_pkcs12_password_file }}
   register: ocserv_pkcs12_password
+  changed_when: False
 
 - name: "Convert the key and certificate into PKCS #12 format"
   expect:
@@ -117,6 +118,7 @@
 - name: Register the ocserv password
   command: cat {{ ocserv_password_file }}
   register: ocserv_password
+  changed_when: False
 
 - name: Create an ocpasswd credentials file
   expect:

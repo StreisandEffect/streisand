@@ -12,6 +12,7 @@
 - name: Register the forwarding user's public SSH key
   command: cat {{ forward_location }}/.ssh/id_rsa.pub
   register: ssh_forward_key
+  changed_when: False
 
 - name: Authorize the key for access
   authorized_key:

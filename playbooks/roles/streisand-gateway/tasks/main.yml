@@ -50,6 +50,7 @@
 - name: Register the Gateway password
   command: cat {{ streisand_gateway_password_file }}
   register: streisand_gateway_password
+  changed_when: False
 
 - name: Install the required package for the htpasswd command
   apt:

@@ -59,6 +59,7 @@
 - name: Register the OpenVPN server common name
   command: cat {{ openvpn_server_common_name_file }}
   register: openvpn_server_common_name
+  changed_when: False
 
 - name: Generate the OpenSSL configuration that will be used for the Server certificate's req and ca commands
   # Properly sets the attributes that are described here:
@@ -116,6 +117,7 @@
   args:
     chdir: "{{ openvpn_path }}"
   register: openvpn_ca_contents
+  changed_when: False
 
 - name: Register client certificate contents
   command: cat client.crt
@@ -123,6 +125,7 @@
     chdir: "{{ openvpn_path }}/{{ item }}"
   with_items: "{{ openvpn_clients }}"
   register: openvpn_client_certificates
+  changed_when: False
 
 - name: Register client key contents
   command: cat client.key
@@ -130,12 +133,14 @@
     chdir: "{{ openvpn_path }}/{{ item }}"
   with_items: "{{ openvpn_clients }}"
   register: openvpn_client_keys
+  changed_when: False
 
 - name: Register HMAC firewall contents
   command: cat ta.key
   args:
     chdir: "{{ openvpn_path }}"
   register: openvpn_hmac_firewall_contents
+  changed_when: False
 
 - name: Create the client configuration profiles that will be used when connecting directly
   template:

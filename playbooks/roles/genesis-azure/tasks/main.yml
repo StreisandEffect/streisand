@@ -2,6 +2,7 @@
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
+  changed_when: False
 
 - name: Create the Azure instance
   local_action:
