@@ -100,9 +100,3 @@
 - name: Set the streisand_server_name variable
   set_fact:
     streisand_server_name: "{{ aws_instance_name | regex_replace('\\s', '_') }}"
-
-# This does not seem to be necessary if /dev/random has been filled by haveged.
-#
-#- name: New EC2 servers are occasionally slow to process incoming SSH connections e#ven after the OpenSSH daemon has started up. Pause for 90 seconds.
-#  pause:
-#    seconds: 90
