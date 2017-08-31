@@ -47,11 +47,6 @@
     instance_tags:
       Name: "{{ aws_instance_name }}"
     wait: yes
-    # This is gross, but it seems like sshd is starved for entropy on boot. We can't
-    # ssh in to fix this...
-    user_data: |
-      #!/bin/sh
-      sudo apt-get install haveged -y
   register: streisand_server
 
 - name: Create CloudWatch alarm to auto-recover instance
