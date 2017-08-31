@@ -33,12 +33,12 @@
         from_port: "{{ ssh_port }}"
         to_port: "{{ ssh_port }}"
         cidr_ip: 0.0.0.0/0
-      # Let's Encrypt
+      # HTTP (Let's Encrypt)
       # ---
       - proto: tcp
         from_port: "{{ le_port }}"
         to_port: "{{ le_port }}"
-        cidr_ip: "{{ le_cidr }}"
+        cidr_ip: 0.0.0.0/0
     rules_egress:
       - proto: all
         from_port: 1
