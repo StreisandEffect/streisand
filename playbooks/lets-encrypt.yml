@@ -8,6 +8,9 @@
   hosts: streisand-host
   gather_facts: yes
 
+  vars_files:
+    - roles/lets-encrypt/vars/main.yml
+
   vars_prompt:
     - name: "streisand_domain_var"
       prompt: |
@@ -21,6 +24,9 @@
         If you have just created a new cloud server in previous steps, it is
         good time to point your domain to your server's public address, as DNS
         changes take time to propagate.
+
+        In order to use Let's Encrypt, you must agree to its agreements at
+        {{ le_agreements }}.
 
         Please type your domain below. Press enter to skip.
       private: no
