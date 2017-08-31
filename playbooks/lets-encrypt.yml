@@ -1,7 +1,8 @@
 ---
-# lets-encrypt.yml asks questions about Streisand domain name, which is used to
-# request TLS certificates from Let's Encrypt server. If user fails to answer
-# these questions, certain roles are disabled.
+# lets-encrypt.yml asks questions about Streisand instance domain name, which
+# is used to request TLS certificates from Let's Encrypt. If user fails to
+# answer these questions, lets-encrypt role would not be run, and self-signed
+# certificates are generated and used instead.
 - name: Collect information about the Streisand domain
 # =========================================
   hosts: streisand-host
