@@ -94,19 +94,18 @@ This should return a 301 Found response **not** a connection refused error.
 ### Android ###
 1. Download Shadowsocks for Android from [Google Play](https://play.google.com/store/apps/details?id=com.github.shadowsocks). If Google Play is blocked in your country, you can [download a mirrored copy](/mirror/shadowsocks/) from this server!
 1. Launch the application.
-1. Tap the Shadowsocks icon in the top-left of the screen.
-1. Tap the *+* icon in the bottom-right.
+1. Tap the Add Profile *+* icon, second from the top-left of the screen.
 1. Select *Scan QR code*.
 1. Use your phone to scan this image, or if you are using your phone _right now_ you can choose the *Manual Settings* option and copy and paste the information from the Linux section above:
 
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
-1. Tap the plane icon on the top.
+1. Tap the round paper plane icon along the bottom-left bar.
 1. Accept the Android VPN connection warning.
 1. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
 ### iOS ###
-1. Download [Shadowrocket](https://itunes.apple.com/us/app/shadowrocket/id932747118?mt=8) and launch it.    
+1. Download [Shadowrocket](https://itunes.apple.com/us/app/shadowrocket/id932747118?mt=8) and launch it.
    > **Note:** Shadowrocket is not available in the China App Store.
 1. Tap the QR code import icon in the top-left of the screen.
 1. Use your phone to scan this image, or if you are using your phone _right now_ you can manually add a new proxy by tapping *Add Server* and using the information from the Linux section above:
@@ -118,7 +117,7 @@ This should return a 301 Found response **not** a connection refused error.
 
 <a name="simple-obfs"></a>
 ### simple-obfs for unreliable/hostile networks ###
-For users on unreliable or hostile networks (esp. experiencing quality-of-service (QOS) throttling), further configuration of Shadowsocks to use the simple-obfs plugin can be carried out via the following configuration:
+For users on unreliable or hostile networks (esp. experiencing quality-of-service (QOS) throttling) using the simple-obfs plugin may help alleviate these issues. Further configuration of Shadowsocks client to use the simple-obfs plugin can be carried out via the following configuration:
 
         Server: {{ streisand_ipv4_address }}
         Port: {{ shadowsocks_server_port }}
@@ -127,4 +126,4 @@ For users on unreliable or hostile networks (esp. experiencing quality-of-servic
         Plugin: {{ shadowsocks_client_obfs_plugin }}
         Plugin_Options: {{ shadowsocks_obfs_client_plugin_opts }}
 
-Your Shadowsocks traffic will now be obfuscated as `{{ shadowsocks_obfs_cover_protocol }}` traffic to `{{ shadowsocks_obfs_cover_domain }}`.
+Android users will first need to download the [Simple Obfuscation](https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.obfs_local&hl=en) plugin app, and then modify the existing Streisand profile on your client to use this plugin. You can do this by hitting the edit button next to the profile, tapping the `Plugin` option at the bottom of the profile and selecting the "Simple obsfucation" plugin from the menu. Your Shadowsocks traffic will now be obfuscated as `{{ shadowsocks_obfs_cover_protocol }}` traffic to `{{ shadowsocks_obfs_cover_domain }}`.
