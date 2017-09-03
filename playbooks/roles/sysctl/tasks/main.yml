@@ -1,8 +1,5 @@
 ---
 - block:
-    - name: Harden the kernel
-      include_vars: sysctl-values.yml
-
     - name: Apply the sysctl values
       sysctl:
         name: "{{ item.key }}"
