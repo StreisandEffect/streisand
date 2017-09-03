@@ -1,4 +1,5 @@
 ---
+streisand_ci: yes
 streisand_noninteractive: no
 
 server_name: streisand
