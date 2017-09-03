@@ -1,0 +1,15 @@
+---
+- block:
+    - name: Harden the kernel
+      include_vars: sysctl-values.yml
+
+    - name: Apply the sysctl values
+      sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        ignoreerrors: yes
+        sysctl_set: yes
+        reload: yes
+        state: present
+      with_items: "{{ sysctl_values }}"
+  when: ansible_virtualization_type != 'lxc'
