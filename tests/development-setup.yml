@@ -4,6 +4,10 @@
   remote_user: root
   become: yes
   pre_tasks:
+    - name: Perform global vars sanity check
+      include_role:
+        name: validation
+
     # NOTE(@alimakki): Due to key rotation, we pre-emptivley
     # add the Google linux apt signing key required by some
     # packages

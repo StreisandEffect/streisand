@@ -18,5 +18,8 @@
         executable: /bin/bash
       when: ansible_default_ipv4.alias != "enp0s8"
 
+  roles:
+    - validation
+
 - include: streisand.yml
 ...

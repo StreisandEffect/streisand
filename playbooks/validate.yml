@@ -1,0 +1,14 @@
+---
+- name: Perform global variables sanity check
+# ===========================================
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_files:
+    - ../global_vars/vars.yml
+
+  roles:
+    - validation
+
+...
