@@ -45,6 +45,16 @@ Please create this keypair by running 'ssh-keygen'"
   fi
 }
 
+function check_ip() {
+  read -r -p "$1" SERVER_IP
+  if [[ $SERVER_IP =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+    echo "IP provided is valid, continuing . . . ";
+else
+    echo "Invalid IP, attempting to set automatically . . . ";
+    return 1;
+ fi
+}
+
 # run_genesis invokes the genesis playbook file specified by the first argument
 # to the function, or `streisand.yml` if none is provided. It uses the default
 # `inventory` file from the inventories directory as the Ansible inventory.
@@ -71,27 +81,37 @@ function be_careful_friend() {
 # invoking ansible-playbook. It uses the `inventory-local-provision` inventory
 # file from the inventories directory as the Ansible inventory.
 function local_provision() {
-  be_careful_friend "
-LOCAL PROVISIONING WILL OVERWRITE CONFIGURATION ON **THIS** MACHINE.
-THE MACHINE YOU ARE CURRENTLY EXECUTING THIS SHELL SCRIPT ON.
-ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
+  local FRIENDLY_MESSAGE="
+    LOCAL PROVISIONING WILL OVERWRITE CONFIGURATION ON **THIS** MACHINE.
+    THE MACHINE YOU ARE CURRENTLY EXECUTING THIS SHELL SCRIPT ON.
+    ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
 
-Please enter the word 'streisand' to continue: "
+    Please enter the word 'streisand' to continue: "
 
-  echo; echo; ansible-playbook -i inventories/inventory-local-provision --extra-vars=@global_vars/vars.yml playbooks/localhost.yml
+  if check_ip "Manually enter the external IP of the server. Otherwise, Press enter to attempt to set it automatically"; then
+
+    be_careful_friend "$FRIENDLY_MESSAGE"
+
+      echo; echo; ansible-playbook -i inventories/inventory-local-provision -extra-vars=@global_vars/vars.yml --extra-vars "streisand_ipv4_address=$SERVER_IP" playbooks/localhost.yml
+
+  else
+    be_careful_friend "$FRIENDLY_MESSAGE"
+
+      echo; echo; ansible-playbook -i inventories/inventory-local-provision --extra-vars=@global_vars/vars.yml playbooks/localhost.yml
+  fi
 }
 
 function existing_server() {
-  read -r -p "What is the IP of the existing server: " SERVER_IP
+  if check_ip "What is the IP of the existing server: "; then
+    be_careful_friend "
+      THIS WILL OVERWRITE CONFIGURATION ON THE EXISTING SERVER.
+      STREISAND ASSUMES $SERVER_IP IS A BRAND NEW UBUNTU INSTANCE AND WILL
+      NOT PRESERVE EXISTING CONFIGURATION OR DATA.
 
-  be_careful_friend "
-THIS WILL OVERWRITE CONFIGURATION ON THE EXISTING SERVER.
-STREISAND ASSUMES $SERVER_IP IS A BRAND NEW UBUNTU INSTANCE AND WILL
-NOT PRESERVE EXISTING CONFIGURATION OR DATA.
+      ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
 
-ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
-
-Please enter the word 'streisand' to continue: "
+      Please enter the word 'streisand' to continue: "
+fi
 
   # If ANSIBLE_SSH_USER is empty, default to root
   if [ -z "${ANSIBLE_SSH_USER}" ]; then
