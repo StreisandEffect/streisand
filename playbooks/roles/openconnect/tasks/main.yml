@@ -67,41 +67,65 @@
     group: root
     mode: 0600
 
-- name: Generate the client key
-  command: certtool --generate-privkey --outfile {{ ocserv_client_key_file }}
+- name: Generate the client keys
+  command: certtool --generate-privkey --outfile {{ ocserv_path }}/{{ client_name.stdout }}-key.pem
   args:
-    creates: "{{ ocserv_client_key_file }}"
+    creates: "{{ ocserv_path }}/{{ client_name.stdout }}-key.pem"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
-- name: Generate the client certificate
-  command: certtool --generate-certificate --load-privkey {{ ocserv_client_key_file }} --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_client_template_file }} --outfile {{ ocserv_client_certificate_file }}
+- name: Generate the client certificates
+  command: certtool --generate-certificate --load-privkey {{ ocserv_path }}/{{ client_name.stdout }}-key.pem --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_client_template_file }} --outfile {{ ocserv_path }}/{{ client_name.stdout }}-cert.pem
   args:
-    creates: "{{ ocserv_client_certificate_file }}"
+    creates: "{{ ocserv_path }}/{{ client_name.stdout }}-cert.pem"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
 - name: "Generate a random password that will be used during the PKCS #12 conversion"
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ ocserv_pkcs12_password_file }}
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ ocserv_path }}/ocserv-{{ client_name.stdout }}-pkcs12-password
   args:
-    creates: "{{ ocserv_pkcs12_password_file }}"
+    creates: "{{ ocserv_path }}/ocserv-{{ client_name.stdout }}-pkcs12-password"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
 - name: "Set permissions on the PKCS #12 password file"
   file:
-    path: "{{ ocserv_pkcs12_password_file }}"
+    path: "{{ ocserv_path }}/ocserv-{{ client_name.stdout }}-pkcs12-password"
     owner: root
     group: root
     mode: 0600
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
-- name: "Register the PKCS #12 password"
-  command: cat {{ ocserv_pkcs12_password_file }}
-  register: ocserv_pkcs12_password
+- name: "Register the PKCS #12 passwords"
+  command: cat {{ ocserv_path }}/ocserv-{{ client_name.stdout }}-pkcs12-password
+  register: "ocserv_client_pkcs12_password_list"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
   changed_when: False
 
-- name: "Convert the key and certificate into PKCS #12 format"
+- name: "Convert the keys and certificates into PKCS #12 format"
   expect:
-    command: certtool --to-p12 --load-privkey {{ ocserv_client_key_file }} --pkcs-cipher 3des-pkcs12 --load-certificate {{ ocserv_client_certificate_file }} --outfile {{ ocserv_client_pkcs12_file }} --outder
+    command: certtool --to-p12 --load-privkey {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}-key.pem --pkcs-cipher 3des-pkcs12 --load-certificate {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}-cert.pem --outfile {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}.p12 --outder
     responses:
-      "Enter a name for the key": "{{ ocserv_client_name }}"
-      "Enter password": "{{ ocserv_pkcs12_password.stdout }}"
-      "Confirm password": "{{ ocserv_pkcs12_password.stdout }}"
-    creates: "{{ ocserv_client_pkcs12_file }}"
+      "Enter a name for the key": "{{ ocserv_client_password.client_name.stdout }}"
+      "Enter password":   "{{ ocserv_client_password.stdout }}"
+      "Confirm password": "{{ ocserv_client_password.stdout }}"
+    creates: "{{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}.p12"
+  with_items: "{{ ocserv_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "ocserv_client_password"
+    label: "{{ ocserv_client_password.client_name.item }}"
 
 - name: Generate a random ocserv password
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 4 | xargs | sed -e 's/ /-/g' > {{ ocserv_password_file }}

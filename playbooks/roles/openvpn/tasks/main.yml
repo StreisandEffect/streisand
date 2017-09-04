@@ -19,16 +19,22 @@
 
 - name: Create directories for clients
   file:
-    path: "{{ openvpn_path}}/{{ item }}"
+    path: "{{ openvpn_path}}/{{ client_name.stdout }}"
     state: directory
-  with_items: "{{ openvpn_clients }}"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
 - name: Generate RSA keys for the clients
   command: openssl genrsa -out client.key {{ openvpn_key_size }}
   args:
-    chdir: "{{ openvpn_path }}/{{ item }}"
+    chdir: "{{ openvpn_path }}/{{ client_name.stdout }}"
     creates: client.key
-  with_items: "{{ openvpn_clients }}"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
 - name: Set the proper permissions on all RSA keys
   file:
@@ -94,18 +100,24 @@
     creates: server.crt
 
 - name: Generate CSRs for the clients
-  command: openssl req -new -extensions client -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ item }}" -config {{ openvpn_path }}/openssl-certificate.cnf
+  command: openssl req -new -extensions client -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ client_name.stdout }}" -config {{ openvpn_path }}/openssl-certificate.cnf
   args:
-    chdir: "{{ openvpn_path }}/{{ item }}"
+    chdir: "{{ openvpn_path }}/{{ client_name.stdout }}"
     creates: client.csr
-  with_items: "{{ openvpn_clients }}"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
 - name: Generate certificates for the clients
   command: openssl x509 -extensions client -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt -extfile {{ openvpn_path }}/openssl-certificate.cnf
   args:
-    chdir: "{{ openvpn_path }}/{{ item }}"
+    chdir: "{{ openvpn_path }}/{{ client_name.stdout }}"
     creates: client.crt
-  with_items: "{{ openvpn_clients }}"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
 - name: Generate HMAC firewall key
   command: openvpn --genkey --secret {{ openvpn_hmac_firewall }}
@@ -122,16 +134,22 @@
 - name: Register client certificate contents
   command: cat client.crt
   args:
-    chdir: "{{ openvpn_path }}/{{ item }}"
-  with_items: "{{ openvpn_clients }}"
+    chdir: "{{ openvpn_path }}/{{ client_name.stdout }}"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
   register: openvpn_client_certificates
   changed_when: False
 
 - name: Register client key contents
   command: cat client.key
   args:
-    chdir: "{{ openvpn_path }}/{{ item }}"
-  with_items: "{{ openvpn_clients }}"
+    chdir: "{{ openvpn_path }}/{{ client_name.stdout }}"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
   register: openvpn_client_keys
   changed_when: False
 
@@ -145,58 +163,58 @@
 - name: Create the client configuration profiles that will be used when connecting directly
   template:
     src: client-direct.ovpn.j2
-    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_profile_filename }}"
+    dest: "{{ openvpn_path }}/{{ item[0].stdout }}/{{ openvpn_direct_profile_filename }}"
   with_together:
-    - "{{ openvpn_clients }}"
+    - "{{ vpn_client_names.results }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
   loop_control:
-    label: "{{ item[0] }}"
+    label: "{{ item[0].item }}"
 
 - name: Create the client configuration profiles that will be used when connecting directly via UDP
   template:
     src: client-direct-udp.ovpn.j2
-    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_direct_udp_profile_filename }}"
+    dest: "{{ openvpn_path }}/{{ item[0].stdout }}/{{ openvpn_direct_udp_profile_filename }}"
   with_together:
-    - "{{ openvpn_clients }}"
+    - "{{ vpn_client_names.results }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
   loop_control:
-    label: "{{ item[0] }}"
+    label: "{{ item[0].item }}"
 
 - name: Create the client configuration profiles that will be used when connecting via sslh
   template:
     src: client-sslh.ovpn.j2
-    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_sslh_profile_filename }}"
+    dest: "{{ openvpn_path }}/{{ item[0].stdout }}/{{ openvpn_sslh_profile_filename }}"
   with_together:
-    - "{{ openvpn_clients }}"
+    - "{{ vpn_client_names.results }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
   loop_control:
-    label: "{{ item[0] }}"
+    label: "{{ item[0].item }}"
 
 - name: Create the client configuration profiles that will be used when connecting via stunnel
   template:
     src: client-stunnel.ovpn.j2
-    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_stunnel_profile_filename }}"
+    dest: "{{ openvpn_path }}/{{ item[0].stdout }}/{{ openvpn_stunnel_profile_filename }}"
   with_together:
-    - "{{ openvpn_clients }}"
+    - "{{ vpn_client_names.results }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
   loop_control:
-    label: "{{ item[0] }}"
+    label: "{{ item[0].item }}"
   when: streisand_stunnel_enabled
 
 - name: Create the combined client configuration profiles that will be used to connect from the fastest to the most compatible
   template:
     src: client-combined.ovpn.j2
-    dest: "{{ openvpn_path }}/{{ item[0] }}/{{ openvpn_combined_profile_filename }}"
+    dest: "{{ openvpn_path }}/{{ item[0].stdout }}/{{ openvpn_combined_profile_filename }}"
   with_together:
-    - "{{ openvpn_clients }}"
+    - "{{ vpn_client_names.results }}"
     - "{{ openvpn_client_certificates.results }}"
     - "{{ openvpn_client_keys.results }}"
   loop_control:
-    label: "{{ item[0] }}"
+    label: "{{ item[0].item }}"
 
 - name: Copy OpenVPN configuration file into place
   template:
@@ -210,10 +228,12 @@
   notify: Restart OpenVPN
 
 - name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server
-  command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0] }}
+  command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0].stdout }}
   with_nested:
-    - "{{ openvpn_clients }}"
+    - "{{ vpn_client_names.results }}"
     - ["ca.crt", "ta.key"]
+  loop_control:
+    label: "{{ item[0].item }}"
 
 # Set up the OpenVPN firewall rules
 - include: firewall.yml
