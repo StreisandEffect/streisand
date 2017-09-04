@@ -6,7 +6,7 @@
 - name: Collect information about the Streisand domain
 # =========================================
   hosts: streisand-host
-  gather_facts: yes
+  gather_facts: no
 
   vars_files:
     - roles/lets-encrypt/vars/main.yml

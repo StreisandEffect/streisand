@@ -3,6 +3,9 @@
 - include: openssl.yml
   when: not le_ok
 
+# Include Let's Encrypt variables for template rendering
+- include_vars: ../../lets-encrypt/vars/main.yml
+
 - name: Generate a random Gateway password
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 4 | xargs | sed -e 's/ /-/g' > {{ streisand_gateway_password_file }}
   args:

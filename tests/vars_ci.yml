@@ -2,4 +2,7 @@ streisand_ci: yes
 
 # Answer questions in playbooks/lets-encrypt.yml
 streisand_domain_var: ""
+streisand_domain: ""
 streisand_admin_email_var: ""
+streisand_admin_email: ""
+le_ok: no
