@@ -8,6 +8,7 @@ Tunnel SSH
 {% if streisand_tinyproxy_enabled %}
   * [Androïde](#android)
 {% endif %}
+  * [Notes](#notes)
 
 <a name="windows"></a>
 ### Windows ###
@@ -137,3 +138,6 @@ Certaines applications vous permettent de rendre ces paramètres persistants pou
 6. Définissez la valeur de *network.proxy.socks\_remote\_dns* à `true`.
 7. Définissez la valeur de *network.proxy.type* à `1`.
 {% endif %}
+
+<a name="notes"></a>
+1. Si vous voyez le message "This account is for port forwarding only", assurez-vous de configurer votre client SSH pour ne pas exécuter les commandes shell sur le serveur distant (`-N`).
