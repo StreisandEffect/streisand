@@ -40,7 +40,6 @@
 - Windows
   - [OpenVPN (from build.openvpn.net)](https://github.com/jlund/streisand/blob/master/playbooks/roles/openvpn/vars/mirror.yml)
   - [Shadowsocks (from github.com/shadowsocks)](https://github.com/jlund/streisand/blob/master/playbooks/roles/shadowsocks/vars/mirror.yml)
-  - [Shuttle (from github.com/sshuttle)](https://github.com/jlund/streisand/blob/master/playbooks/roles/streisand-mirror/vars/ssh.yml)
   - [Stunnel (from stunnel.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/stunnel/vars/mirror.yml)
   - [Putty (from the.earth.li)](https://github.com/jlund/streisand/blob/master/playbooks/roles/streisand-mirror/vars/ssh.yml)
   - [Tor Browser (from dist.torproject.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/tor-bridge/vars/mirror-common.yml)
