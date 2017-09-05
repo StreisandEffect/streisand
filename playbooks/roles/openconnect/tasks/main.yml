@@ -62,10 +62,14 @@
 - name: Generate the client template file
   template:
     src: client.tmpl.j2
-    dest: "{{ ocserv_client_template_file }}"
+    dest: "{{ ocserv_path }}/client-{{ client_name.stdout }}.tmpl"
     owner: root
     group: root
     mode: 0600
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
 - name: Generate the client keys
   command: certtool --generate-privkey --outfile {{ ocserv_path }}/{{ client_name.stdout }}-key.pem
@@ -77,7 +81,7 @@
     label: "{{ client_name.item }}"
 
 - name: Generate the client certificates
-  command: certtool --generate-certificate --load-privkey {{ ocserv_path }}/{{ client_name.stdout }}-key.pem --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_client_template_file }} --outfile {{ ocserv_path }}/{{ client_name.stdout }}-cert.pem
+  command: certtool --generate-certificate --load-privkey {{ ocserv_path }}/{{ client_name.stdout }}-key.pem --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_path }}/client-{{ client_name.stdout }}.tmpl --outfile {{ ocserv_path }}/{{ client_name.stdout }}-cert.pem
   args:
     creates: "{{ ocserv_path }}/{{ client_name.stdout }}-cert.pem"
   with_items: "{{ vpn_client_names.results }}"

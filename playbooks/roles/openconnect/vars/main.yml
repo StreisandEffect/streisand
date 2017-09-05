@@ -47,7 +47,6 @@ ocserv_server_key_file:         "{{ ocserv_path }}/server-key.pem"
 ocserv_server_template_file:    "{{ ocserv_path }}/server.tmpl"
 
 ocserv_client_name:          "streisand-openconnect-{{ streisand_ipv4_address }}"
-ocserv_client_template_file: "{{ ocserv_path }}/client.tmpl"
 
 ocserv_hashed_password_file: "{{ ocserv_path }}/ocpasswd"
 ocserv_password_file:        "{{ ocserv_path }}/ocserv-password"
