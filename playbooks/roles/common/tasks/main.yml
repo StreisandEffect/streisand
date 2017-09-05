@@ -76,5 +76,6 @@
     - { src: "20auto-upgrades.j2",       dest: "/etc/apt/apt.conf.d/20autoupgrades" }
     - { src: "50unattended-upgrades.j2", dest: "/etc/apt/apt.conf.d/50unattended-upgrades" }
 
-- include_role:
-  name: sysctl
+- name: Apply custom sysctl values 
+    include_role:
+      name: sysctl
