@@ -1,6 +1,6 @@
 ---
 - block:
-    - name: Apply the sysctl values
+    - name: Apply custom sysctl values
       sysctl:
         name: "{{ item.key }}"
         value: "{{ item.value }}"
