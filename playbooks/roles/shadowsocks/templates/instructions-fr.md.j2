@@ -33,7 +33,7 @@ Shadowsocks
 1. Téléchargez [ShadowsocksX-NG](/mirror/shadowsocks/index-fr.html).
 1. Double-cliquez sur le DMG et faites glisser l'icône dans votre dossier Applications.
 1. Lancez ShadowsocksX-NG. Vous serez invité à saisir votre mot de passe afin que vos paramètres de proxy système puissent être modifiés.
-1. Recherchez l'icône d'avion de papier Shadowsocks dans votre barre de menus et cliquez dessus.
+1. Tapez sur l'icône du l'avion en papier rond dans la barre inférieure gauche.
 1. Assurez-vous que le code QR ci-dessous est centré et complètement visible, et choisissez *Scan QR Code from Screen...*
 
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
@@ -89,7 +89,7 @@ Une fois que vous avez Shadowsocks fonctionnant localement, vous devrez transfé
 ### Androïde ###
 1. Téléchargez Shadowsocks pour Androïde à partir de [Google Play](https://play.google.com/store/apps/details?id=com.github.shadowsocks&hl=fr). Si Google Play est bloqué dans votre pays, vous pouvez [télécharger une copie en miroir](/mirror/shadowsocks/index-fr.html) de ce serveur!
 1. Lancez l'application.
-1. Tapez sur l'icône Shadowsocks en haut à gauche de l'écran.
+1. Tapez sur l'icône Ajouter un profil +, en haut à droite de l'écran.
 1. Tapez l'icône *+* en bas à droite.
 1. Sélectionnez *Scan QR code*.
 1. Utilisez votre téléphone pour numériser cette image, ou si vous utilisez votre téléphone _maintenant_, vous pouvez choisir la *Manual Settings* et copiez/collez les informations à partir de la section Linux ci-dessus:
@@ -104,7 +104,7 @@ Une fois que vous avez Shadowsocks fonctionnant localement, vous devrez transfé
 ### iOS ###
 
 1. Téléchargez [Shadowrocket](https://itunes.apple.com/fr/app/shadowrocket/id932747118?mt=8) et lancez-le.
-   * Vous serez invité à vous connecter à l'iTunes Store la première fois que vous exécutez Shadowrocket.     
+   * Vous serez invité à vous connecter à l'iTunes Store la première fois que vous exécutez Shadowrocket.
    > **Note:** Shadowrocket n'est pas disponible dans l'App Store chinois
 1. Appuyez sur l'icône d'importation du code QR en haut à gauche de l'écran.
 1. Utilisez votre téléphone pour numériser cette image, ou si vous utilisez votre téléphone _maintenant_, vous pouvez ajouter manuellement un nouveau proxy à partir de l'onglet *Home* et copier et coller les informations de la section Linux ci-dessus:
@@ -116,13 +116,12 @@ Une fois que vous avez Shadowsocks fonctionnant localement, vous devrez transfé
 
 <a name="simple-obfs"></a>
 ### simple-obfs pour les réseaux peu fiables/hostiles ###
-Pour les utilisateurs sur des réseaux peu fiables ou hostiles (en particulier l'optimisation de la qualité de service (QOS)), une configuration supplémentaire de Shadowsocks pour utiliser le plugin simple-obfs peut être effectuée via la configuration suivante:
-        
+Pour les utilisateurs sur des réseaux peu fiables ou hostiles (en particulier la limitation de la qualité de service (QOS)), l'utilisation du plugin simple-obfs peut vous aider à atténuer ces problèmes. La configuration supplémentaire du client Shadowsocks pour utiliser le plugin simple-obfs peut être effectuée via la configuration suivante:
+
         Server: {{ streisand_ipv4_address }}
         Port: {{ shadowsocks_server_port }}
         Password: {{ shadowsocks_password.stdout }}
         Encryption Method: {{ shadowsocks_encryption_method }}
         Plugin: {{ shadowsocks_client_obfs_plugin }}
         Plugin_Options: {{ shadowsocks_obfs_client_plugin_opts }}
-
-Votre trafic Shadowsocks sera maintenant obscurci comme `{{ shadowsocks_obfs_cover_protocol }}` à `{{ shadowsocks_obfs_cover_domain }}`.
+Les utilisateurs d'Androïde devront d'abord télécharger l'application [Simple obfuscation] (https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.obfs_local&hl=fr), puis modifier le profil existant de Streisand sur votre client pour utiliser ce plugin. Vous pouvez le faire en appuyant sur le bouton d'édition (edit) à côté du profil, en tapant l'option Plugin en bas du profil et en sélectionnant le plugin "Simple obfuscation" dans le menu. Votre trafic Shadowsocks sera maintenant obscurci en tant que {{shadowsocks_obfs_cover_protocol}} trafic vers {{shadowsocks_obfs_cover_domain}}.
