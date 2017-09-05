@@ -1,6 +1,6 @@
 ---
-- name: Perform global variables sanity check
-# ===========================================
+- name: Perform global variables validation
+# =========================================
   hosts: localhost
   connection: local
   gather_facts: no

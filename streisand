@@ -119,17 +119,7 @@ EOF
   echo; echo; ansible-playbook -i inventories/inventory-existing --extra-vars=@global_vars/vars.yml playbooks/existing-server.yml
 }
 
-# be_careful_friend asks you to pay attention because you're about to do
-# something that might be impossible to undo!
-function be_careful_friend() {
-  read -r -p "$1" confirm
-  case "$confirm" in
-    streisand) echo; echo "Confirmed. Continuing";;
-    *) echo; echo "Cancelling & exiting."; exit 1;;
-  esac
-}
-
-# runs the validation role to sanity check global_vars/vars.yml
+# runs the validation role to validate global_vars/vars.yml
 function validate() {
   echo; echo; ansible-playbook playbooks/validate.yml
 }
