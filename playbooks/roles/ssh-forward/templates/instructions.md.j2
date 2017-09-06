@@ -5,10 +5,10 @@ SSH Tunnel
 * Platforms
   * [Windows](#windows)
   * [Linux and OS X](#linux-and-osx)
-  * [Linux and OS X (alternate)](#linux-and-osx-alternate)
 {% if streisand_tinyproxy_enabled %}
   * [Android](#android)
 {% endif %}
+  * [Notes](#notes)
 
 <a name="windows"></a>
 ### Windows ###
@@ -19,6 +19,8 @@ SSH Tunnel
    * Port `443` is available as a fallback option if you are on a network that restricts access to the default SSH port.
 1. Go to Connection --> Data.
 1. Enter `forward` in the *Auto-login username* field.
+1. Go to Connection --> SSH.
+1. Check `Don't start a shell or command at all`.
 1. Go to Connection --> SSH --> Tunnels.
 1. Enter `{{ ssh_default_socks_port }}` in the *Source port* field.
 1. Make sure the `Auto` and `Dynamic` radio buttons are selected.
@@ -54,48 +56,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux-and-osx"></a>
-### Linux and OS X (sshuttle) ###
-Sshuttle is a simple VPN tunnelling solution that operates over the SSH transport. It's fast, easy to set up, and offers great performance.
-
-[Alternate SSH instructions](#linux-and-osx-alternate) are also available if you would like to avoid installing additional software.
-
-1. Download the `streisand_rsa` private key that is used to authenticate the SSH connection:
-   * [streisand\_rsa](/ssh/streisand_rsa)
-1. Copy the `streisand_rsa` file to the directory of your choice.
-1. Set the correct permissions on the RSA key file:
-   * `chmod 600 streisand_rsa`
-1. Add a new entry to your `.ssh/config` file. It should look like this. Port `443` is available as a fallback option if you are on a network that restricts access to the default SSH port. Be sure to adjust the location of the IdentityFile:
-
-         Host {{ streisand_server_name }}
-           User         forward
-           Port         {{ ssh_port }}
-           HostName     {{ streisand_ipv4_address }}
-           IdentityFile ~/.ssh/streisand_rsa
-
-1. Download [sshuttle](https://github.com/sshuttle/sshuttle) by running the following command in the directory of your choice:
-
-  `git clone https://github.com/sshuttle/sshuttle.git`
-
-  * If access to GitHub has been blocked, you can download a mirrored copy [here](/mirror/ssh/)!
-  * sshuttle is also available via [Homebrew](http://brew.sh/) for OS X users: `brew install sshuttle`
-
-1. Enter the directory:
-
-   `cd sshuttle`
-1. Run sshuttle and connect to the server:
-
-   `./run --dns -r forward@{{ streisand_server_name }} 0/0 -vv`
-1. Verify that the fingerprint matches one of these:
-
-   `{{ ssh_server_fingerprints.results[0].stdout }}`
-
-   `{{ ssh_server_fingerprints.results[1].stdout }}`
-1. All of your traffic, including DNS, is now being transparently forwarded through an encrypted SSH connection. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
-
-<a name="linux-and-osx-alternate"></a>
-### Linux and OS X (alternate) ###
-Sshuttle offers significantly faster performance and is easier to set up, but the following instructions will also get you connected if you are in a situation where you cannot install sshuttle.
-
+### Linux and OS X ###
 1. Download the `streisand_rsa` private key that is used to authenticate the SSH connection:
    * [streisand\_rsa](/ssh/streisand_rsa)
 1. Copy the `streisand_rsa` file to the directory of your choice.
@@ -109,7 +70,7 @@ Sshuttle offers significantly faster performance and is easier to set up, but th
 
 1. SSH into the server and forward a dynamic SOCKS port:
 
-   `ssh -D {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
+   `ssh -ND {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
 1. Verify that the fingerprint matches one of these:
 
    `{{ ssh_server_fingerprints.results[0].stdout }}`
@@ -176,3 +137,6 @@ Some applications allow you to make these settings persistent for all networks. 
 6. Set the value of *network.proxy.socks\_remote\_dns* to `true`.
 7. Set the value of *network.proxy.type* to `1`.
 {% endif %}
+
+<a name="notes"></a>
+1. If you see the message "This account is for port forwarding only", make sure you configure your SSH client to not execute shell commands on remote server (`-N`).
