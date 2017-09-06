@@ -1,0 +1,12 @@
+---
+- block:
+    - name: Apply custom sysctl values
+      sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        ignoreerrors: yes
+        sysctl_set: yes
+        reload: yes
+        state: present
+      with_items: "{{ sysctl_values }}"
+  when: ansible_virtualization_type != 'lxc'

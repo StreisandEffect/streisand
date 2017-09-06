@@ -136,17 +136,6 @@
     mode: 0644
   notify: Restart rsyslog for Libreswan
 
-- block:
-    - name: Include the L2TP/IPsec sysctl value variables
-      include_vars: sysctl-values.yml
-
-    - name: Apply the sysctl values
-      sysctl:
-        name: "{{ item.key }}"
-        value: "{{ item.value }}"
-      with_items: "{{ l2tp_ipsec_sysctl_values }}"
-  when: ansible_virtualization_type != 'lxc'
-
 - name: Ensure redirects are disabled immediately
   shell: echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
 
