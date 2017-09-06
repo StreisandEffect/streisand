@@ -9,7 +9,6 @@
   become: true
 
   roles:
-    - validation
     - common
     - ssh
     # OpenConnect must be set up before L2TP/IPsec in order to avoid

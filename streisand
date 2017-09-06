@@ -119,9 +119,15 @@ EOF
   echo; echo; ansible-playbook -i inventories/inventory-existing --extra-vars=@global_vars/vars.yml playbooks/existing-server.yml
 }
 
+# runs the validation role to validate global_vars/vars.yml
+function validate() {
+  echo; echo; ansible-playbook playbooks/validate.yml
+}
+
 # Make sure the system is ready for the Streisand playbooks
 check_python
 check_ansible
+validate
 check_ssh_key
 
 # Figure out which genesis role to invoke
