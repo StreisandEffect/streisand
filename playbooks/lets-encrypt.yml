@@ -25,9 +25,6 @@
         good time to point your domain to your server's public address, as DNS
         changes take time to propagate.
 
-        In order to use Let's Encrypt, you must agree to its agreements at
-        {{ le_agreements }}.
-
         Please type your domain below. Press enter to skip.
       private: no
 
@@ -38,8 +35,7 @@
         This is an optioanl question. The email is only used as contact method
         of your Let's Encrypt account.
 
-        Please type your email below. Press enter to use hostmaster email of Streisand domain.
-      default: "hostmaster@{{ streisand_domain_var }}"
+        Please type your email below. Press enter to skip.
       private: no
 
   pre_tasks:
@@ -48,7 +44,7 @@
         streisand_domain: "{{ streisand_domain_var }}"
       when: streisand_domain_var != ""
 
-    - name: Set Streisand admin email, user input
+    - name: Set Streisand admin email
       set_fact:
         streisand_admin_email: "{{ streisand_admin_email_var }}"
       when: streisand_admin_email_var != ""
@@ -56,10 +52,10 @@
     - name: Enable Let's Encrypt role
       set_fact:
         streisand_le_enabled: yes
-      when: streisand_domain_var != ""
+      when: streisand_domain_var != "" and streisand_admin_email_var != ""
 
     - name: Disable Let's Encrypt role
       set_fact:
         streisand_le_enabled: no
-      when: streisand_domain_var == ""
+      when: streisand_domain_var == "" or streisand_admin_email_var == ""
 ...
