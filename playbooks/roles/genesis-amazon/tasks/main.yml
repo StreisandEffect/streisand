@@ -1,4 +1,7 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-amazon"
+
 - name: Remove the 'streisand' SSH key from Amazon if it already exists. This is to prevent problems if two people with two different keys are sharing the same AWS account.
   ec2_key:
     name: streisand-ssh
