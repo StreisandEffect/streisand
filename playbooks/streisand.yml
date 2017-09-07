@@ -1,6 +1,13 @@
 ---
 - include: python.yml
 
+- name: Collect diagnostics in case of error
+  hosts: localhost
+  gather_facts: no
+  roles:
+    - role: diagnostics
+      when: not streisand_ci
+
 - name: Configure the Server and install required software
 # ========================================================
   hosts: streisand-host

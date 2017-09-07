@@ -1,4 +1,7 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-digitalocean"
+
 - name: Set the DigitalOcean Access Token fact to the value that was entered, or attempt to retrieve it from the environment if the entry is blank
   set_fact:
     do_access_token: "{{ do_access_token_entry | default( lookup('env', 'DO_API_KEY') ) }}"
