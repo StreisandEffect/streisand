@@ -5,7 +5,8 @@
   hosts: localhost
   gather_facts: no
   roles:
-    - diagnostics
+    - role: diagnostics
+      when: not streisand_ci
 
 - name: Configure the Server and install required software
 # ========================================================
