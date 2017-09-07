@@ -24,15 +24,12 @@
   args:
     creates: "{{ streisand_gateway_htpasswd_file }}"
 
-- name: Set permissions on the SSL private key and the unhashed Gateway password file
+- name: Set permissions on the unhashed Gateway password file
   file:
-    path: "{{ item }}"
+    path: "{{ streisand_gateway_password_file }}"
     owner: root
     group: root
-    mode: 0640
-  with_items:
-    - "{{ nginx_private_key }}"
-    - "{{ streisand_gateway_password_file }}"
+    mode: 0600
 
 - name: Copy the Streisand gateway password file locally
   fetch:

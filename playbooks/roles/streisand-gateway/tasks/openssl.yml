@@ -20,6 +20,13 @@
   args:
     creates: "{{ nginx_self_signed_certificate_request }}"
 
+- name: Set permissions on the SSL private key
+  file:
+    path: "{{ nginx_private_key }}"
+    owner: root
+    group: root
+    mode: 0600
+
 - name: Seed a blank database file that will be used when generating the self-signed certificate
   file:
     path: "{{ openssl_ca_base }}/index.txt"
