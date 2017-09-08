@@ -11,8 +11,24 @@ echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 export PYTHONPATH="$SCRIPT_DIR/monkey:$PYTHONPATH"
 
+DEFAULT_SITE_VARS="$SCRIPT_DIR/global_vars/default-site.yml"
+GLOBAL_VARS="$SCRIPT_DIR/global_vars/vars.yml"
+HOME_DIR="$HOME/.streisand"
+SITE_VARS="$HOME_DIR/site.yml"
+
 # Include the check_ansible function from ansible_check.sh
 source util/ansible_check.sh
+
+function init_homedir() {
+  if [ ! -d "$HOME_DIR" ]; then
+    mkdir "$HOME_DIR"
+    echo "Created new Streisand home directory: $HOME_DIR"
+  fi
+  if [ ! -f "$SITE_VARS" ]; then
+    cp "$DEFAULT_SITE_VARS" "$SITE_VARS"
+    echo "Created new Streisand site vars file: $SITE_VARS"
+  fi
+}
 
 # check_python checks whether the 'python' interpreter is Python 2 or Python 3.
 # If it is Python 2 then the inventory file is updated to set the
@@ -45,15 +61,59 @@ Please create this keypair by running 'ssh-keygen'"
   fi
 }
 
+# validate runs the validation role to check the consistency of the Streisand
+# service vars (e.g. that at least one service is enabled after customization of
+# $SITE_VARS).
+function validate() {
+  echo; echo; ansible-playbook \
+    --extra-vars="@$GLOBAL_VARS" \
+    --extra-vars="@$DEFAULT_SITE_VARS" \
+    --extra-vars="@$SITE_VARS" \
+    playbooks/validate.yml
+}
+
+# customize prompts the user to decide if they want to customize the Streisand
+# installation. If the user chooses to the playbooks/customize.yml role is used to
+# change the base installation by rewriting the $SITE_VARS file.
+function customize() {
+  read -r -p "
+Do you wish to customize which services Streisand will install?
+Please enter the word 'yes' or hit enter to continue: " confirm
+  case "$confirm" in
+    yes) echo; echo "Confirmed. Customizing Streisand services.";
+         echo; echo; ansible-playbook \
+           --extra-vars="@$GLOBAL_VARS" \
+           --extra-vars="@$DEFAULT_SITE_VARS" \
+           --extra-vars="@$SITE_VARS" \
+           playbooks/customize.yml;;
+    *) echo; echo "Installing Streisand services specified in $SITE_VARS";;
+  esac
+}
+
 # run_genesis invokes the genesis playbook file specified by the first argument
-# to the function, or `streisand.yml` if none is provided. It uses the default
-# `inventory` file from the inventories directory as the Ansible inventory.
+# to the function, or `streisand.yml` if none is provided. It uses the second
+# argument to the function as the inventory or `inventories/inventory` if none
+# is provided.
 function run_genesis() {
   local GENESIS_PLAYBOOK=$1
   if [ -z "${GENESIS_PLAYBOOK}" ]; then
     GENESIS_PLAYBOOK=streisand.yml
   fi
-  echo; echo; ansible-playbook -i inventories/inventory --extra-vars=@global_vars/vars.yml "playbooks/$GENESIS_PLAYBOOK"
+  local GENESIS_INVENTORY=$2
+  if [ -z "${GENESIS_INVENTORY}" ]; then
+    GENESIS_INVENTORY=inventories/inventory
+  fi
+  # Customize the Streisand services that will be installed
+  customize
+  # Ensure that the customization hasn't resulted in something inconsistent
+  validate
+  # Run the specified genesis playbook with the specified Ansible inventory
+  echo; echo; ansible-playbook \
+    -i $GENESIS_INVENTORY \
+    --extra-vars="@$GLOBAL_VARS" \
+    --extra-vars="@$DEFAULT_SITE_VARS" \
+    --extra-vars="@$SITE_VARS" \
+    "playbooks/$GENESIS_PLAYBOOK"
 }
 
 # be_careful_friend asks you to pay attention because you're about to do
@@ -78,7 +138,7 @@ ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
 
 Please enter the word 'streisand' to continue: "
 
-  echo; echo; ansible-playbook -i inventories/inventory-local-provision --extra-vars=@global_vars/vars.yml playbooks/localhost.yml
+  run_genesis localhost.yml inventories/inventory-local-provision
 }
 
 function existing_server() {
@@ -116,18 +176,13 @@ EOF
   # Create the inventory file
   echo "$TEMPL" > inventories/inventory-existing
   # Invoke the Streisand playbook on the existing server inventory
-  echo; echo; ansible-playbook -i inventories/inventory-existing --extra-vars=@global_vars/vars.yml playbooks/existing-server.yml
-}
-
-# runs the validation role to validate global_vars/vars.yml
-function validate() {
-  echo; echo; ansible-playbook playbooks/validate.yml
+  run_genesis existing-server.yml inventories/intenvory-existing
 }
 
 # Make sure the system is ready for the Streisand playbooks
+init_homedir
 check_python
 check_ansible
-validate
 check_ssh_key
 
 # Figure out which genesis role to invoke

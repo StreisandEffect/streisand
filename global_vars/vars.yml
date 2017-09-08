@@ -5,15 +5,7 @@ upstream_dns_servers:
 
 streisand_client_test: no
 
-streisand_l2tp_enabled: yes
-streisand_openconnect_enabled: yes
-streisand_openvpn_enabled: yes
-streisand_shadowsocks_enabled: yes
-streisand_ssh_forward_enabled: yes
-streisand_stunnel_enabled: yes
-streisand_tinyproxy_enabled: yes
-streisand_tor_enabled: yes
-streisand_wireguard_enabled: yes
+streisand_site_vars: "{{ lookup('env','HOME') }}/.streisand/site.yml"
 
 vpn_clients: 5
 
