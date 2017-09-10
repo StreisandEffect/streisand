@@ -8,12 +8,12 @@ It will help the developers reproduce your problem and provide a fix.
 
 ### Ansible Information
 
-* Ansible version: {{ hostvars['localhost']['ansible_version']['full'] }}
-* Ansible system: {{ hostvars['localhost']['ansible_system'] }}
-* Host OS: {{ hostvars['localhost']['ansible_distribution'] }}
-* Host OS version:  {{ hostvars['localhost']['ansible_distribution_version'] }}
-* Python interpreter: {{ hostvars['localhost']['ansible_python_interpreter'] }}
-* Python version: {{ hostvars['localhost']['ansible_python_version'] }}
+* Ansible version: {{ hostvars.get('localhost', {}).get('ansible_version', {}).get('full','Unknown') }}
+* Ansible system: {{ hostvars.get('localhost', {}).get('ansible_system', 'Unknown') }}
+* Host OS: {{ hostvars.get('localhost', {}).get('ansible_distribution', 'Unknown') }}
+* Host OS version:  {{ hostvars.get('localhost', {}).get('ansible_distribution_version', 'Unknown') }}
+* Python interpreter: {{ hostvars.get('localhost', {}).get('ansible_python_interpreter', 'Unknown') }}
+* Python version: {{ hostvars.get('localhost', {}).get('ansible_python_version', 'Unknown') }}
 
 ### Streisand Information
 
