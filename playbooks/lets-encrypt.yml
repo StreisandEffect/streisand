@@ -57,5 +57,6 @@
     - name: Disable Let's Encrypt role
       set_fact:
         streisand_le_enabled: no
+        le_ok: False
       when: streisand_domain_var == "" or streisand_admin_email_var == ""
 ...
