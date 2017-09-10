@@ -12,11 +12,11 @@ shadowsocks_android_url: "https://github.com/shadowsocks/shadowsocks-android/rel
 shadowsocks_android_checksum: "sha256:81147c9dc5bf3f1a5c5030ef0bd21c9665c83b49ddf50b11331bca6cd0aa8b2f"
 
 # Windows
-shadowsocks_gui_version: "4.0.4"
+shadowsocks_gui_version: "4.0.6"
 shadowsocks_gui_filename: "Shadowsocks-{{ shadowsocks_gui_version }}.zip"
 shadowsocks_gui_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_gui_filename }}"
 shadowsocks_gui_url: "https://github.com/shadowsocks/shadowsocks-windows/releases/download/{{ shadowsocks_gui_version }}/{{ shadowsocks_gui_filename }}"
-shadowsocks_gui_checksum: "sha256:ead3fa2b98070760c43cc90ba170b75170a7576ba4f73b71969b21b4f245f25e"
+shadowsocks_gui_checksum: "sha256:4f932e61afb6bd1dd8b5c4c25c715f1623d3f574637d8154256531b4ef5000ac"
 
 # OS X
 # NOTE(@cpu): We're stuck using a beta here since only v1.5 supports AEAD
