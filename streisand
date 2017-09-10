@@ -81,10 +81,11 @@ Do you wish to customize which services Streisand will install?
 Please enter the word 'yes' or hit enter to continue: " confirm
   case "$confirm" in
     yes) echo; echo "Confirmed. Customizing Streisand services.";
+         # NOTE(@cpu): We don't pass the other `--extra-vars` here because the
+         # customize `vars_prompt` will only happen if the vars aren't already
+         # set. If you pass the site/defaults in no prompting will happen.
          echo; echo; ansible-playbook \
            --extra-vars="@$GLOBAL_VARS" \
-           --extra-vars="@$DEFAULT_SITE_VARS" \
-           --extra-vars="@$SITE_VARS" \
            playbooks/customize.yml;;
     *) echo; echo "Installing Streisand services specified in $SITE_VARS";;
   esac
