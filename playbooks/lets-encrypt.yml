@@ -32,7 +32,7 @@
       prompt: |
         Which email address do you want to use as contact of Streisand server?
 
-        This is an optioanl question. The email is only used as contact method
+        This is an optional question. The email is only used as contact method
         of your Let's Encrypt account.
 
         Please type your email below. Press enter to skip.
