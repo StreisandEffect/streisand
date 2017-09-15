@@ -1,0 +1,7 @@
+---
+le_base: /var/lib/acme
+le_port: 80
+le_agreements: "https://letsencrypt.org/documents/LE-SA-v1.1.1-August-1-2016.pdf"
+le_api_endpoint: "https://acme-v01.api.letsencrypt.org/directory"
+le_certificate: "{{ le_base }}/live/{{ streisand_domain }}/fullchain"
+le_private_key: "{{ le_base }}/live/{{ streisand_domain }}/privkey"

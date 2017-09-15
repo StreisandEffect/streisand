@@ -33,6 +33,18 @@
     credentials_file: "{{ gce_json_file_location }}"
     project_id: "{{ gce_project_id }}"
 
+- name: Open HTTP port for Let's Encrypt in the GCE firewall
+  gce_net:
+    name: "{{ gce_network }}"
+    fwname: "streisand-{{ gce_server_name }}-letsencrypt"
+    allowed: "tcp:{{ le_port }}"
+    state: "present"
+    mode: auto
+    src_range: 0.0.0.0/0
+    service_account_email: "{{ gce_service_account_email }}"
+    credentials_file: "{{ gce_json_file_location }}"
+    project_id: "{{ gce_project_id }}"
+
 - name: Open necessary Tor ports in the GCE firewall
   gce_net:
     name: "{{ gce_network }}"

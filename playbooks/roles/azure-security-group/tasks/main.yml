@@ -45,6 +45,15 @@
         access: Allow
         direction: Inbound
         priority: 108
+      # HTTP (Let's Encrypt)
+      # ---
+      - name: "AllowHTTP"
+        destination_port_range: "{{ le_port }}"
+        protocol: Tcp
+        access: Allow
+        direction: Inbound
+        priority: 120
+
 
 # L2TP/IPsec
 # ---
