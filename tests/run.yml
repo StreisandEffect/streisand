@@ -50,7 +50,6 @@
     - name: Set the streisand_ipv4_address variable
       set_fact:
         streisand_ipv4_address: "{{ ansible_default_ipv4.address }}"
-        streisand_ssh_key: "/tmp/id_rsa_insecure.pub"
 
     - name: Set the streisand_server_name variable
       set_fact:
