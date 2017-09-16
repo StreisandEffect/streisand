@@ -151,6 +151,15 @@
     mode: 0750
     state: directory
 
+- name: Enable and start L2TP/IPsec services
+  service:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  with_items:
+    - ipsec
+    - xl2tpd
+
 - name: Generate the Markdown L2TP/IPsec instructions
   template:
     src: "instructions{{ item.value.file_suffix }}.md.j2"
