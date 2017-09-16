@@ -47,20 +47,6 @@ function check_python() {
   fi
 }
 
-# check_ssh_key checks that there is a `~/.ssh/id_rsa.pub` file present.
-# Streisand requires this key be present.
-function check_ssh_key() {
-  local STREISAND_SSH_KEY="$HOME/.ssh/id_rsa.pub"
-
-  if [ ! -f "$STREISAND_SSH_KEY" ]
-  then
-    echo "
-Streisand requires a RSA SSH key be present at '$HOME/.ssh/id_rsa.pub'.
-Please create this keypair by running 'ssh-keygen'"
-    exit 1
-  fi
-}
-
 # validate runs the validation role to check the consistency of the Streisand
 # service vars (e.g. that at least one service is enabled after customization of
 # $SITE_VARS).
@@ -172,19 +158,19 @@ EOF
 
   # Test a SSH connection to the server using the key Streisand assumes will be
   # used for server access
-  ssh -i ~/.ssh/id_rsa "$SSH_USER@$SERVER_IP" -o BatchMode=yes -t true
+  # TODO(@cpu) - Fix to use Streisand SSH key somehow :-/
+  #ssh -i ~/.ssh/id_rsa "$SSH_USER@$SERVER_IP" -o BatchMode=yes -t true
 
   # Create the inventory file
   echo "$TEMPL" > inventories/inventory-existing
   # Invoke the Streisand playbook on the existing server inventory
-  run_genesis existing-server.yml inventories/intenvory-existing
+  run_genesis existing-server.yml inventories/inventory-existing
 }
 
 # Make sure the system is ready for the Streisand playbooks
 init_homedir
 check_python
 check_ansible
-check_ssh_key
 
 # Figure out which genesis role to invoke
 read -r -p "Which provider are you using?
