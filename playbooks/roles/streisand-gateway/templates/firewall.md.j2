@@ -20,6 +20,10 @@ If you are installing Streisand on an existing server or alternate provider then
 {% endif %}
 * Nginx (Streisand Gateway)
   * TCP - {{ nginx_port }}
+{% if streisand_le_enabled %}
+* HTTP (Let's Encrypt)
+  * TCP - {{ le_port }}
+{% endif %}
 {% if streisand_openconnect_enabled %}
 * OpenConnect / Cisco AnyConnect
   * TCP - {{ ocserv_port }}

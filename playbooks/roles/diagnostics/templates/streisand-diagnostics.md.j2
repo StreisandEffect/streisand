@@ -8,13 +8,40 @@ It will help the developers reproduce your problem and provide a fix.
 
 ### Ansible Information
 
+{% if 'localhost' in hostvars %}
+{% if 'ansible_version' in hostvars['localhost'] %}
 * Ansible version: {{ hostvars['localhost']['ansible_version']['full'] }}
-* Ansible arch: {{ hostvars['localhost']['ansible_architecture'] }}
+{% else %}
+* Ansible version: Unknown
+{% endif %}
+{% if 'ansible_system' in hostvars['localhost'] %}
 * Ansible system: {{ hostvars['localhost']['ansible_system'] }}
+{% else %}
+* Ansible system: Unknown
+{% endif %}
+{% if 'ansible_distribution' in hostvars['localhost'] %}
 * Host OS: {{ hostvars['localhost']['ansible_distribution'] }}
+{% else %}
+* Host OS: Unknown
+{% endif %}
+{% if 'ansible_distribution_version' in hostvars['localhost'] %}
 * Host OS version:  {{ hostvars['localhost']['ansible_distribution_version'] }}
+{% else %}
+* Host OS version: Unknown
+{% endif %}
+{% if 'ansible_python_interpreter' in hostvars['localhost'] %}
 * Python interpreter: {{ hostvars['localhost']['ansible_python_interpreter'] }}
+{% else %}
+* Python interpreter: Unknown
+{% endif %}
+{% if 'ansible_python_version' in hostvars['localhost'] %}
 * Python version: {{ hostvars['localhost']['ansible_python_version'] }}
+{% else %}
+* Python version: Unknown
+{% endif %}
+{% else %}
+* No 'localhost' in hostvars. Ansible information unknown.
+{% endif %}
 
 ### Streisand Information
 
