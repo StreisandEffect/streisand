@@ -17,10 +17,10 @@ dnsmasq_openvpn_tcp_ip: "10.8.0.1"
 dnsmasq_openvpn_udp_ip: "10.9.0.1"
 
 openvpn_firewall_rules:
-  - iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-  - iptables -A FORWARD -s 10.8.0.0/24 -j ACCEPT
-  - iptables -A FORWARD -s 10.9.0.0/24 -j ACCEPT
-  - iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
-  - iptables -t nat -A POSTROUTING -s 10.9.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -s 10.8.0.0/24 -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -s 10.9.0.0/24 -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 10.9.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
 
 openvpn_gateway_location: "{{ streisand_gateway_location }}/openvpn"
