@@ -73,7 +73,7 @@ function validate() {
 }
 
 # customize prompts the user to decide if they want to customize the Streisand
-# installation. If the user chooses to the playbooks/customize.yml role is used to
+# installation. If the user wishes, the playbooks/customize.yml role is used to
 # change the base installation by rewriting the $SITE_VARS file.
 function customize() {
   read -r -p "
@@ -177,7 +177,7 @@ EOF
   # Create the inventory file
   echo "$TEMPL" > inventories/inventory-existing
   # Invoke the Streisand playbook on the existing server inventory
-  run_genesis existing-server.yml inventories/intenvory-existing
+  run_genesis existing-server.yml inventories/inventory-existing
 }
 
 # Make sure the system is ready for the Streisand playbooks

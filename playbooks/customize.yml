@@ -41,7 +41,7 @@
       default: "yes"
       private: no
     - name: streisand_wireguard_enabled
-      prompt: "Enable Wireguard? Press enter for default "
+      prompt: "Enable WireGuard? Press enter for default "
       default: "yes"
       private: no
 
