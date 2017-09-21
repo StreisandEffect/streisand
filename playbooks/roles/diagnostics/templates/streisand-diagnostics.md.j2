@@ -47,7 +47,7 @@ It will help the developers reproduce your problem and provide a fix.
 
 * Streisand Git revision: {{ streisand_diagnostics_git_rev.stdout }}
 * Streisand Git clone has untracked changes: {{ streisand_diagnostics_git_untracked.stdout }}
-* Genesis role: {{ streisand_genesis_role }}
+* Genesis role: {{ streisand_genesis_role | default("None") }}
 
 ### Enabled Roles
 
