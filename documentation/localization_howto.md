@@ -1,22 +1,25 @@
 Localizing Streisand in your language
 =====================================
 
-One of the most unique aspects of the Streisand project are the detailed and customized
-instructions that it generates for each of the VPN services it provides, allowing them 
-to be easily shared among fellow users. They can help in removing ambiguity in how certain 
-services need to be set up and can be easily updated as the environment evolves.
+One of the most unique aspects of the Streisand project are the
+detailed and customized instructions that it generates for each
+of the VPN services it provides. The instructions are hosted
+on a password protected website allowing them to be easily shared
+among fellow users. This can help in removing ambiguity in how 
+certain services need to be set up and can be easily updated as
+Streisand evolves.
 
 Scope
 -----
 
-The primary focus of localization efforts would be best concentrated on user facing
-content, as opposed to developer oriented content.
+The best place to focus localization efforts is on user facing
+content, as opposed to developer content.
 
 For example, documentation that can help a user navigate the particularities of certain
 cloud providers (account setup, permissions, etc...) are good candidates for localization.
 
-On the other hand, developer oriented texts, such as Ansible task names aren't needed at
-this point.
+On the other hand, translation of developer oriented texts, such as Ansible 
+task names isn't needed at this time.
 
 Language codes
 --------------
@@ -31,26 +34,26 @@ Filename conventions
 In order to differentiate a localized file, append the lowercase language code after the
 filename with a 'dash' symbol (e.x. README-fr.md for a README localized in French).
 
-Point of references
--------------------
+Point of reference
+------------------
 
 When translating, English should be considered the point of reference to translate *from*.
 
 READMEs and Documentation
 -------------------------
 
-The first interaction with Streisand for an end user would be first visiting the README,
+The interaction with Streisand for an end user would be first visiting the project README,
 where all the necessary steps one would need to set up their computing environment are
-detailed, as well as a listing of all the VPN services provided by Streisand are listed.
+detailed, as well as a listing of all the VPN services provided by Streisand.
 
 Unlike Streisand's instructions markdown template files, READMEs and documentation are
 orthogonal to Streisand being able to successfully build. As a consequences, it is possible
-to have READMEs and documentation in more languages than Streisand builds with.
+to have READMEs and documentation in more languages than Streisand builds documentation with.
 
 Defining locales
 ----------------
 
-In order to define a locale for Streisand, a new entry must defining your language must be
+In order to define a locale for Streisand, a new entry defining your language must be
 added to the `streisand_languages` dict object in the `playbooks/common/vars/main.yml` file,
 where the 2 letter code is considered the key, and a list of key-value pairs with additional data
 as its value.
@@ -115,12 +118,12 @@ The following roles contain user instructions that will require translation:
 Language selection in generated pages
 -------------------------------------
 
-By default, Streisand's common header files contains language selection 
-(generated using the `streisand_languages` dict), and for most pages will be done
-automatically. Certain edge cases do exist where a jinja2 code block is
-explicitly needed with the generated html filename.
+By default, Streisand's common header file contains language selection links
+(generated using the `streisand_languages` dict). For most pages the header with
+language selection links will be included automatically. Certain edge cases 
+do exist where a jinja2 code block is explicitly needed with the generated html filename.
 
-These files all reside with the `streisand-gateway` role:
+These edge case files maybe all reside with the `streisand-gateway` role:
 
  - `firewall.md.j2`
  - `index.md.j2`
@@ -134,14 +137,14 @@ These files all reside with the `streisand-gateway` role:
 - - -
 ```
 
-The HTML filename can be recovered by looking at the relevant ansible task that generates the
+The HTML filename can be recovered by looking at the relevant Ansible task that generates the
 template.
 
 End user considerations
 -----------------------
 
 While we aim to have as-close-to-the-original-source translations, linguistic differences in
-expressions should be taken into consideration when it makes.
+expressions should be taken into consideration when it makes sense.
 
 A non-technical example would be a the following
 expression in English: "the straw that broke the camel's back".
@@ -149,12 +152,12 @@ A literal translation into French
 would give: "la paille qui a cassé le dos du chameau", however contextually
 a similar expression exists in French: "C'est la goutte d'eau qui fait déborder le vase"
 (it's the drop of water that made the vase overflow). Different translations,
-same meaning. In this case, the latter be the 'ideal' translation, as it would make more sense
+same meaning. In this case, the latter would be the 'ideal' translation, as it makes more sense
 to a native speaker of that language.
 
-Another aspect to consider is in what language an end-user's device is set to.
-It is best to have a device nearby set in the said language, where you can see exactly what is
-displayed in particular menus and use those same exact strings.
+Another aspect to consider is what language an end-user's device is set to.
+It is best to have a device nearby set in the same language, where you can see exactly what is
+displayed in particular menus and use those same exactly what is displayed.
 
 It's worth noting that not all software available in app stores or otherwise are localized
 in your language of choice, and many are English only. In this case, it would be sufficient to use
