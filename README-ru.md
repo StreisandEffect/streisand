@@ -1,7 +1,7 @@
 ![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Автоматизируйте эффект Стрейзанд!")
 
 - - -
-[Английский](README.md), [Французский](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md)
+[English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Зеркало](https://area51.threeletter.agency/mirrors/streisand) | [Зеркало 2](https://gitlab.com/alimakki/streisand)
 - - -
 
 [![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand)
@@ -135,7 +135,7 @@
         sudo pip install boto
   * Azure
 
-        sudo pip install msrest msrestazure azure==2.0.0rc5
+        sudo pip install msrest msrestazure azure==2.0.0rc5 packaging
   * DigitalOcean
 
         sudo pip install dopy==0.3.5

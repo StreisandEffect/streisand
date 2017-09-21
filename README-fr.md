@@ -135,7 +135,7 @@ Effectuez toutes ces tâches sur votre machine locale.
             sudo pip install boto
   * Azure
 
-            sudo pip install msrest msrestazure azure==2.0.0rc5
+            sudo pip install msrest msrestazure azure==2.0.0rc5 packaging
   * DigitalOcean
 
             sudo pip install dopy==0.3.5
