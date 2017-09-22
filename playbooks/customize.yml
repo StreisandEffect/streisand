@@ -4,9 +4,9 @@
   gather_facts: no
 
   vars_prompt:
-    - name: streisand_ssh_key
-      prompt: "Which SSH public key should be used? Press enter for default "
-      default: "~/.ssh/id_rsa.pub"
+    - name: streisand_ssh_private_key
+      prompt: "Enter the path to your SSH private key? Press enter for default "
+      default: "~/.ssh/id_rsa"
       private: no
     - name: vpn_clients
       prompt: "How many VPN client profiles should be generated per-service? Press enter for default "
@@ -52,8 +52,8 @@
   tasks:
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_ssh_key: .*$"
-        line: "streisand_ssh_key: {{ streisand_ssh_key }}"
+        regexp: "^streisand_ssh_private_key: .*$"
+        line: "streisand_ssh_private_key: {{ streisand_ssh_private_key }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
         regexp: "^vpn_clients: [\\d]+$"

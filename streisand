@@ -63,10 +63,10 @@ function validate() {
 # change the base installation by rewriting the $SITE_VARS file.
 function customize() {
   read -r -p "
-Do you wish to customize which services Streisand will install?
+Do you wish to customize this Streisand installation?
 Please enter the word 'yes' or hit enter to continue: " confirm
   case "$confirm" in
-    yes) echo; echo "Confirmed. Customizing Streisand services.";
+    yes) echo; echo "Confirmed. Customizing Streisand.";
          # NOTE(@cpu): We don't pass the other `--extra-vars` here because the
          # customize `vars_prompt` will only happen if the vars aren't already
          # set. If you pass the site/defaults in no prompting will happen.

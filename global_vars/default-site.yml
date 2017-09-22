@@ -4,9 +4,10 @@
 # This file is mutated by the playbooks/customize.yml tasks when a user chooses
 # to customize which Streisand services are installed.
 
-# The SSH key that Ansible will use to connect to the Streisand node. Also used
-# for provisioning cloud servers.
-streisand_ssh_key: "~/.ssh/id-rsa.pub"
+# The SSH private key that Ansible will use to connect to the Streisand node.
+# The associated public key will be used if required when provisioning cloud
+# nodes for the authorized_keys file.
+streisand_ssh_private_key: "~/.ssh/id-rsa"
 
 vpn_clients: 5
 
