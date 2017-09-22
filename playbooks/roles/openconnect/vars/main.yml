@@ -1,7 +1,7 @@
 ---
 ocserv_path: "/etc/ocserv"
 ocserv_config_file: "{{ ocserv_path }}/config"
-ocserv_firewall_rule: "iptables -t nat -A POSTROUTING -j MASQUERADE"
+ocserv_firewall_rule: "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -j MASQUERADE"
 
 ocserv_days_valid: "1825"
 ocserv_dependencies:
