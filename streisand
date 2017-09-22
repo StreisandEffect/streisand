@@ -59,7 +59,7 @@ function validate() {
 }
 
 # customize prompts the user to decide if they want to customize the Streisand
-# installation. If the user chooses to the playbooks/customize.yml role is used to
+# installation. If the user wishes, the playbooks/customize.yml role is used to
 # change the base installation by rewriting the $SITE_VARS file.
 function customize() {
   read -r -p "
