@@ -1,6 +1,6 @@
 streisand_ci: yes
 
-streisand_ssh_key: "/tmp/id_rsa_insecure"
+streisand_ssh_private_key: "/tmp/id_rsa_insecure"
 
 # Answer questions in playbooks/lets-encrypt.yml
 streisand_domain_var: ""
