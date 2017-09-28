@@ -186,11 +186,6 @@ localhost ansible_connection=local ansible_python_interpreter=python
 $SERVER_IP ansible_user=$SSH_USER
 EOF
 
-  # Test a SSH connection to the server using the key Streisand assumes will be
-  # used for server access
-  # TODO(@cpu) - Fix to use Streisand SSH key somehow :-/
-  #ssh -i ~/.ssh/id_rsa "$SSH_USER@$SERVER_IP" -o BatchMode=yes -t true
-
   # Create the inventory file
   echo "$TEMPL" > inventories/inventory-existing
   # Invoke the Streisand playbook on the existing server inventory
