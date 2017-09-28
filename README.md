@@ -145,6 +145,8 @@ Complete all of these tasks on your local home machine.
 
         sudo pip install "apache-libcloud>=1.5.0"
 
+>For Google, your SSH `id_rsa.pub` must be registered with Google IAM; see [issue #919](https://github.com/jlund/streisand/issues/919).
+
   * Linode
 
         sudo pip install linode-python
