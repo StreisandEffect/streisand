@@ -62,6 +62,5 @@
       set_fact:
         streisand_server_name: "{{ server_name | regex_replace('\\s', '_') }}"
 
-
 - name: Include streisand.yml
   include: ../playbooks/streisand.yml
