@@ -42,7 +42,7 @@ Services Provided
 -----------------
 * L2TP/IPsec using [Libreswan](https://libreswan.org/) and [xl2tpd](https://www.xelerance.com/software/xl2tpd/)
   * A randomly chosen pre-shared key and password are generated.
-  * Windows, OS X, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software.
+  * Windows, macOS, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software.
 * [Monit](https://mmonit.com/monit/)
   * Monitors process health and automatically restarts services in the unlikely event that they crash or become unresponsive.
 * [OpenSSH](http://www.openssh.com/)
@@ -94,8 +94,8 @@ In some circumstances advanced users may opt to use the local provisioning mode 
 ### Prerequisites ###
 Complete all of these tasks on your local home machine.
 
-* Streisand requires a BSD, Linux, or OS X system. As of now, Windows is not supported. All of the following commands should be run inside a Terminal session.
-* Python 2.7 is required. This comes standard on OS X, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
+* Streisand requires a BSD, Linux, or macOS system. As of now, Windows is not supported. All of the following commands should be run inside a Terminal session.
+* Python 2.7 is required. This comes standard on macOS, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
 
@@ -107,7 +107,7 @@ Complete all of these tasks on your local home machine.
   * On Fedora
 
         sudo yum install git
-  * On OS X (via [Homebrew](http://brew.sh/))
+  * On macOS (via [Homebrew](http://brew.sh/))
 
         brew install git
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
@@ -117,13 +117,13 @@ Complete all of these tasks on your local home machine.
   * On Fedora
 
         sudo yum install python-pip
-  * On OS X
+  * On macOS
 
         sudo easy_install pip
         sudo pip install pycurl
 
 * Install [Ansible](http://www.ansible.com/home).
-  * On OS X (via [Homebrew](http://brew.sh/))
+  * On macOS (via [Homebrew](http://brew.sh/))
 
         brew install ansible
   * On BSD or Linux (via pip)

@@ -35,7 +35,7 @@
 - Linux
   - [Shadowsocks (from github.com/shadowsocks)](https://github.com/jlund/streisand/blob/master/playbooks/roles/shadowsocks/vars/mirror.yml)
   - [Tor Browser (from dist.torproject.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/tor-bridge/vars/mirror-common.yml)
-- MacOS
+- macOS
   - [Tunnelblick (from tunnelblick.net)](https://github.com/jlund/streisand/blob/master/playbooks/roles/openvpn/vars/mirror.yml)
   - [Shadowsocks (from github.com/shadowsocks)](https://github.com/jlund/streisand/blob/master/playbooks/roles/shadowsocks/vars/mirror.yml)
   - [Tor Browser (from dist.torproject.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/tor-bridge/vars/mirror-common.yml)
