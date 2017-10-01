@@ -23,7 +23,7 @@ shadowsocks_x_ng_version: "1.6.1"
 shadowsocks_x_ng_filename: "ShadowsocksX-NG.{{ shadowsocks_x_ng_version }}.zip"
 shadowsocks_x_ng_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_ng_filename }}"
 shadowsocks_x_ng_url: "https://github.com/shadowsocks/ShadowsocksX-NG/releases/download/v{{ shadowsocks_x_ng_version }}/{{ shadowsocks_x_ng_filename }}"
-shadowsocks_x_ng_checksum: "sha256:b4fbacdbade6d2964c309fb630972973a1c3ac5aafb94d6a7c06fa879840886e"
+shadowsocks_x_ng_checksum: "sha256:dad30943ad569d6f3a7f1b9925b45b9082ef5f5e855d2fcad2c18a0554187281"
 
 # Linux (x64)
 # NOTE(@cpu): if 32bit Linux clients are to be supported then we should add `shadowsocks2-linux-x86.gz`
