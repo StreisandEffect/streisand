@@ -5,7 +5,7 @@
 
   vars_prompt:
     - name: streisand_ssh_private_key
-      prompt: "Enter the path to your SSH private key? Press enter for default "
+      prompt: "Enter the path to your SSH private key, or press enter for default "
       default: "~/.ssh/id_rsa"
       private: no
     - name: vpn_clients
