@@ -18,10 +18,15 @@ source util/ansible_check.sh
 function run_playbook {
   PLAYBOOK="$1"
   EXTRA_FLAGS=(${@:2})
+  # Special case: If $SITE is "random" then we mix things up
+  if [[ "$SITE" = "random" ]]; then
+    SITE="tests/site_vars/random.yml"
+    "$DIR/randomize_sitevars.sh" "$SITE"
+  fi
   ansible-playbook \
     -i "$DIR/inventory" \
     --extra-vars=@global_vars/vars.yml \
-    --extra-vars="$SITE" \
+    --extra-vars="@$SITE" \
     "$PLAYBOOK" "${EXTRA_FLAGS[@]}"
 }
 

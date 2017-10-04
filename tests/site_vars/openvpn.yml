@@ -1,11 +1,6 @@
 ---
-# Site specific Streisand configuration.
-#
-# This file is mutated by the playbooks/customize.yml tasks when a user chooses
-# to customize which Streisand services are installed.
-
+# This site config only enables openvpn
 vpn_clients: 5
-
 streisand_l2tp_enabled: no
 streisand_openconnect_enabled: no
 streisand_openvpn_enabled: yes
