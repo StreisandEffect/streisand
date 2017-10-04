@@ -1,0 +1,17 @@
+---
+# Site specific Streisand configuration.
+#
+# This file is mutated by the playbooks/customize.yml tasks when a user chooses
+# to customize which Streisand services are installed.
+
+vpn_clients: 1
+
+streisand_l2tp_enabled: no
+streisand_openconnect_enabled: no
+streisand_openvpn_enabled: no
+streisand_shadowsocks_enabled: no
+streisand_ssh_forward_enabled: yes
+streisand_stunnel_enabled: no
+streisand_tinyproxy_enabled: no
+streisand_tor_enabled: no
+streisand_wireguard_enabled: no
