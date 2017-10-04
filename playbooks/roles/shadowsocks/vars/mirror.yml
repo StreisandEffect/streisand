@@ -18,7 +18,7 @@ shadowsocks_gui_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_gui_fil
 shadowsocks_gui_url: "https://github.com/shadowsocks/shadowsocks-windows/releases/download/{{ shadowsocks_gui_version }}/{{ shadowsocks_gui_filename }}"
 shadowsocks_gui_checksum: "sha256:4f932e61afb6bd1dd8b5c4c25c715f1623d3f574637d8154256531b4ef5000ac"
 
-# OS X
+# macOS
 shadowsocks_x_ng_version: "1.6.1"
 shadowsocks_x_ng_filename: "ShadowsocksX-NG.{{ shadowsocks_x_ng_version }}.zip"
 shadowsocks_x_ng_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_ng_filename }}"
