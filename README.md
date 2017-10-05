@@ -142,10 +142,13 @@ Complete all of these tasks on your local home machine.
 
         sudo pip install dopy==0.3.5
   * Google
+<p>
+Note: your SSH `id_rsa.pub` must be registered with Google IAM; see [issue #919](https://github.com/jlund/streisand/issues/919).
+</p>
 
         sudo pip install "apache-libcloud>=1.5.0"
 
->For Google, your SSH `id_rsa.pub` must be registered with Google IAM; see [issue #919](https://github.com/jlund/streisand/issues/919).
+
 
   * Linode
 
