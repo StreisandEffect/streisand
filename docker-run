@@ -1,0 +1,8 @@
+#!/bin/bash
+docker run -it --rm -v $(pwd)/generated_docs:/work/streisand/generated_docs \
+       -v $HOME/.ssh:/work/streisand/sshkeys \
+       streisand-builder "$@"
+
+
+#        -v $(dirname $SSH_AUTH_SOCK):$(dirname $SSH_AUTH_SOCK) \
+#       -e SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
