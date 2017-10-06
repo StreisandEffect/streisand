@@ -1,4 +1,7 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-amazon"
+
 - name: Remove the 'streisand' SSH key from Amazon if it already exists. This is to prevent problems if two people with two different keys are sharing the same AWS account.
   ec2_key:
     name: streisand-ssh
@@ -11,6 +14,7 @@
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
+  changed_when: False
 
 - name: Add the SSH key to Amazon under the name of 'streisand-ssh'
   ec2_key:
@@ -100,7 +104,3 @@
 - name: Set the streisand_server_name variable
   set_fact:
     streisand_server_name: "{{ aws_instance_name | regex_replace('\\s', '_') }}"
-
-- name: New EC2 servers are occasionally slow to process incoming SSH connections even after the OpenSSH daemon has started up. Pause for 90 seconds.
-  pause:
-    seconds: 90

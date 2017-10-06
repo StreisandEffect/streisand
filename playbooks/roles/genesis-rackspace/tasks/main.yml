@@ -1,4 +1,7 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-rackspace"
+
 - name: Create the server
   rax:
     api_key: "{{ rackspace_api_key }}"

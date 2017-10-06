@@ -4,17 +4,25 @@
 {% endfor %}
 - - -
 
-Votre passerelle Streisand contient des instructions étape par étape pour les services qu'elle fournit, et des miroirs de tous les logiciels clients nécessaires. Ce document couvre les instructions d'installation du certificat SSL et vous montrera comment vous connecter à la passerelle afin de décrire comment configurer vos clients pour se connecter aux services fournis par Streisand.
+Votre passerelle Streisand contient des instructions étape par étape pour les services qu'elle fournit, et des miroirs de tous les logiciels clients nécessaires.
+
+{% if le_ok %}
+Ce document vous montrera comment vous connecter à la passerelle afin de décrire comment configurer vos clients pour se connecter aux services fournis par Streisand.
+{% else %}
+Ce document couvre les instructions d'installation du certificat SSL et vous montrera comment vous connecter à la passerelle afin de décrire comment configurer vos clients pour se connecter aux services fournis par Streisand.
+{% endif %}
 
 ---
+{% if not le_ok %}
 * [Installation du certificat SSL](#ssl)
   * [Windows](#ssl-windows)
-  * [OS X](#ssl-osx)
+  * [macOS](#ssl-macos)
   * [Androïde](#ssl-android)
   * [iOS](#ssl-ios)
   * [Chromium](#ssl-chromium)
   * [Firefox](#ssl-firefox)
   * [Vérification du certificat](#ssl-manual)
+{% endif %}
 * [Connexion à votre passerelle Streisand](#connecting)
   * [SSL](#connecting-ssl)
 {% if streisand_tor_enabled %}
@@ -22,6 +30,7 @@ Votre passerelle Streisand contient des instructions étape par étape pour les 
 {% endif %}
 
 
+{% if not le_ok %}
 <a name="ssl"></a>
 Installation du certificat SSL
 ------------------------------
@@ -45,8 +54,8 @@ Ces instructions fonctionnent pour Chrome et Internet Explorer. Firefox utilise 
 1. Vous êtes prêt à vous connecter. Voir [Connexion à votre passerelle Streisand](#connecting-ssl).
 
 
-<a name="ssl-osx"></a>
-### OS X ###
+<a name="ssl-macos"></a>
+### macOS ###
 Ces instructions fonctionnent pour Chrome et Safari. Firefox utilise son propre gestionnaire de certificats interne, mais est également [facile à configurer](#ssl-firefox).
 
 1. Lancez *Trousseaux d'accès*.
@@ -91,8 +100,8 @@ Ces instructions fonctionnent pour Chrome Firefox pour Android utilise son propr
 #### Moins sécurisé, mais facile ####
 1. [Téléchargez le certificat SSL](#download) intégré dans ce document.
 1. Envoyez le certificat téléchargé par courrier électronique à un compte auquel vous pouvez accéder à partir de l'appareil iOS.
-1. Ouvrez l'e-mail, puis appuyez sur la pièce jointe.
-1. L'écran * Installer le profil * apparaîtra. Vous pouvez afficher les détails du certificat et vous assurer qu'ils correspondent aux informations de la section <a href="#verification">Verification SSL</a> . Tapez *Installer*.
+1. Ouvrez l'e-mail avec l'app Mail de iOS, en suite appuyez sur la pièce jointe.
+1. L'écran *Installer le profil* apparaîtra. Vous pouvez afficher les détails du certificat et vous assurer qu'ils correspondent aux informations de la section <a href="#verification">Verification SSL</a> . Tapez *Installer*.
 1. Saisissez votre code NIP.
 1. Tapez *Installer* à nouveau lorsque l'avertissement apparaît.
 1. Tapez *OK*.
@@ -104,7 +113,7 @@ it is only available for macOS 10.12, of which I do not have currently installed
 This section below is a best effort. -@alimakki
 -->
 #### Plus sécurisé ####
-1. Connectez le périphérique iOS à votre ordinateur OS X.
+1. Connectez le périphérique iOS à votre ordinateur macOS.
 1. Tapez *Se fier* si l'avertissement *Faire confiance à cet ordinateur* apparaît.
 1. Installez l'utilitaire <a href="https://itunes.apple.com/fr/app/apple-configurator-2/id1037126344?mt=12">Apple Configurator 2</a> depuis le Mac App Store.
 1. Lancez l'utilitaire Apple Configurator et acceptez la licence.
@@ -172,6 +181,7 @@ Les détails du certificat doivent correspondre aux informations suivantes:
 {% endfor %}
 
 Si tout vérifie, vous êtes prêt à vous connecter. Voir [Connexion à votre passerelle Streisand](#connecting-ssl).
+{% endif %}
 
 
 <a name="connecting"></a>
@@ -182,7 +192,11 @@ Connexion à votre passerelle Streisand
 Chaque option de connexion vous emmène au même endroit et vous pouvez utiliser celle qui vous convient le mieux. Astuce: le mot de passe unique de votre passerelle a été généré en choisissant au hasard quatre mots d'un dictionnaire avec plus de 340.000 entrées.
 
 ### SSL ###
+{% if le_ok %}
+[{{ streisand_domain }}](https://{{ streisand_domain }}/index-fr.html)
+{% else %}
 [{{ streisand_gateway_url }}]({{ streisand_gateway_url }}/index-fr.html)
+{% endif %}
 
 username: `{{ streisand_gateway_username }}`
 password: `{{ streisand_gateway_password.stdout }}`

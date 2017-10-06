@@ -5,6 +5,7 @@ rules:
   # limit.This changes the limit to a warning until we are ready to try and
   # tackle these legacy files.
   line-length:
+    max: 280
     level: warning
   # We allow a few rules for now to accept the "pretty" layout existing files
   # use. It may be worth revisiting these in the future.

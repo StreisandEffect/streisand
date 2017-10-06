@@ -15,11 +15,11 @@ openconnect_source_url: "https://d1shxn4vnb0yj3.cloudfront.net/{{ openconnect_so
 openconnect_source_checksum: "sha256:facf695368dc4537a6a30e2147be90b1d77ee3cb2d269eaef070b6d9ddab70f2"
 
 # Windows
-openconnect_windows_version: "v1.5.1"
-openconnect_windows_filename: "openconnect-gui-1.5.1-win32.exe"
+openconnect_windows_version: "v1.5.2"
+openconnect_windows_filename: "openconnect-gui-1.5.2-win32.exe"
 openconnect_windows_href: "{{ openconnect_mirror_href_base }}/{{ openconnect_windows_filename }}"
 openconnect_windows_url: "https://github.com/openconnect/openconnect-gui/releases/download/{{ openconnect_windows_version }}/{{ openconnect_windows_filename }}"
-openconnect_windows_checksum: "sha256:65ea336108640b44eb16192c7d357953895ce9f61f5ee77d124e56e98714cc7e"
+openconnect_windows_checksum: "sha256:8bfa90fd9932007fe53699b886ad987b6aba337a78c3f9da9c3ff39582af0680"
 
 # The below section is commented out as v1.5.1 OpenConnect GUI for macOS crashes on El Capitan when
 # attempting to connect.

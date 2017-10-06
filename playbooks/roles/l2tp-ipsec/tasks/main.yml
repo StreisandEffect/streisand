@@ -62,10 +62,12 @@
 - name: Register the IPsec pre-shared key
   command: cat {{ ipsec_preshared_key_file }}
   register: ipsec_preshared_key
+  changed_when: False
 
 - name: Register the IPsec pre-shared key as base64
   shell: cat {{ ipsec_preshared_key_file }} | tr -d '\n' | base64
   register: ipsec_preshared_key_base64
+  changed_when: False
 
 - name: Generate IPsec secrets file
   template:
@@ -115,6 +117,7 @@
 - name: Register the CHAP password
   command: cat {{ chap_password_file }}
   register: chap_password
+  changed_when: False
 
 - name: Generate CHAP secrets file
   template:
@@ -124,71 +127,25 @@
     group: root
     mode: 0600
 
-- block:
-    - name: Include the L2TP/IPsec sysctl value variables
-      include_vars: sysctl-values.yml
-
-    - name: Apply the sysctl values
-      sysctl:
-        name: "{{ item.key }}"
-        value: "{{ item.value }}"
-      with_items: "{{ l2tp_ipsec_sysctl_values }}"
-  when: ansible_virtualization_type != 'lxc'
+- name: Copy the modified rsyslog configuration into place that prevents Libreswan traffic from being logged
+  copy:
+    src: 40-ipsec.rsyslog.conf
+    dest: /etc/rsyslog.d/40-ipsec.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart rsyslog for Libreswan
 
 - name: Ensure redirects are disabled immediately
   shell: echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
-
-- name: Allow L2TP/IPsec through the firewall
-  command: "{{ item }}"
-  with_items: "{{ l2tp_ipsec_firewall_rules }}"
-
-- name: "Add L2TP/IPsec firewall persistence service to init"
-  template:
-    src: streisand-l2tp-service.sh.j2
-    dest: /etc/init.d/streisand-l2tp
-    mode: 0755
-
-- name: "Enable the streisand-l2tp init service"
-  service:
-    name: streisand-l2tp
-    enabled: yes
 
 - name: Generate a certificate database file
   script: generate-certificate-database.sh
   args:
     creates: /etc/ipsec.d/cert8.db
 
-- name: Create the L2TP/IPsec Gateway directory
-  file:
-    path: "{{ l2tp_ipsec_gateway_location }}"
-    owner: www-data
-    group: www-data
-    mode: 0750
-    state: directory
+# Ensure l2tp firewall rules are in place
+- include: firewall.yml
 
-- name: Generate the Markdown L2TP/IPsec instructions
-  template:
-    src: "instructions{{ item.value.file_suffix }}.md.j2"
-    dest: "{{ l2tp_ipsec_gateway_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the Markdown L2TP/IPsec instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ l2tp_ipsec_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ l2tp_ipsec_gateway_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
-
-- name: Get a UUID generator with an explicit random function.
-  apt:
-    name: uuid
-
-- name: Generate a UUID for the Apple .mobileconfig package
-  shell: uuid -v4
-  register: l2tp_mobileconfig_package_uuid
-
-- name: Generate a UUID for the VPN for the Apple .mobileconfig package
-  shell: uuid -v4
-  register: l2tp_mobileconfig_vpn_uuid
-
-- name: Generate a mobileconfig
-  template:
-    src: streisand.mobileconfig.j2
-    dest: "{{ l2tp_ipsec_gateway_location }}/streisand.mobileconfig"
+# Generate l2tp instructions and mobile profiles
+- include: docs.yml

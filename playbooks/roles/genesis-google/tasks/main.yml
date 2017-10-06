@@ -1,7 +1,11 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-google"
+
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
+  changed_when: False
 
 - name: Create the GCE instance
   gce:
@@ -28,6 +32,8 @@
   add_host:
     name: "{{ streisand_server.instance_data[0].public_ip }}"
     groups: streisand-host
+    ansible_user: ubuntu
+    ansible_become: yes
 
 - name: Set the streisand_ipv4_address variable
   set_fact:

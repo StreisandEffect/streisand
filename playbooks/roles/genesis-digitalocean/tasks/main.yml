@@ -1,4 +1,7 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-digitalocean"
+
 - name: Set the DigitalOcean Access Token fact to the value that was entered, or attempt to retrieve it from the environment if the entry is blank
   set_fact:
     do_access_token: "{{ do_access_token_entry | default( lookup('env', 'DO_API_KEY') ) }}"
@@ -6,6 +9,7 @@
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
+  changed_when: False
 
 - block:
     - name: Add the SSH key to DigitalOcean if it doesn't already exist
@@ -17,7 +21,7 @@
       register: do_ssh_key
   rescue:
     - fail:
-        msg: "* The API Access Token might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the DigitalOcean Control Panel under a different name. OR * The dopy Python module might not be installed. Use `pip install dopy==0.3.5` to install this module. On the latest version of OS X, dopy > 0.3.5 is currently broken."
+        msg: "* The API Access Token might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the DigitalOcean Control Panel under a different name. OR * The dopy Python module might not be installed. Use `pip install dopy==0.3.5` to install this module. On the latest version of macOS, dopy > 0.3.5 is currently broken."
 
 - block:
     - name: Create the new Droplet

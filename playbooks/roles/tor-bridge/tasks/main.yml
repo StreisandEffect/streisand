@@ -34,6 +34,7 @@
 - name: Register the bridge's random Nickname
   command: cat {{ tor_bridge_nickname_file }}
   register: tor_bridge_nickname
+  changed_when: False
 
 - name: Generate the bridge config file
   template:
@@ -92,6 +93,7 @@
 - name: Register the Tor Hidden Service hostname
   command: cat {{ tor_hidden_service_directory }}/hostname
   register: tor_hidden_service_hostname_output
+  changed_when: False
 
 - name: Register the Tor Hidden Service URL fact
   set_fact:
@@ -119,6 +121,7 @@
 - name: Discover the obfs4 certificate details
   shell: cat "{{ tor_obfs_state_directory }}/obfs4_bridgeline.txt" | grep 'Bridge obfs4' | sed -e 's/^.*cert=\(.*\) .*$/\1/'
   register: tor_obfs4_certificate
+  changed_when: False
 
 # Generate the docs gateway page
 - include: docs.yml

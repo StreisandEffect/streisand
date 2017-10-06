@@ -63,4 +63,4 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart rsyslog
+  notify: Restart rsyslog for OpenConnect

@@ -30,6 +30,7 @@
   args:
     chdir: "{{ stunnel_mirror_location }}"
   register: stunnel_latest_check
+  changed_when: False
 
 - name: Set the target stunnel version
   set_fact:

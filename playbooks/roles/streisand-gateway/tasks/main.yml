@@ -1,46 +1,10 @@
 ---
-- name: Make the necessary directories for the certificate authority
-  file:
-    path: "{{ item }}"
-    owner: root
-    group: root
-    mode: 0750
-    state: directory
-  with_items:
-    - "{{ openssl_ca_base }}"
-    - "{{ openssl_ca_private_dir }}"
-    - "{{ openssl_ca_newcerts_dir }}"
+# Use OpenSSL to generate self-signed certificates if we do not have Let's Encrypt.
+- include: openssl.yml
+  when: not le_ok
 
-- name: Create a certificate authority key and certificate
-  command: openssl req -new -nodes -x509 -days {{ nginx_days_valid }} -extensions v3_ca -newkey rsa:{{ streisand_gateway_rsa_key_size }} -keyout {{ openssl_ca_key }} -out {{ openssl_ca_certificate }} -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}"
-  args:
-    creates: "{{ openssl_ca_certificate }}"
-
-- name: Create the certificate request
-  command: openssl req -new -nodes -days {{ nginx_days_valid }} -newkey rsa:{{ streisand_gateway_rsa_key_size }} -keyout {{ nginx_private_key }} -out {{ nginx_self_signed_certificate_request }} -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}/CN={{ streisand_ipv4_address }}"
-  args:
-    creates: "{{ nginx_self_signed_certificate_request }}"
-
-- name: Seed a blank database file that will be used when generating the self-signed certificate
-  file:
-    path: "{{ openssl_ca_base }}/index.txt"
-    state: touch
-
-- name: Change where OpenSSL looks for CA material
-  lineinfile:
-    dest: /usr/lib/ssl/openssl.cnf
-    regexp: "Where everything is kept"
-    line: "dir             = {{ openssl_ca_base }}"
-
-- name: Generate the self-signed SSL certificate
-  command: openssl ca -batch -create_serial -days {{ nginx_days_valid }} -in {{ nginx_self_signed_certificate_request }} -out {{ nginx_self_signed_certificate }}
-  args:
-    creates: "{{ nginx_self_signed_certificate }}"
-
-- name: Remove the CA private key. It has signed its first and last certificate.
-  file:
-    path: "{{ openssl_ca_key }}"
-    state: absent
+# Include Let's Encrypt variables for template rendering
+- include_vars: ../../lets-encrypt/vars/main.yml
 
 - name: Generate a random Gateway password
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 4 | xargs | sed -e 's/ /-/g' > {{ streisand_gateway_password_file }}
@@ -50,6 +14,7 @@
 - name: Register the Gateway password
   command: cat {{ streisand_gateway_password_file }}
   register: streisand_gateway_password
+  changed_when: False
 
 - name: Install the required package for the htpasswd command
   apt:
@@ -60,15 +25,12 @@
   args:
     creates: "{{ streisand_gateway_htpasswd_file }}"
 
-- name: Set permissions on the SSL private key and the unhashed Gateway password file
+- name: Set permissions on the unhashed Gateway password file
   file:
-    path: "{{ item }}"
+    path: "{{ streisand_gateway_password_file }}"
     owner: root
     group: root
-    mode: 0640
-  with_items:
-    - "{{ nginx_private_key }}"
-    - "{{ streisand_gateway_password_file }}"
+    mode: 0600
 
 - name: Copy the Streisand gateway password file locally
   fetch:
@@ -77,18 +39,6 @@
     fail_on_missing: yes
     flat: yes
   when: streisand_client_test
-
-- name: Register MITM mitigation fact (certificate serial number)
-  command: openssl x509 -in {{ nginx_self_signed_certificate }} -noout -serial
-  register: ssl_certificate_serial_number
-
-- name: Register more MITM mitigation facts (fingerprints)
-  command: openssl x509 -{{ item }} -in {{ nginx_self_signed_certificate }} -noout -fingerprint
-  with_items:
-    - sha256
-    - sha1
-    - md5
-  register: ssl_certificate_fingerprints
 
 - name: Generate the virtual host and restart Nginx if it is updated
   template:
@@ -104,10 +54,6 @@
     path: /etc/nginx/sites-enabled/streisand
     src: /etc/nginx/sites-available/streisand
     state: link
-
-- name: Convert the CA certificate into the right format for a data uri
-  command: base64 --wrap=0 {{ openssl_ca_certificate }}
-  register: streisand_certificate_data_uri
 
   # TODO:
   #   Add to CI testing https://github.com/jlund/streisand/issues/643
@@ -202,7 +148,7 @@
           when: hostvars['127.0.0.1']['ansible_system'] == "Linux"
           become: no
 
-        - name: Open the instructions on OS X (if applicable)
+        - name: Open the instructions on macOS (if applicable)
           local_action: command open ../{{ streisand_local_directory }}/{{ streisand_server_name }}.html
           when: hostvars['127.0.0.1']['ansible_system'] == "Darwin"
           become: no

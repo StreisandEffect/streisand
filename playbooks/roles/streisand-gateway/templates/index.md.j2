@@ -12,7 +12,9 @@ Connection Instructions
 
 There are multiple ways to bypass censorship, and Streisand provides several choices and different protocols in the event that any of them are restricted.
 
+{% if streisand_l2tp_enabled %}
 * [L2TP/IPsec](/l2tp-ipsec/)
+{% endif %}
 {% if streisand_openconnect_enabled %}
 * [OpenConnect / Cisco AnyConnect](/openconnect/)
 {% endif %}
@@ -56,7 +58,6 @@ You can download the necessary client software directly from Streisand in case t
 {% if streisand_ssh_forward_enabled %}
 * [SSH](/mirror/#ssh)
 {% endif %}
-* [stunnel](/mirror/#stunnel)
 {% if streisand_tor_enabled %}
 * [Tor Browser Bundle](/mirror/tor/)
 {% endif %}

@@ -9,8 +9,9 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 ---
 * Plateformes
   * [Windows](#windows)
-  * [OS X](#osx)
+  * [macOS](#macos)
   * [Linux](#linux)
+  * [Linux (Ubuntu)](#linux-ubuntu)
   * [Androïde](#android)
   * [iOS](#ios)
 
@@ -27,8 +28,8 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 1. Allez à l'onglet *Compatibilité* et cliquez sur la coche *Exécuter ce programme en tant qu'administrateur* dans la section *Niveau du privilège*.
 1. Double-cliquez sur l'icône OpenVPN GUI situé sur votre bureau afin de lancer l'application.
 1. Téléchargez l'un de ces profils OpenVPN unifiés:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
    * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui ne permet l'accès aux ports `80` et` 443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
@@ -39,15 +40,15 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 1. Vous verrez des journaux se déplacent à mesure que la connexion est établie, suivie d'une notification de la barre des tâches indiquant votre adresse IP attribuée.
 1. Succès! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
-<a name="osx"></a>
-### OS X ###
+<a name="macos"></a>
+### macOS ###
 1. Téléchargez et lancez [Tunnelblick](/mirror/index-fr.html#openvpn).
 1. Saisissez votre mot de passe pour permettre le processus d'installation de finir, en suite cliquez *OK*.
 1. Cliquez *Lancer* une fois l'installation est terminée.
 1. Cliquez *J'ai des fichiers de configuration*.
 1. Téléchargez l'un des profils unifiés d'OpenVPN:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
    * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui ne permet l'accès aux ports `80` et` 443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
@@ -65,8 +66,8 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 
    * Si l'installation de OpenVPN via votre gestionnaire de paquetage n'est pas une option, vous pouvez également télécharger et compiler le [code source OpenVPN](/mirror/index-fr.html#openvpn).
 1. Téléchargez l'un de ces profils OpenVPN unifiés:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
    * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès aux ports `80` et` 443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
@@ -88,8 +89,8 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour NetworkManager. Cela vous donne une jolie petite interface pour la connexion, et il gère correctement les modifications DNS nécessaires lors de la connexion / déconnexion. Malheureusement, le plugin ne prend pas en charge les profils .ovpn, de sorte que la liste des étapes est un peu plus impliquée.
 
 1. Premièrement, téléchargez tous les fichiers .crt et .key de l'un de ces répertoires:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }})
 {% endfor %}
 1. Installez le plugin OpenVPN pour NetworkManager.
 
@@ -131,8 +132,8 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 ### Androïde ###
 1. Installez [OpenVPN pour Androïde](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=fr).
 1. Téléchargez l'un de ces profils OpenVPN unifiés:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
    * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès aux ports `80` et` 443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
@@ -150,8 +151,8 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 ### iOS ###
 1. Téléchargez [OpenVPN Connect](https://itunes.apple.com/fr/app/openvpn-connect/id590379981) et lancez-le.
 1. Téléchargez l'un de ces profils OpenVPN unifiés:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_profile_filename }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
    * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès aux ports `80` et` 443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
@@ -166,18 +167,18 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 
 <a name="sslh-profiles"></a>
 ### Profils alternatifs unifiés pour l'accès via le port 443 ###
-{% for client in openvpn_clients %}
-* [{{ client }}](/openvpn/{{ client }}/{{ openvpn_sslh_profile_filename }})
+{% for client in vpn_client_names.results %}
+* [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_sslh_profile_filename }})
 {% endfor %}
 
 <a name="udp-profiles"></a>
 ### Profils alternatifs unifiés pour accéder via le port UDP {{ openvpn_port_udp }} ###
-{% for client in openvpn_clients %}
-* [{{ client }}](/openvpn/{{ client }}/{{ openvpn_direct_udp_profile_filename }})
+{% for client in vpn_client_names.results %}
+* [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_udp_profile_filename }})
 {% endfor %}
 
 <a name="combined-profiles"></a>
 ### Profil alternatif qui parcourra le port UDP {{ openvpn_port_udp }}, le port TCP {{ openvpn_port }}, et le port TCP {{ openvpn_port_sslh }} ###
-{% for client in openvpn_clients %}
-* [{{ client }}](/openvpn/{{ client }}/{{ openvpn_combined_profile_filename }})
+{% for client in vpn_client_names.results %}
+* [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_combined_profile_filename }})
 {% endfor %}

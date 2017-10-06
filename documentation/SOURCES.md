@@ -18,12 +18,14 @@
   - [`nginx` (from nginx.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/nginx/tasks/main.yml)
   - [`obbfs4proxy` (from deb.torproject.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/tor-bridge/tasks/main.yml)
   - [Wireguard Packages (from wireguard PPA)](https://github.com/jlund/streisand/blob/master/playbooks/roles/wireguard/tasks/install.yml)
+  - [Acmetool (from PPA)](https://github.com/jlund/streisand/blob/master/playbooks/roles/lets-encrypt/tasks/install.yml)
 
 ## Source
 - [Libreswan](https://github.com/jlund/streisand/blob/master/playbooks/roles/l2tp-ipsec/vars/main.yml)
 - [OpenConnect](https://github.com/jlund/streisand/blob/master/playbooks/roles/openconnect/vars/main.yml)
 - [OpenVPN (from build.openvpn.net)](https://github.com/jlund/streisand/blob/master/playbooks/roles/openvpn/vars/mirror.yml)
 - [Shadowsocks (from github.com/shadowsocks)](https://github.com/jlund/streisand/blob/master/playbooks/roles/shadowsocks/tasks/main.yml)
+- [Shadowsocks Simple-obfs (from github.com/shadowsocks-simpleobfs)](https://github.com/jlund/streisand/blob/master/playbooks/roles/shadowsocks/tasks/simple-obfs.yml)
 
 
 # Source of all clients mirrored
@@ -33,14 +35,13 @@
 - Linux
   - [Shadowsocks (from github.com/shadowsocks)](https://github.com/jlund/streisand/blob/master/playbooks/roles/shadowsocks/vars/mirror.yml)
   - [Tor Browser (from dist.torproject.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/tor-bridge/vars/mirror-common.yml)
-- MacOS
+- macOS
   - [Tunnelblick (from tunnelblick.net)](https://github.com/jlund/streisand/blob/master/playbooks/roles/openvpn/vars/mirror.yml)
   - [Shadowsocks (from github.com/shadowsocks)](https://github.com/jlund/streisand/blob/master/playbooks/roles/shadowsocks/vars/mirror.yml)
   - [Tor Browser (from dist.torproject.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/tor-bridge/vars/mirror-common.yml)
 - Windows
   - [OpenVPN (from build.openvpn.net)](https://github.com/jlund/streisand/blob/master/playbooks/roles/openvpn/vars/mirror.yml)
   - [Shadowsocks (from github.com/shadowsocks)](https://github.com/jlund/streisand/blob/master/playbooks/roles/shadowsocks/vars/mirror.yml)
-  - [Shuttle (from github.com/sshuttle)](https://github.com/jlund/streisand/blob/master/playbooks/roles/streisand-mirror/vars/ssh.yml)
   - [Stunnel (from stunnel.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/stunnel/vars/mirror.yml)
   - [Putty (from the.earth.li)](https://github.com/jlund/streisand/blob/master/playbooks/roles/streisand-mirror/vars/ssh.yml)
   - [Tor Browser (from dist.torproject.org)](https://github.com/jlund/streisand/blob/master/playbooks/roles/tor-bridge/vars/mirror-common.yml)

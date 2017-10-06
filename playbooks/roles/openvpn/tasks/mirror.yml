@@ -27,7 +27,7 @@
   assert: { that: "openvpn_security_mailing_list_key_fingerprint in gpg_fingerprint_results.stdout" }
 
 - block:
-    - name: Mirror Tunnelblick for OS X
+    - name: Mirror Tunnelblick for macOS
       get_url:
         url: "{{ tunnelblick_url }}"
         dest: "{{ openvpn_mirror_location }}"

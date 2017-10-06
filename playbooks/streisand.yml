@@ -1,5 +1,13 @@
 ---
 - include: python.yml
+- include: lets-encrypt.yml
+
+- name: Collect diagnostics in case of error
+  hosts: localhost
+  gather_facts: no
+  roles:
+    - role: diagnostics
+      when: not streisand_ci
 
 - name: Configure the Server and install required software
 # ========================================================
@@ -9,13 +17,14 @@
   become: true
 
   roles:
-    - validation
     - common
+    - ssh
     # OpenConnect must be set up before L2TP/IPsec in order to avoid
     # compilation issues.
     - role: openconnect
       when: streisand_openconnect_enabled
-    - l2tp-ipsec
+    - role: l2tp-ipsec
+      when: streisand_l2tp_enabled
     - role: openvpn
       when: streisand_openvpn_enabled
     - role: shadowsocks
@@ -33,6 +42,10 @@
     - ufw
     - role: wireguard
       when: streisand_wireguard_enabled
+    # streisand_le_enabled is set in lets-encrypt.yml based on user input.
+    # lets-encrypt roles sets le_ok, which is used by streisand-gateway.
+    - role: lets-encrypt
+      when: streisand_le_enabled
     - streisand-mirror
     - streisand-gateway
 ...

@@ -33,6 +33,11 @@ ipv4-network = 192.168.1.0
 ipv4-netmask = 255.255.255.0
 ping-leases = false
 cisco-client-compat = true
+max-clients = {{ vpn_clients + 1 }}
+
+# Limit the number of identical clients (i.e., users connecting
+# multiple times). Unset or set to zero for unlimited. 
+max-same-clients = 1
 
 {% for item in upstream_dns_servers %}
 dns = {{ item }}

@@ -12,14 +12,15 @@
 - name: Register the forwarding user's public SSH key
   command: cat {{ forward_location }}/.ssh/id_rsa.pub
   register: ssh_forward_key
+  changed_when: False
 
 - name: Authorize the key for access
   authorized_key:
     user: forward
-    key: "{{ ssh_forward_key.stdout }}"
+    key: 'command="{{ ssh_force_command }}" {{ ssh_forward_key.stdout }}'
 
 # Generate the gateway documentation for the SSH forward user
 - include: docs.yml
 
-# Mirror Putty & sshuttle for SSH forwarding from Windows
+# Mirror Putty for SSH forwarding from Windows
 - include: mirror.yml

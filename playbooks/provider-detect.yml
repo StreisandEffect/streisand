@@ -22,10 +22,18 @@
       #   https://serverfault.com/a/775063
       command: dmidecode -s bios-version
       register: streisand_localhost_bios_name
+      changed_when: False
+      ignore_errors: True
 
-    - name: "Set BIOS name fact"
+    - name: "Set BIOS name fact from dmidecode if possible"
       set_fact:
         streisand_bios_name: "{{ streisand_localhost_bios_name.stdout }}"
+      when: streisand_localhost_bios_name.rc == 0
+
+    - name: "...Otherwise set unknown BIOS fact"
+      set_fact:
+        streisand_bios_name: "Unknown"
+      when: streisand_bios_name is undefined
 
     # GCE specific work-arounds:
     #   * None of the interfaces have the external IP bound, so this must be set
@@ -45,6 +53,7 @@
           # [0]: https://cloud.google.com/compute/docs/storing-retrieving-metadata#querying
           command: curl -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
           register: streisand_gce_external_ip
+          changed_when: False
         - name: "Set the Streiand IPv4 address to the GCE external IP: {{ streisand_gce_external_ip.stdout }}"
           set_fact:
             streisand_ipv4_address: "{{ streisand_gce_external_ip.stdout }}"
@@ -63,6 +72,7 @@
         - name: "Find the external EC2 IP from Metadata"
           command: curl http://169.254.169.254/latest/meta-data/public-ipv4
           register: streisand_ec2_external_ip
+          changed_when: False
         - name: "Set the Streiand IPv4 address to the EC2 external IP: {{ streisand_ec2_external_ip.stdout }}"
           set_fact:
             streisand_ipv4_address: "{{ streisand_ec2_external_ip.stdout }}"

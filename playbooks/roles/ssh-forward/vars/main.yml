@@ -1,5 +1,6 @@
 ---
 forward_location: "/home/forward"
+ssh_force_command: "echo 'This account is for port forwarding only.'"
 
 ssh_gateway_location: "{{ streisand_gateway_location }}/ssh"
 

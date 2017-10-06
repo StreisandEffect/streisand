@@ -1,7 +1,7 @@
 ![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
 
 - - -
-[English](README.md), [Français](README-fr.md), [简体中文](README-chs.md) | [Mirror](https://area51.threeletter.agency/mirrors/streisand) | [Mirror 2](https://gitlab.com/alimakki/streisand)
+[English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Mirror](https://area51.threeletter.agency/mirrors/streisand) | [Mirror 2](https://gitlab.com/alimakki/streisand)
 - - -
 
 [![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand)
@@ -41,11 +41,10 @@ Streisand介绍
 -----------------
 * L2TP/IPsec 使用 [Libreswan](https://libreswan.org/)/[xl2tpd](https://www.xelerance.com/software/xl2tpd/) 架设。
   * 随机生成、选择预分享密钥和密码；
-  * Windows, MacOS, Android 和 iOS 用户可以使用系统自带的 VPN 进行设置、连接，而不需要另外下载第三方的软件来实现。
+  * Windows, macOS, Android 和 iOS 用户可以使用系统自带的 VPN 进行设置、连接，而不需要另外下载第三方的软件来实现。
 * [Monit](https://mmonit.com/monit/)
   * 能够监视、处理运行状态，针对那些奔溃的进程或者没有响应的进程进行自动重启和维护。
 * [OpenSSH](http://www.openssh.com/)
-  * 针对 [sshuttle](https://github.com/sshuttle/sshuttle) 的一个无特权转发用户和产生的 SSH 密钥对，同样也兼容 SOCKS；
   * 支持 Windows 和 Android 的 SSH 隧道， 并且需要使用 PuTTY 将默认的密钥对导出成 .ppk 的格式；
   * [Tinyproxy](https://banu.com/tinyproxy/) 默认安装并绑定到主机，它作为一个 http(s) 代理提供给那些原生不支持 SOCKS 代理的软件通过 SSH 隧道访问网络，比如说 Android 上的鸟嘀咕。
 * [OpenConnect](http://www.infradead.org/ocserv/index.html) / [Cisco AnyConnect](http://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
@@ -94,8 +93,8 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 ### 准备工作 ###
 在本地计算机完成以下所有步骤（也可以在 VPS 上运行）。
 
-* Streisand 运行在 BSD，Linux，或者 MacOS 上，Windows 上是无法运行的。所有的指令都需要在终端下运行。
-* 需要 Python 2.7 ，一般在 MacOS 、Linux 及 BSD 系统上都是标配，如果你使用的发行版标配是 Python 3，你需要安装 Python 2.7 来运行 Streisand。
+* Streisand 运行在 BSD，Linux，或者 macOS 上，Windows 上是无法运行的。所有的指令都需要在终端下运行。
+* 需要 Python 2.7 ，一般在 macOS 、Linux 及 BSD 系统上都是标配，如果你使用的发行版标配是 Python 3，你需要安装 Python 2.7 来运行 Streisand。
 * 确定你的 SSH key 储存在 ~/.ssh/id\_rsa.pub 。
   * 如果不曾有过 SSH key，你需要用下面的命令生成一个：
 
@@ -107,7 +106,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
   * 在 Fedora
 
         sudo dnf install git
-  * 在 MacOS 上 （需要通过 [Homebrew](http://brew.sh/) 进行安装）
+  * 在 macOS 上 （需要通过 [Homebrew](http://brew.sh/) 进行安装）
 
         brew install git
 * 利用 Python 安装 [pip](https://pip.pypa.io/en/latest/) 包管理
@@ -117,13 +116,13 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
   * 在 Fedora
 
         sudo dnf install python-pip
-  * 在 MacOS 上
+  * 在 macOS 上
 
         sudo easy_install pip
         sudo pip install pycurl
 
 * 安装 [Ansible](http://www.ansible.com/home) 。
-  * 在 MacOS 上
+  * 在 macOS 上
 
         brew install ansible
   * 在 Linux 和 其他 BSD 上
@@ -135,7 +134,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
         sudo pip install boto
   * 微软云服务
 
-        sudo pip install msrest msrestazure azure==2.0.0rc5
+        sudo pip install msrest msrestazure azure==2.0.0rc5 packaging
   * DigitalOcean
 
         sudo pip install dopy==0.3.5
@@ -172,7 +171,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 * 在 VPS 上用 Streisand 安装到新的 VPS 模式还有后面介绍的将正在运行的 VPS 转变为网关这种模式，你会发现你很难在 VPS 上阅读 generated-docs 文件夹中的4个 html 文档，这个时候有几种方法可选：
   * 使用 sftp 下载文件；
   * 在目前的 VPS 上安装一个 apache2 ，然后 cp -r generated-doc /var/www/html/ ，然后从浏览器输入 VPS 的地址直接浏览并下载密钥（严格地说，这不安全，因为不是 https 连接，如果截获了数据便可以知道如何登录你科学上网的那个网关了。**如果是使用转化那个模式，就不要用这种方法了**）。
-  * 在 VPS 上使用 scp 将 generated-docs 目录全部推送到你本地暴露在公网下的 Linux, Unix 或者 MacOS 里，或者另一个 VPS 里也可以。命令大概是 scp -r generated-docs user@×××.×××.×××.×××:/home/user/
+  * 在 VPS 上使用 scp 将 generated-docs 目录全部推送到你本地暴露在公网下的 Linux, Unix 或者 macOS 里，或者另一个 VPS 里也可以。命令大概是 scp -r generated-docs user@×××.×××.×××.×××:/home/user/
 
 ### 将正在使用中的 VPS 变成 Streisand 服务器 （高级使用） ###
 
