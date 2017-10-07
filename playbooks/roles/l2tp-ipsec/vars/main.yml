@@ -18,7 +18,7 @@ libreswan_compilation_dependencies:
   - libunbound-dev
   - pkg-config
 
-libreswan_version: "3.20"
+libreswan_version: "3.21"
 libreswan_src_directory: "/usr/local/src"
 libreswan_compilation_directory: "{{ libreswan_src_directory }}/libreswan-{{ libreswan_version }}"
 libreswan_source_filename: "libreswan-{{ libreswan_version }}.tar.gz"
