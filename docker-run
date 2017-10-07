@@ -1,0 +1,16 @@
+#!/bin/bash
+
+run_docker () {
+    docker run -it --rm -v $(pwd)/generated_docs:/work/streisand/generated_docs \
+	   -v $HOME/.ssh:/work/streisand/sshkeys \
+	   -e STREISAND_SSH_KEY_FROM_HOST="/work/streisand/sshkeys/id_rsa.pub" \
+	   -e STREISAND_SSH_ADD_KEY=1 \
+	   streisand-builder ssh-agent "$@"
+}
+
+if [ -z "$1" ]
+then
+    run_docker /work/streisand/streisand
+else
+    run_docker "$@"
+fi
