@@ -23,71 +23,26 @@
   args:
     creates: /etc/rc0.d/K20ocserv
 
-- name: Generate the CA template file
-  template:
-    src: ca.tmpl.j2
-    dest: "{{ ocserv_ca_template_file }}"
-    owner: root
-    group: root
-    mode: 0600
-
-- name: Generate the CA key
-  command: certtool --generate-privkey --outfile {{ ocserv_ca_key_file }}
-  args:
-    creates: "{{ ocserv_ca_key_file }}"
-
-- name: Generate the self-signed CA certificate
-  command: certtool --generate-self-signed --load-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_ca_template_file }} --outfile {{ ocserv_ca_certificate_file }}
-  args:
-    creates: "{{ ocserv_ca_certificate_file }}"
-
-- name: Generate the server template file
-  template:
-    src: server.tmpl.j2
-    dest: "{{ ocserv_server_template_file }}"
-    owner: root
-    group: root
-    mode: 0600
-
-- name: Generate the server key
-  command: certtool --generate-privkey --outfile {{ ocserv_server_key_file }}
-  args:
-    creates: "{{ ocserv_server_key_file }}"
-
-- name: Generate the server certificate
-  command: certtool --generate-certificate --load-privkey {{ ocserv_server_key_file }} --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_server_template_file }} --outfile {{ ocserv_server_certificate_file }}
-  args:
-    creates: "{{ ocserv_server_certificate_file }}"
-
-- name: Generate the client template file
-  template:
-    src: client.tmpl.j2
-    dest: "{{ ocserv_path }}/client-{{ client_name.stdout }}.tmpl"
-    owner: root
-    group: root
-    mode: 0600
+- name: Create directories for clients
+  file:
+    path: "{{ ocserv_path}}/{{ client_name.stdout }}"
+    state: directory
   with_items: "{{ vpn_client_names.results }}"
   loop_control:
     loop_var: "client_name"
     label: "{{ client_name.item }}"
 
-- name: Generate the client keys
-  command: certtool --generate-privkey --outfile {{ ocserv_path }}/{{ client_name.stdout }}-key.pem
-  args:
-    creates: "{{ ocserv_path }}/{{ client_name.stdout }}-key.pem"
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client_name"
-    label: "{{ client_name.item }}"
-
-- name: Generate the client certificates
-  command: certtool --generate-certificate --load-privkey {{ ocserv_path }}/{{ client_name.stdout }}-key.pem --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_path }}/client-{{ client_name.stdout }}.tmpl --outfile {{ ocserv_path }}/{{ client_name.stdout }}-cert.pem
-  args:
-    creates: "{{ ocserv_path }}/{{ client_name.stdout }}-cert.pem"
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client_name"
-    label: "{{ client_name.item }}"
+- include_role:
+    name: certificates
+  vars:
+    ca_path:            "{{ ocserv_path }}"
+    tls_ca:             "{{ ocserv_ca }}"
+    tls_client_path:    "{{ ocserv_path }}"
+    generate_ca_server: yes
+    generate_client:    yes
+    tls_server_common_name_file: "{{ ocserv_server_common_name_file }}"
+    tls_san:
+      - "{{ streisand_ipv4_address }}"
 
 - name: "Generate a random password that will be used during the PKCS #12 conversion"
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ ocserv_path }}/ocserv-{{ client_name.stdout }}-pkcs12-password
@@ -120,7 +75,7 @@
 
 - name: "Convert the keys and certificates into PKCS #12 format"
   expect:
-    command: certtool --to-p12 --load-privkey {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}-key.pem --pkcs-cipher 3des-pkcs12 --load-certificate {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}-cert.pem --outfile {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}.p12 --outder
+    command: certtool --to-p12 --load-privkey {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}/client.key --pkcs-cipher 3des-pkcs12 --load-certificate {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}/client.crt --outfile {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}.p12 --outder
     responses:
       "Enter a name for the key": "{{ ocserv_client_password.client_name.stdout }}"
       "Enter password":   "{{ ocserv_client_password.stdout }}"

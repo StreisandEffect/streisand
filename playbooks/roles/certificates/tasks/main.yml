@@ -1,0 +1,6 @@
+---
+- include: ca-server.yml
+  when: generate_ca_server
+
+- include: client.yml
+  when: generate_client
