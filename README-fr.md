@@ -156,7 +156,7 @@ Effectuez toutes ces tâches sur votre machine locale.
 ### Exécution ###
 1. Clonez le répertoire Streisand et entrez dans le répertoire.
 
-        git clone https://github.com/jlund/streisand.git && cd streisand
+        git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 2. Exécuter le script Streisand.
 
         ./streisand
@@ -183,7 +183,7 @@ Nouvelles fonctionnalités à venir
 * Sélection et isolement des rôles, vous permettant de choisir quels services sont installés.
 * Configuration simplifiée.
 
-S'il ya quelque chose que vous pensez que Streisand devrait faire, ou si vous trouviez un bug dans sa documentation ou son exécution, s'il vous plaît déposer un rapport sur le [Issue Tracker](https://github.com/jlund/streisand/issues).
+S'il ya quelque chose que vous pensez que Streisand devrait faire, ou si vous trouviez un bug dans sa documentation ou son exécution, s'il vous plaît déposer un rapport sur le [Issue Tracker](https://github.com/StreisandEffect/streisand/issues).
 
 Remerciements
 -------------

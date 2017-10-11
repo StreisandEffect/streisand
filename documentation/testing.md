@@ -69,7 +69,7 @@ Using Vagrant for Local Testing
 1. [Install Vagrant](https://www.vagrantup.com/docs/installation/)
 2. Clone the Streisand repository and enter the directory.
 
-       git clone https://github.com/jlund/streisand.git && cd streisand
+       git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 3. If this is your first time following these steps, create & start the
    `streisand-host` and `streisand-client` virtual machines with:
 
@@ -94,7 +94,7 @@ Using Vagrant for Remote Testing (Easy Way)
 1. [Install Vagrant](https://www.vagrantup.com/docs/installation/)
 2. Clone the Streisand repository and enter the directory.
 
-       git clone https://github.com/jlund/streisand.git && cd streisand
+       git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 3. Run the `remote_test.sh` helper script and give it the remote server IP
    & gateway password when prompted:
 
@@ -105,7 +105,7 @@ Using Vagrant for Remote Testing (Hard Way)
 1. [Install Vagrant](https://www.vagrantup.com/docs/installation/)
 2. Clone the Streisand repository and enter the directory.
 
-       git clone https://github.com/jlund/streisand.git && cd streisand
+       git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 3. Edit `Vagrantfile.remotetest` and replace the `streisand_ip` host variable
    with the IP of the remote server.
 4. Create the `generated-docs/gateway-password.txt` file with the gateway

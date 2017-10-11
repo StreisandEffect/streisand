@@ -155,7 +155,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 ### 执行 ###
 1. 从 Streisand 抓取源码
 
-        git clone https://github.com/jlund/streisand.git && cd streisand
+        git clone https://github.com/StreisandEffect/streisand.git && cd streisand
    如果 Github 被封锁了，就用我们提供的镜像。
 
         git clone https://area51.threeletter.agency/mirrors/streisand.git && cd streisand
@@ -190,7 +190,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 * 提供可选择性的安装和隔离，让服务器只运行某几（一）个服务或者守护进程。
 * 更简便的设置
 
-如果你对 Streisand 有任何期待和想法，或者你找到 BUG ，请联系我们并且发 [Issue Tracker](https://github.com/jlund/streisand/issues) 。
+如果你对 Streisand 有任何期待和想法，或者你找到 BUG ，请联系我们并且发 [Issue Tracker](https://github.com/StreisandEffect/streisand/issues) 。
 
 相关知识
 ----------------
