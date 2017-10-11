@@ -2,7 +2,7 @@
 Do you have a broad question? Are you suggesting a feature, e.g. a new VPN
 service or cloud provider? If so, please create a new issue in the Streisand
 Discussions repository instead:
-https://github.com/jlund/streisand-discussions/issues/ 
+https://github.com/StreisandEffect/streisand-discussions/issues/ 
 -->
 
 ### Expected behavior:

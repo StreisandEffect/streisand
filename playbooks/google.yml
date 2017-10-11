@@ -33,6 +33,9 @@
       "24": "australia-southeast1-a"
       "25": "australia-southeast1-b"
       "26": "australia-southeast1-c"
+      "27": "southamerica-east1-a"
+      "28": "southamerica-east1-b"
+      "29": "southamerica-east1-c"
 
 
   # These variable files are included so the gce-network role
@@ -79,6 +82,9 @@
           24. Southeast Australia  (Sydney A)
           25. Southeast Australia  (Sydney B)
           26. Southeast Australia  (Sydney C)
+          27. South America        (São Paulo A)
+          28. South America        (São Paulo B)
+          29. South America        (São Paulo C)
         Please choose the number of your zone. Press enter for default (#3) zone.
       default: "3"
       private: no

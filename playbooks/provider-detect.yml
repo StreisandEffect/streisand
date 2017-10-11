@@ -23,10 +23,17 @@
       command: dmidecode -s bios-version
       register: streisand_localhost_bios_name
       changed_when: False
+      ignore_errors: True
 
-    - name: "Set BIOS name fact"
+    - name: "Set BIOS name fact from dmidecode if possible"
       set_fact:
         streisand_bios_name: "{{ streisand_localhost_bios_name.stdout }}"
+      when: streisand_localhost_bios_name.rc == 0
+
+    - name: "...Otherwise set unknown BIOS fact"
+      set_fact:
+        streisand_bios_name: "Unknown"
+      when: streisand_bios_name is undefined
 
     # GCE specific work-arounds:
     #   * None of the interfaces have the external IP bound, so this must be set

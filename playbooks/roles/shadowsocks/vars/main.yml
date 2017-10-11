@@ -14,12 +14,12 @@ shadowsocks_dependencies:
   - libmbedtls-dev
   - libpcre3-dev
   - libsodium-dev
-  - libudns-dev
+  - libc-ares-dev
   # Shadowsocks may complain about lack of entropy without rng-tools installed
   - rng-tools
   - libssl-dev
 
-shadowsocks_version: "3.0.8"
+shadowsocks_version: "3.1.0"
 shadowsocks_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ shadowsocks_version }}"
 
 # Configuring the build without documentation means we save close to 900mb of deps
@@ -30,7 +30,12 @@ shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
 
 # simple-obfs vars
-simple_obfs_version: "0.0.3"
+# TODO(@cpu): Once a simple-obfs release > 0.0.3 has been cut we can switch back
+# to cloning a specific release instead of this commit that was the tip of
+# master at the time of writing. Presently 0.0.3 is the latest release and is
+# missing a segfault fix and retains udns support while we build
+# shadowsocks-libev with cares now
+simple_obfs_version: "2955a57624add482588b41fad68bbcd4c632fff5"
 simple_obfs_compilation_directory: "/usr/local/src/shadowsocks-simple-obfs-{{ simple_obfs_version }}"
 simple_obfs_configure_flags: "--disable-documentation"
 

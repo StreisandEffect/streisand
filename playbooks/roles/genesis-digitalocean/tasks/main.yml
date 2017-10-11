@@ -21,7 +21,7 @@
       register: do_ssh_key
   rescue:
     - fail:
-        msg: "* The API Access Token might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the DigitalOcean Control Panel under a different name. OR * The dopy Python module might not be installed. Use `pip install dopy==0.3.5` to install this module. On the latest version of OS X, dopy > 0.3.5 is currently broken."
+        msg: "* The API Access Token might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the DigitalOcean Control Panel under a different name. OR * The dopy Python module might not be installed. Use `pip install dopy==0.3.5` to install this module. On the latest version of macOS, dopy > 0.3.5 is currently broken."
 
 - block:
     - name: Create the new Droplet

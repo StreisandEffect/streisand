@@ -50,6 +50,13 @@ streisand_footer_template: "/tmp/footer.html"
 streisand_language_selector: "/tmp/languages.html"
 streisand_i18n_header_template: "/tmp/headeri18n.html"
 
+# By default concurrent executions of `iptables` will fail immediately if unable
+# to acquire a lock. We use the `--wait` argument to instead specify a maximum
+# number of seconds to wait before failing. This allows multiple services to add
+# iptables rules at once. See Issue #950 for longer term ideas on how to make
+# this var not required.
+streisand_iptables_wait: 120
+
 # Internationalization
 streisand_languages:
   en:

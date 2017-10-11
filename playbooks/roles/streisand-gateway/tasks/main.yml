@@ -56,7 +56,7 @@
     state: link
 
   # TODO:
-  #   Add to CI testing https://github.com/jlund/streisand/issues/643
+  #   Add to CI testing https://github.com/StreisandEffect/streisand/issues/643
 - block:
     - name: Generate the Markdown Gateway index information
       template:
@@ -148,7 +148,7 @@
           when: hostvars['127.0.0.1']['ansible_system'] == "Linux"
           become: no
 
-        - name: Open the instructions on OS X (if applicable)
+        - name: Open the instructions on macOS (if applicable)
           local_action: command open ../{{ streisand_local_directory }}/{{ streisand_server_name }}.html
           when: hostvars['127.0.0.1']['ansible_system'] == "Darwin"
           become: no

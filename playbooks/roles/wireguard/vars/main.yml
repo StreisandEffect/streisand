@@ -8,7 +8,7 @@ wireguard_server_public_key_file:  "{{ wireguard_path }}/server.pub"
 dnsmasq_wireguard_ip: "10.192.122.1"
 
 wireguard_firewall_rules:
-  - iptables -A FORWARD -s 10.192.122.0/24 -j ACCEPT
-  - iptables -t nat -A POSTROUTING -s 10.192.122.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -s 10.192.122.0/24 -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 10.192.122.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
 
 wireguard_gateway_location:      "{{ streisand_gateway_location }}/wireguard"
