@@ -9,7 +9,7 @@ tor_windows_sig_filename_template: "{{ tor_windows_filename_template }}.asc"
 tor_windows_href: "{{ tor_mirror_href_base }}/{{ tor_windows_filename_template }}"
 tor_windows_sig_href: "{{ tor_mirror_href_base }}/{{ tor_windows_sig_filename_template }}"
 
-tor_macos_filename_base: "TorBrowser-{{ tor_browser_bundle_version }}-macos64"
+tor_macos_filename_base: "TorBrowser-{{ tor_browser_bundle_version }}-osx64"
 tor_macos_filename_template: "{{ tor_macos_filename_base }}_locale.dmg"
 tor_macos_sig_filename_template: "{{ tor_macos_filename_template }}.asc"
 tor_macos_href: "{{ tor_mirror_href_base }}/{{ tor_macos_filename_template }}"
