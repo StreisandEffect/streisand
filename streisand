@@ -6,10 +6,7 @@ set -e
 
 echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 
-# Update the PYTHONPATH to include the monkey patch directory for Streisand
-# workarounds packaged as Python monkey patches
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
-export PYTHONPATH="$SCRIPT_DIR/monkey:$PYTHONPATH"
 
 DEFAULT_SITE_VARS="$SCRIPT_DIR/global_vars/default-site.yml"
 GLOBAL_VARS="$SCRIPT_DIR/global_vars/vars.yml"
