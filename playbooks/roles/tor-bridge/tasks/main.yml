@@ -20,6 +20,12 @@
     - obfs4proxy
     - tor
 
+# Update the firewall to allow Tor and obfs4proxy
+# NOTE(@cpu): we do this early in the role because the Tor daemon will check if
+# the obfs4proxy port is externally accessible during startup and we want to
+# make sure it is.
+- include: firewall.yml
+
 - name: Generate a random Nickname for the bridge
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ //' | cut -c 1-16 > {{ tor_bridge_nickname_file }}
   args:
@@ -28,6 +34,7 @@
 - name: Register the bridge's random Nickname
   command: cat {{ tor_bridge_nickname_file }}
   register: tor_bridge_nickname
+  changed_when: False
 
 - name: Generate the bridge config file
   template:
@@ -37,18 +44,33 @@
     group: root
     mode: 0644
 
-- name: Copy the fixed AppArmor abstraction into place
+# TODO(@cpu) - This should be removed once it isn't required, maybe in the next
+# release after tor 0.3.0.9
+- name: Copy a local override for the Tor AppArmor profile in place
   copy:
-    src: tor-apparmor-abstraction
-    dest: /etc/apparmor.d/abstractions/tor
+    src: apparmor-local-override
+    dest: /etc/apparmor.d/local/system_tor
     owner: root
     group: root
     mode: 0644
 
-- name: Restart AppArmor so the abstraction takes effect
-  service:
-    name: apparmor
-    state: restarted
+# TODO(@cpu) - In theory it seems like it should be possible to add the
+# following to the local override from above:
+#     /usr/bin/obfsproxy ix,
+#     /usr/bin/obfs4proxy ix,
+# but doing so results in an error from the existing `PUx` modifiers:
+#     profile system_tor: has merged rule /usr/bin/obfs4proxy with conflicting x modifiers
+# in the interest of fixing a regression we work around this by changing the
+# dist provided `/etc/apparmor.d/abstractions/tor` file.
+- name: Fix the distro Tor apparmor abstraction
+  replace:
+    path: /etc/apparmor.d/abstractions/tor
+    regexp: '^([\s]*)/usr/bin/(obfs4?proxy) PUx,$'
+    replace: '\1/usr/bin/\2 ix,'
+    backup: yes
+
+- name: Reload the system_tor AppArmor profile for the override to take effect
+  command: apparmor_parser -r /etc/apparmor.d/system_tor
 
 - name: Restart Tor so the server fingerprint will be available in the state file, and the hidden service for the Gateway will start running
   service:
@@ -57,40 +79,52 @@
 
 - name: Wait until obfs4proxy information has shown up in its state file
   wait_for:
-    path: /var/lib/tor/pt_state/obfs4_state.json
+    path: "{{ tor_obfs_state_directory }}/obfs4_state.json"
     search_regex: "node-id"
 
 - name: Wait until the hidden service is online
   wait_for:
     path: "{{ tor_hidden_service_directory }}/hostname"
 
+- name: Wait until the server fingerprint file is generated
+  wait_for:
+    path: "{{ tor_state_directory }}/fingerprint"
+
 - name: Register the Tor Hidden Service hostname
   command: cat {{ tor_hidden_service_directory }}/hostname
-  register: tor_hidden_service_hostname
+  register: tor_hidden_service_hostname_output
+  changed_when: False
+
+- name: Register the Tor Hidden Service URL fact
+  set_fact:
+    tor_hidden_service_url: "http://{{ tor_hidden_service_hostname_output.stdout }}"
+
+- name: Generate the hidden service virtual host and restart Nginx if it is updated
+  template:
+    src: hidden-service-vhost.j2
+    dest: /etc/nginx/sites-available/streisand-hidden-service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Nginx for the Tor hidden service vhost
+
+- name: Enable the virtual host
+  file:
+    path: /etc/nginx/sites-enabled/streisand-hidden-service
+    src: /etc/nginx/sites-available/streisand-hidden-service
+    state: link
 
 - name: Discover the server fingerprint
-  command: awk '{ print $2 }' /var/lib/tor/fingerprint
+  command: "awk '{ print $2 }' {{ tor_state_directory }}/fingerprint"
   register: tor_fingerprint
 
 - name: Discover the obfs4 certificate details
-  shell: cat /var/lib/tor/pt_state/obfs4_bridgeline.txt | grep 'Bridge obfs4' | sed -e 's/^.*cert=\(.*\) .*$/\1/'
+  shell: cat "{{ tor_obfs_state_directory }}/obfs4_bridgeline.txt" | grep 'Bridge obfs4' | sed -e 's/^.*cert=\(.*\) .*$/\1/'
   register: tor_obfs4_certificate
+  changed_when: False
 
-- name: Create the Tor Gateway directory
-  file:
-    path: "{{ tor_gateway_location }}"
-    owner: www-data
-    group: www-data
-    mode: 0750
-    state: directory
+# Generate the docs gateway page
+- include: docs.yml
 
-- name: Generate the Tor obfs4 QR code
-  shell: echo -n '{{ tor_obfs4_bridge_line }}' | qrencode -s 6 -o {{ tor_obfs4_qr_code }}
-
-- name: Generate the Markdown Tor instructions
-  template:
-    src: instructions.md.j2
-    dest: "{{ tor_markdown_instructions }}"
-
-- name: Convert the Markdown Tor instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ tor_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ tor_html_instructions }}
+# Mirror the Tor browser bundle
+- include: mirror.yml

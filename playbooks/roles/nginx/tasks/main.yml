@@ -26,7 +26,6 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart Nginx
 
 - name: Set up Nginx vhost directories
   file:

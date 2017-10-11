@@ -34,7 +34,7 @@ LogLevel QUIET
 Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l QUIET
 
 # Use kernel sandbox mechanisms where possible in unprivileged processes
-# Systrace on OpenBSD, Seccomp on Linux, seatbelt on MacOSX/Darwin, rlimit elsewhere.
+# Systrace on OpenBSD, Seccomp on Linux, seatbelt on macOS/Darwin, rlimit elsewhere.
 UsePrivilegeSeparation sandbox
 
 # Enable PAM.

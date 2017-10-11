@@ -1,5 +1,6 @@
 OpenVPN (wrapped in stunnel)
 ----------------------------
+
 These instructions should only be used if OpenVPN connections are being actively blocked in your country or by your ISP. Performance will be better if you are able to connect directly, but certain countries (notably China and Iran) employ Deep Packet Inspection to detect and thwart OpenVPN connections. Some companies do the same. If you do not fall into this category, please refer to the standard [OpenVPN instructions](/openvpn/) instead.
 
 Following these steps will wrap your OpenVPN traffic in an encrypted tunnel so it looks like standard SSL traffic being directed to a port where this type of traffic would be expected. This prevents DPI from identifying the true nature of the packets, thereby allowing you to freely use OpenVPN.
@@ -8,9 +9,9 @@ Following these steps will wrap your OpenVPN traffic in an encrypted tunnel so i
 For security reasons, OpenVPN clients typically have their own unique certificate and private key. The server you will be connecting to has been configured to allow clients to share the same certificate and private key, but you may still wish to give your phone and laptop different keys, for example.
 
 ---
-* Platforms
+* Plateforms
   * [Windows](#windows)
-  * [OS X](#osx)
+  * [macOS](#macos)
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
@@ -39,8 +40,8 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. Go to the *Compatibility* tab and click the *Run this program as an administrator* checkbox in the *Privilege Level* section.
 1. Double-click the OpenVPN GUI desktop icon to launch the application.
 1. Download one of these unified OpenVPN profiles:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
 1. Open the *config* directory that is located in the Destination Folder. For most users, this will either be in *C:\Program Files\OpenVPN\config* or *C:\Program Files (x86)\OpenVPN\config*. You will see a single README file in this directory.
 1. Drag and drop the downloaded `{{ openvpn_stunnel_profile_filename }}` file to this location alongside the README.
@@ -48,8 +49,8 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP.
 1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
-<a name="osx"></a>
-### OS X ###
+<a name="macos"></a>
+### macOS ###
 #### Stunnel Setup ####
 1. Install [Homebrew](http://brew.sh/), if you haven't already.
 1. Install stunnel using Homebrew:
@@ -74,8 +75,8 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. Click *Launch* after the installation is finished.
 1. Click *I have configuration files*.
 1. Download one of these unified OpenVPN profiles:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
 1. Double-click the OpenVPN profile.
 1. You will be asked to choose whether the profile should be available for all users or only the current user. After making your selection, you will be asked to enter your password.
@@ -109,8 +110,8 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 
    * If installing OpenVPN via your package manager is not an option, you can also download and compile the [OpenVPN source code](/mirror/#openvpn).
 1. Download one of these unified OpenVPN profiles:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
 1. Copy the downloaded `{{ openvpn_stunnel_profile_filename }}` file to the location of your choice. */etc/openvpn/* is a decent option.
 1. On some distributions, the pushed DHCP DNS option from the OpenVPN server will be ignored. This means that your DNS queries will still be routed through your ISP's servers which makes them vulnerable to what is known as a DNS leak.
@@ -147,8 +148,8 @@ Now you are ready to install OpenVPN for Android and configure it to route its t
 #### OpenVPN Setup ####
 1. Install [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn).
 1. Download one of these unified OpenVPN profiles:
-{% for client in openvpn_clients %}
-   * [{{ client }}](/openvpn/{{ client }}/{{ openvpn_stunnel_profile_filename }})
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
 1. Copy the `{{ openvpn_stunnel_profile_filename }}` file to your phone.
 1. Launch OpenVPN for Android.

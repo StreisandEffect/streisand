@@ -1,0 +1,61 @@
+---
+- name: Include the OpenVPN mirror variables
+  include_vars: mirror.yml
+
+- name: Make the directory where OpenVPN's mirrored files will be stored
+  file:
+    path: "{{ openvpn_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0755
+    state: directory
+
+- name: Copy the OpenVPN security mailing list key
+  copy:
+    src:  "{{ openvpn_security_mailing_list_key_name }}"
+    dest: "{{ openvpn_mirror_location }}"
+    mode: 0600
+
+- name: Import the OpenVPN security mailing list key into the GPG keyring
+  command: "gpg --import {{ openvpn_mirror_location }}/{{ openvpn_security_mailing_list_key_name }}"
+
+- name: Register the gpg key fingerprints
+  command: "gpg --list-keys --fingerprint"
+  register: gpg_fingerprint_results
+
+- name: Ensure the OpenVPN security mailing list key fingerprint matches the expected fingerint
+  assert: { that: "openvpn_security_mailing_list_key_fingerprint in gpg_fingerprint_results.stdout" }
+
+- block:
+    - name: Mirror Tunnelblick for macOS
+      get_url:
+        url: "{{ tunnelblick_url }}"
+        dest: "{{ openvpn_mirror_location }}"
+        checksum: "{{ tunnelblick_checksum }}"
+        owner: www-data
+        group: www-data
+        mode: 0644
+
+    - include_role:
+        name: download-and-verify
+      vars:
+        project_name: "OpenVPN Community"
+        project_signer: "Samuli Seppanen"
+        project_signing_key: "{{ openvpn_gpg_release_key_id }}"
+        project_expected_fingerprint: "{{ openvpn_gpg_release_key_fingerprint }}"
+        project_download_location: "{{ openvpn_mirror_location }}"
+        project_download_urls: "{{ openvpn_download_urls }}"
+  rescue:
+    - name: "{{ streisand_mirror_warning }}"
+      pause:
+        seconds: "{{ streisand_mirror_warning_seconds }}"
+
+- name: Generate the OpenVPN Markdown mirror page
+  template:
+    src: mirror{{ item.value.file_suffix }}.md.j2
+    dest: "{{ openvpn_mirror_location }}/index{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
+
+- name: Convert the OpenVPN Markdown mirror page into HTML
+  shell: markdown {{ openvpn_mirror_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ openvpn_mirror_location }}/index{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"

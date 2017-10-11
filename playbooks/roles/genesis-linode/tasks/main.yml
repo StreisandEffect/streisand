@@ -1,7 +1,11 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-linode"
+
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
+  changed_when: False
 
 - name: Create the server
   linode:
@@ -12,6 +16,11 @@
     distribution: "{{ linode_distribution_id }}"
     kernel_id: "{{ linode_kernel_id }}"
     ssh_pub_key: "{{ ssh_key.stdout }}"
+    alert_cpu_threshold: "{{ linode_alert_cpu_threshold }}"
+    alert_diskio_threshold: "{{ linode_alert_diskio_threshold }}"
+    alert_bwin_threshold : "{{ linode_alert_bwin_threshold }}"
+    alert_bwout_threshold: "{{ linode_alert_bwout_threshold }}"
+    alert_bwquota_threshold: "{{ linode_alert_bwquota_threshold }}"
     wait: yes
   register: streisand_server
 

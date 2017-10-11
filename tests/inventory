@@ -1,0 +1,5 @@
+[streisand]
+streisand ansible_connection=lxd ansible_python_interpreter=python ansible_become=yes
+
+[localhost]
+localhost ansible_connection=local ansible_python_interpreter=python

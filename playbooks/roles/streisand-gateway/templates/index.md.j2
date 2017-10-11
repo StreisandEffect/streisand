@@ -1,3 +1,9 @@
+- - -
+{% for key, value in streisand_languages.items() %}
+  [{{ value.language_name }}](index{{ value.file_suffix }}.html)&nbsp;
+{% endfor %}
+- - -
+
 Welcome to the **{{ streisand_server_name }}** [Streisand](https://github.com/jlund/streisand) Gateway server. You are only moments away from an uncensored connection to the Internet.
 
 Connection Instructions
@@ -6,14 +12,30 @@ Connection Instructions
 
 There are multiple ways to bypass censorship, and Streisand provides several choices and different protocols in the event that any of them are restricted.
 
+{% if streisand_l2tp_enabled %}
 * [L2TP/IPsec](/l2tp-ipsec/)
+{% endif %}
+{% if streisand_openconnect_enabled %}
 * [OpenConnect / Cisco AnyConnect](/openconnect/)
+{% endif %}
+{% if streisand_openvpn_enabled %}
 * [OpenVPN (direct)](/openvpn/)
+{% if streisand_stunnel_enabled %}
 * [OpenVPN (stunnel)](/openvpn/stunnel.html)
+{% endif %}
+{% endif %}
+{% if streisand_shadowsocks_enabled %}
 * [Shadowsocks](/shadowsocks/)
+{% endif %}
+{% if streisand_ssh_forward_enabled %}
 * [SSH](/ssh/)
+{% endif %}
+{% if streisand_tor_enabled %}
 * [Tor](/tor/)
+{% endif %}
+{% if streisand_wireguard_enabled %}
 * [WireGuard](/wireguard/)
+{% endif %}
 
 Client Mirrors
 --------------
@@ -21,9 +43,21 @@ Client Mirrors
 
 You can download the necessary client software directly from Streisand in case the official websites are blocked. These versions could be slightly out of date (depending on when this server was set up) but they can be easily updated once you have connected to the open Internet.
 
-* [OpenConnect](/mirror/#openconnect)
-* [OpenVPN](/mirror/#openvpn)
-* [Shadowsocks](/mirror/#shadowsocks)
+{% if streisand_openconnect_enabled %}
+* [OpenConnect](/mirror/openconnect/)
+{% endif %}
+{% if streisand_openvpn_enabled %}
+* [OpenVPN](/mirror/openvpn/)
+{% if streisand_stunnel_enabled %}
+* [stunnel](/mirror/stunnel/)
+{% endif %}
+{% endif %}
+{% if streisand_shadowsocks_enabled %}
+* [Shadowsocks](/mirror/shadowsocks/)
+{% endif %}
+{% if streisand_ssh_forward_enabled %}
 * [SSH](/mirror/#ssh)
-* [stunnel](/mirror/#stunnel)
-* [Tor Browser Bundle](/mirror/#tor)
+{% endif %}
+{% if streisand_tor_enabled %}
+* [Tor Browser Bundle](/mirror/tor/)
+{% endif %}

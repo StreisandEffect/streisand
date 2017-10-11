@@ -1,0 +1,18 @@
+---
+- name: Add the official OpenVPN APT key
+  apt_key:
+    id: E158C569
+    data: "{{ item }}"
+  with_file: openvpn_signing.key
+
+- name: Add the official OpenVPN repository
+  apt_repository:
+    repo: 'deb https://build.openvpn.net/debian/openvpn/stable {{ ansible_lsb.codename }} main'
+    state: present
+
+- name: Install OpenVPN and its dependencies from APT
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - openvpn
+    - udev

@@ -1,8 +1,0 @@
----
-- name: Generate rc.local with Firewall and dnsmasq settings for OpenConnect, OpenVPN, and L2TP/IPsec
-  template:
-    src: rc.local.j2
-    dest: /etc/rc.local
-    owner: root
-    group: root
-    mode: 0755

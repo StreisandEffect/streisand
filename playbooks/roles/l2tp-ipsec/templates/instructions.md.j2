@@ -1,13 +1,14 @@
 L2TP/IPsec
 ----------
-L2TP/IPsec is a great first choice. It is natively supported by Android, iOS, OS X, and Windows. There is no additional software to install. Setup should only take a few minutes.
 
-If the connection appears to time out, first check to make sure the passwords were entered correctly. If you still can't connect then it's possible that your country or ISP is blocking the L2TP/IPsec protocol. But don't worry, the [OpenVPN (stunnel)](/openvpn/stunnel.html), [Shadowsocks](/shadowsocks/), [SSH](/ssh/), and [Tor](/tor/) connection methods should still work for you.
+L2TP/IPsec is a great first choice. It is natively supported by Android, iOS, macOS, and Windows. There is no additional software to install. Setup should only take a few minutes.
+
+If the connection appears to time out, first check to make sure the passwords were entered correctly. If you still can't connect then it's possible that your country or ISP is blocking the L2TP/IPsec protocol and one of the other services described in the [README](/index.html) may work better for you.
 
 ---
 * Platforms
   * [Windows](#windows)
-  * [OS X](#osx)
+  * [macOS](#macOS)
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
@@ -41,9 +42,25 @@ If the connection appears to time out, first check to make sure the passwords we
 
 You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
-<a name="osx"></a>
-### OS X ###
-1. Open System Preferences and go to the Network section.
+<a name="macOS"></a>
+### macOS ###
+
+There are two ways to configure the macOS L2TP VPN to connect to this Streisand server. The easier is to install an macOS *profile* containing the VPN definition. You can also set up the VPN [manually](#macOS_manual).
+
+To install via profile, click here:
+
+ [__`streisand.mobileconfig`__](streisand.mobileconfig)
+
+If the file is downloaded successfully, macOS will ask if you want to install it. Click *Continue* to do so. Once installed, you can [activate the VPN](#macOS_connect).
+
+Your installed profiles are managed in the System Preferences "Profiles" pane. Streisand's profiles may be removed at any time.
+
+Please note that profiles are very powerful, and you should be careful installing unknown profiles. macOS will display which features would be configured by a profile before you install it. In Streisand's case, the only feature will be "VPN Service".
+
+<a name="macOS_manual"></a>
+If you'd prefer to set it up manually:
+
+1. Open *System Preferences* and go to the *Network* section.
 1. Click the *+* button in the lower-left corner of the window.
 1. Select *VPN* from the *Interface* drop-down menu.
 1. Select *L2TP over IPSec* from the *VPN Type* drop-down menu.
@@ -60,11 +77,18 @@ You can verify that your traffic is being routed properly by [looking up your IP
 1. Click the *TCP/IP* tab, and make sure *Link-local only* is selected in the *Configure IPv6* section.
 1. Click *OK* to close the Advanced settings, and then click *Apply* to save the VPN connection information.
 
-You can connect to the VPN using the VPN icon in the menu bar, or by selecting the VPN in the Network section of System Preferences and choosing *Connect*. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+<a name="macOS_connect"></a>
+#### Connecting on macOS ####
+To activate the VPN:
+
+* Use the VPN icon in the menu bar, or
+* Open *Network* in *System Preferences*. Click on the Streisand entry in the list of connections. There's a *Connect* button there.
+
+You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
 ### Linux ###
-L2TP/IPsec connections are not supported out-of-the-box on most Linux distributions without requiring the installation of additional software. This nullifies one of the biggest appeals of L2TP/IPsec (i.e. its native client-side support). It is recommended to use another connection method like OpenVPN instead, but if you would like to configure L2TP/IPsec on your Linux desktop, here are the settings you will need: 
+L2TP/IPsec connections are not supported out-of-the-box on most Linux distributions without requiring the installation of additional software. This nullifies one of the biggest appeals of L2TP/IPsec (i.e. its native client-side support). It is recommended to use another connection method like OpenVPN instead, but if you would like to configure L2TP/IPsec on your Linux desktop, here are the settings you will need:
 
     Server Address: {{ streisand_ipv4_address }}
 
@@ -93,6 +117,22 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 
 <a name="ios"></a>
 ### iOS ###
+
+There are two ways to configure the iOS L2TP VPN to connect to this Streisand server. The easier is to install an iOS *profile* containing the VPN definition. You can also set up the VPN [manually](#ios_manual).
+
+To install via profile, view this page using Mobile Safari and tap here:
+
+ [__`streisand.mobileconfig`__](streisand.mobileconfig)
+
+If the file is downloaded successfully, iOS will will ask if you want to install the profile. Click *Install*. iOS will prompt for your PIN to confirm it's you installing a profile. iOS will then (correctly) warn you that a VPN server like Streisand could monitor your network traffic. If this is acceptable to you, click *Install* again. Once installed you can [activate the VPN](#ios_connect).
+
+Your installed profiles are managed in iOS *Settings*. Near the bottom of the *General* settings, there is a *Profiles* sub-menu listing all your installed profiles. Streisand's profiles may be removed at any time.
+
+Please note that profiles are very powerful, and you should be careful installing unknown profiles. iOS will display which features would be configured by a profile before you install it. In Streisand's case, the only feature will be "VPN Service".
+
+<a name="ios_manual"></a>
+If you'd prefer to set it up manually:
+
 1. Go to Settings -> General -> VPN.
 1. Tap *Add VPN Configuration...*.
 1. Tap *Type*.
@@ -103,6 +143,12 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 1. Tap *Password* and enter `{{ chap_password.stdout }}`.
 1. Tap *Secret* and enter `{{ ipsec_preshared_key.stdout }}`.
 1. Tap *Done*.
+
+<a name="ios_connect"></a>
+#### Connecting on iOS ####
+To activate the VPN:
+
+1. Go to *Settings* -> *General* -> *VPN*.
 1. Slide the *VPN* switch on.
 1. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 

@@ -34,9 +34,36 @@ streisand_common_packages:
   # (yet typeable!) passphrases
   - wamerican-huge
 
+# Services that are running by default but not needed by Streisand
+streisand_unneeded_packages:
+  - lxd
+  - snapd
+
 streisand_gateway_location: "/var/www/streisand"
+
+streisand_mirror_location: "{{ streisand_gateway_location }}/mirror"
 
 streisand_local_directory: "generated-docs"
 
 streisand_header_template: "/tmp/header.html"
 streisand_footer_template: "/tmp/footer.html"
+streisand_language_selector: "/tmp/languages.html"
+streisand_i18n_header_template: "/tmp/headeri18n.html"
+
+# By default concurrent executions of `iptables` will fail immediately if unable
+# to acquire a lock. We use the `--wait` argument to instead specify a maximum
+# number of seconds to wait before failing. This allows multiple services to add
+# iptables rules at once. See Issue #950 for longer term ideas on how to make
+# this var not required.
+streisand_iptables_wait: 120
+
+# Internationalization
+streisand_languages:
+  en:
+    file_suffix: ""
+    language_name: "English"
+    tor_locale: "en-US"
+  fr:
+    file_suffix: "-fr"
+    language_name: "Français"
+    tor_locale: "fr"

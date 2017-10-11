@@ -1,6 +1,10 @@
 Azure credential and setup
 ==========================
 
+- - -
+[English](AZURE.md), [Français](AZURE-fr.md)
+- - -
+
 Setup
 -----
 * Create an application ( [visual guide](https://docs.microsoft.com/en-in/azure/azure-resource-manager/resource-group-create-service-principal-portal#create-an-active-directory-application) )<br />

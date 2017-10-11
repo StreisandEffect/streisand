@@ -1,0 +1,40 @@
+#!/bin/bash -xe
+#
+# NOTE: This test script relies on the -e argument to bash in the shebang above.
+#
+# Streisand Shadowsocks Client Test
+#   - Confirms the gateway mirror for the Linux Shadowsocks client works
+#   - Confirms the gateway Shadowsocks QR has correct information (password, cipher, etc)
+#   - Confirms that the Linux shadowsocks client can connect & route a HTTP request
+#
+
+# Read the Shadowsocks QR code attributes into vars
+shadowsocksCipher=$(shadowsocks-qr-decode --cipher "{{ shadowsocks_qr_file }}" 2>/dev/null)
+shadowsocksPassword=$(shadowsocks-qr-decode --password "{{ shadowsocks_qr_file }}" 2>/dev/null)
+shadowsocksServer=$(shadowsocks-qr-decode --server "{{ shadowsocks_qr_file }}" 2>/dev/null)
+shadowsocksPort=$(shadowsocks-qr-decode --port "{{ shadowsocks_qr_file }}" 2>/dev/null)
+
+# Read the gateway password into a var
+gatewayPassword=$(cat "{{ gateway_password_file }}")
+
+# Connect the Shadowsocks client to the server
+{{ shadowsocks_client }} -c "$shadowsocksServer:$shadowsocksPort" -password "$shadowsocksPassword" -socks localhost:{{ shadowsocks_local_port }} -verbose -cipher "$shadowsocksCipher" &
+CLIENT_PID=$!
+
+function cleanup {
+  # Kill the backgrounded Shadowsocks client
+  echo "Killing PID $CLIENT_PID"
+  kill $CLIENT_PID
+  echo "Waiting for clean up to finish..."
+  wait $CLIENT_PID
+}
+trap cleanup EXIT
+
+# Sleep to give the Shadowsocks client a chance to start
+sleep 2
+
+# Check that the gateway website can be loaded through the Shadowsocks proxy
+curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$gatewayPassword" {{ gateway_test_url }} | grep "200 OK"
+
+# Check that an external site can be loaded through the Shadowsocks proxy
+curl --socks5 localhost:{{ shadowsocks_local_port }} --insecure -I -u "{{ gateway_test_user }}:$gatewayPassword" {{ external_test_url }} | grep "200 OK"

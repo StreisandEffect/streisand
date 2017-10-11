@@ -1,0 +1,42 @@
+---
+# OpenVPN Download variables
+# --------------------------
+openvpn_mirror_location:  "{{ streisand_mirror_location }}/openvpn"
+openvpn_mirror_href_base: "/mirror/openvpn"
+
+openvpn_security_mailing_list_key_name: "security_mailing_list.key"
+openvpn_security_mailing_list_key_fingerprint: "F554 A368 7412 CFFE BDEF  E0A3 12F5 F7B4 2F2B 01E7"
+
+openvpn_gpg_release_key_id: "0x29584D9F40864578"
+openvpn_gpg_release_key_fingerprint: "Key fingerprint = 6D04 F8F1 B017 3111 F499  795E 2958 4D9F 4086 4578"
+
+openvpn_base_download_url: "https://build.openvpn.net/downloads/releases/latest"
+
+openvpn_source_filename:      "openvpn-latest-stable.tar.gz"
+openvpn_source_sig_filename:  "{{ openvpn_source_filename }}.asc"
+openvpn_source_href:          "{{ openvpn_mirror_href_base }}/{{ openvpn_source_filename }}"
+openvpn_source_sig_href:      "{{ openvpn_mirror_href_base }}/{{ openvpn_source_sig_filename }}"
+openvpn_source_url:           "{{ openvpn_base_download_url }}/{{ openvpn_source_filename }}"
+openvpn_source_sig_url:       "{{ openvpn_base_download_url }}/{{ openvpn_source_sig_filename }}"
+
+openvpn_windows_installer_filename:     "openvpn-install-latest-stable.exe"
+openvpn_windows_installer_sig_filename: "{{ openvpn_windows_installer_filename }}.asc"
+openvpn_windows_installer_href:         "{{ openvpn_mirror_href_base }}/{{ openvpn_windows_installer_filename }}"
+openvpn_windows_installer_sig_href:     "{{ openvpn_mirror_href_base }}/{{ openvpn_windows_installer_sig_filename }}"
+openvpn_windows_installer_url:          "{{ openvpn_base_download_url }}/{{ openvpn_windows_installer_filename }}"
+openvpn_windows_installer_sig_url:      "{{ openvpn_base_download_url }}/{{ openvpn_windows_installer_sig_filename }}"
+
+openvpn_download_urls:
+  - "{{ openvpn_source_url }}"
+  - "{{ openvpn_source_sig_url }}"
+  - "{{ openvpn_windows_installer_url }}"
+  - "{{ openvpn_windows_installer_sig_url }}"
+
+
+# macOS
+tunnelblick_version:  "3.7.2a"
+tunnelblick_build:    "4851"
+tunnelblick_filename: "Tunnelblick_{{ tunnelblick_version }}_build_{{ tunnelblick_build }}.dmg"
+tunnelblick_href:     "{{ openvpn_mirror_href_base }}/{{ tunnelblick_filename }}"
+tunnelblick_url:      "https://tunnelblick.net/release/{{ tunnelblick_filename }}"
+tunnelblick_checksum: "sha256:bf08bd823316e3829657cbf039a2313c45ab7627f283cfd83cf953a9384e31a6"

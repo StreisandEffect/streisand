@@ -1,7 +1,11 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-google"
+
 - name: Get the default SSH key
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
+  changed_when: False
 
 - name: Create the GCE instance
   gce:

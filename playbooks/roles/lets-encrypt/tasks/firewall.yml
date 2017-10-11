@@ -1,0 +1,5 @@
+- name: Ensure incoming HTTP traffic is allowed
+  ufw:
+    to_port: "{{ le_port }}"
+    proto: tcp
+    rule: allow

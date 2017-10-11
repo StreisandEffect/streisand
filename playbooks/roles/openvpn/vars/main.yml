@@ -7,23 +7,20 @@ openvpn_hmac_firewall: "{{ openvpn_path }}/ta.key"
 openvpn_server: "{{ streisand_ipv4_address }}"
 openvpn_server_common_name_file: "{{ openvpn_path }}/openvpn_server_common_name"
 
-openvpn_direct_profile_filename: "{{ openvpn_server }}-direct.ovpn"
+openvpn_direct_profile_filename:     "{{ openvpn_server }}-direct.ovpn"
 openvpn_direct_udp_profile_filename: "{{ openvpn_server }}-direct-udp.ovpn"
-openvpn_sslh_profile_filename: "{{ openvpn_server }}-sslh.ovpn"
-openvpn_stunnel_profile_filename: "{{ openvpn_server }}-stunnel.ovpn"
-openvpn_combined_profile_filename: "{{ openvpn_server }}-combined.ovpn"
+openvpn_sslh_profile_filename:       "{{ openvpn_server }}-sslh.ovpn"
+openvpn_stunnel_profile_filename:    "{{ openvpn_server }}-stunnel.ovpn"
+openvpn_combined_profile_filename:   "{{ openvpn_server }}-combined.ovpn"
+
+dnsmasq_openvpn_tcp_ip: "10.8.0.1"
+dnsmasq_openvpn_udp_ip: "10.9.0.1"
 
 openvpn_firewall_rules:
-  - iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-  - iptables -A FORWARD -s 10.8.0.0/24 -j ACCEPT
-  - iptables -A FORWARD -s 10.9.0.0/24 -j ACCEPT
-  - iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
-  - iptables -t nat -A POSTROUTING -s 10.9.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -s 10.8.0.0/24 -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -s 10.9.0.0/24 -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 10.9.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
 
 openvpn_gateway_location: "{{ streisand_gateway_location }}/openvpn"
-
-openvpn_markdown_instructions: "{{ openvpn_gateway_location }}/index.md"
-openvpn_html_instructions: "{{ openvpn_gateway_location }}/index.html"
-
-openvpn_stunnel_markdown_instructions: "{{ openvpn_gateway_location }}/stunnel.md"
-openvpn_stunnel_html_instructions: "{{ openvpn_gateway_location }}/stunnel.html"

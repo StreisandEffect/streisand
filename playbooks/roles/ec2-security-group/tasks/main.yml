@@ -12,7 +12,7 @@
   pause:
     seconds: 15
 
-- name: Open all of the necessary ports across every service in the EC2 security group
+- name: Open necessary ports across supported services in the EC2 security group
   ec2_group:
     name: "{{ aws_security_group }}"
     description: Security group for Streisand
@@ -27,8 +27,37 @@
         from_port: "{{ nginx_port }}"
         to_port: "{{ nginx_port }}"
         cidr_ip: 0.0.0.0/0
-      # L2TP/IPsec
+      # SSH
       # ---
+      - proto: tcp
+        from_port: "{{ ssh_port }}"
+        to_port: "{{ ssh_port }}"
+        cidr_ip: 0.0.0.0/0
+      # HTTP (Let's Encrypt)
+      # ---
+      - proto: tcp
+        from_port: "{{ le_port }}"
+        to_port: "{{ le_port }}"
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        from_port: 1
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0
+
+# L2TP/IPsec
+# ---
+- name: Open the L2TP/IPsec ports in the EC2 security group
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    purge_rules: no
+    purge_rules_egress: no
+    rules:
       - proto: udp
         from_port: "500"
         to_port: "500"
@@ -41,68 +70,152 @@
         from_port: "1701"
         to_port: "1701"
         cidr_ip: 0.0.0.0/0
-      # OpenConnect (ocserv)
+  when: streisand_l2tp_enabled
+
+# OpenConnect
+# ---
+- name: Open the OpenConnect ports in the EC2 security group
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    purge_rules: no
+    purge_rules_egress: no
+    rules:
+      # OpenConnect TCP
       # ---
       - proto: tcp
         from_port: "{{ ocserv_port }}"
         to_port: "{{ ocserv_port }}"
         cidr_ip: 0.0.0.0/0
+      # OpenConnect UDP
+      # ---
       - proto: udp
         from_port: "{{ ocserv_port }}"
         to_port: "{{ ocserv_port }}"
         cidr_ip: 0.0.0.0/0
-      # OpenVPN
+  when: streisand_openconnect_enabled
+
+# OpenVPN
+# ---
+- name: Open the OpenVPN ports in the EC2 security group
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    purge_rules: no
+    purge_rules_egress: no
+    rules:
+      # OpenVPN TCP
       # ---
       - proto: tcp
         from_port: "{{ openvpn_port }}"
         to_port: "{{ openvpn_port }}"
         cidr_ip: 0.0.0.0/0
+      # OpenVPN UDP
+      # ---
       - proto: udp
         from_port: "{{ openvpn_port_udp }}"
         to_port: "{{ openvpn_port_udp }}"
         cidr_ip: 0.0.0.0/0
-      # Shadowsocks
-      # ---
-      - proto: tcp
-        from_port: "{{ shadowsocks_server_port }}"
-        to_port: "{{ shadowsocks_server_port }}"
-        cidr_ip: 0.0.0.0/0
-      - proto: udp
-        from_port: "{{ shadowsocks_server_port }}"
-        to_port: "{{ shadowsocks_server_port }}"
-        cidr_ip: 0.0.0.0/0
-      # SSH
-      # ---
-      - proto: tcp
-        from_port: "{{ ssh_port }}"
-        to_port: "{{ ssh_port }}"
-        cidr_ip: 0.0.0.0/0
+  when: streisand_openvpn_enabled
+
+# stunnel
+# ---
+- name: Open the stunnel port in the EC2 security group
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    purge_rules: no
+    purge_rules_egress: no
+    rules:
       # Stunnel
       # ---
       - proto: tcp
         from_port: "{{ stunnel_remote_port }}"
         to_port: "{{ stunnel_remote_port }}"
         cidr_ip: 0.0.0.0/0
+  when: streisand_openvpn_enabled and streisand_stunnel_enabled
+
+# Shadowsocks
+# ---
+- name: Open the Shadowsocks ports in the EC2 security group
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    purge_rules: no
+    purge_rules_egress: no
+    rules:
+      # Shadowsocks TCP
+      # ---
+      - proto: tcp
+        from_port: "{{ shadowsocks_server_port }}"
+        to_port: "{{ shadowsocks_server_port }}"
+        cidr_ip: 0.0.0.0/0
+      # Shadowsocks UDP
+      # ---
+      - proto: udp
+        from_port: "{{ shadowsocks_server_port }}"
+        to_port: "{{ shadowsocks_server_port }}"
+        cidr_ip: 0.0.0.0/0
+  when: streisand_shadowsocks_enabled
+
+# Tor
+# ---
+- name: Open the Tor ports in the EC2 security group
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    purge_rules: no
+    purge_rules_egress: no
+    rules:
       # Tor
       # ---
       - proto: tcp
         from_port: "{{ tor_orport }}"
         to_port: "{{ tor_orport }}"
         cidr_ip: 0.0.0.0/0
-      # Tor obfs4 port
+      # Tor obfs4
       # ---
       - proto: tcp
         from_port: "{{ tor_obfs4_port }}"
         to_port: "{{ tor_obfs4_port }}"
         cidr_ip: 0.0.0.0/0
-      # WireGuard
-      # ---
+  when: streisand_tor_enabled
+
+# WireGuard
+# ---
+- name: Open the WireGuard ports in the EC2 security group
+  ec2_group:
+    name: "{{ aws_security_group }}"
+    description: Security group for Streisand
+    region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc_id | default(omit) }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    purge_rules: no
+    purge_rules_egress: no
+    rules:
       - proto: udp
         from_port: "{{ wireguard_port }}"
         to_port: "{{ wireguard_port }}"
         cidr_ip: 0.0.0.0/0
-    rules_egress:
-      - proto: all
-        from_port: 1
-        to_port: 65535
-        cidr_ip: 0.0.0.0/0
+  when: streisand_wireguard_enabled

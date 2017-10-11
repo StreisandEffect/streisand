@@ -1,36 +1,61 @@
+- - -
+{% for key, value in streisand_languages.items() %}
+  [{{ value.language_name }}]({{ streisand_server_name }}-firewall-information{{ value.file_suffix }}.html)&nbsp;
+{% endfor %}
+- - -
+
 Firewall Information
 --------------------
+
 These ports are open by default when Streisand creates a new server from scratch on a supported provider.
 
 If you are installing Streisand on an existing server or alternate provider then you need to make sure the firewall allows traffic to the new server on the following ports:
 
 ---
+{% if streisand_l2tp_enabled %}
 * L2TP/IPsec
   * UDP - 500
   * UDP - 1701
   * UDP - 4500
+{% endif %}
 * Nginx (Streisand Gateway)
   * TCP - {{ nginx_port }}
+{% if streisand_le_enabled %}
+* HTTP (Let's Encrypt)
+  * TCP - {{ le_port }}
+{% endif %}
+{% if streisand_openconnect_enabled %}
 * OpenConnect / Cisco AnyConnect
   * TCP - {{ ocserv_port }}
   * UDP - {{ ocserv_port }}
+{% endif %}
 * OpenSSH
   * TCP - {{ ssh_port }}
+{% if streisand_openvpn_enabled %}
 * OpenVPN
   * UDP - 53 to/from `{{ dnsmasq_openvpn_tcp_ip }}`
   * UDP - 53 to/from `{{ dnsmasq_openvpn_udp_ip }}`
     * Dnsmasq listens for DNS traffic on these IPs and responds to requests from connected OpenVPN clients.
   * TCP - {{ openvpn_port }}
   * UDP - {{ openvpn_port_udp }}
+{% if streisand_stunnel_enabled %}
+* stunnel
+  * TCP - {{ stunnel_remote_port }}
+{% endif %}
+{% endif %}
+{% if streisand_shadowsocks_enabled %}
 * Shadowsocks
   * TCP - {{ shadowsocks_server_port }}
   * UDP - {{ shadowsocks_server_port }}
-* stunnel
-  * TCP - {{ stunnel_remote_port }}
+{% endif %}
+{% if streisand_tor_enabled %}
 * Tor
   * TCP - {{ tor_orport }} - Bridge
   * TCP - {{ tor_obfs4_port }} - obfs4 pluggable transport
+{% endif %}
+{% if streisand_wireguard_enabled %}
 * WireGuard
   * UDP - 53 to/from `{{ dnsmasq_wireguard_ip }}`
     * Dnsmasq listens for DNS traffic on this IP and responds to requests from connected WireGuard clients.
   * UDP - {{ wireguard_port }}
+{% endif %}
