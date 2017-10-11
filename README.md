@@ -159,7 +159,7 @@ Complete all of these tasks on your local home machine.
 ### Execution ###
 1. Clone the Streisand repository and enter the directory.
 
-       git clone https://github.com/jlund/streisand.git && cd streisand
+       git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 
    Or clone from the external mirror if GitHub is blocked.
 
@@ -189,7 +189,7 @@ Upcoming Features
 -----------------
 * Easier setup.
 
-If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/jlund/streisand/issues).
+If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/StreisandEffect/streisand/issues).
 
 Core Contributors
 ----------------

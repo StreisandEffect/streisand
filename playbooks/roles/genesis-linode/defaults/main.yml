@@ -8,7 +8,7 @@ linode_distribution_id: 146
 linode_alert_cpu_threshold: 90
 
 # Other values left as the defaults from the Linode module. See
-# https://github.com/jlund/streisand/issues/626 for more detail.
+# https://github.com/StreisandEffect/streisand/issues/626 for more detail.
 linode_alert_diskio_threshold: 10000
 linode_alert_bwin_threshold: 10
 linode_alert_bwout_threshold: 10
