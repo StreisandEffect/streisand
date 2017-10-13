@@ -18,13 +18,13 @@ commitments (family, vacation, jobs, hobbies, relaxation!).
 
 ### Which Repository?
 
-If your issue is a question or you need help with setting up / configuring Streisand, then please ask on the [streisand-discussions](https://github.com/jlund/streisand-discussions/) Github repository. 
+If your issue is a question or you need help with setting up / configuring Streisand, then please ask on the [streisand-discussions](https://github.com/StreisandEffect/streisand-discussions/) Github repository. 
 
-Similarly, ff you are requesting a new feature we prefer it be done on the [streisand-discussions](https://github.com/jlund/streisand-discussions) Github repository.
+Similarly, ff you are requesting a new feature we prefer it be done on the [streisand-discussions](https://github.com/StreisandEffect/streisand-discussions) Github repository.
 
 ### Before Submitting an Issue
 
-Before submitting new issues please do a search in [open issues](https://github.com/jlund/streisand/issues) to see if the issue or refinement you have in mind has already been suggested. For features/questions search [the streisand-discussions open issues](https://github.com/jlund/streisand-discussions/issues).
+Before submitting new issues please do a search in [open issues](https://github.com/StreisandEffect/streisand/issues) to see if the issue or refinement you have in mind has already been suggested. For features/questions search [the streisand-discussions open issues](https://github.com/StreisandEffect/streisand-discussions/issues).
 
 If you find your issue already exists, feel free to add constructive comments such as new information, additional insights on how to reproduce, etc. If you're only interested in sharing that the feature is important to you, or that the bug affects you then add a [reaction](https://github.com/blog/2119-add-reactions-to-pull-requests-issues-and-comments). Using reactions in place of a "+1" or "me too!" comments helps keeps the conversation clear and concise.
 
@@ -52,7 +52,7 @@ of required questions without having to do any work besides copy & pasting!
 
 #### What Other Information to Include in Your Issue
 
-Please try your best to answer all of the questions in [the Streisand Issue template](https://github.com/jlund/streisand/blob/master/.github/ISSUE_TEMPLATE.md]. Answering these questions help us skip a lot of "Github telephone tag" that takes up time that could be used fixing the bug.
+Please try your best to answer all of the questions in [the Streisand Issue template](https://github.com/StreisandEffect/streisand/blob/master/.github/ISSUE_TEMPLATE.md]. Answering these questions help us skip a lot of "Github telephone tag" that takes up time that could be used fixing the bug.
 
 When describing your issue focus on:
 
@@ -72,7 +72,7 @@ Issues are generally closed for one of three reasons:
 1. There wasn't enough information or nobody has been replying to questions
    asked.
 2. The issue was created on the wrong repository and should have been created as
-   a [streisand-discussions](https://github.com/jlund/streisand-discussions]
+   a [streisand-discussions](https://github.com/StreisandEffect/streisand-discussions]
    issue or vice-versa.
 3. After discussion and evaluation it was determined the problem was fixed or
    wasn't appropriate for Streisand
@@ -95,7 +95,7 @@ design input which will save time later during code review!
 
 Streisand uses [Travis CI](https://travis-ci.org/jlund/streisand) for continuous
 integration testing. Make sure to read
-[testing.md](https://github.com/jlund/streisand/blob/master/documentation/testing.md)
+[testing.md](https://github.com/StreisandEffect/streisand/blob/master/documentation/testing.md)
 where we describe the tests that are run, how to work around breakages for
 features unsupported by LXC, and tips for developing on localhost with Vagrant.
 All PRs will have to pass CI to be merged. Feel free to submit a PR with broken
@@ -117,5 +117,5 @@ We've recently begun working on modularizing Streisand so that installations can
 be customized to include/not include certain VPN services. Additions to
 Streisand should endeavour to fit into this model. We describe the philosophy
 and design patterns used in this approach in
-[modular_roles.md](https://github.com/jlund/streisand/blob/master/documentation/modular_roles.md)
+[modular_roles.md](https://github.com/StreisandEffect/streisand/blob/master/documentation/modular_roles.md)
 
