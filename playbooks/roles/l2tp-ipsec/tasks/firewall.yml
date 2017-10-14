@@ -9,17 +9,15 @@
     - "1701"
     - "4500"
 
-- name: Allow L2TP/IPsec through the firewall
-  command: "{{ item }}"
-  with_items: "{{ l2tp_ipsec_firewall_rules }}"
-
-- name: "Add L2TP/IPsec firewall persistence service to init"
+- name: "Install L2TP/IPsec iptables service file"
   template:
-    src: streisand-l2tp-service.sh.j2
-    dest: /etc/init.d/streisand-l2tp
-    mode: 0755
+    src: streisand-l2tp-iptables.service.j2
+    dest: /etc/systemd/system/streisand-l2tp-iptables.service
+    mode: 0644
 
-- name: "Enable the streisand-l2tp init service"
-  service:
-    name: streisand-l2tp
+- name: "Enable the streisand-l2tp-iptables service"
+  systemd:
+    daemon_reload: yes
+    name: streisand-l2tp-iptables
     enabled: yes
+    state: started

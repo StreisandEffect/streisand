@@ -18,23 +18,20 @@ shadowsocks_gui_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_gui_fil
 shadowsocks_gui_url: "https://github.com/shadowsocks/shadowsocks-windows/releases/download/{{ shadowsocks_gui_version }}/{{ shadowsocks_gui_filename }}"
 shadowsocks_gui_checksum: "sha256:4f932e61afb6bd1dd8b5c4c25c715f1623d3f574637d8154256531b4ef5000ac"
 
-# OS X
-# NOTE(@cpu): We're stuck using a beta here since only v1.5 supports AEAD
-#             cipher options. Once there is a finalized release we should drop
-#             the beta mirror
-shadowsocks_x_ng_version: "1.5-beta.2"
+# macOS
+shadowsocks_x_ng_version: "1.6.1"
 shadowsocks_x_ng_filename: "ShadowsocksX-NG.{{ shadowsocks_x_ng_version }}.zip"
 shadowsocks_x_ng_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_ng_filename }}"
 shadowsocks_x_ng_url: "https://github.com/shadowsocks/ShadowsocksX-NG/releases/download/v{{ shadowsocks_x_ng_version }}/{{ shadowsocks_x_ng_filename }}"
-shadowsocks_x_ng_checksum: "sha256:1d782b272c6ba8505e4791a286d0ac738cbf49c23e6f819e4735096340093d27"
+shadowsocks_x_ng_checksum: "sha256:dad30943ad569d6f3a7f1b9925b45b9082ef5f5e855d2fcad2c18a0554187281"
 
 # Linux (x64)
 # NOTE(@cpu): if 32bit Linux clients are to be supported then we should add `shadowsocks2-linux-x86.gz`
-shadowsocks_go_version: "0.0.8"
+shadowsocks_go_version: "0.0.9"
 shadowsocks_go_filename: "shadowsocks2-linux-x64.gz"
 shadowsocks_go_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_go_filename }}"
 shadowsocks_go_url: "https://github.com/riobard/go-shadowsocks2/releases/download/v{{ shadowsocks_go_version }}/{{ shadowsocks_go_filename }}"
-shadowsocks_go_checksum: "sha256:02a87348d49c3d0680e8e6e86331ac9d1ef93ce27b8c7f814c88ec7ca65337f3"
+shadowsocks_go_checksum: "sha256:9c08118a0caa60acdb6764112fd181513dbaa2c85d63e7b4b333895b7fe225e9"
 
 shadowsocks_download_urls:
   - { url: "{{ shadowsocks_android_url }}", checksum: "{{ shadowsocks_android_checksum }}" }

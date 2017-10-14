@@ -1,14 +1,14 @@
 L2TP/IPsec
 ----------
 
-L2TP/IPsec est un excellent premier choix. Il est nativement pris en charge par Android, iOS, OS X et Windows. Il n'y a pas de logiciel supplémentaire à installer. L'installation ne devrait prendre que quelques minutes.
+L2TP/IPsec est un excellent premier choix. Il est nativement pris en charge par Android, iOS, macOS et Windows. Il n'y a pas de logiciel supplémentaire à installer. L'installation ne devrait prendre que quelques minutes.
 
 Si la connexion semble instable, vérifiez d'abord que les mots de passe ont été entrés correctement. Si vous ne pouvez toujours pas vous connecter, il est possible que votre pays ou votre FAI bloque le protocole L2TP/IPsec. L'un des autres services décrits dans le [README](/index-fr.html) peut fonctionner mieux pour vous.
 
 ---
 * Plateformes
   * [Windows](#windows)
-  * [OS X](#osx)
+  * [macOS](#macos)
   * [Linux](#linux)
   * [Androïde](#android)
   * [iOS](#ios)
@@ -42,22 +42,22 @@ Si la connexion semble instable, vérifiez d'abord que les mots de passe ont ét
 
 Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
-<a name="osx"></a>
-### OS X ###
+<a name="macos"></a>
+### macOS ###
 
-Il existe deux façons de configurer le VPN OS X L2TP pour se connecter à votre serveur Streisand. Le moyen le plus simple est d'installer un *profil* OS X contenant la configuration VPN. Vous pouvez également configurer le VPN [manuellement](#osx_manual).
+Il existe deux façons de configurer le VPN macOS L2TP pour se connecter à votre serveur Streisand. Le moyen le plus simple est d'installer un *profil* macOS contenant la configuration VPN. Vous pouvez également configurer le VPN [manuellement](#macos_manual).
 
 Pour installer via le profil, cliquez ici:
 
  [__`streisand.mobileconfig`__](streisand.mobileconfig)
 
-Si le fichier est téléchargé avec succès, OS X vous demandera si vous souhaitez l'installer. Cliquez sur *Continuer* pour confirmer. Une fois installé, vous pouvez [activer le VPN](#osx_connect).
+Si le fichier est téléchargé avec succès, macOS vous demandera si vous souhaitez l'installer. Cliquez sur *Continuer* pour confirmer. Une fois installé, vous pouvez [activer le VPN](#macos_connect).
 
 Vos profils installés sont gérés dans le menu "Profils" des Préférences du système. Les profils de Streisand peuvent être retirés à tout moment.
 
-Notez que les profils sont très puissants et que vous devez faire attention à l'installation des profils inconnus. OS X affichera quelles fonctionnalités seraient configurées par un profil avant l'installation. Dans le cas de Streisand, la seule fonctionnalité devra être "Service VPN".
+Notez que les profils sont très puissants et que vous devez faire attention à l'installation des profils inconnus. macOS affichera quelles fonctionnalités seraient configurées par un profil avant l'installation. Dans le cas de Streisand, la seule fonctionnalité devra être "Service VPN".
 
-<a name="osx_manual"></a>
+<a name="macos_manual"></a>
 Si vous préférez le configurer manuellement:
 
 1. Ouvrir les préférences du système et aller à la section réseau
@@ -77,8 +77,8 @@ Si vous préférez le configurer manuellement:
 1. Cliquez l'onglet *TCP/IP* tab, et vérifiez que l'option *Lien locale uniquement* est sélectionné dans la section *Configurer IPv6*.
 1. Cliquez *OK* pour fermer le menu avancé, puis cliquez *Appliquer* pour sauvgarder le details du connexion VPN.
 
-<a name="osx_connect"></a>
-#### Connexion sur OS X ####
+<a name="macos_connect"></a>
+#### Connexion sur macOS ####
 Pour activer le VPN:
 
 * Utilisez l'icône VPN dans la barre de menus, ou

@@ -19,5 +19,6 @@ libreswan_compilation_dependencies_trusty:
   - libselinux1-dev
   - libsystemd-daemon-dev
   - libunbound-dev
+  - libldns-dev
   - make
   - pkg-config
