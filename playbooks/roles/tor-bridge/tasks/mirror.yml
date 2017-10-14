@@ -4,15 +4,15 @@
 
 - block:
     # Include the mirror-common tasks
-    - include: mirror-common.yml
+    - import_tasks: mirror-common.yml
 
-    - include: mirror-download.yml
+    - include_tasks: mirror-download.yml
       with_items: "{{ streisand_languages.values() | map(attribute='tor_locale') | list }}"
       when: locale in tor_available_locales
       loop_control:
         loop_var: locale
 
-    - include: mirror-verify.yml
+    - import_tasks: mirror-verify.yml
   rescue:
     - name: "{{ streisand_mirror_warning }}"
       pause:

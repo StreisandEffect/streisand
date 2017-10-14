@@ -1,6 +1,6 @@
 ---
 # Add the apt key and install OpenVPN
-- include: install.yml
+- import_tasks: install.yml
 
 - name: "Configure DNSMasq to listen on {{ dnsmasq_openvpn_tcp_ip }}:53 and {{ dnsmasq_openvpn_udp_ip }}:53"
   template:
@@ -236,13 +236,13 @@
     label: "{{ item[0].item }}"
 
 # Set up the OpenVPN firewall rules
-- include: firewall.yml
+- import_tasks: firewall.yml
 
 # Generate Gateway documentation
-- include: docs.yml
+- import_tasks: docs.yml
 
 # Mirror the OpenVPN clients
-- include: mirror.yml
+- import_tasks: mirror.yml
 
 # Install stunnel
 # NOTE (@alimakki) - must be done after OpenVPN's Gateway task

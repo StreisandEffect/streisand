@@ -5,7 +5,7 @@
   when: ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04"
 
 # Set default variables
-- include: set-default-variables.yml
+- import_tasks: set-default-variables.yml
 
 - name: Ensure the APT cache is up to date
   apt:

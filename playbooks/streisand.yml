@@ -1,6 +1,6 @@
 ---
-- include: python.yml
-- include: lets-encrypt.yml
+- import_playbook: python.yml
+- import_playbook: lets-encrypt.yml
 
 - name: Collect diagnostics in case of error
   hosts: localhost
