@@ -52,6 +52,24 @@ function check_python() {
 function check_ssh_key() {
   local STREISAND_SSH_KEY="$HOME/.ssh/id_rsa.pub"
 
+  # In case we're sharing SSH keys inside Docker
+  if [ ! -z "$STREISAND_SSH_KEY_FROM_HOST" ]
+  then
+      STREISAND_SSH_KEY="$STREISAND_SSH_KEY_FROM_HOST"
+      # This shouldn't be necessary, but there are still a few places
+      # we use ~/.ssh/id_rsa.pub I think.
+      mkdir -p ~/.ssh
+      cp "$STREISAND_SSH_KEY" ~/.ssh/id_rsa.pub
+  fi
+  # If we're using an id_rsa with a password, let's get it now.
+  # This depends on being inside a ssh-agent session.
+  if [ ! -z "$STREISAND_SSH_ADD_KEY" ]
+  then
+      local privkey="${STREISAND_SSH_KEY_FROM_HOST%.pub}"
+      echo "Adding $privkey"
+      ssh-add "$privkey"
+  fi
+
   if [ ! -f "$STREISAND_SSH_KEY" ]
   then
     echo "
