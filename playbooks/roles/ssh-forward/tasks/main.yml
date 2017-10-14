@@ -20,7 +20,7 @@
     key: 'command="{{ ssh_force_command }}" {{ ssh_forward_key.stdout }}'
 
 # Generate the gateway documentation for the SSH forward user
-- include: docs.yml
+- import_tasks: docs.yml
 
 # Mirror Putty for SSH forwarding from Windows
-- include: mirror.yml
+- import_tasks: mirror.yml

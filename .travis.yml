@@ -15,7 +15,7 @@ before_install:
   - sudo apt-get install python-pip python-dev ca-certificates shellcheck -qq
 
 install:
-  - pip install ansible==2.3.0.0
+  - pip install ansible==2.4.0.0
   - pip install urllib3 yamllint
   - ansible --version
 

@@ -1,5 +1,5 @@
 ---
-- include: python.yml
+- import_playbook: python.yml
 
 - name: Prepare the vagrant VM for Ansible
 # =========================================
@@ -21,6 +21,6 @@
   roles:
     - validation
 
-- include: ssh-setup.yml
-- include: streisand.yml
+- import_playbook: ssh-setup.yml
+- import_playbook: streisand.yml
 ...
