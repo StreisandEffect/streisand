@@ -94,7 +94,7 @@
   changed_when: False
 
 # Add simple-obfs task file
-- include: simple-obfs.yml
+- import_tasks: simple-obfs.yml
 
 - name: Generate Shadowsocks config file
   template:
@@ -132,10 +132,10 @@
         timeout: 30
 
 # Apply the Shadowsocks firewall rules
-- include: firewall.yml
+- import_tasks: firewall.yml
 
 # Generate the Shadowsocks gateway docs & client QR code
-- include: docs.yml
+- import_tasks: docs.yml
 
 # Mirror the Shadowsocks clients
-- include: mirror.yml
+- import_tasks: mirror.yml

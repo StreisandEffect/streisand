@@ -2,6 +2,11 @@
 - set_fact:
     streisand_genesis_role: "genesis-amazon"
 
+- name: "Get the {{ streisand_ssh_private_key }}.pub contents"
+  command: "cat {{ streisand_ssh_private_key }}.pub"
+  register: ssh_key
+  changed_when: False
+
 - name: Remove the 'streisand' SSH key from Amazon if it already exists. This is to prevent problems if two people with two different keys are sharing the same AWS account.
   ec2_key:
     name: streisand-ssh
@@ -10,11 +15,6 @@
     aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ aws_region }}"
     wait: yes
-
-- name: Get the default SSH key
-  command: cat ~/.ssh/id_rsa.pub
-  register: ssh_key
-  changed_when: False
 
 - name: Add the SSH key to Amazon under the name of 'streisand-ssh'
   ec2_key:

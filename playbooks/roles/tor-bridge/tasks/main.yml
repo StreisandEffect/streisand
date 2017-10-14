@@ -24,7 +24,7 @@
 # NOTE(@cpu): we do this early in the role because the Tor daemon will check if
 # the obfs4proxy port is externally accessible during startup and we want to
 # make sure it is.
-- include: firewall.yml
+- import_tasks: firewall.yml
 
 - name: Generate a random Nickname for the bridge
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ //' | cut -c 1-16 > {{ tor_bridge_nickname_file }}
@@ -124,7 +124,7 @@
   changed_when: False
 
 # Generate the docs gateway page
-- include: docs.yml
+- import_tasks: docs.yml
 
 # Mirror the Tor browser bundle
-- include: mirror.yml
+- import_tasks: mirror.yml

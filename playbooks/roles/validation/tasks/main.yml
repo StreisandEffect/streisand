@@ -1,4 +1,7 @@
 ---
+# Check SSH key exists
+- include: ssh.yml
+
 - name: Validate that OpenVPN optional variables are rational
   fail:
     msg: "stunnel cannot be enabled if openvpn is disabled"

@@ -1,34 +1,34 @@
 ---
 #Include each playbook in order to check syntax of each playbook
 - name: Include amazon.yml
-  include: ../playbooks/amazon.yml
+  import_playbook: ../playbooks/amazon.yml
 
 - name: Include azure.yml
-  include: ../playbooks/streisand.yml
+  import_playbook: ../playbooks/streisand.yml
 
 - name: Include cloud-status.yml
-  include: ../playbooks/cloud-status.yml
+  import_playbook: ../playbooks/cloud-status.yml
 
 - name: Include digitalocean.yml
-  include: ../playbooks/digitalocean.yml
+  import_playbook: ../playbooks/digitalocean.yml
 
 - name: Include google.yml
-  include: ../playbooks/google.yml
+  import_playbook: ../playbooks/google.yml
 
 - name: Include linode.yml
-  include: ../playbooks/linode.yml
+  import_playbook: ../playbooks/linode.yml
 
 - name: Include rackspace.yml
-  include: ../playbooks/rackspace.yml
+  import_playbook: ../playbooks/rackspace.yml
 
 - name: Include streisand.yml
-  include: ../playbooks/streisand.yml
+  import_playbook: ../playbooks/streisand.yml
 
 - name: Include run.yml
-  include: run.yml
+  import_playbook: run.yml
 
 - name: Include development-setup.yml
-  include: development-setup.yml
+  import_playbook: development-setup.yml
 
 #Explicity include each role to ensure all roles are tested
 - hosts: localhost

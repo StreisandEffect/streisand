@@ -4,6 +4,10 @@
   gather_facts: no
 
   vars_prompt:
+    - name: streisand_ssh_private_key
+      prompt: "Enter the path to your SSH private key, or press enter for default "
+      default: "~/.ssh/id_rsa"
+      private: no
     - name: vpn_clients
       prompt: "How many VPN client profiles should be generated per-service? Press enter for default "
       default: 5
@@ -46,6 +50,10 @@
       private: no
 
   tasks:
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_ssh_private_key: .*$"
+        line: "streisand_ssh_private_key: {{ streisand_ssh_private_key }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
         regexp: "^vpn_clients: [\\d]+$"
