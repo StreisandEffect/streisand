@@ -131,6 +131,7 @@
   roles:
     - genesis-azure
 
+- include: ssh-setup.yml
 - include: cloud-status.yml
 - include: streisand.yml
 ...

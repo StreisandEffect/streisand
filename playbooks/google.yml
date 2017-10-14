@@ -127,7 +127,7 @@
   roles:
     - genesis-google
 
-
+- include: ssh-setup.yml
 - include: cloud-status.yml
 - include: streisand.yml
 ...

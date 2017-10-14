@@ -21,5 +21,6 @@
   roles:
     - validation
 
+- include: ssh-setup.yml
 - include: streisand.yml
 ...
