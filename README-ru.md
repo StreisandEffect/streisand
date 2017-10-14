@@ -4,7 +4,7 @@
 [English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Зеркало](https://area51.threeletter.agency/mirrors/streisand) | [Зеркало 2](https://gitlab.com/alimakki/streisand)
 - - -
 
-[![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand)
+[![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
 
 Стрейзанд
 =========
@@ -42,7 +42,7 @@
 -----------------
 * L2TP/IPsec с использованием [Libreswan](https://libreswan.org/) и [xl2tpd](https://www.xelerance.com/software/xl2tpd/)
   * Создаются случайные ключ и пароль
-  * Пользователи Windows, OS X, Android, и iOS  могут подключаться с использованием встроенной поддержки VPN без установки дополнительного ПО.
+  * Пользователи Windows, macOS, Android, и iOS  могут подключаться с использованием встроенной поддержки VPN без установки дополнительного ПО.
 * [Monit](https://mmonit.com/monit/)
   * Отслеживает здоровье процессов и автоматически перезапускает их , если они падают или зависают.
 * [OpenSSH](http://www.openssh.com/)
@@ -94,8 +94,8 @@
 ### Необходимые условия ###
 Выполните все указанные ниже шаги на вашем домашнем компьютере.
 
-* Стрейзанд требует BSD, Linux или OS X. На текущий момент Windows не поддерживается. Все указанные ниже команды должны выполняться в терминале.
-* Требуется наличие Python 2.7. Он присутствует в стандартной поставке OS X и практически во всех Linux и BSD дистрибутивах. Если в вашем дистрибутиве установлен Python 3, вам потребуется также установить Python 2.7 , чтобы  Стрейзанд работал нормально.
+* Стрейзанд требует BSD, Linux или macOS. На текущий момент Windows не поддерживается. Все указанные ниже команды должны выполняться в терминале.
+* Требуется наличие Python 2.7. Он присутствует в стандартной поставке macOS и практически во всех Linux и BSD дистрибутивах. Если в вашем дистрибутиве установлен Python 3, вам потребуется также установить Python 2.7 , чтобы  Стрейзанд работал нормально.
 * Убедитесь, что SSH ключ присутствует в файле ~/.ssh/id\_rsa.pub.
   * Если у вас нет SSH ключа, вы можете его сгенерировать с использование следующей команды и выбирая значения по умолчанию:
 
@@ -107,7 +107,7 @@
   * На Fedora
 
         sudo yum install git
-  * На OS X (с использованием [Homebrew](http://brew.sh/))
+  * На macOS (с использованием [Homebrew](http://brew.sh/))
 
         brew install git
 * Установите  [pip](https://pip.pypa.io/en/latest/) - систему управления пакетами для Python.
@@ -117,13 +117,13 @@
   * На Fedora
 
         sudo yum install python-pip
-  * На OS X
+  * На macOS
 
         sudo easy_install pip
         sudo pip install pycurl
 
 * Установите [Ansible](http://www.ansible.com/home).
-  * На OS X (с использованием [Homebrew](http://brew.sh/))
+  * На macOS (с использованием [Homebrew](http://brew.sh/))
 
         brew install ansible
   * На BSD или Linux (с использованием pip)
@@ -156,7 +156,7 @@
 
 ### Выполнение ###
 1. Склонируйте репозиторий Стрейзанд и перейдите в директорию
-       git clone https://github.com/jlund/streisand.git && cd streisand
+       git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 2. Запустите скрипт Стрейзанд.
 
        ./streisand
@@ -184,7 +184,7 @@
 * Выбор и изоляция ролей, позволяющая вам выбрать, какие именно демоны и сервисы будут установлены.
 * Более простая установка.
 
-Если у вас есть идея, что ещё может делать Стрейзанд или вы нашли баг в документации или коде, пожалуйста, оставьте сообщение в [Issue Tracker](https://github.com/jlund/streisand/issues).
+Если у вас есть идея, что ещё может делать Стрейзанд или вы нашли баг в документации или коде, пожалуйста, оставьте сообщение в [Issue Tracker](https://github.com/StreisandEffect/streisand/issues).
 
 Благодарности
 ----------------

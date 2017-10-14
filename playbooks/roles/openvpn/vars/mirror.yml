@@ -33,7 +33,7 @@ openvpn_download_urls:
   - "{{ openvpn_windows_installer_sig_url }}"
 
 
-# OS X
+# macOS
 tunnelblick_version:  "3.7.2a"
 tunnelblick_build:    "4851"
 tunnelblick_filename: "Tunnelblick_{{ tunnelblick_version }}_build_{{ tunnelblick_build }}.dmg"

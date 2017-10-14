@@ -114,7 +114,7 @@
       private: no
 
     - name: "confirmation_credentials"
-      prompt: "\nEnsure that you have the azure credentials file: ~/.azure/credentials \nDetails on generating this can be found at https://github.com/jlund/streisand/blob/master/documentation/AZURE.md"
+      prompt: "\nEnsure that you have the azure credentials file: ~/.azure/credentials \nDetails on generating this can be found at https://github.com/StreisandEffect/streisand/blob/master/documentation/AZURE.md"
 
     - name: "confirmation"
       prompt: "\nStreisand will now set up your server: This process usually takes around ten minutes: Press Enter to begin setup...\n"
