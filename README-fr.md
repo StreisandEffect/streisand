@@ -180,19 +180,27 @@ Le serveur doit être accessible en utilisant la clé SSH `$HOME/id_rsa`, avec *
 
 Nouvelles fonctionnalités à venir
 ---------------------------------
-* Sélection et isolement des rôles, vous permettant de choisir quels services sont installés.
 * Configuration simplifiée.
 
 S'il ya quelque chose que vous pensez que Streisand devrait faire, ou si vous trouviez un bug dans sa documentation ou son exécution, s'il vous plaît déposer un rapport sur le [Issue Tracker](https://github.com/StreisandEffect/streisand/issues).
 
+Contributeurs principaux
+------------------------
+* Jay Carlson (@nopdotcom)
+* Nick Clarke (@nickolasclarke)
+* Joshua Lund (@jlund)
+* Ali Makki (@alimakki)
+* Daniel McCarney (@cpu)
+* Corban Raun (@CorbanR)
+
 Remerciements
 -------------
-[Jason A. Donenfeld](https://www.zx2c4.com/) mérite beaucoup de crédit pour être assez courageux à réimaginer ce qu'est un VPN moderne devrait ressembler et pour mettre au monde quelque chose aussi épatant que [WireGuard](https://www.wireguard.com/). Il a mes sincères remerciements pour toute son aide, patience et ses commentaires.
+[Jason A. Donenfeld](https://www.zx2c4.com/) mérite beaucoup de crédit pour être assez courageux à réimaginer ce qu'est un VPN moderne devrait ressembler et pour mettre au monde quelque chose aussi épatant que [WireGuard](https://www.wireguard.com/). Il a nos sincères remerciements pour toute son aide, patience et ses commentaires.
 
 [Corban Raun](https://github.com/CorbanR) à eu la gentillesse de me prêter un ordinateur portable Windows qui m'a permi de tester et d'affiner les instructions pour cette plate-forme, aussi bien qu'il était un grand partisan du projet dès le début.
 
-Je ne peux pas exprimer à quel point je suis reconnaissant à [Trevor Smith](https://github.com/trevorsmith) pour ses contributions massives au projet. Il a suggéré l'approche passerelle, fourni des tonnes de commentaires inestimable, a fait *tout* pour apparaître mieux, et développé le modèle HTML qui a servi d'inspiration pour faire passer les choses au niveau suivant avant la diffusion publique de Streisand. J'ai également apprécié l'utilisation fréquente de son iPhone tout en testant des clients divers.
+Nous sommes reconnaissants à [Trevor Smith](https://github.com/trevorsmith) pour ses contributions massives au projet. Il a suggéré l'approche passerelle, fourni des tonnes de commentaires inestimable, a fait *tout* pour apparaître mieux, et développé le modèle HTML qui a servi d'inspiration pour faire passer les choses au niveau suivant avant la diffusion publique de Streisand. J'ai également apprécié l'utilisation fréquente de son iPhone tout en testant des clients divers.
 
 Un grand merci à [Paul Wouters](https://nohats.ca/) de [The Libreswan Projet](https://libreswan.org/) à son aide généreuse pour le débogage des configurations d'L2TP/IPsec.
 
-En travaillant sur Streisand, j'ai écouté l'album 'Sunset Blood' de [Starcadian](http://starcadian.com/) environ 300 fois en répétition.
+L'album 'Sunset Blood' de [Starcadian](http://starcadian.com/) a été répété environ 300 fois au cours des premiers mois de travail sur le projet au début de 2014.
