@@ -7,7 +7,7 @@
 # The SSH private key that Ansible will use to connect to the Streisand node.
 # The associated public key will be used if required when provisioning cloud
 # nodes for the authorized_keys file.
-streisand_ssh_private_key: "~/.ssh/id-rsa"
+streisand_ssh_private_key: "~/.ssh/id_rsa"
 
 vpn_clients: 5
 
