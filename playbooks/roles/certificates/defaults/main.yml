@@ -7,3 +7,8 @@ tls_key_ou:       "Anvil Department"
 tls_days_valid:   "1825"
 tls_default_md:   "sha256"
 tls_key_size:     "4096"
+
+# What type of certificates to be generated
+# must be explicitly set
+generate_ca_server: no
+generate_client:    no
