@@ -1,5 +1,5 @@
 ---
-- name: "Generate RSA keys for the CA and Server"
+- name: "Generate the private keys for the CA and Server certificates"
   command: openssl genrsa -out {{ item }}.key {{ tls_key_size }}
   args:
     chdir: "{{ ca_path }}"
@@ -8,7 +8,7 @@
     - ca
     - server
 
-- name: Set the proper permissions on all RSA keys
+- name: Set the proper permissions on all the private keys
   file:
     path: "{{ ca_path }}"
     recurse: yes
@@ -18,7 +18,7 @@
     mode: 0600
 
 - name: Generate CA certificate
-  command: openssl req -nodes -batch -new -x509 -key {{ tls_ca }}.key -out {{ tls_ca }}.crt -days {{ tls_days_valid }} -subj "{{ tls_request_subject }}/CN=ca-certificate"
+  command: openssl req -nodes -batch -new -x509 -key {{ tls_ca }}.key -out {{ tls_ca }}.crt -subj "{{ tls_request_subject }}/CN=ca-certificate"
   args:
     creates: "{{ tls_ca }}.crt"
 
@@ -39,7 +39,7 @@
   register: tls_server_common_name
   changed_when: False
 
-- name: Generate the OpenSSL configuration that will be used for the Server certificate's req and ca commands
+- name: Generate the OpenSSL configuration that will be used for the server certificate's req and ca commands
   template:
     src: openssl.cnf.j2
     dest: "{{ ca_path }}/openssl.cnf"

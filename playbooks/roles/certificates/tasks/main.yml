@@ -1,6 +1,6 @@
 ---
-- include: ca-server.yml
+- import_tasks: ca-server.yml
   when: generate_ca_server
 
-- include: client.yml
+- import_tasks: client.yml
   when: generate_client

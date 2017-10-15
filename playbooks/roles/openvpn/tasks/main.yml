@@ -17,7 +17,7 @@
     loop_var: "client_name"
     label: "{{ client_name.item }}"
 
-- include_role:
+- import_playbook:
     name: certificates
   vars:
     ca_path:            "{{ openvpn_path }}"
@@ -27,7 +27,7 @@
     generate_client:    yes
     tls_request_subject:         "{{ openvpn_request_subject }}"
     tls_server_common_name_file: "{{ openvpn_server_common_name_file }}"
-    tls_san:
+    tls_sans:
       - "{{ streisand_ipv4_address }}"
 
 - name: Register the OpenVPN server common name

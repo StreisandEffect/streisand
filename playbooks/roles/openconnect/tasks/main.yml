@@ -32,7 +32,7 @@
     loop_var: "client_name"
     label: "{{ client_name.item }}"
 
-- include_role:
+- import_playbook:
     name: certificates
   vars:
     ca_path:            "{{ ocserv_path }}"
@@ -41,7 +41,7 @@
     generate_ca_server: yes
     generate_client:    yes
     tls_server_common_name_file: "{{ ocserv_server_common_name_file }}"
-    tls_san:
+    tls_sans:
       - "{{ streisand_ipv4_address }}"
 
 - name: "Generate a random password that will be used during the PKCS #12 conversion"

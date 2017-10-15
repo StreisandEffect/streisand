@@ -49,7 +49,7 @@ req_extensions     = req_ext
 subjectAltName = @alt_names
 
 [ alt_names ]
-{% for item in tls_san %}
+{% for item in tls_sans %}
 IP.{{ loop.index }} = {{ item }}
 {% endfor %}
 

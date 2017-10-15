@@ -1,5 +1,5 @@
 ---
-- name: Generate RSA keys for the clients
+- name: Generate the private keys for the client certificates
   command: openssl genrsa -out client.key {{ tls_key_size }}
   args:
     chdir: "{{ tls_client_path }}/{{ client_name.stdout }}"
@@ -9,7 +9,7 @@
     loop_var: "client_name"
     label: "{{ client_name.item }}"
 
-- name: Set the proper permissions on all RSA keys
+- name: Set the proper permissions on all private client keys
   file:
     path: "{{ ca_path }}"
     recurse: yes
