@@ -37,6 +37,12 @@ There are multiple ways to bypass censorship, and Streisand provides several cho
 * [WireGuard](/wireguard/)
 {% endif %}
 
+{% if (streisand_openconnect_enabled or
+       streisand_openvpn_enabled or
+       streisand_shadowsocks_enabled or
+       streisand_ssh_forward_enabled or
+       streisand_stunnel_enabled or
+       streisand_tor_enabled): %}
 Client Mirrors
 --------------
 ---
@@ -60,4 +66,6 @@ You can download the necessary client software directly from Streisand in case t
 {% endif %}
 {% if streisand_tor_enabled %}
 * [Tor Browser Bundle](/mirror/tor/)
+{% endif %}
+
 {% endif %}
