@@ -37,12 +37,7 @@ There are multiple ways to bypass censorship, and Streisand provides several cho
 * [WireGuard](/wireguard/)
 {% endif %}
 
-{% if (streisand_openconnect_enabled or
-       streisand_openvpn_enabled or
-       streisand_shadowsocks_enabled or
-       streisand_ssh_forward_enabled or
-       streisand_stunnel_enabled or
-       streisand_tor_enabled): %}
+{% if streisand_mirrored_clients %}
 Client Mirrors
 --------------
 ---

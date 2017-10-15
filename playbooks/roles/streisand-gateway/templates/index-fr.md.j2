@@ -37,12 +37,7 @@ Il existe de multiples façons de contourner la censure, et Streisand vous propo
 * [WireGuard](/wireguard/index-fr.html)
 {% endif %}
 
-{% if (streisand_openconnect_enabled or
-       streisand_openvpn_enabled or
-       streisand_shadowsocks_enabled or
-       streisand_ssh_forward_enabled or
-       streisand_stunnel_enabled or
-       streisand_tor_enabled): %}
+{% if streisand_mirrored_clients %}
 Miroirs des clients
 -------------------
 ---
