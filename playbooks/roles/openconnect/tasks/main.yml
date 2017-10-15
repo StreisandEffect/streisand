@@ -32,7 +32,7 @@
     loop_var: "client_name"
     label: "{{ client_name.item }}"
 
-- import_playbook:
+- include_role:
     name: certificates
   vars:
     ca_path:            "{{ ocserv_path }}"
