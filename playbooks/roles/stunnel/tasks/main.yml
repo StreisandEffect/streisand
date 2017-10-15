@@ -43,7 +43,7 @@
     dest: "{{ openvpn_gateway_location }}/stunnel.conf"
 
 # Set up the stunnel firewall rules
-- include: firewall.yml
+- import_tasks: firewall.yml
 
 # Mirror the stunnel client
-- include: mirror.yml
+- import_tasks: mirror.yml

@@ -135,7 +135,7 @@
   with_items: "{{ test_scripts }}"
 
 # Run the WireGuard tests
-- include: wireguard.yml
+- import_tasks: wireguard.yml
   tags:
     - wireguard
 ...

@@ -7,6 +7,9 @@
   pre_tasks:
     - name: Ensure python is installed
       raw: sudo apt update && apt install python -y
+  tasks:
+    - set_fact:
+        ansible_ssh_private_key_file: "{{ streisand_ssh_private_key }}"
 
 - hosts: streisand
   gather_facts: yes
@@ -29,6 +32,10 @@
             path: "/tmp/id_rsa_insecure"
             mode: "0666"
           when: streisand_ci
+
+        - name: Check Streisand configuration is valid
+          include_role:
+            name: validation
       delegate_to: 127.0.0.1
 
     - name: Ensure openssh is installed
@@ -56,4 +63,4 @@
         streisand_server_name: "{{ server_name | regex_replace('\\s', '_') }}"
 
 - name: Include streisand.yml
-  include: ../playbooks/streisand.yml
+  import_playbook: ../playbooks/streisand.yml

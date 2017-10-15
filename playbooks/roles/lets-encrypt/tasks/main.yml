@@ -1,4 +1,4 @@
-- include: install.yml
+- import_tasks: install.yml
 
 - name: Prepare response file directory
   file:
@@ -20,7 +20,7 @@
 # requests (including ACME chanllenges). All HTTP requests are simply
 # redirected to their HTTPS counterparts.
 
-- include: firewall.yml
+- import_tasks: firewall.yml
 
 # Now we try to request a certificate. If it fails. We print a warning and
 # fall back to self-signed certificates.

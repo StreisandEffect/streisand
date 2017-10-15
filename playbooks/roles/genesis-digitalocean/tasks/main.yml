@@ -2,14 +2,14 @@
 - set_fact:
     streisand_genesis_role: "genesis-digitalocean"
 
+- name: "Get the {{ streisand_ssh_private_key }}.pub contents"
+  command: "cat {{ streisand_ssh_private_key }}.pub"
+  register: ssh_key
+  changed_when: False
+
 - name: Set the DigitalOcean Access Token fact to the value that was entered, or attempt to retrieve it from the environment if the entry is blank
   set_fact:
     do_access_token: "{{ do_access_token_entry | default( lookup('env', 'DO_API_KEY') ) }}"
-
-- name: Get the default SSH key
-  command: cat ~/.ssh/id_rsa.pub
-  register: ssh_key
-  changed_when: False
 
 - block:
     - name: Add the SSH key to DigitalOcean if it doesn't already exist
