@@ -45,7 +45,6 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart Libreswan
 
 - name: Generate a random IPsec pre-shared key
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 3 | xargs | sed -e 's/ /-/g' > {{ ipsec_preshared_key_file }}
@@ -84,7 +83,6 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart xl2tpd
 
 - name: Copy xl2tpd secrets file
   copy:
@@ -145,7 +143,17 @@
     creates: /etc/ipsec.d/cert8.db
 
 # Ensure l2tp firewall rules are in place
-- include: firewall.yml
+- import_tasks: firewall.yml
+
+- name: Enable and start ipsec and l2tp services
+  systemd:
+    daemon_reload: yes
+    name: "{{ item }}"
+    enabled: yes
+    state: restarted
+  with_items:
+    - ipsec
+    - xl2tpd
 
 # Generate l2tp instructions and mobile profiles
-- include: docs.yml
+- import_tasks: docs.yml

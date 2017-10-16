@@ -3,10 +3,10 @@
 # role to create a new server and instead applies Streisand to the localhost.
 
 # Ensure Python is installed on the system
-- include: python.yml
+- import_playbook: python.yml
 
 # Try and detect localhost's provider & apply required workarounds
-- include: provider-detect.yml
+- import_playbook: provider-detect.yml
 
 - name: Prepare the localhost for Streisand
 # =========================================
@@ -30,5 +30,5 @@
         streisand_ipv4_address: "{{ ansible_default_ipv4.address }}"
       when: streisand_ipv4_address is not defined
 
-- include: streisand.yml
+- import_playbook: streisand.yml
 ...

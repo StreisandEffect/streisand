@@ -1,7 +1,7 @@
 ---
 
 # Set up the PPA and install packages
-- include: install.yml
+- import_tasks: install.yml
 
 - name: Generate private and public keys for the client and server
   shell: umask 077; wg genkey | tee {{ item.private }} | wg pubkey > {{ item.public }}
@@ -40,7 +40,7 @@
     - wg0-server.conf
 
 # Set up the WireGuard firewall rules
-- include: firewall.yml
+- import_tasks: firewall.yml
 
 - name: Enable the WireGuard service so it starts at boot, and bring up the WireGuard network interface
   systemd:
@@ -57,4 +57,4 @@
   notify: Restart dnsmasq
 
 # Generate Gateway documentation
-- include: docs.yml
+- import_tasks: docs.yml

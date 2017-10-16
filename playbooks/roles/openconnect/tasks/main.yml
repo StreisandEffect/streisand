@@ -1,6 +1,6 @@
 ---
 # Download, compile and install ocserv and its dependencies
-- include: install.yml
+- import_tasks: install.yml
 
 - name: Create the ocserv configuration directory
   file:
@@ -166,10 +166,10 @@
   notify: Restart ocserv
 
 # Set up the openconnect firewall rules
-- include: firewall.yml
+- import_tasks: firewall.yml
 
 # Generate Gateway documentation
-- include: docs.yml
+- import_tasks: docs.yml
 
 # Mirror the OpenConnect clients
-- include: mirror.yml
+- import_tasks: mirror.yml

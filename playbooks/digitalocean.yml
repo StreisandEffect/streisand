@@ -50,7 +50,7 @@
       private: no
 
     - name: "do_ssh_name"
-      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/settings/security\n\nWhat is the name of the DigitalOcean SSH key that you would like to use?\n  * If you have never uploaded an SSH key to DigitalOcean then the default\n    value will work!\n  * This key should match your .ssh/id_rsa.pub file.\n\  * DigitalOcean requires SSH keys to be unique. You cannot upload multiple\n    keys that have the same value under different names.\n\n    If you see an error that says 'SSH Key failed to be created' once the setup\n    process starts, then this is the problem. You can retry the setup process\n    using the name of the existing SSH key from the DigitalOcean control panel\n    that matches the contents of your RSA public key.\n"
+      prompt: "\n\nThe following information can be found on your DigitalOcean control panel.\nhttps://cloud.digitalocean.com/settings/security\n\nWhat is the name of the DigitalOcean SSH key that you would like to use?\n  * If you have never uploaded an SSH key to DigitalOcean then the default\n    value will work!\n  * This key should match your Streisand SSH key file (default: ~/.ssh/id_rsa.pub).\n\  * DigitalOcean requires SSH keys to be unique. You cannot upload multiple\n    keys that have the same value under different names.\n\n    If you see an error that says 'SSH Key failed to be created' once the setup\n    process starts, then this is the problem. You can retry the setup process\n    using the name of the existing SSH key from the DigitalOcean control panel\n    that matches the contents of your RSA public key.\n"
       default: "streisand"
       private: no
 
@@ -60,7 +60,7 @@
   roles:
     - genesis-digitalocean
 
-
-- include: cloud-status.yml
-- include: streisand.yml
+- import_playbook: ssh-setup.yml
+- import_playbook: cloud-status.yml
+- import_playbook: streisand.yml
 ...
