@@ -18,8 +18,8 @@ run_docker () {
     #
     # Currently, ssh keys need to exist in $HOME/.ssh/ to be available.
     docker run -it --rm --init \
-	   -v "$(pwd)/generated_docs:/work/streisand/generated_docs" \
-	   -v "$HOME/.ssh:/root/.ssh" \
+	   -v "$(pwd)/generated-docs:/work/streisand/generated-docs" \
+	   -v "$HOME/.ssh:/work/sshkeys" \
 	   streisand-builder "$@"
 }
 
