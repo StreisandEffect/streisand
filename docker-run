@@ -1,16 +1,30 @@
 #!/bin/bash
+set -e
+
+if ! docker >/dev/null 2>&1 ; then
+  echo "
+I can't find the docker command.
+
+To install Docker, visit https://www.docker.com/community-edition
+"
+  exit 1
+fi
 
 run_docker () {
-    docker run -it --rm -v $(pwd)/generated_docs:/work/streisand/generated_docs \
-	   -v $HOME/.ssh:/work/streisand/sshkeys \
-	   -e STREISAND_SSH_KEY_FROM_HOST="/work/streisand/sshkeys/id_rsa.pub" \
-	   -e STREISAND_SSH_ADD_KEY=1 \
-	   streisand-builder ssh-agent "$@"
+    # Run a command inside a transient container.
+    #
+    # We need to get data out of the container, so we mount generated_docs
+    # in place.
+    #
+    # Currently, ssh keys need to exist in $HOME/.ssh/ to be available.
+    docker run -it --rm --init \
+	   -v "$(pwd)/generated_docs:/work/streisand/generated_docs" \
+	   -v "$HOME/.ssh:/root/.ssh" \
+	   streisand-builder "$@"
 }
 
-if [ -z "$1" ]
-then
-    run_docker /work/streisand/streisand
-else
-    run_docker "$@"
-fi
+echo
+echo "NOTE: Your chosen ssh key must be in $HOME/.ssh/."
+echo
+
+run_docker "$@"

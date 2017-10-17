@@ -1,2 +1,16 @@
 #!/bin/bash
+set -e
+if [ -z "$(type -f docker 2>/dev/null)" ]; then
+  echo "
+I can't find the docker command.
+
+To install Docker, visit https://www.docker.com/community-edition
+"
+  exit 1
+fi
+
 docker build -t streisand-builder .
+
+echo
+echo "NOTE: Your chosen ssh key will need to be in $HOME/.ssh/."
+echo

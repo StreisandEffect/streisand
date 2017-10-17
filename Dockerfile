@@ -1,29 +1,34 @@
 FROM ubuntu:16.04
-MAINTAINER nop@nop.com
 
 RUN apt-get update -q
-RUN apt-get install --yes build-essential
+RUN apt-get upgrade -q -y
+RUN apt-get install -q -y build-essential
 
-# Python
-RUN apt-get install -y python-pip && pip install --upgrade pip
+# We want the latest pip.
+RUN apt-get install -q -y python-pip && pip install --upgrade pip
 
-# Streisand builder begins here.
-RUN apt-get install -y python-pip git python-dev python-setuptools python-cffi libffi-dev libssl-dev python-nacl
-
-# Ansible
+# Ansible. The pip runs take longer than they look, so don't be quiet.
 RUN pip install ansible
 
-# pipping
+# Streisand dependencies begin here.
+
+# Binary requirements
+RUN apt-get install -q -y python-dev python-setuptools python-cffi libffi-dev libssl-dev python-nacl
+
+# Finally.
 RUN pip install boto boto3 msrest msrestazure azure==2.0.0rc5 packaging dopy==0.3.5 "apache-libcloud>=1.5.0" linode-python pyrax
 
-RUN mkdir /work
-RUN mkdir /work/streisand
-WORKDIR /work
+# One last dependency, for ssh-agent
+RUN apt-get install -q -y --no-install-recommends openssh-client
+
+# We should be in a git clone.
 ADD . .git .travis.yml /work/streisand/
+
+# Inside the container, this is the initial directory.
 WORKDIR /work/streisand
 
+# Set the default command for this container
 CMD ["/work/streisand/streisand"]
 
-# ENTRYPOINT ["bash"]
-# ENTRYPOINT ["sleep 86400"]
+# For *any* command, run it inside an ssh-agent session.
 ENTRYPOINT ["ssh-agent"]
