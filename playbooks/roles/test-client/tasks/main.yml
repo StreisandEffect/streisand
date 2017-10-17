@@ -138,4 +138,9 @@
 - import_tasks: wireguard.yml
   tags:
     - wireguard
+
+# Run the OpenVPN tests
+- import_tasks: openvpn.yml
+  tags:
+    - openvpn
 ...

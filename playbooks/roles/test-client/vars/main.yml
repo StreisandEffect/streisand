@@ -55,3 +55,10 @@ gateway_wireguard_config: "{{ gateway_test_url }}/wireguard/wg0-client.conf"
 
 # Path to the WireGuard config file on the Streisand client
 wireguard_config: "/etc/wireguard/wg0-client.conf"
+
+gateway_profile_inventory: "{{ gateway_test_url }}/test-client-inventory"
+test_client_profiles_file: "/tmp/test-client-inventory"
+
+openvpn_profile_dir: "/etc/openvpn"
+openvpn_profile_addons: "/tmp/openvpn-profile-addons"
+openvpn_pid_file: "/tmp/openvpn.pid"
