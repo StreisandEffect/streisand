@@ -1,0 +1,9 @@
+# Defaults for shadowsocks systemd service
+# See /lib/systemd/system/shadowsocks-libev.service
+# installed by Streisand from template
+
+# Configuration file
+CONFFILE="{{ shadowsocks_location }}/config.json"
+
+# Extra command line arguments
+DAEMON_ARGS="{{ shadowsocks_daemon_args }}"

@@ -1,0 +1,6 @@
+---
+- name: Ensure UFW allows Shadowsocks
+  ufw:
+    to_port: "{{ shadowsocks_server_port }}"
+    proto: "any"
+    rule: "allow"

@@ -1,0 +1,15 @@
+---
+- name: Prepare the new server for Ansible
+# =========================================
+  hosts: streisand-host
+  gather_facts: no
+
+  remote_user: "root"
+  become: true
+
+  tasks:
+    - name: Install Python using a raw SSH command to enable the execution of Ansible modules
+      raw: apt update && apt install python -y
+      args:
+        executable: /bin/bash
+...

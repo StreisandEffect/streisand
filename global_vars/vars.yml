@@ -1,0 +1,10 @@
+---
+upstream_dns_servers:
+  - 8.8.8.8
+  - 8.8.4.4
+
+streisand_client_test: no
+
+streisand_site_vars: "{{ lookup('env','HOME') }}/.streisand/site.yml"
+
+gpg_key_server_address: "x-hkp://pool.sks-keyservers.net"

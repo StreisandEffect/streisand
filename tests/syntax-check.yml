@@ -1,0 +1,64 @@
+---
+#Include each playbook in order to check syntax of each playbook
+- name: Include amazon.yml
+  import_playbook: ../playbooks/amazon.yml
+
+- name: Include azure.yml
+  import_playbook: ../playbooks/streisand.yml
+
+- name: Include cloud-status.yml
+  import_playbook: ../playbooks/cloud-status.yml
+
+- name: Include digitalocean.yml
+  import_playbook: ../playbooks/digitalocean.yml
+
+- name: Include google.yml
+  import_playbook: ../playbooks/google.yml
+
+- name: Include linode.yml
+  import_playbook: ../playbooks/linode.yml
+
+- name: Include rackspace.yml
+  import_playbook: ../playbooks/rackspace.yml
+
+- name: Include streisand.yml
+  import_playbook: ../playbooks/streisand.yml
+
+- name: Include run.yml
+  import_playbook: run.yml
+
+- name: Include development-setup.yml
+  import_playbook: development-setup.yml
+
+#Explicity include each role to ensure all roles are tested
+- hosts: localhost
+  remote_user: root
+  roles:
+    - azure-security-group
+    - common
+    - diffie-hellman-group
+    - dnsmasq
+    - ec2-security-group
+    - gce-network
+    - genesis-amazon
+    - genesis-azure
+    - genesis-digitalocean
+    - genesis-google
+    - genesis-linode
+    - genesis-rackspace
+    - ip-forwarding
+    - l2tp-ipsec
+    - monit
+    - nginx
+    - openconnect
+    - openvpn
+    - shadowsocks
+    - ssh
+    - sslh
+    - streisand-gateway
+    - streisand-mirror
+    - stunnel
+    - tinyproxy
+    - tor-bridge
+    - ufw
+    - wireguard

@@ -1,0 +1,24 @@
+[localhost]
+localhost ansible_connection=local ansible_python_interpreter=python
+
+# Uncomment the following lines and update the IP address if you would
+# like to use Streisand to configure a server that is already running
+# (e.g. a server at a provider not natively supported by Streisand).
+#
+# Multiple servers can be configured simultaneously if multiple IP
+# addresses are defined.
+#
+# If you already have SSH fingerprints for the hosts you are configuring
+# (e.g. using `ssh-keyscan`) then you should also comment out the
+# 'host_key_checking = False' line in the ansible.cfg file. That setting
+# is only sensible and convenient when connecting to a brand-new host.
+#
+# [streisand-host]
+# 255.255.255.255
+#
+# If the SSH user to be used to login is not "root", specify it here with
+# the ansible_user directive. Streisand will sudo automatically. If sudo
+# requires a password, use the --ask-become-pass command line option.
+#
+# [streisand-host]
+# 255.255.255.255 ansible_user=ubuntu

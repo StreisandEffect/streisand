@@ -1,2 +1,15 @@
 generated-docs
 *.retry
+*.pyc
+*~
+*.swp
+*.tmp
+.DS_Store
+.vagrant/
+ubuntu-xenial-16.04-cloudimg-console.log
+
+# Ignore changes to the existing server inventory to allow users to modify it
+inventories/inventory-existing
+
+# Ignore the Streisand diagnostics file we generate each run
+streisand-diagnostics.md

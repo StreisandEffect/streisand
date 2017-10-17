@@ -1,0 +1,37 @@
+---
+- name: Create the SSH Gateway directory
+  file:
+    path: "{{ ssh_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- name: Generate the Markdown SSH instructions
+  template:
+    src: instructions{{ item.value.file_suffix }}.md.j2
+    dest: "{{ ssh_gateway_location }}/index{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
+
+- name: Convert the Markdown SSH instructions into HTML and surround them with the header and footer template
+  shell: markdown {{ ssh_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ ssh_gateway_location }}/index{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"
+
+- name: Copy the SSH private key that can be used to connect as the 'forward' user to the SSH Gateway directory
+  command: cp {{ forward_location }}/.ssh/id_rsa {{ ssh_rsa_key }}
+  args:
+    creates: "{{ ssh_rsa_key }}"
+
+- name: Install the putty-tools package to facilitate converting the standard OpenSSH key into PuTTY's unique .ppk format
+  apt:
+    name: putty-tools
+
+- name: Convert the OpenSSH key into a PuTTY .ppk
+  command: puttygen {{ forward_location }}/.ssh/id_rsa -o {{ ssh_putty_rsa_key }}
+  args:
+    creates: "{{ ssh_putty_rsa_key }}"
+
+- name: Generate a SSH known hosts file
+  shell: 'ssh-keyscan {{ streisand_server_name }} {{ streisand_ipv4_address }} > {{ ssh_known_hosts }}'
+  args:
+    creates: '{{ ssh_known_hosts }}'

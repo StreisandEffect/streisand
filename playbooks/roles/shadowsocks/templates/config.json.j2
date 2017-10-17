@@ -5,6 +5,7 @@
     "password":"{{ shadowsocks_password.stdout }}",
     "timeout":{{ shadowsocks_timeout }},
     "method":"{{ shadowsocks_encryption_method }}",
-    "fast_open":"{{ shadowsocks_tcp_fast_open }}",
-    "auth":"{{ shadowsocks_enable_ota }}"
+    "fast_open":{{ shadowsocks_tcp_fast_open }},
+    "plugin":"{{ shadowsocks_obfs_plugin }}",
+    "plugin_opts":"{{ shadowsocks_obfs_plugin_opts }}"
 }

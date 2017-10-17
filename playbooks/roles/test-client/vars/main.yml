@@ -1,0 +1,57 @@
+---
+# Path to the gateway password on the Ansible host
+streisand_gateway_password_localpath: "../{{ streisand_local_directory }}/gateway-password.txt"
+
+# Path to the gateway password file on the Streisand client
+gateway_password_file: "/root/gateway-password.txt"
+# URL for accessing the Streisand server's HTTP gateway page
+gateway_test_url: "https://{{ streisand_ip }}"
+# User for accessing the Streisand server HTTP gateway page
+gateway_test_user: "streisand"
+
+# The directory to copy test scripts to
+test_script_dir: "/usr/local/bin/"
+
+# Test scripts to install & run
+test_scripts:
+  - { template: 'streisand-gateway-test.sh.j2',             cmd: 'streisand-gateway-test' }
+  - { template: 'streisand-ssh-forward-test.sh.j2',         cmd: 'streisand-ssh-forward-test' }
+  - { template: 'streisand-shadowsocks-forward-test.sh.j2', cmd: 'streisand-shadowsocks-forward-test' }
+
+# An external URL used to test connectivity through Shadowsocks/WireGuard/etc
+external_test_url: "https://github.com"
+
+# The gateway URL for clients to download the forward user's RSA key
+gateway_ssh_key: "{{ gateway_test_url }}/ssh/streisand_rsa"
+# The gateway URL for clients to download the SSH known hosts file
+gateway_ssh_hosts: "{{ gateway_test_url }}/ssh/streisand.known_hosts"
+
+# Files created on the Streisand client test for SSH config:
+forward_ssh_key: "/root/.ssh/streisand_rsa"
+forward_ssh_config: "/root/.ssh/config"
+forward_ssh_hosts: "/root/.ssh/streisand.known_hosts"
+
+# Forwarding SSH username
+forward_ssh_user: "forward"
+
+# Port on the Streisand client to use for the SOCKS SSH proxy
+forward_socks_port: 9876
+
+# The gateway URL for clients to download the Shadowsocks QR code image
+gateway_shadowsocks_qr: "{{ gateway_test_url }}/shadowsocks/shadowsocks-qr-code.png"
+
+# Path to the Shadowsocks QR code image on the client machine
+shadowsocks_qr_file: "/root/shadowsocks-qr-code.png"
+
+# The gateway URL for clients to download the Shadowsocks2 Linux source
+gateway_shadowsocks_client: "{{ gateway_test_url }}/mirror/shadowsocks/shadowsocks2-linux-x64.gz"
+
+# Path to the Shadowsocks2 client source on the Streisand client
+shadowsocks_client: "/root/shadowsocks2-linux-x64"
+shadowsocks_client_zip: "{{ shadowsocks_client }}.gz"
+
+# The gateway URL for clients to download the WireGuard config file
+gateway_wireguard_config: "{{ gateway_test_url }}/wireguard/wg0-client.conf"
+
+# Path to the WireGuard config file on the Streisand client
+wireguard_config: "/etc/wireguard/wg0-client.conf"

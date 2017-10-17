@@ -1,0 +1,15 @@
+client
+
+<connection>
+remote {{ openvpn_server }} {{ openvpn_port_udp }} udp
+</connection>
+<connection>
+remote {{ openvpn_server }} {{ openvpn_port }} tcp
+connect-timeout {{ openvpn_connect_timeout }}
+</connection>
+<connection>
+remote {{ openvpn_server }} {{ openvpn_port_sslh }} tcp
+connect-timeout {{ openvpn_connect_timeout }}
+</connection>
+
+{% include "client-common.j2" %}

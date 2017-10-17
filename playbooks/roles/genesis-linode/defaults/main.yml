@@ -1,2 +1,16 @@
 ---
 linode_plan_id: 1
+linode_distribution_id: 146
+linode_kernel_id: 210 # GRUB2 to utilize the distribution's kernel for compatibility
+
+# Threshold for receiving CPU usage alerts. Each CPU core adds 100% to total.
+# Since by default Streisand provisions a Linode 1024 with one core a value of
+# 90% seems ~reasonable
+linode_alert_cpu_threshold: 90
+
+# Other values left as the defaults from the Linode module. See
+# https://github.com/StreisandEffect/streisand/issues/626 for more detail.
+linode_alert_diskio_threshold: 10000
+linode_alert_bwin_threshold: 10
+linode_alert_bwout_threshold: 10
+linode_alert_bwquota_threshold: 80

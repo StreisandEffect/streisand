@@ -1,39 +1,51 @@
-- name: Prepare the new server for Ansible
-# =========================================
-  hosts: streisand-host
+---
+- import_playbook: python.yml
+- import_playbook: lets-encrypt.yml
+
+- name: Collect diagnostics in case of error
+  hosts: localhost
   gather_facts: no
-
-  remote_user: root
-  become: true
-
-  tasks:
-    - name: Install Python using a raw SSH command to enable the execution of Ansible modules
-      raw: apt update && apt install python -y
-      args:
-        executable: /bin/bash
-
+  roles:
+    - role: diagnostics
+      when: not streisand_ci
 
 - name: Configure the Server and install required software
 # ========================================================
   hosts: streisand-host
 
-  remote_user: root
+  remote_user: "root"
   become: true
 
   roles:
     - common
+    - ssh
     # OpenConnect must be set up before L2TP/IPsec in order to avoid
     # compilation issues.
-    - openconnect
-    - l2tp-ipsec
-    - openvpn
-    - stunnel
-    - shadowsocks
-    - ssh
-    - tinyproxy
-    - tor-bridge
+    - role: openconnect
+      when: streisand_openconnect_enabled
+    - role: l2tp-ipsec
+      when: streisand_l2tp_enabled
+    - role: openvpn
+      when: streisand_openvpn_enabled
+    - role: shadowsocks
+      when: streisand_shadowsocks_enabled
+    - role: ssh-forward
+      when: streisand_ssh_forward_enabled
+    - role: tinyproxy
+      when: streisand_tinyproxy_enabled
+    # tor-bridge is skipped in our full Ansible run on Travis CI due to
+    # connectivity issues.
+    - role: tor-bridge
+      when: not streisand_ci and streisand_tor_enabled
     - sslh
     - monit
     - ufw
+    - role: wireguard
+      when: streisand_wireguard_enabled
+    # streisand_le_enabled is set in lets-encrypt.yml based on user input.
+    # lets-encrypt roles sets le_ok, which is used by streisand-gateway.
+    - role: lets-encrypt
+      when: streisand_le_enabled
     - streisand-mirror
     - streisand-gateway
+...

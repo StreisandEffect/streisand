@@ -1,0 +1,30 @@
+#!/bin/bash -xe
+#
+# NOTE: This test script relies on the -e argument to bash in the shebang above.
+#
+# Streisand SSH Forward Proxy Test
+#  - Confirms SSH access for the forward user & key
+#  - Confirms the generated SSH known_hosts fingerprints match
+#  - Confirms a DyanmicForward SOCKS proxy works.
+
+# Read the gateway password into a var
+gatewayPassword=$(cat "{{ gateway_password_file }}")
+
+# Start a SSH tunnel with a dynamic forward through the streisand-host
+ssh streisand-host -N -T &
+SSH_PID=$!
+
+function cleanup {
+  # Kill the backgrounded SSH connection
+  echo "Killing PID $SSH_PID"
+  kill $SSH_PID
+  echo "Waiting for clean up to finish..."
+  wait $SSH_PID
+}
+trap cleanup EXIT
+
+# Sleep to give the SSH connection a chance to start
+sleep 2
+
+# Check that the gateway website can be loaded through the forward SSH tunnel
+curl --socks5 localhost:{{ forward_socks_port }} --insecure -I -u "{{ gateway_test_user }}:$gatewayPassword" {{ gateway_test_url }} | grep "200 OK"

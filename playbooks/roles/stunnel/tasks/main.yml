@@ -41,3 +41,9 @@
   template:
     src: stunnel-local.conf.j2
     dest: "{{ openvpn_gateway_location }}/stunnel.conf"
+
+# Set up the stunnel firewall rules
+- import_tasks: firewall.yml
+
+# Mirror the stunnel client
+- import_tasks: mirror.yml

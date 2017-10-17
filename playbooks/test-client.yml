@@ -1,0 +1,21 @@
+---
+- name: Configure the client server for Ansible
+# =========================================
+  hosts: streisand-client
+  gather_facts: no
+  remote_user: "root"
+  become: true
+
+  tasks:
+    - name: Install Python using a raw SSH command to enable the execution of Ansible modules
+      raw: apt update && apt install python -y
+      args:
+        executable: /bin/bash
+
+- name: Configure the client server as a Streisand test client
+  hosts: streisand-client
+  remote_user: "root"
+  become: true
+  roles:
+    - test-client
+...

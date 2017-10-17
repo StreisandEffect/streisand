@@ -1,0 +1,22 @@
+---
+# Site specific Streisand configuration.
+#
+# This file is mutated by the playbooks/customize.yml tasks when a user chooses
+# to customize which Streisand services are installed.
+
+# The SSH private key that Ansible will use to connect to the Streisand node.
+# The associated public key will be used if required when provisioning cloud
+# nodes for the authorized_keys file.
+streisand_ssh_private_key: "~/.ssh/id_rsa"
+
+vpn_clients: 5
+
+streisand_l2tp_enabled: yes
+streisand_openconnect_enabled: yes
+streisand_openvpn_enabled: yes
+streisand_shadowsocks_enabled: yes
+streisand_ssh_forward_enabled: yes
+streisand_stunnel_enabled: yes
+streisand_tinyproxy_enabled: yes
+streisand_tor_enabled: yes
+streisand_wireguard_enabled: yes

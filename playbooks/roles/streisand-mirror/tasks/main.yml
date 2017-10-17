@@ -1,4 +1,16 @@
 ---
+- name: Determine if there is a need to mirror client software
+  # NOTE(@cpu): If any additional roles start to mirror client software this
+  # conditional fact value should be updated to include the role's enabled var.
+  set_fact:
+    streisand_mirrored_clients: >
+      streisand_openconnect_enabled or
+      streisand_openvpn_enabled or
+      streisand_shadowsocks_enabled or
+      streisand_ssh_forward_enabled or
+      streisand_stunnel_enabled or
+      streisand_tor_enabled
+
 - name: Make the directory where mirrored files will be stored
   file:
     path: "{{ streisand_mirror_location }}"
@@ -7,18 +19,15 @@
     mode: 0755
     state: directory
 
-# Download and verify client files
-- include: openconnect.yml
-- include: openvpn.yml
-- include: shadowsocks.yml
-- include: ssh.yml
-- include: stunnel.yml
-- include: tor.yml
-
 - name: Generate the Markdown mirror page
   template:
-    src: mirror-index.md.j2
-    dest: "{{ streisand_markdown_mirror_page }}"
+    src: mirror-index{{ item.value.file_suffix }}.md.j2
+    dest: "{{ streisand_mirror_location }}/index{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
+  # Only generate the Markdown mirror page when there is a role enabled that
+  # mirrors client software
+  when: streisand_mirrored_clients
 
 - name: Convert the Markdown mirror page into HTML
-  shell: markdown {{ streisand_markdown_mirror_page }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ streisand_html_mirror_page }}
+  shell: markdown {{ streisand_mirror_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ streisand_mirror_location }}/index{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"

@@ -4,15 +4,17 @@ openvpn_key_province: "California"
 openvpn_key_city: "Beverly Hills"
 openvpn_key_org: "ACME CORPORATION"
 openvpn_key_ou: "Anvil Department"
-openvpn_clients:
-  - client-1
-  - client-2
-  - client-3
-  - client-4
-  - client-5
 
 openvpn_port: "636"
 openvpn_port_udp: "8757"
-openvpn_key_size: "2048"
+openvpn_port_sslh: "443"
+openvpn_key_size: "4096"
 openvpn_cipher: "AES-256-CBC"
+openvpn_ncp_ciphers: "AES-256-GCM:AES-128-GCM"
 openvpn_auth_digest: "SHA256"
+openvpn_connect_timeout: 10 #seconds
+
+# If stunnel is enabled generating OpenVPN stunnel profiles requires these
+# variables to be defined
+stunnel_local_port: "41194"
+stunnel_remote_port: "993"

@@ -1,0 +1,60 @@
+---
+
+# Set up the PPA and install packages
+- import_tasks: install.yml
+
+- name: Generate private and public keys for the client and server
+  shell: umask 077; wg genkey | tee {{ item.private }} | wg pubkey > {{ item.public }}
+  args:
+    creates: "{{ item.public }}"
+  with_items:
+    - { private: "{{ wireguard_server_private_key_file }}", public: "{{ wireguard_server_public_key_file }}" }
+    - { private: "{{ wireguard_client_private_key_file }}", public: "{{ wireguard_client_public_key_file }}" }
+
+- name: Register the key file contents
+  command: cat {{ item }}
+  register: wireguard_key_files
+  changed_when: False
+  with_items:
+    - "{{ wireguard_client_private_key_file }}"
+    - "{{ wireguard_client_public_key_file }}"
+    - "{{ wireguard_server_private_key_file }}"
+    - "{{ wireguard_server_public_key_file }}"
+
+- name: Set the key material facts
+  set_fact:
+    wireguard_client_private_key: "{{ wireguard_key_files.results[0].stdout }}"
+    wireguard_client_public_key:  "{{ wireguard_key_files.results[1].stdout }}"
+    wireguard_server_private_key: "{{ wireguard_key_files.results[2].stdout }}"
+    wireguard_server_public_key:  "{{ wireguard_key_files.results[3].stdout }}"
+
+- name: Generate the client and server configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ wireguard_path }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_items:
+    - wg0-client.conf
+    - wg0-server.conf
+
+# Set up the WireGuard firewall rules
+- import_tasks: firewall.yml
+
+- name: Enable the WireGuard service so it starts at boot, and bring up the WireGuard network interface
+  systemd:
+    name: wg-quick@wg0-server.service
+    enabled: yes
+    state: started
+  # Temporary workaround for issue #500
+  ignore_errors: yes
+
+- name: "Configure DNSMasq to listen on {{ dnsmasq_wireguard_ip }}:53"
+  template:
+    src: wireguard_dnsmasq.conf.j2
+    dest: /etc/dnsmasq.d/wireguard.conf
+  notify: Restart dnsmasq
+
+# Generate Gateway documentation
+- import_tasks: docs.yml

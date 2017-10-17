@@ -1,0 +1,22 @@
+#!/bin/bash -xe
+#
+# NOTE: This test script relies on the -e argument to bash in the shebang above.
+#
+# Streisand Gateway Test
+#  - Confirms HTTP basic auth is present
+#  - Confirms HTTP basic auth rejects an incorrect password
+#  - Confirms using the correct username/password allows viewing the index
+#
+# TODO: Install the streisand gateway CA & remove the --insecure arguments.
+
+# Confirm that not sending a password/username results in a 401 error
+curl --insecure -I {{ gateway_test_url }} | grep "401 Unauthorized"
+
+# Confirm that sending the wrong password/username results in a 401 error
+curl --insecure -I -u "{{ gateway_test_user }}:badpassword" {{ gateway_test_url }} | grep "401 Unauthorized"
+
+# Read the password into a var
+password=$(cat "{{ gateway_password_file }}")
+
+# Confirm that using the correct password/username results in a 200 OK
+curl --insecure -I -u "{{ gateway_test_user }}:$password" {{ gateway_test_url }} | grep "200 OK"

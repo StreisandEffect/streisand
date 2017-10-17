@@ -1,0 +1,31 @@
+---
+dist: trusty
+language: python
+python: "2.7"
+
+# Use isolated build instance
+sudo: required
+
+env:
+  global:
+    - ANSIBLE_CONFIG=tests/ansible.cfg
+  matrix:
+    - RUN="shellcheck yamlcheck syntax ci" SITE="global_vars/default-site.yml"
+    - RUN="ci" SITE="tests/site_vars/l2tp.yml"
+    - RUN="ci" SITE="tests/site_vars/openconnect.yml"
+    - RUN="ci" SITE="tests/site_vars/openvpn.yml"
+    - RUN="ci" SITE="tests/site_vars/shadowsocks.yml"
+    - RUN="ci" SITE="tests/site_vars/ssh.yml"
+    - RUN="ci" SITE="random"
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install python-pip python-dev ca-certificates shellcheck -qq
+
+install:
+  - pip install ansible==2.4.0.0
+  - pip install urllib3 yamllint
+  - ansible --version
+
+script:
+  - ./tests/tests.sh

@@ -1,0 +1,43 @@
+---
+# existing-server.yml is an advanced provisioning option that doesn't use a genesis
+# role to create a new server and instead applies Streisand to an existing
+# remote server.
+
+- name: Register the genesis role in use
+  hosts: localhost
+  gather_facts: yes
+  tasks:
+    - set_fact:
+        streisand_genesis_role: "existing-server"
+
+- include: ssh-setup.yml
+
+- name: Check SSH access to existing server
+  hosts: streisand-host
+  gather_facts: no
+  remote_user: "{{ lookup('env', 'SSH_USER') }}"
+  become: true
+  tasks:
+    - block:
+        - raw: whoami
+          args:
+            executable: /bin/bash
+          changed_when: False
+      rescue:
+        - fail:
+            msg: "Unable to SSH to existing streisand-host.\nEnsure private key corresponding to \"{{ streisand_ssh_key }}\" is loaded in your SSH key agent.\nTry using `ssh-keygen -i {{ streisand_ssh_key }} to generate your key if it does not exist\n"
+
+# Ensure Python is installed on the system
+- import_playbook: python.yml
+
+# Try and detect the remote server's provider & apply required workarounds
+- import_playbook: provider-detect.yml
+
+- name: Prepare the remote server for Streisand
+# =========================================
+  hosts: streisand-host
+  remote_user: "{{ lookup('env', 'SSH_USER') }}"
+  become: true
+
+- import_playbook: streisand.yml
+...

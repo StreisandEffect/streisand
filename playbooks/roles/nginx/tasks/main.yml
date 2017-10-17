@@ -1,5 +1,5 @@
 ---
-- name: Remove the Apache web server in order to avoid conflicts with Nginx
+- name: Ensure that the Apache web server is not installed in order to avoid conflicts with Nginx
   apt:
     name: "{{ item }}"
     state: absent
@@ -18,7 +18,6 @@
 - name: Install Nginx
   apt:
     name: nginx
-    update_cache: yes
 
 - name: Update Nginx configuration
   copy:
@@ -27,7 +26,6 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart Nginx
 
 - name: Set up Nginx vhost directories
   file:

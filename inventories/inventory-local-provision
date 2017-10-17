@@ -1,0 +1,14 @@
+# inventory-local-provision is a pre-built inventory file useful for doing an
+# advanced local install of Streisand where the server running Ansible is the
+# server that will be configured.
+
+# Settings for the provisioning process
+[localhost]
+localhost ansible_connection=local ansible_python_interpreter=python
+
+# Settings for the Streisand host that will be provisioned
+[streisand-host]
+# If you need to override the name of the server (e.g. because the system
+# hostname is not the desired server name for documentation/etc) then add a host
+# var named "streisand_server_name" with the desired value.
+localhost ansible_connection=local streisand_noninteractive=true

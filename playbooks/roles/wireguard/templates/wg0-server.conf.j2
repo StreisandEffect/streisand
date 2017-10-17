@@ -1,0 +1,9 @@
+[Interface]
+Address = 10.192.122.1/24
+SaveConfig = true
+ListenPort = {{ wireguard_port }}
+PrivateKey = {{ wireguard_server_private_key }}
+
+[Peer]
+PublicKey = {{ wireguard_client_public_key }}
+AllowedIPs = 10.192.122.2/32

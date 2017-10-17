@@ -1,0 +1,29 @@
+---
+- name: Include the Tor common variables
+  include_vars: mirror-common.yml
+
+- block:
+    # Include the mirror-common tasks
+    - import_tasks: mirror-common.yml
+
+    - include_tasks: mirror-download.yml
+      with_items: "{{ streisand_languages.values() | map(attribute='tor_locale') | list }}"
+      when: locale in tor_available_locales
+      loop_control:
+        loop_var: locale
+
+    - import_tasks: mirror-verify.yml
+  rescue:
+    - name: "{{ streisand_mirror_warning }}"
+      pause:
+        seconds: "{{ streisand_mirror_warning_seconds }}"
+
+- name: Generate the Tor Markdown mirror page
+  template:
+    src: mirror{{ item.value.file_suffix }}.md.j2
+    dest: "{{ tor_mirror_location }}/index{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
+
+- name: Convert the Tor Markdown mirror page into HTML
+  shell: markdown {{ tor_mirror_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ tor_mirror_location }}/index{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"

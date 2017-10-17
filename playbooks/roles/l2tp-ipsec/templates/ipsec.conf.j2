@@ -18,13 +18,13 @@ conn vpnpsk
   leftprotoport=17/1701
   rightprotoport=17/%any
   right=%any
-  forceencaps=yes
+  encapsulation=yes
   authby=secret
   pfs=no
   type=transport
-  auth=esp
-  ike=3des-sha1,aes-sha1,aes256-sha2_256,aes256-sha2_512
-  phase2alg=3des-sha1,aes-sha1,aes256-sha2_256,aes256-sha2_512
+  phase2=esp
+  ike=3des-sha1,3des-sha1;modp1024,aes-sha1,aes-sha1;modp1024,aes-sha2,aes-sha2;modp1024,aes256-sha2_512
+  phase2alg=3des-sha1,aes-sha1,aes-sha2,aes256-sha2_512
   sha2-truncbug=yes
   rekey=no
   keyingtries=5

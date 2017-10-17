@@ -1,7 +1,7 @@
 ---
 ocserv_path: "/etc/ocserv"
 ocserv_config_file: "{{ ocserv_path }}/config"
-ocserv_firewall_rule: "iptables -t nat -A POSTROUTING -j MASQUERADE"
+ocserv_firewall_rule: "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -j MASQUERADE"
 
 ocserv_days_valid: "1825"
 ocserv_dependencies:
@@ -16,33 +16,39 @@ ocserv_dependencies:
   - libseccomp-dev
   - libwrap0-dev
   - pkg-config
-ocserv_checksum: "sha256:937c7ad401983a9183cec5976afd79ce1af5b2793dc71885d2a4ecdb043bd48c"
-ocserv_version: "0.11.6"
-ocserv_compilation_directory: "/usr/local/src/ocserv-{{ ocserv_version }}"
-ocserv_source_filename: "ocserv-{{ ocserv_version }}.tar.xz"
-ocserv_source_location: "/usr/local/src/{{ ocserv_source_filename }}"
 
-ocserv_pid_file: "/var/run/ocserv.pid"
+ocserv_gpg_key_id:             "0x763712747F343FA7"
+ocserv_gpg_key_fingerprint:    "Key fingerprint = 56EE 7FA9 E817 3B19 FE86  268D 7637 1274 7F34 3FA7"
+ocserv_public_key_fingerprint: "1F42 4189 05D8 206A A754  CCDC 29EE 58B9 9686 5171"
+ocserv_sig_extension:          "sig"
+ocserv_version:                "0.11.8"
+ocserv_compilation_directory:  "/usr/local/src/ocserv-{{ ocserv_version }}"
+ocserv_source_filename:        "ocserv-{{ ocserv_version }}.tar.xz"
+ocserv_sig_filename:           "{{ ocserv_source_filename }}.{{ ocserv_sig_extension }}"
+
+mit_gpg_keyserver_address:     "x-hkp://pgp.mit.edu"
+
+ocserv_download_urls:
+  - "https://d25kfp60e9u1dw.cloudfront.net/{{ ocserv_source_filename }}"
+  - "https://d25kfp60e9u1dw.cloudfront.net/{{ ocserv_sig_filename }}"
+
+ocserv_source_location: "/usr/local/src/{{ ocserv_source_filename }}"
+ocserv_sig_location:    "/usr/local/src/{{ ocserv_sig_filename }}"
+
+ocserv_pid_file:    "/var/run/ocserv.pid"
 ocserv_socket_file: "/var/run/ocserv-socket"
 
 ocserv_ca_certificate_file: "{{ ocserv_path }}/ca-cert.pem"
-ocserv_ca_key_file: "{{ ocserv_path }}/ca-key.pem"
-ocserv_ca_template_file: "{{ ocserv_path }}/ca.tmpl"
+ocserv_ca_key_file:         "{{ ocserv_path }}/ca-key.pem"
+ocserv_ca_template_file:    "{{ ocserv_path }}/ca.tmpl"
 
 ocserv_server_certificate_file: "{{ ocserv_path }}/server-cert.pem"
-ocserv_server_key_file: "{{ ocserv_path }}/server-key.pem"
-ocserv_server_template_file: "{{ ocserv_path }}/server.tmpl"
+ocserv_server_key_file:         "{{ ocserv_path }}/server-key.pem"
+ocserv_server_template_file:    "{{ ocserv_path }}/server.tmpl"
 
-ocserv_client_name: "streisand-openconnect-{{ streisand_ipv4_address }}"
-ocserv_client_certificate_file: "{{ ocserv_path }}/client-cert.pem"
-ocserv_client_key_file: "{{ ocserv_path }}/client-key.pem"
-ocserv_client_template_file: "{{ ocserv_path }}/client.tmpl"
-ocserv_client_pkcs12_file: "{{ ocserv_path }}/client.p12"
+ocserv_client_name:          "streisand-openconnect-{{ streisand_ipv4_address }}"
 
 ocserv_hashed_password_file: "{{ ocserv_path }}/ocpasswd"
-ocserv_password_file: "{{ ocserv_path }}/ocserv-password"
-ocserv_pkcs12_password_file: "{{ ocserv_path }}/ocserv-pkcs12-password"
+ocserv_password_file:        "{{ ocserv_path }}/ocserv-password"
 
-ocserv_gateway_location: "{{ streisand_gateway_location }}/openconnect"
-ocserv_markdown_instructions: "{{ ocserv_gateway_location }}/index.md"
-ocserv_html_instructions: "{{ ocserv_gateway_location }}/index.html"
+ocserv_gateway_location:     "{{ streisand_gateway_location }}/openconnect"

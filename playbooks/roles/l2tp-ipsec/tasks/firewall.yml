@@ -1,0 +1,23 @@
+---
+- name: Ensure UFW allows L2TP/IPSec
+  ufw:
+    to_port: "{{ item }}"
+    proto: "udp"
+    rule: "allow"
+  with_items:
+    - "500"
+    - "1701"
+    - "4500"
+
+- name: "Install L2TP/IPsec iptables service file"
+  template:
+    src: streisand-l2tp-iptables.service.j2
+    dest: /etc/systemd/system/streisand-l2tp-iptables.service
+    mode: 0644
+
+- name: "Enable the streisand-l2tp-iptables service"
+  systemd:
+    daemon_reload: yes
+    name: streisand-l2tp-iptables
+    enabled: yes
+    state: started

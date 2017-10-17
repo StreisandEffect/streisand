@@ -1,0 +1,30 @@
+---
+# Stunnel Download variables
+# --------------------------
+stunnel_mirror_location: "{{ streisand_mirror_location }}/stunnel"
+stunnel_mirror_href_base: "/mirror/stunnel"
+
+stunnel_michal_trojnara_key_id: "0xB1048932DD3AAAA3"
+stunnel_michal_trojnara_expected_fingerprint: "Key fingerprint = AC91 5EA3 0645 D9D3 D4DA  E4FE B104 8932 DD3A AAA3"
+
+stunnel_base_download_url: "https://www.stunnel.org"
+
+stunnel_installer_filename: "stunnel-{{ stunnel_version }}-win32-installer.exe"
+stunnel_installer_sig_filename: "{{ stunnel_installer_filename }}.asc"
+stunnel_installer_href: "{{ stunnel_mirror_href_base }}/{{ stunnel_installer_filename }}"
+stunnel_installer_sig_href: "{{ stunnel_mirror_href_base }}/{{ stunnel_installer_sig_filename }}"
+stunnel_installer_url: "{{ stunnel_base_download_url }}/stunnel-latest-installer.exe"
+stunnel_installer_sig_url: "{{ stunnel_base_download_url }}/stunnel-latest-installer.exe.asc"
+
+stunnel_source_filename: "stunnel-{{ stunnel_version }}.tar.gz"
+stunnel_source_sig_filename: "{{ stunnel_source_filename }}.asc"
+stunnel_source_href: "{{ stunnel_mirror_href_base }}/{{ stunnel_source_filename }}"
+stunnel_source_sig_href: "{{ stunnel_mirror_href_base }}/{{ stunnel_source_sig_filename }}"
+stunnel_source_url: "{{ stunnel_base_download_url }}/stunnel-latest.tar.gz"
+stunnel_source_sig_url: "{{ stunnel_base_download_url }}/stunnel-latest.tar.gz.asc"
+
+stunnel_download_urls:
+  - "{{ stunnel_installer_url }}"
+  - "{{ stunnel_installer_sig_url }}"
+  - "{{ stunnel_source_url }}"
+  - "{{ stunnel_source_sig_url }}"

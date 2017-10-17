@@ -1,0 +1,17 @@
+---
+- name: "Enable IPv4 traffic forwarding"
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+  when: ansible_virtualization_type != 'lxc'
+
+- name: "Add IPv4 traffic forwarding persistence service to init"
+  copy:
+    src: streisand-ipforward.sh
+    dest: /etc/init.d/streisand-ipforward
+    mode: 0755
+
+- name: "Enable the streisand-ipforward init service"
+  service:
+    name: streisand-ipforward
+    enabled: yes

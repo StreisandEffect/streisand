@@ -18,58 +18,9 @@
 - name: Ensure missing host keys are generated
   command: ssh-keygen -A
 
-- name: Add the SSH forwarding user and generate a key
-  user:
-    name: forward
-    generate_ssh_key: yes
-    ssh_key_bits: "{{ ssh_rsa_host_key_size }}"
-    ssh_key_comment: streisand
-    home: "{{ forward_location }}"
-    shell: /bin/bash
-    comment: "SSH Forwarding User"
-
-- name: Register the forwarding user's public SSH key
-  command: cat {{ forward_location }}/.ssh/id_rsa.pub
-  register: ssh_forward_key
-
-- name: Authorize the key for access
-  authorized_key:
-    user: forward
-    key: "{{ ssh_forward_key.stdout }}"
-
 - name: Register the server's SSH fingerprints
   command: ssh-keygen -lf /etc/ssh/{{ item }}
   register: ssh_server_fingerprints
   with_items:
     - ssh_host_ecdsa_key.pub
     - ssh_host_rsa_key.pub
-
-- name: Create the SSH Gateway directory
-  file:
-    path: "{{ ssh_gateway_location }}"
-    owner: www-data
-    group: www-data
-    mode: 0750
-    state: directory
-
-- name: Generate the Markdown SSH instructions
-  template:
-    src: instructions.md.j2
-    dest: "{{ ssh_markdown_instructions }}"
-
-- name: Convert the Markdown SSH instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ ssh_markdown_instructions }} | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ ssh_html_instructions }}
-
-- name: Copy the SSH private key that can be used to connect as the 'forward' user to the SSH Gateway directory
-  command: cp {{ forward_location }}/.ssh/id_rsa {{ ssh_rsa_key }}
-  args:
-    creates: "{{ ssh_rsa_key }}"
-
-- name: Install the putty-tools package to facilitate converting the standard OpenSSH key into PuTTY's unique .ppk format
-  apt:
-    name: putty-tools
-
-- name: Convert the OpenSSH key into a PuTTY .ppk
-  command: puttygen {{ forward_location }}/.ssh/id_rsa -o {{ ssh_putty_rsa_key }}
-  args:
-    creates: "{{ ssh_putty_rsa_key }}"

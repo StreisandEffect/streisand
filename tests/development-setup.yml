@@ -1,0 +1,97 @@
+---
+- hosts: localhost
+  gather_facts: no
+  remote_user: root
+  become: yes
+  pre_tasks:
+    # NOTE(@alimakki): Due to key rotation, we pre-emptivley
+    # add the Google linux apt signing key required by some
+    # packages
+    - name: Install the Google linux apt signing key
+      shell: "{{ item }}"
+      with_items:
+        - "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -"
+        - "apt-get clean"
+        - "apt-get update"
+
+    - name:
+      raw:  sudo apt update && apt install python python-apt aptitude -y
+
+- hosts: localhost
+  gather_facts: yes
+  remote_user: root
+  become: yes
+  tasks:
+    - name: Install lxc ppa key
+      apt_key:
+        id: 7635B973
+        url: "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xD5495F657635B973"
+        state: present
+
+    # If l2tp is enabled we need to build & prepare the Libreswan kernel module
+    # on the localhost in order for it to be usable by the container
+    - name: Install Libreswan to support L2TP in container
+      include_tasks: libreswan-setup.yml
+      when: streisand_l2tp_enabled
+
+    # NOTE(@cpu): We use the `command` module with the `add-apt-repository`
+    # command here because the `apt_repository` Ansible module at the time of
+    # writing will error on the ubuntu-lxc repo in some instances if a mirror is
+    # missing 32bit binary builds even though CI uses a 64bit architecture.
+    - name: Install LXC ppa
+      command: add-apt-repository ppa:ubuntu-lxc/lxd-stable
+
+    - name: Ensure consistent & clean apt state
+      shell: "{{ item }}"
+      with_items:
+        - "apt-get clean"
+        - "apt-get update"
+
+    - name: Install lxd
+      apt:
+        name: lxd
+        state: latest
+
+    - name: lxd new group
+      shell: newgrp lxd
+
+    - block:
+        - name: lxd init config
+          shell: lxd init --auto --storage-backend dir
+
+        - name: lxd create network
+          shell: lxc network create testbr0
+
+        - name: lxd attach network to default profile
+          shell: lxc network attach-profile testbr0 default eth0
+      ignore_errors: yes
+
+    - name: restart lxd
+      service:
+        name: lxd
+        state: restarted
+
+    - name: pause
+      pause:
+        seconds: 10
+
+    - name: set permission on lxd daemon
+      file:
+        path: /var/lib/lxd/unix.socket
+        mode: "0777"
+
+    - name: Launch streisand container (this will take a while)
+      lxd_container:
+        name: streisand
+        state: started
+        source:
+          type: image
+          mode: pull
+          server: https://images.linuxcontainers.org
+          protocol: lxd
+          alias: ubuntu/xenial/amd64
+        profiles: ["default"]
+        config:
+          security.privileged: "true"
+        wait_for_ipv4_addresses: true
+        timeout: 300

@@ -1,0 +1,25 @@
+Miroirs des clients
+-------------------
+
+Les fichiers reflétés ci-dessous ont tous été cryptographiquement vérifiés. Dans le cas où c'est possible, vérification avec les clés de signature GPG officielles de chaque projet ont été utilisées. Les sommes de contrôle SHA-256 vérifie l'intégrité de tous les autres fichiers.
+
+---
+* Les clients
+{% if streisand_openconnect_enabled %}
+  * [OpenConnect](openconnect/index-fr.html)
+{% endif %}
+{% if streisand_openvpn_enabled %}
+  * [OpenVPN](openvpn/index-fr.html)
+{% if streisand_stunnel_enabled %}
+  * [Stunnel](stunnel/index-fr.html)
+{% endif %}
+{% endif %}
+{% if streisand_shadowsocks_enabled %}
+  * [Shadowsocks](shadowsocks/index-fr.html)
+{% endif %}
+{% if streisand_ssh_forward_enabled %}
+  * [OpenSSH](ssh/index-fr.html)
+{% endif %}
+{% if streisand_tor_enabled %}
+  * [Tor Browser Bundle](tor/index-fr.html)
+{% endif %}

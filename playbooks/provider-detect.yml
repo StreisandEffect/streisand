@@ -1,0 +1,80 @@
+---
+# provider-detect.yml is used for the advanced existing/localhost provisioning
+# to try and determine if a given host is from a specific cloud provider. If
+# the cloud provider is detected, some facts/workarounds may be set to aid in
+# provisioning in place of one of the geneiss roles.
+- name: Try to detect Cloud providers for specific overrides
+# =========================================
+  hosts: streisand-host
+
+  remote_user: "root"
+  become: true
+
+  tasks:
+    - name: "Install dmidecode to use for BIOS version detection"
+      apt:
+        name: dmidecode
+
+    - name: "Try to determine localhost Cloud provider name from BIOS version"
+      # Looking into ways to detect EC2/GCE instances without relying on
+      # connections to metadata IPs this solution[0] seemed the most
+      # straightforward & reliable.
+      #   https://serverfault.com/a/775063
+      command: dmidecode -s bios-version
+      register: streisand_localhost_bios_name
+      changed_when: False
+      ignore_errors: True
+
+    - name: "Set BIOS name fact from dmidecode if possible"
+      set_fact:
+        streisand_bios_name: "{{ streisand_localhost_bios_name.stdout }}"
+      when: streisand_localhost_bios_name.rc == 0
+
+    - name: "...Otherwise set unknown BIOS fact"
+      set_fact:
+        streisand_bios_name: "Unknown"
+      when: streisand_bios_name is undefined
+
+    # GCE specific work-arounds:
+    #   * None of the interfaces have the external IP bound, so this must be set
+    #     from the Google Platform medatadata service.
+    - block:
+        - name: Warn about manual provisioning of GCE instances
+          pause:
+            prompt: "You are running Streisand in an advanced mode against an existing GCE instance. Unlike the standard GCE provisioning mode this means Streisand *CAN NOT* open ports on your behalf. You will need to manually create the correct VPC Network and firewall rules. See 'generated-docs/' for the firewall-information.html file at the end of installation for a list of ports to open. The Streisand maintainers are not able to support this configuration. Press [enter] to continue"
+
+        - name: "Find the external GCE IP from Google Metadata"
+          # NOTE: We use the command module and `curl` here because (AFAICT)
+          # there isn't a way to `register` a `get_url` call and it seems
+          # hackier overall to add an intermediate step using a file on disk
+          #
+          # Metadata URL & the required "Metadata-Flavor" are explained in the
+          # Google Cloud Platform documentation[0].
+          # [0]: https://cloud.google.com/compute/docs/storing-retrieving-metadata#querying
+          command: curl -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
+          register: streisand_gce_external_ip
+          changed_when: False
+        - name: "Set the Streiand IPv4 address to the GCE external IP: {{ streisand_gce_external_ip.stdout }}"
+          set_fact:
+            streisand_ipv4_address: "{{ streisand_gce_external_ip.stdout }}"
+      when: "streisand_bios_name == 'Google'"
+
+    # Amazon EC2 specific work-arounds:
+    #   * None of the interfaces have the external IP bound, so this must be set
+    #     from the EC2 medatadata service.
+    - block:
+        - name: Warn about manual provisioning of EC2 instances
+          pause:
+            prompt: "You are running Streisand in an advanced mode against an existing Amazon EC2 instance. Unlike the standard EC2 provisioning mode this means Streisand *CAN NOT* open ports on your behalf. You will need to manually assinging this machine to a security group with the correct firewall rules. See 'generated-docs/' for the firewall-information.html file at the end of installation for a list of ports to open. The Streisand maintainers are not able to support this configuration. Press [enter] to continue"
+
+            # EC2 Instance Metadata API is explained in the EC2 docs[0].
+            # [0]: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+        - name: "Find the external EC2 IP from Metadata"
+          command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+          register: streisand_ec2_external_ip
+          changed_when: False
+        - name: "Set the Streiand IPv4 address to the EC2 external IP: {{ streisand_ec2_external_ip.stdout }}"
+          set_fact:
+            streisand_ipv4_address: "{{ streisand_ec2_external_ip.stdout }}"
+      when: "'amazon' in streisand_bios_name"
+...

@@ -1,104 +1,25 @@
 Client Mirrors
 --------------
-The files mirrored below have all been cryptographically verified. Where possible, each project's official GPG signing keys were used. SHA-256 checksums verified the integrity of all other files.
+
+The files mirrored below have all been cryptographically verified. Where possible, each project's official GPG signing keys were used. SHA-256 checksums verified the integrity of all other files. 
 
 ---
 * Clients
-  * [OpenConnect](#openconnect)
-  * [OpenVPN](#openvpn)
-  * [Shadowsocks](#shadowsocks)
-  * [OpenSSH](#ssh)
-  * [Stunnel](#stunnel)
-  * [Tor Browser Bundle](#tor)
-
-<a name="openconnect"></a>
-### OpenConnect ###
-
-**Source**
-
-* [{{ openconnect_source_filename }}]({{ openconnect_source_href }})
-  * Checksum: *{{ openconnect_source_checksum }}*
-
-**Windows**
-
-* [{{ openconnect_windows_filename }}]({{ openconnect_windows_href }})
-  * Checksum: *{{ openconnect_windows_checksum }}*
-
-<a name="openvpn"></a>
-### OpenVPN ###
-
-**Source**
-
-* [{{ openvpn_source_filename }}]({{ openvpn_source_href }}) ([sig]({{ openvpn_source_sig_href }}))
-
-**OS X**
-
-* [Tunnelblick\_{{ tunnelblick_version }}.dmg]({{ tunnelblick_href }})
-  * Checksum: *{{ tunnelblick_checksum }}*
-
-**Windows**
-
-* [{{ openvpn_windows32_installer_filename }}]({{ openvpn_windows32_installer_href }}) ([sig]({{ openvpn_windows32_installer_sig_href }}))
-* [{{ openvpn_windows64_installer_filename }}]({{ openvpn_windows64_installer_href }}) ([sig]({{ openvpn_windows64_installer_sig_href }}))
-
-<a name="shadowsocks"></a>
-### Shadowsocks ###
-
-**Source**
-
-* [{{ shadowsocks_python_filename }}]({{ shadowsocks_python_href }})
-  * Checksum: *{{ shadowsocks_python_checksum }}*
-
-**Android**
-
-* [{{ shadowsocks_android_filename }}]({{ shadowsocks_android_href }})
-  * Checksum: *{{ shadowsocks_android_checksum }}*
-
-**OS X**
-
-* [{{ shadowsocks_x_ng_filename }}]({{ shadowsocks_x_ng_href }})
-  * Checksum: *{{ shadowsocks_x_ng_checksum }}*
-
-**Windows**
-
-* [{{ shadowsocks_gui_filename }}]({{ shadowsocks_gui_href }})
-  * Checksum: *{{ shadowsocks_gui_checksum }}*
-
-<a name="ssh"></a>
-### SSH ###
-
-**Linux and OS X**
-
-* [{{ sshuttle_filename }}]({{ sshuttle_href }})
-  * Checksum: *{{ sshuttle_checksum }}*
-
-**Windows**
-
-* [{{ putty_filename }}]({{ putty_href }}) ([sig]({{ putty_sig_href }}))
-
-<a name="stunnel"></a>
-### stunnel ###
-
-**Source**
-
-* [{{ stunnel_source_filename }}]({{ stunnel_source_href }}) ([sig]({{ stunnel_source_sig_href }}))
-
-**Windows**
-
-* [{{ stunnel_installer_filename }}]({{ stunnel_installer_href }}) ([sig]({{ stunnel_installer_sig_href }}))
-
-<a name="tor"></a>
-### Tor Browser Bundle ###
-
-**Linux**
-
-* [{{ tor_browser_bundle_linux32_filename }}]({{ tor_browser_bundle_linux32_href }}) ([sig]({{ tor_browser_bundle_linux32_sig_href }}))
-* [{{ tor_browser_bundle_linux64_filename }}]({{ tor_browser_bundle_linux64_href }}) ([sig]({{ tor_browser_bundle_linux64_sig_href }}))
-
-**OS X**
-
-* [{{ tor_browser_bundle_osx_filename }}]({{ tor_browser_bundle_osx_href }}) ([sig]({{ tor_browser_bundle_osx_sig_href }}))
-
-**Windows**
-
-* [{{ tor_browser_bundle_windows_filename }}]({{ tor_browser_bundle_windows_href }}) ([sig]({{ tor_browser_bundle_windows_sig_href }}))
+{% if streisand_openconnect_enabled %}
+  * [OpenConnect](openconnect/)
+{% endif %}
+{% if streisand_openvpn_enabled %}
+  * [OpenVPN](openvpn/)
+{% if streisand_stunnel_enabled %}
+  * [Stunnel](stunnel/)
+{% endif %}
+{% endif %}
+{% if streisand_shadowsocks_enabled %}
+  * [Shadowsocks](shadowsocks/)
+{% endif %}
+{% if streisand_ssh_forward_enabled %}
+  * [OpenSSH](ssh/)
+{% endif %}
+{% if streisand_tor_enabled %}
+  * [Tor Browser Bundle](tor/)
+{% endif %}

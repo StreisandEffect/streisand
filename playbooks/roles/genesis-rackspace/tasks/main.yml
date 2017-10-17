@@ -1,4 +1,12 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-rackspace"
+
+- name: "Get the {{ streisand_ssh_private_key }}.pub contents"
+  command: "cat {{ streisand_ssh_private_key }}.pub"
+  register: ssh_key
+  changed_when: False
+
 - name: Create the server
   rax:
     api_key: "{{ rackspace_api_key }}"
@@ -8,7 +16,7 @@
     image: "{{ rackspace_image }}"
     region: "{{ regions[rackspace_region] }}"
     files:
-      /root/.ssh/authorized_keys: ~/.ssh/id_rsa.pub
+      /root/.ssh/authorized_keys: "{{ streisand_ssh_key }}"
     wait: yes
   register: streisand_server
 
@@ -30,4 +38,4 @@
 
 - name: Set the streisand_server_name variable
   set_fact:
-    streisand_server_name: "{{ rackspace_server_name }}"
+    streisand_server_name: "{{ rackspace_server_name | regex_replace('\\s', '_') }}"

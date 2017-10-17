@@ -22,8 +22,8 @@
           3. Hong Kong
           4. Northern Virginia
           5. Sydney
-        Please choose the number of your region. Press enter for default (#3) region.
-      default: "3"
+        Please choose the number of your region. Press enter for default (#1) region.
+      default: "1"
       private: no
 
     - name: "rackspace_server_name"
@@ -45,5 +45,7 @@
   roles:
     - genesis-rackspace
 
-
-- include: streisand.yml
+- import_playbook: ssh-setup.yml
+- import_playbook: cloud-status.yml
+- import_playbook: streisand.yml
+...

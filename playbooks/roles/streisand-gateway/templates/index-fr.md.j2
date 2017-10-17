@@ -1,0 +1,66 @@
+- - -
+{% for key, value in streisand_languages.items() %}
+  [{{ value.language_name }}](index{{ value.file_suffix }}.html)&nbsp;
+{% endfor %}
+- - -
+
+Bienvenue sur le serveur passerelle **{{streisand_server_name}}** de [Streisand](https://github.com/StreisandEffect/streisand). Vous n'êtes qu'à quelques minutes d'une connexion libre et non-censurée à l'internet.
+
+Instructions de connexion
+-------------------------
+---
+
+Il existe de multiples façons de contourner la censure, et Streisand vous propose plusieurs choix et différents protocoles dans le cas où l'un d'entre eux ne marche pas.
+
+{% if streisand_l2tp_enabled %}
+* [L2TP/IPsec](/l2tp-ipsec/index-fr.html)
+{% endif %}
+{% if streisand_openconnect_enabled %}
+* [OpenConnect/Cisco AnyConnect](/openconnect/index-fr.html)
+{% endif %}
+{% if streisand_openvpn_enabled %}
+* [OpenVPN (direct)](/openvpn/index-fr.html)
+{% if streisand_stunnel_enabled %}
+* [OpenVPN (stunnel)](/openvpn/stunnel-fr.html)
+{% endif %}
+{% endif %}
+{% if streisand_shadowsocks_enabled %}
+* [Shadowsocks](/shadowsocks/index-fr.html)
+{% endif %}
+{% if streisand_ssh_forward_enabled %}
+* [SSH](/ssh/index-fr.html)
+{% endif %}
+{% if streisand_tor_enabled %}
+* [Tor](/tor/index-fr.html)
+{% endif %}
+{% if streisand_wireguard_enabled %}
+* [WireGuard](/wireguard/index-fr.html)
+{% endif %}
+
+{% if streisand_mirrored_clients %}
+Miroirs des clients
+-------------------
+---
+
+Vous pouvez télécharger le logiciel client nécessaire directement auprès de Streisand au cas où les sites officiels seraient bloqués. Ces versions pourraient être un peu dépassées (selon la configuration de ce serveur), mais elles peuvent être facilement mises à jour une fois que vous avez connecté à l'i'nternet ouvert.
+
+{% if streisand_openconnect_enabled %}
+* [OpenConnect](/mirror/openconnect/index-fr.html)
+{% endif %}
+{% if streisand_openvpn_enabled %}
+* [OpenVPN](/mirror/openvpn/index-fr.html)
+{% if streisand_stunnel_enabled %}
+* [stunnel](/mirror/stunnel/index-fr.html)
+{% endif %}
+{% endif %}
+{% if streisand_shadowsocks_enabled %}
+* [Shadowsocks](/mirror/shadowsocks/index-fr.html)
+{% endif %}
+{% if streisand_ssh_forward_enabled %}
+* [SSH](/mirror/index-fr.html#ssh)
+{% endif %}
+{% if streisand_tor_enabled %}
+* [Tor Browser Bundle](/mirror/tor/index-fr.html)
+{% endif %}
+
+{% endif %}

@@ -1,5 +1,5 @@
 server 10.9.0.0 255.255.255.0
-push "dhcp-option DNS 10.9.0.1"
+push "dhcp-option DNS {{ dnsmasq_openvpn_udp_ip }}"
 proto udp
 port {{ openvpn_port_udp }}
 {% include "etc_openvpn_server_common.j2" %}

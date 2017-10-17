@@ -1,14 +1,4 @@
 ---
-forward_location: "/home/forward"
-
-ssh_gateway_location: "{{ streisand_gateway_location }}/ssh"
-
-ssh_markdown_instructions: "{{ ssh_gateway_location }}/index.md"
-ssh_html_instructions: "{{ ssh_gateway_location }}/index.html"
-
-ssh_rsa_key: "{{ ssh_gateway_location }}/streisand_rsa"
-ssh_putty_rsa_key: "{{ ssh_gateway_location }}/streisand_rsa.ppk"
-
 ssh_rsa_host_key_size: "3072"
 ssh_rsa_host_key_change_verification: "/etc/ssh/ssh_host_rsa_key_was_regenerated"
 ssh_rsa_host_private_key: "/etc/ssh/ssh_host_rsa_key"

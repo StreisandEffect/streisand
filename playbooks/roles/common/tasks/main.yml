@@ -2,10 +2,10 @@
 - name: Warn users if the server's Linux distribution is not Ubuntu 16.04
   pause:
     prompt: "Ubuntu 16.04 is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
-  when: ansible_distribution != "Ubuntu" or ansible_distribution_major_version != "16"
+  when: ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04"
 
 # Set default variables
-- include: set-default-variables.yml
+- import_tasks: set-default-variables.yml
 
 - name: Ensure the APT cache is up to date
   apt:
@@ -17,6 +17,31 @@
     name: "{{ item }}"
   with_items: "{{ streisand_common_packages }}"
 
+- name: Purge unneeded services
+  apt:
+    name: "{{ item }}"
+    state: "absent"
+    purge: yes
+    autoremove: yes
+  with_items: "{{ streisand_unneeded_packages }}"
+
+- name: Perform a full system upgrade
+  apt:
+    upgrade: "safe"
+
+- name: Copy the English BIP-0039 wordlist
+  copy:
+    src: english.txt
+    dest: /usr/share/dict
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Generate random VPN client names
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/english.txt | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g'
+  register: "vpn_client_names"
+  with_sequence: count={{ vpn_clients }}
+
 - name: Copy the HTML header and footer templates that are used during documentation generation
   copy:
     src: "{{ item.src }}"
@@ -25,13 +50,32 @@
     - { src: "header.html", dest: "{{ streisand_header_template }}" }
     - { src: "footer.html", dest: "{{ streisand_footer_template }}" }
 
-- name: Copy the unattended-upgrades templates to enable automatic security updates
-  copy:
+- name: Generate the language selection markdown file
+  template:
+    src: "languages.md.j2"
+    dest: "/tmp/languages.md"
+
+- name: Convert the language selection markdown file
+  shell: markdown /tmp/languages.md > {{ streisand_language_selector }}
+  args:
+    creates: "{{ streisand_language_selector }}"
+
+- name: Generate an internationalized header file
+  shell: cat {{ streisand_header_template }} {{ streisand_language_selector }} > {{ streisand_i18n_header_template }}
+  args:
+    creates: "{{ streisand_i18n_header_template }}"
+
+- name: Generate the unattended-upgrades templates to enable automatic security updates
+  template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: 0644
   with_items:
-    - { src: "20auto-upgrades",       dest: "/etc/apt/apt.conf.d" }
-    - { src: "50unattended-upgrades", dest: "/etc/apt/apt.conf.d" }
+    - { src: "20auto-upgrades.j2",       dest: "/etc/apt/apt.conf.d/20autoupgrades" }
+    - { src: "50unattended-upgrades.j2", dest: "/etc/apt/apt.conf.d/50unattended-upgrades" }
+
+- name: Apply the custom sysctl values
+  include_role:
+    name: sysctl

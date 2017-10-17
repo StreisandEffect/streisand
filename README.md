@@ -1,5 +1,11 @@
 ![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
 
+- - -
+[English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Mirror](https://area51.threeletter.agency/mirrors/streisand) | [Mirror 2](https://gitlab.com/alimakki/streisand)
+- - -
+
+[![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
+
 Streisand
 =========
 
@@ -10,7 +16,7 @@ The Internet can be a little unfair. It's way too easy for ISPs, telecoms, polit
 Introducing Streisand
 ---------------------
 * A single command sets up a brand new Ubuntu 16.04 server running a [wide variety of anti-censorship software](#services-provided) that can completely mask and encrypt all of your Internet traffic.
-* Streisand natively supports the creation of new servers at [Amazon EC2](https://aws.amazon.com/ec2/), [DigitalOcean](https://www.digitalocean.com/), [Google Compute Engine](https://cloud.google.com/compute/), [Linode](https://www.linode.com/), and [Rackspace](https://www.rackspace.com/)&mdash;with more providers coming soon! It also runs on any Ubuntu 16.04 server regardless of provider, and **hundreds** of instances can be configured simultaneously using this method.
+* Streisand natively supports the creation of new servers at [Amazon EC2](https://aws.amazon.com/ec2/), [Azure](https://azure.microsoft.com), [DigitalOcean](https://www.digitalocean.com/), [Google Compute Engine](https://cloud.google.com/compute/), [Linode](https://www.linode.com/), and [Rackspace](https://www.rackspace.com/)&mdash;with more providers coming soon! It also runs on any Ubuntu 16.04 server regardless of provider, and **hundreds** of instances can be configured simultaneously using this method.
 * The process is completely automated and only takes about ten minutes, which is pretty awesome when you consider that it would require the average system administrator several days of frustration to set up even a small subset of what Streisand offers in its out-of-the-box configuration.
 * Once your Streisand server is running, you can give the custom connection instructions to friends, family members, and fellow activists. The connection instructions contain an embedded copy of the server's unique SSL certificate, so you only have to send them a single file.
 * Each server is entirely self-contained and comes with absolutely everything that users need to get started, including cryptographically verified mirrors of all common clients. This renders any attempted censorship of default download locations completely ineffective.
@@ -30,18 +36,16 @@ More Features
 * Every task has been thoroughly documented and given a detailed description. Streisand is simultaneously the most complete HOWTO in existence for the setup of all of the software it installs, and also the antidote for ever having to do any of this by hand again.
 * All software runs on ports that have been deliberately chosen to make simplistic port blocking unrealistic without causing massive collateral damage. OpenVPN, for example, does not run on its default port of 1194, but instead uses port 636, the standard port for LDAP/SSL connections that are beloved by companies worldwide.
   * *L2TP/IPsec is a notable exception to this rule because the ports cannot be changed without breaking client compatibility*
-* The IP addresses of connecting clients are never logged. There's nothing to find if a server gets seized or shut down.
 
 <a name="services-provided"></a>
 Services Provided
 -----------------
 * L2TP/IPsec using [Libreswan](https://libreswan.org/) and [xl2tpd](https://www.xelerance.com/software/xl2tpd/)
   * A randomly chosen pre-shared key and password are generated.
-  * Windows, OS X, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software.
+  * Windows, macOS, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software.
 * [Monit](https://mmonit.com/monit/)
   * Monitors process health and automatically restarts services in the unlikely event that they crash or become unresponsive.
 * [OpenSSH](http://www.openssh.com/)
-  * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/sshuttle/sshuttle) and SOCKS capabilities.
   * Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
   * [Tinyproxy](https://banu.com/tinyproxy/) is installed and bound to localhost. It can be accessed over an SSH tunnel by programs that do not natively support SOCKS and that require an HTTP proxy, such as Twitter for Android.
 * [OpenConnect](http://www.infradead.org/ocserv/index.html) / [Cisco AnyConnect](http://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
@@ -57,7 +61,8 @@ Services Provided
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
   * The high-performance [libev variant](https://github.com/shadowsocks/shadowsocks-libev) is installed. This version is capable of handling thousands of simultaneous connections.
   * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
-  * [One-time Authentication](https://shadowsocks.org/en/spec/one-time-auth.html) (OTA) is enabled for enhanced security and improved GFW evasion.
+  * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
+  * The [simple-obfs](https://github.com/shadowsocks/simple-obfs) plugin is installed to provide robust traffic evasion on hostile networks (especially those implementing quality of service (QOS) throttling).
 * [sslh](http://www.rutschle.net/tech/sslh.shtml)
   * Sslh is a protocol demultiplexer that allows Nginx, OpenSSH, and OpenVPN to share port 443. This provides an alternative connection option and means that you can still route traffic via OpenSSH and OpenVPN even if you are on a restrictive network that blocks all access to non-HTTP ports.
 * [Stunnel](https://www.stunnel.org/index.html)
@@ -72,109 +77,135 @@ Services Provided
   * Firewall rules are configured for every service, and any traffic that is sent to an unauthorized port will be blocked.
 * [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
   * Your Streisand server is configured to automatically install new security updates.
+* [WireGuard](https://www.wireguard.com/)
+  * Linux users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast and uses modern cryptographic principles that all other highspeed VPN solutions lack.
 
 Installation
 ------------
 Please read all installation instructions **carefully** before proceeding.
 
 ### Important Clarification ###
-Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. That means when you run Streisand, it automatically sets up **another remote server** with the VPN packages and configuration.
+Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. Streisand automatically sets up **another remote server** with the VPN packages and configuration.
 
-This means that you run Streisand **on your home machine** (e.g. your laptop) and it will spin up and deploy **another server** on your chosen hosting provider. Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!). Support for local provisioning (i.e. Streisand locally configuring the system on which it is installed) will be added soon.
+Streisand will spin up and deploy **another server** on your chosen hosting provider when you run **on your home machine** (e.g. your laptop). Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!).
+
+In some circumstances advanced users may opt to use the local provisioning mode to have the system running Streisand/Ansible configure itself as a Streisand server. This is a configuration mode best reserved for when it isn't possible to install Ansible on your home machine or when your connection to a cloud provider is too unreliable for Ansible's SSH connections.
 
 ### Prerequisites ###
 Complete all of these tasks on your local home machine.
 
-* Streisand requires a BSD, Linux, or OS X system. As of now, Windows is not supported. All of the following commands should be run inside a Terminal session.
-* Python 2.7 is required. This comes standard on OS X, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
+* Streisand requires a BSD, Linux, or macOS system. As of now, Windows is not supported. All of the following commands should be run inside a Terminal session.
+* Python 2.7 is required. This comes standard on macOS, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
 
-            ssh-keygen
+        ssh-keygen
 * Install Git.
   * On Debian and Ubuntu
 
-            sudo apt-get install git
+        sudo apt-get install git
   * On Fedora
 
-            sudo yum install git
-  * On OS X (via [Homebrew](http://brew.sh/))
+        sudo yum install git
+  * On macOS (via [Homebrew](http://brew.sh/))
 
-            brew install git
+        brew install git
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
   * On Debian and Ubuntu (also installs the dependencies that are necessary to build Ansible and that are required by some modules)
 
-            sudo apt-get install python-paramiko python-pip python-pycurl python-dev build-essential
+        sudo apt-get install python-paramiko python-pip python-pycurl python-dev build-essential
   * On Fedora
 
-            sudo yum install python-pip
-  * On OS X
+        sudo yum install python-pip
+  * On macOS
 
-            sudo easy_install pip
-            sudo pip install pycurl
-            
+        sudo easy_install pip
+        sudo pip install pycurl
+
 * Install [Ansible](http://www.ansible.com/home).
-  * On OS X (via [Homebrew](http://brew.sh/))
+  * On macOS (via [Homebrew](http://brew.sh/))
 
-            brew update && brew install ansible
+        brew install ansible
   * On BSD or Linux (via pip)
 
-            sudo pip install ansible markupsafe
-* Install the necessary Python libraries for your chosen cloud provider.
+        sudo pip install ansible markupsafe
+* Install the necessary Python libraries for your chosen cloud provider. If you
+    are using the advanced local provisioning mode or the existing server mode
+    you can skip this section.
   * Amazon EC2
 
-            sudo pip install boto
+        sudo pip install boto
+  * Azure
+
+        sudo pip install msrest msrestazure azure==2.0.0rc5 packaging
   * DigitalOcean
 
-            sudo pip install dopy==0.3.5
+        sudo pip install dopy==0.3.5
   * Google
 
-            sudo pip install "apache-libcloud>=0.17.0"
+        sudo pip install "apache-libcloud>=1.5.0"
 
   * Linode
 
-            sudo pip install linode-python
+        sudo pip install linode-python
   * Rackspace Cloud
 
-            sudo pip install pyrax
-  * If you are using a Homebrew-installed version of Python you should also run these commands to make sure it can find the necessary libraries:
+        sudo pip install pyrax
+  * **Important note if you are using a Homebrew-installed version of Python** you should also run these commands to make sure it can find the necessary libraries:
 
-            mkdir -p ~/Library/Python/2.7/lib/python/site-packages
-            echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
+        mkdir -p ~/Library/Python/2.7/lib/python/site-packages
+        echo '/usr/local/lib/python2.7/site-packages' > ~/Library/Python/2.7/lib/python/site-packages/homebrew.pth
 
 ### Execution ###
 1. Clone the Streisand repository and enter the directory.
 
-        git clone https://github.com/jlund/streisand.git && cd streisand
+       git clone https://github.com/StreisandEffect/streisand.git && cd streisand
+
+   Or clone from the external mirror if GitHub is blocked.
+
+       git clone https://area51.threeletter.agency/mirrors/streisand.git && cd streisand
 2. Execute the Streisand script.
 
-        ./streisand
+       ./streisand
 3. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
 4. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
 5. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the 'generated-docs' folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
 
-### Running Streisand on Other Providers ###
+### Running Streisand to Provision Localhost (Advanced) ###
 
-You can also run Streisand on any number of new Ubuntu 16.04 servers. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do this, simply edit the `inventory` file and uncomment the final two lines. Replace the sample IP with the address (or addresses) of the servers you wish to configure. Make sure you read through all of the documentation in the `inventory` file and update the `ansible.cfg` file if necessary. Then run the Streisand playbook directly:
+If you can not run Streisand in the normal manner (running from your client home machine/laptop to configure a remote server) Streisand supports a local provisioning mode. Simply choose "Localhost (Advanced)" from the menu after running `./streisand`.
 
-    ansible-playbook playbooks/streisand.yml
+**Note:** Running Streisand against localhost can be a destructive action! You will be potentially overwriting configuration files and must be certain that you are affecting the correct machine.
 
-The servers should be accessible using SSH keys, and *root* is used as the connecting user by default (though this is simple to change while editing the inventory file).
+### Running Streisand on Other Providers (Advanced) ###
+
+You can also run Streisand on a new Ubuntu 16.04 server. Dedicated hardware? Great! Esoteric cloud provider? Awesome! To do so, simply choose "Existing Server (Advanced)" from the menu after running `./streisand` and provide the IP address of the existing server when prompted.
+
+The server must be accessible using the `$HOME/id_rsa` SSH Key, and **root** is used as the connecting user by default. If your provider requires you to SSH with a different user than root (e.g. `ubuntu`) specify the `ANSIBLE_SSH_USER` environmental variable (e.g. `ANSIBLE_SSH_USER=ubuntu`) when you run `./streisand`.
+
+**Note:** Running Streisand against an existing server can be a destructive action! You will be potentially overwriting configuration files and must be certain that you are affecting the correct machine.
 
 Upcoming Features
 -----------------
-* Native [Microsoft Azure](https://azure.microsoft.com/en-us/) support
-* A flag to allow L2TP/IPsec installation to be disabled
-* Creation of a Streisand pip package to make the setup of all required dependencies even easier
+* Easier setup.
 
-If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/jlund/streisand/issues).
+If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/StreisandEffect/streisand/issues).
+
+Core Contributors
+----------------
+* Jay Carlson (@nopdotcom)
+* Nick Clarke (@nickolasclarke)
+* Joshua Lund (@jlund)
+* Ali Makki (@alimakki)
+* Daniel McCarney (@cpu)
+* Corban Raun (@CorbanR)
 
 Acknowledgements
 ----------------
-I cannot express how grateful I am to [Trevor Smith](https://github.com/trevorsmith) for his massive contributions to the project. He suggested the Gateway approach, provided tons of invaluable feedback, made *everything* look better, and developed the HTML template that served as the inspiration to take things to the next level before Streisand's public release. I also appreciated the frequent use of his iPhone while testing various clients.
+[Jason A. Donenfeld](https://www.zx2c4.com/) deserves a lot of credit for being brave enough to reimagine what a modern VPN should look like and for coming up with something as good as [WireGuard](https://www.wireguard.com/). He has our sincere thanks for all of his patient help and high-quality feedback.
+
+We are grateful to [Trevor Smith](https://github.com/trevorsmith) for his massive contributions. He suggested the Gateway approach, provided tons of invaluable feedback, made *everything* look better, and developed the HTML template that served as the inspiration to take things to the next level before Streisand's public release.
 
 Huge thanks to [Paul Wouters](https://nohats.ca/) of [The Libreswan Project](https://libreswan.org/) for his generous help troubleshooting the L2TP/IPsec setup.
 
-[Corban Raun](https://github.com/CorbanR) was kind enough to lend me a Windows laptop that let me test and refine the instructions for that platform, and he was a big supporter of the project from the very beginning.
-
-I also listened to [Starcadian's](http://starcadian.com/) 'Sunset Blood' album approximately 300 times on repeat while working on this.
+[Starcadian's](http://starcadian.com/) 'Sunset Blood' album was played on repeat approximately 300 times during the first few months of work on the project in early 2014.

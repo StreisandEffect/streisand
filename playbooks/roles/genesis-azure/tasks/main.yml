@@ -1,0 +1,50 @@
+---
+- set_fact:
+    streisand_genesis_role: "genesis-azure"
+
+- name: "Get the {{ streisand_ssh_private_key }}.pub contents"
+  command: "cat {{ streisand_ssh_private_key }}.pub"
+  register: ssh_key
+  changed_when: False
+
+- name: Create the Azure instance
+  local_action:
+    module: azure_rm_virtualmachine
+    resource_group: "{{ azure_resource_group_name }}"
+    network_interfaces: "{{ azure_resource_group_name }}"
+    name: "{{ azure_instance_name }}"
+    vm_size: "{{ azure_instance_type }}"
+    location: "{{ azure_region }}"
+    image:
+      offer: "{{ azure_image_offer }}"
+      publisher: "{{ azure_image_publisher }}"
+      sku: "{{ azure_image_sku }}"
+      version: "{{ azure_image_version }}"
+    admin_username: ubuntu
+    ssh_password_enabled: false
+    ssh_public_keys:
+      - path: /home/ubuntu/.ssh/authorized_keys
+        key_data: "{{ ssh_key.stdout }}"
+  register: streisand_server
+
+- name: Set the streisand_ipv4_address variable
+  set_fact:
+    streisand_ipv4_address: "{{ streisand_server.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+
+- name: Wait until the server has finished booting and OpenSSH is accepting connections
+  wait_for:
+    host: "{{ streisand_ipv4_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+
+- name: Create the in-memory inventory group
+  add_host:
+    name: "{{ streisand_ipv4_address }}"
+    groups: streisand-host
+    ansible_user: ubuntu
+    ansible_become: yes
+
+- name: Set the streisand_server_name variable
+  set_fact:
+    streisand_server_name: "{{ azure_instance_name }}"

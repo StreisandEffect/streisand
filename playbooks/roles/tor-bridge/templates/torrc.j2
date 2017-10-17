@@ -2,6 +2,7 @@ SocksPort 0
 ORPort {{ tor_orport }}
 ExtORPort auto
 BridgeRelay 1
+PublishServerDescriptor {{ tor_publish_service_desc }}
 ExitPolicy reject *:*
 
 Nickname {{ tor_bridge_nickname.stdout }}
@@ -10,4 +11,4 @@ ServerTransportPlugin obfs4 exec /usr/bin/obfs4proxy
 ServerTransportListenAddr obfs4 0.0.0.0:{{ tor_obfs4_port }}
 
 HiddenServiceDir {{ tor_hidden_service_directory }}
-HiddenServicePort 80 {{ nginx_internal_hidden_service_address }}
+HiddenServicePort 80 {{ tor_internal_hidden_service_address }}
