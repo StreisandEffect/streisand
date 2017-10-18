@@ -7,23 +7,23 @@ separated into two distinct tasks:
  - CA/Server
  - Client(s)
 
-The first of which will generate a certificate authority, and a server 
+The first will generate a certificate authority, and a server 
 certificate signed by the newly minted certificate authority.
 
-The latter task is responsible for generating client side certificate
-(using the same CA) used for authenticting connecting VPN clients.
+The latter task is responsible for generating client side certificates
+(using the same CA) used for authenticating connecting VPN clients.
 
-Each VPN service that leverages PKI generates its own CA/Server and 
-client certificates.
+Each VPN service that leverages the Streisand PKI generates its
+own CA/Server certificate and client certificates.
 
 Infrastructure
 --------------
 
-The overall PKI infrasture assumes the following layout:
+The overall PKI infrastructure assumes the following structure:
 
 ```
 Web Root CA: 
-   \__ gateway HTTPS cert (unless LE; see below)
+   \__ gateway HTTPS cert (unless Let's Encrypt; see below)
 
 OpenConnect CA: 
    \__ OpenConnect server cert
@@ -37,25 +37,20 @@ OpenVPN CA:
    \__ OpenVPN client ...
    \__ OpenVPN client n
 
-IPsec-IKEv2 CA (upcoming):
-   \__ IPsec-IKEv2 server cert
-   \__ foobar client 1
-   \__ foobar client ...
-   \__ foobar client n
-
 ISRG X1:
    \__ Let's Encrypt Authority X3
-        \__ poem-walk.example.com HTTPS cert
+        \__ streisand.example.com HTTPS cert
 ``` 
 
 Usage
 -----
 
 Utilizing the `certificates` role can be invoked as follows (using OpenVPN as an example):
-(Should client certificates need to be generated, they should be done so priort to invocation)
+(If client certificates need to be generated, a directory for each client must be created
+first)
 
 ```
-- name: Create directories for clients
+- name: Create directories for clients # needed if client certificates are required
   file:
     path: "/etc/openvpn/{{ client_name.stdout }}"
     state: directory

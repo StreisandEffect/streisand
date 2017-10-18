@@ -9,6 +9,7 @@ tls_default_md:   "sha256"
 tls_key_size:     "4096"
 
 # What type of certificates to be generated
-# must be explicitly set
+# must be explicitly set by playbooks that
+# include the certificates role
 generate_ca_server: no
 generate_client:    no
