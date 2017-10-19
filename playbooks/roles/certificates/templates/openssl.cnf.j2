@@ -3,23 +3,25 @@ default_ca = CA_default
 
 [ CA_default ]
 
-dir = {{ openvpn_path }}
+dir = {{ ca_path }}
 certs = $dir
 crl_dir = $dir
 database = $dir/index.txt
 new_certs_dir = $dir
 
-certificate = {{ openvpn_ca }}.crt
+certificate = {{ tls_ca }}.crt
 serial = $dir/serial
 crl = $dir/crl.pem
-private_key = {{ openvpn_ca }}.key
+private_key = {{ tls_ca }}.key
 RANDFILE = $dir/.rand
+
+copy_extensions = copy
 
 x509_extensions = server
 
-default_days = {{ openvpn_days_valid }}
+default_days = {{ tls_days_valid }}
 default_crl_days= 30
-default_md = sha256
+default_md = {{ tls_default_md }}
 preserve = no
 
 policy = policy_anything
@@ -28,7 +30,6 @@ keyUsage = cRLSign, keyCertSign
 
 subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid:always,issuer:always
-
 
 [ policy_anything ]
 countryName = optional
@@ -42,25 +43,37 @@ emailAddress = optional
 
 [ req ]
 distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+{% for item in tls_sans %}
+IP.{{ loop.index }} = {{ item }}
+{% endfor %}
 
 [ req_distinguished_name ]
 countryName = Country Name (2 letter code)
-countryName_default = {{ openvpn_key_country }}
+countryName_default = {{ tls_key_country }}
 
 stateOrProvinceName = State or Province Name (full name)
-stateOrProvinceName_default = {{ openvpn_key_province }}
+stateOrProvinceName_default = {{ tls_key_province }}
 
 localityName = Locality Name (eg, city)
-localityName_default = {{ openvpn_key_city }}
+localityName_default = {{ tls_key_city }}
 
 0.organizationName = Organization Name (eg, company)
-0.organizationName_default = {{ openvpn_key_org }}
+0.organizationName_default = {{ tls_key_org }}
 
 organizationalUnitName = Organizational Unit Name (eg, section)
-organizationalUnitName_default = {{ openvpn_key_ou }}
+organizationalUnitName_default = {{ tls_key_ou }}
 
 commonName = Common Name (eg, your name or your server\'s hostname)
-commonName_default = {{ openvpn_server_common_name.stdout }}
+commonName_default = {{ tls_server_common_name.stdout }}
+
+[ v3_ca ]
+keyUsage = digitalSignature, keyEncipherment
 
 [ server ]
 basicConstraints=CA:FALSE
@@ -69,6 +82,7 @@ subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid,issuer:always
 extendedKeyUsage=serverAuth
 keyUsage = digitalSignature, keyEncipherment
+subjectAltName = @alt_names
 
 [ client ]
 basicConstraints=CA:FALSE
