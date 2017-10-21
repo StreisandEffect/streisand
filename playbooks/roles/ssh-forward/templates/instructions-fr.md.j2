@@ -57,6 +57,46 @@ Vous êtes maintenant connecté à un proxy SOCKS qui est prêt à transférer v
 
 <a name="linux-and-macos"></a>
 ### Linux et macOS ###
+
+#### sshuttle ####
+
+Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transport SSH. C'est rapide, facile à installer et offre de bonnes performances.
+
+1. Téléchargez la clé privée `streisand_rsa` qui sert à authentifier la connexion SSH:
+   * [streisand\_rsa](/ssh/streisand_rsa)
+1. Copiez le fichier `streisand_rsa` dans une répertoire de votre choix.
+1. Définissez les autorisations correctes sur le fichier clé RSA:
+   * `chmod 600 streisand_rsa`
+1. Ajoutez une nouvelle entrée à votre fichier `.ssh / config`. Il devrait ressembler à ceci.Le port `443` est disponible en option de recharge si vous êtes sur un réseau qui restreint l'accès au port SSH par défaut. Assurez-vous d'ajuster l'emplacement du IdentityFile:
+
+         Host {{ streisand_server_name }}
+           User         sshuttle 
+           Port         {{ ssh_port }}
+           HostName     {{ streisand_ipv4_address }}
+           IdentityFile ~/.ssh/streisand_rsa
+
+1. Téléchargez [sshuttle](https://github.com/sshuttle/sshuttle) en exécutant la commande suivante dans une répertoire de votre choix:
+
+  `git clone https://github.com/sshuttle/sshuttle.git`
+
+  * Si l'accès à GitHub a été bloqué, vous pouvez télécharger une copie en miroir [içi](/mirror/ssh/index-fr.html)!
+  * sshuttle est également disponible via [Homebrew](http://brew.sh/) pour les utilisateurs de OS X: `brew install sshuttle`
+
+1. Entrer dans la répertoire:
+
+   `cd sshuttle`
+1. Exécutez sshuttle et connectez-vous au serveur:
+
+   `./run --dns -r sshuttle@{{ streisand_server_name }} 0/0 -vv`
+1. Vérifiez que les empreintes numériques correspondent à l'un des éléments ci-dessous:
+
+   `{{ ssh_server_fingerprints.results[0].stdout }}`
+
+   `{{ ssh_server_fingerprints.results[1].stdout }}`
+1. Tout votre trafic, y compris DNS, est maintenant transmis de manière transparente via une connexion SSH cryptée. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+
+#### SSH forward ####
+
 1. Téléchargez la clé privée `streisand_rsa` qui sert à authentifier la connexion SSH:
    * [streisand\_rsa](/ssh/streisand_rsa)
 1. Copiez le fichier `streisand_rsa` dans une répertoire de votre choix.

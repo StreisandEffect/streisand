@@ -20,3 +20,9 @@ putty_sig_url: "{{ putty_base_download_url }}/{{ putty_sig_filename }}"
 putty_download_urls:
   - "{{ putty_url }}"
   - "{{ putty_sig_url }}"
+
+sshuttle_version: "0.78.0"
+sshuttle_filename: "sshuttle-{{ sshuttle_version }}.tar.gz"
+sshuttle_href: "{{ ssh_mirror_href_base }}/{{ sshuttle_filename }}"
+sshuttle_url: "https://codeload.github.com/sshuttle/sshuttle/tar.gz/v{{ sshuttle_version }}"
+sshuttle_checksum: "sha256:0742e3e670c8df629ae702a32cfad96c7c4e8f7ab8f66c26d94c55d42b01e4b4"

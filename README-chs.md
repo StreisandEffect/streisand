@@ -47,6 +47,7 @@ Streisand介绍
 * [OpenSSH](http://www.openssh.com/)
   * 支持 Windows 和 Android 的 SSH 隧道， 并且需要使用 PuTTY 将默认的密钥对导出成 .ppk 的格式；
   * [Tinyproxy](https://banu.com/tinyproxy/) 默认安装并绑定到主机，它作为一个 http(s) 代理提供给那些原生不支持 SOCKS 代理的软件通过 SSH 隧道访问网络，比如说 Android 上的鸟嘀咕。
+  * 针对 [sshuttle](https://github.com/sshuttle/sshuttle) 的一个无特权转发用户和产生的 SSH 密钥对，同样也兼容 SOCKS；
 * [OpenConnect](http://www.infradead.org/ocserv/index.html) / [Cisco AnyConnect](http://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
   * oepnConnect (ocserv) 是一个非常强劲、轻巧的 VPN 服务器，并且完全兼容思科的 AnyConnect 客户端；
   * 其中包涵了很多顶级的标准[协议](http://www.infradead.org/ocserv/technical.html)，比如：HTTP, TLS 和 DTLS， 当然还有很多被跨国公司广泛使用的且流行的技术；

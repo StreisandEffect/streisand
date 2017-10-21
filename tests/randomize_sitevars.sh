@@ -32,8 +32,8 @@ function randomize_services {
           echo "Setting 'streisand_openvpn_enabled: yes' to support stunnel"
           sed -i "s/\(streisand_openvpn_enabled\): no/\1: yes/" "$1"
           ;;
-        "streisand_tinyproxy_enabled")
-          # tinyproxy depends on openvpn
+        "streisand_tinyproxy_enabled"|"streisand_sshuttle_enabled")
+          # tinyproxy and sshuttle depend on the ssh-forward user
           echo "Setting 'streisand_ssh_forward_enabled' to support tinyproxy"
           sed -i "s/\(streisand_ssh_forward_enabled\): no/\1: yes/" "$1"
           ;;
