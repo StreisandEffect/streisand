@@ -18,7 +18,7 @@ OpenConnect est un serveur VPN extrêmement performant et léger qui offre une c
 Les certificats clients sont un mécanisme par lequel les clients peuvent s'authentifier de manière sécurisée avec un serveur.
 
 1. Votre serveur OpenConnect émet son propre __certificat serveur__. Ceci est utilisé par le logiciel du client de votre appareil (tel que AnyConnect pour iOS) afin de  s'identifier de manière sécurisée avec le serveur VPN. Téléchargez le certificat de ce serveur.
-   * [ca-cert.pem](/openconnect/ca-cert.pem)
+   * [ca.crt](/openconnect/ca.crt)
 1. Chaque appareil que vous souhaitez configurer nécessite un __certificat client__ en plus du certificat serveur ci-dessus. Un certificat client est utilisé pour identifier et authentifier de manière sécurisée votre appareil sur le serveur VPN. Deux appareils ne peuvent pas utiliser le même certificat de client et être connectés simultanément (un certificat de client pour chaque appareil). Chaque certificat client est protégé par une mot de passe, qui sera nécessaire pour le déverrouiller une fois que vous l'importez dans votre appareil.
 {% for client in ocserv_client_pkcs12_password_list.results %}
    * [{{ client.client_name.stdout }}.p12](/openconnect/{{ client.client_name.stdout }}.p12), mot de passe: `{{ client.stdout }}` 
@@ -62,11 +62,11 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
    `brew install openconnect`
 
    * Si l'installation de Homebrew n'est pas une option, vous pouvez également télécharger et compiler le [code source OpenConnect](/mirror/index-fr.html#openconnect).
-1. Téléchargez le fichier [ca-cert.pem](/openconnect/ ca-cert.pem) et un [fichier de certificat client](#clientcerts) dans la liste ci-dessus.
+1. Téléchargez le fichier [ca.crt](/openconnect/ca.crt) et un [fichier de certificat client](#clientcerts) dans la liste ci-dessus.
 1. Placez les fichiers téléchargés dans un dossier distinct (par exemple `{{ streisand_server_name }}-openconnect`), ouvrez votre terminal, et `cd` dans la directoire.
 1. Lancez OpenConnect:
 
-   `sudo openconnect --cafile ca-cert.pem --certificate votre-certificat-client.p12 --key-password 'mot-de-passe-du-certificat' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
+   `sudo openconnect --cafile ca.crt --certificate votre-certificat-client.p12 --key-password 'mot-de-passe-du-certificat' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
 1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="linux"></a>
@@ -75,7 +75,7 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 
    `sudo apt-get install network-manager-openconnect-gnome`
 1. Téléchargez le certificat serveur:
-   * [ca-cert.pem](/openconnect/ca-cert.pem)
+   * [ca.crt](/openconnect/ca.crt)
 1. Ouvrez votre *Paramètres du système*.
 1. Cliquez sur l'icône *Réseau*.
 1. Cliquez le bouton *+* dans le coin inférieur gauche de la fenêtre.
@@ -83,7 +83,7 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Sélectionnez *VPN compatible Cisco AnyConnect (openconnect)* et cliquez *Créer*.
 1. Saisissez `{{ streisand_server_name }}` pour le *Nom du connexion*.
 1. Saisissez `{{ streisand_ipv4_address }}:{{ ocserv_port }}` pour la *Gateway* (passerelle).
-1. Sélectionnez le fichier `ca-cert.pem` Que vous venez de télécharger pour *Certificat CA*.
+1. Sélectionnez le fichier `ca.crt` Que vous venez de télécharger pour *Certificat CA*.
 1. Cliquez *Enregisterer*.
 1. Sélectionnez le VPN dans le menu à gauche, et faites glisser l'interrupteur vers la position *ON*. Vous pouvez également activer/désactiver le VPN en cliquant sur l'icône WiFi/Réseau dans la barre de menu, défiler vers *Connexions VPN* et en cliquant sur son nom.
 1. Saisissez `streisand` pour le champ *Nom d'utilisateur* puis cliquez *Connexion*.

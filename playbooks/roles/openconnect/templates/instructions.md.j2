@@ -18,7 +18,7 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 Client certificates are a mechanism by which clients can authenticate themselves securely with the server.
 
 1. Your OpenConnect server issues its own __server certificate__. This is used by your device's client software (such as AnyConnect for iOS) to securely identify the VPN server. Download this server's certificate.
-   * [ca-cert.pem](/openconnect/ca-cert.pem)
+   * [ca.crt](/openconnect/ca.crt)
 1. Each device you wish to configure needs a __client certificate__ in addition to the server certificate above. A client certificate is used to securely identify and authenticate your device to the VPN server. Two devices can't use the same client certifcate and be logged in at the same time (one client certificate per device). Each client certificate is protected by a password, which will be needed to unlock it once you import it into your device.
 {% for client in ocserv_client_pkcs12_password_list.results %}
    * [{{ client.client_name.stdout }}.p12](/openconnect/{{ client.client_name.stdout }}.p12), password: `{{ client.stdout }}` 
@@ -62,11 +62,11 @@ Client certificates are a mechanism by which clients can authenticate themselves
    `brew install openconnect`
 
    * If installing Homebrew is not an option, you can also download and compile the [OpenConnect source code](/mirror/#openconnect).
-1. Download the [server certificate](/openconnect/ca-cert.pem) file, and a [client certificate file](#clientcerts) from the list above.
+1. Download the [server certificate](/openconnect/ca.crt) file, and a [client certificate file](#clientcerts) from the list above.
 1. Place the downloaded server certificate and a selected client certificate into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
 1. Run OpenConnect:
 
-  `sudo openconnect --cafile ca-cert.pem --certificate your-client-certificate.p12 --key-password 'your-client-certificate-password' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
+  `sudo openconnect --cafile ca.crt --certificate your-client-certificate.p12 --key-password 'your-client-certificate-password' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 
@@ -77,7 +77,7 @@ Client certificates are a mechanism by which clients can authenticate themselves
 
    `sudo apt-get install network-manager-openconnect-gnome`
 1. Download the server certificate file:
-   * [ca-cert.pem](/openconnect/ca-cert.pem)
+   * [ca.crt](/openconnect/ca.crt)
 1. Open your *System Settings*.
 1. Click the *Network* icon.
 1. Click the *+* button in the lower-left of the window.
@@ -85,7 +85,7 @@ Client certificates are a mechanism by which clients can authenticate themselves
 1. Select *Cisco AnyConnect Compatible VPN (openconnect)* and click *Create*.
 1. Enter `{{ streisand_server_name }}` for the *Connection name*.
 1. Enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}` for the *Gateway*.
-1. Select the `ca-cert.pem` file that you just downloaded for the *CA Certificate*.
+1. Select the `ca.crt` file that you just downloaded for the *CA Certificate*.
 1. Click *Save*.
 1. Select the VPN in the left-hand menu, and flip the switch to *ON*. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to *VPN Connections*, and clicking on its name.
 1. Enter `streisand` for the *Username* and click *Login*.
