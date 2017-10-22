@@ -25,7 +25,7 @@ if ! pip >/dev/null; then
    echo "
 You need a working 'pip' command. To get one:
 
-On Ubuntu and WSL: (XXX debian?)
+On Ubuntu and WSL:
    sudo apt-get install python-pip
 
 On macOS:
@@ -94,7 +94,7 @@ our_pip_install --upgrade pip
 # The pip we want should be in our path now. Make sure we use it.
 hash -r
 
-our_pip_install "ansible"
+our_pip_install ansible
 
 packages="$(cat <<EOF
 boto boto3
@@ -113,10 +113,13 @@ our_pip_install $packages
 echo "
 *************
 
-All dependencies installed into $1. To use this environment, run 
-this in your shell before running Streisand:
+All dependencies installed into $1. To use this environment, run this
+in your shell:
 
     source \"$1/bin/activate\"
+
+You need to do this once in every terminal window you plan to run the
+command './streisand' in.
 
 After you've run that, you're ready to run ./streisand.
 "
