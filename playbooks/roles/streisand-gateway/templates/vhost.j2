@@ -1,6 +1,6 @@
 # SSL Gateway
 server {
-  listen 127.0.0.1:{{ nginx_port }} default_server ssl;
+  listen 127.0.0.1:{{ nginx_port }} default_server ssl http2;
 
 {% if le_ok %}
   ssl_certificate      {{ le_certificate }};
