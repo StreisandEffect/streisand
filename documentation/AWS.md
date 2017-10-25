@@ -10,7 +10,7 @@ IAM Policy Setup
 * Create a IAM Policy
 ![](screenshots/AWS/IAMPolicy2.png?raw=true)
 
-* Write a name and description in for the policy, paste in the below policy document, then create the policy by clicking the button in the lower right corner.
+* Write a name and description for the policy, paste in the below policy document, then create the policy by clicking the button in the lower right corner.
 ![](screenshots/AWS/IAMPolicy3.png?raw=true)
 
 ```
