@@ -185,6 +185,34 @@ The server must be accessible using the `$HOME/id_rsa` SSH Key, and **root** is 
 
 **Note:** Running Streisand against an existing server can be a destructive action! You will be potentially overwriting configuration files and must be certain that you are affecting the correct machine.
 
+### Noninteractive Deployment (Advanced) ###
+
+Alternative scripts and configuration file examples are provided for
+noninteractive deployment, in which all of the required information is passed
+on the command line or in a configuration file.
+
+Example configuration files are found under `global_vars/noninteractive`. Copy
+and edit the desired parameters, such as providing API tokens and other choices,
+and then run the appropriate script.
+
+To deploy a new Streisand server:
+
+      deploy/streisand-new-cloud-server.sh \
+        --provider digitalocean \
+        --site-config global_vars/noninteractive/digitalocean-site.yml
+
+To run the Streisand provisioning on the local machine:
+
+      deploy/streisand-local.sh \
+        --site-config global_vars/noninteractive/local-site.yml
+
+To run the Streisand provisioning against an existing server:
+
+      deploy/streisand-existing-cloud-server.sh \
+        --ip-address 10.10.10.10 \
+        --ssh-user root \
+        --site-config global_vars/noninteractive/digitalocean-site.yml
+
 Upcoming Features
 -----------------
 * Easier setup.

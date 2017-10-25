@@ -1,0 +1,79 @@
+---
+# Example site specific configuration for a noninteractive Google Compute Engine
+# deployment.
+#
+# Copy this and edit it as needed before running streisand-new-cloud-server.
+#
+
+streisand_noninteractive: true
+confirmation: true
+
+# The SSH private key that Ansible will use to connect to the Streisand node.
+streisand_ssh_private_key: "~/.ssh/id_rsa"
+
+vpn_clients: 5
+
+streisand_l2tp_enabled: yes
+streisand_openconnect_enabled: yes
+streisand_openvpn_enabled: yes
+streisand_shadowsocks_enabled: yes
+streisand_ssh_forward_enabled: yes
+# By default sshuttle is disabled because it creates a `sshuttle` user that has
+# full shell privileges on the Streisand host
+streisand_sshuttle_enabled: no
+streisand_stunnel_enabled: yes
+streisand_tinyproxy_enabled: yes
+streisand_tor_enabled: yes
+streisand_wireguard_enabled: yes
+
+# Server location:
+#
+# 1. Central US            (Iowa A)
+# 2. Central US            (Iowa B)
+# 3. Central US            (Iowa C)
+# 4. Central US            (Iowa F)
+# 5. Eastern US            (Northern Virginia B)
+# 6. Eastern US            (Northern Virginia C)
+# 7. Eastern US            (Northern Virginia D)
+# 8. Eastern US            (South Carolina B)
+# 9. Eastern US            (South Carolina C)
+# 10. Eastern US           (South Carolina D)
+# 11. Western US           (Oregon A)
+# 12. Western US           (Oregon B)
+# 13. Western Europe       (Belgium B)
+# 14. Western Europe       (Belgium C)
+# 15. Western Europe       (Belgium D)
+# 16. East Asia            (Taiwan A)
+# 17. East Asia            (Taiwan B)
+# 18. East Asia            (Taiwan C)
+# 19. Northeast Asia       (Tokyo A)
+# 20. Northeast Asia       (Tokyo B)
+# 21. Northeast Asia       (Tokyo C)
+# 22. Southeast Asia       (Singapore A)
+# 23. Southeast Asia       (Singapore B)
+# 24. Southeast Australia  (Sydney A)
+# 25. Southeast Australia  (Sydney B)
+# 26. Southeast Australia  (Sydney C)
+# 27. South America        (São Paulo A)
+# 28. South America        (São Paulo B)
+# 29. South America        (São Paulo C)
+#
+# Note: gce_zone_var must be a number in quotes, e.g. "3" not 3.
+gce_zone_var: "3"
+
+gce_server_name: streisand
+
+# The full path of your unique service account credentials file. See:
+# https://docs.ansible.com/ansible/guide_gce.html#credentials
+# https://support.google.com/cloud/answer/6158849?hl=en&ref_topic=6262490#serviceaccounts
+gce_json_file_location: ""
+
+# Definitions needed for Let's Encrypt HTTPS (or TLS) certificate setup.
+#
+# If these are both left as empty strings, Let's Encrypt will not be set up and
+# a self-signed certificate will be used instead.
+#
+# The domain to use for Let's Encrypt certificate.
+streisand_domain_var: ""
+# The admin email address for Let's Encrypt certificate registration.
+streisand_admin_email_var: ""

@@ -1,0 +1,68 @@
+---
+# Example site specific configuration for a noninteractive Digital Ocean
+# deployment.
+#
+# Copy this and edit it as needed before running streisand-new-cloud-server.
+#
+
+streisand_noninteractive: true
+confirmation: true
+
+# The SSH private key that Ansible will use to connect to the Streisand node.
+#
+# The corresponding public key must be added to the Digital Ocean control panel
+# and the name given to it referenced below in the do_ssh_name variable.
+# The corresponding public key must be uploaded to Digital Ocean and the name
+# given to it referenced below in the do_ssh_name variable.
+streisand_ssh_private_key: "~/.ssh/id_rsa"
+
+vpn_clients: 5
+
+streisand_l2tp_enabled: yes
+streisand_openconnect_enabled: yes
+streisand_openvpn_enabled: yes
+streisand_shadowsocks_enabled: yes
+streisand_ssh_forward_enabled: yes
+# By default sshuttle is disabled because it creates a `sshuttle` user that has
+# full shell privileges on the Streisand host
+streisand_sshuttle_enabled: no
+streisand_stunnel_enabled: yes
+streisand_tinyproxy_enabled: yes
+streisand_tor_enabled: yes
+streisand_wireguard_enabled: yes
+
+# The Digital Ocean region number.
+#
+# 1.  Amsterdam        (Datacenter 2)
+# 2.  Amsterdam        (Datacenter 3)
+# 3.  Bangalore
+# 4.  Frankfurt
+# 5.  London
+# 6.  New York         (Datacenter 1)
+# 7.  New York         (Datacenter 2)
+# 8.  New York         (Datacenter 3)
+# 9.  San Francisco    (Datacenter 1)
+# 10. San Francisco    (Datacenter 2)
+# 11. Singapore
+# 12. Toronto
+#
+# Note: do_region must be a number in quotes, e.g. "2" not 2.
+do_region: "2"
+
+do_server_name: streisand
+
+# Add the Digital Ocean access token here.
+do_access_token_entry: ""
+
+# The name given to the key in the DigitalOcean control panel.
+do_ssh_name: streisand
+
+# Definitions needed for Let's Encrypt HTTPS (or TLS) certificate setup.
+#
+# If these are both left as empty strings, Let's Encrypt will not be set up and
+# a self-signed certificate will be used instead.
+#
+# The domain to use for Let's Encrypt certificate.
+streisand_domain_var: ""
+# The admin email address for Let's Encrypt certificate registration.
+streisand_admin_email_var: ""
