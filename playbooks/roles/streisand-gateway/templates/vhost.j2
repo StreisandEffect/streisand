@@ -42,6 +42,10 @@ server {
 
   root  {{ streisand_gateway_location }};
   index index.html index.htm;
+  
+  location / {
+    autoindex off; 
+  }
 
   location /monit/ {
     rewrite ^/monit/(.*) /$1 break;
