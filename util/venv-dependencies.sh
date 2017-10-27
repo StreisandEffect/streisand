@@ -96,9 +96,14 @@ hash -r
 
 our_pip_install ansible
 
+# Python dependencies for various providers. Note that
+# "ansible[azure]" means "install ansible, and add additional
+# dependencies packages from ansible's 'azure' set. Since ansible is
+# already installed (see above), this just means "Azure dependencies".
+
 packages="$(cat <<EOF
 boto boto3
-msrest msrestazure azure==2.0.0rc5 packaging
+ansible[azure]
 dopy==0.3.5
 apache-libcloud>=1.5.0
 linode-python
