@@ -135,7 +135,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
         sudo pip install boto
   * 微软云服务
 
-        sudo pip install msrest msrestazure azure==2.0.0rc5 packaging
+        sudo pip install ansible[azure]
   * DigitalOcean
 
         sudo pip install dopy==0.3.5

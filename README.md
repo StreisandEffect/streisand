@@ -138,7 +138,7 @@ Complete all of these tasks on your local home machine.
         sudo pip install boto
   * Azure
 
-        sudo pip install msrest msrestazure azure==2.0.0rc5 packaging
+        sudo pip install ansible[azure]
   * DigitalOcean
 
         sudo pip install dopy==0.3.5
