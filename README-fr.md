@@ -48,6 +48,7 @@ Services fournis
 * [OpenSSH](http://www.openssh.com/)
   * Les tunnels Windows et Androïde SSH sont également pris en charge et une copie des clés sont exportée dans le format .ppk que PuTTY requiert.
   * [Tinyproxy](https://banu.com/tinyproxy/) est installé et lié à localhost. Il peut être accédé sur un tunnel SSH par des programmes qui ne prennent pas en charge nativement SOCKS et qui nécessitent un proxy HTTP, comme Twitter pour Androïde.
+  * Un utilisateur de transfert non privilégié et une paire paire de clés asymétriques SSH sont générés pour les fonctionnalités [sshuttle](https://github.com/sshuttle/sshuttle) et SOCKS.
 * [OpenConnect](http://www.infradead.org/ocserv/index.html)/[Cisco AnyConnect](http://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
   * OpenConnect (ocserv) est un serveur VPN extrêmement performant et léger qui offre également une compatibilité totale avec les clients officiels Cisco AnyConnect.
   * Le [protocole](http://www.infradead.org/ocserv/technical.html) est bâti sur des standards comme HTTP, TLS et DTLS, et c'est l'une des technologies VPN les plus populaires et largement utilisées parmi des grands entreprises multi-nationales.
@@ -135,7 +136,7 @@ Effectuez toutes ces tâches sur votre machine locale.
             sudo pip install boto
   * Azure
 
-            sudo pip install msrest msrestazure azure==2.0.0rc5 packaging
+            sudo pip install ansible[azure]
   * DigitalOcean
 
             sudo pip install dopy==0.3.5
