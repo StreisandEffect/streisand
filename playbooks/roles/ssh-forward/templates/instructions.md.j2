@@ -4,7 +4,7 @@ SSH Tunnel
 ---
 * Platforms
   * [Windows](#windows)
-  * [Linux and OS X](#linux-and-osx)
+  * [Linux and macOS](#linux-and-macos)
 {% if streisand_tinyproxy_enabled %}
   * [Android](#android)
 {% endif %}
@@ -55,8 +55,8 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Click *OK* again to close the Firefox preferences window.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
-<a name="linux-and-osx"></a>
-### Linux and OS X ###
+<a name="linux-and-macos"></a>
+### Linux and macOS ###
 1. Download the `streisand_rsa` private key that is used to authenticate the SSH connection:
    * [streisand\_rsa](/ssh/streisand_rsa)
 1. Copy the `streisand_rsa` file to the directory of your choice.

@@ -4,7 +4,7 @@
 [English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Miroir](https://area51.threeletter.agency/mirrors/streisand) | [Miroir 2](https://gitlab.com/alimakki/streisand)
 - - -
 
-[![Build Status](https://travis-ci.org/jlund/streisand.svg?branch=master)](https://travis-ci.org/jlund/streisand)
+[![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
 
 Streisand
 =========
@@ -42,7 +42,7 @@ Services fournis
 ----------------
 * L2TP/IPsec en utilisant [Libreswan](https://libreswan.org/) et [xl2tpd](https://www.xelerance.com/software/xl2tpd/)
   * Une clé et un mot de passe pré-partagés choisis au hasard sont générés.
-  * Les utilisateurs Windows, OS X, Androïde et iOS peuvent tous se connecter en utilisant le support VPN natif intégré à chaque système d'exploitation sans installer de logiciel supplémentaire.
+  * Les utilisateurs Windows, macOS, Androïde et iOS peuvent tous se connecter en utilisant le support VPN natif intégré à chaque système d'exploitation sans installer de logiciel supplémentaire.
 * [Monit](https://mmonit.com/monit/)
   * Surveille la santé du processus et redémarre automatiquement les services dans le cas improbable où ils se plante ou ne répondent pas.
 * [OpenSSH](http://www.openssh.com/)
@@ -94,8 +94,8 @@ Dans certains cas, les utilisateurs avancés peuvent opter pour le mode de provi
 ### Prérequis ###
 Effectuez toutes ces tâches sur votre machine locale.
 
-* Streisand nécessite un système BSD, Linux ou OS X. À partir de maintenant, Windows n'est pas soutenu. Toutes les commandes suivantes doivent être exécutées à l'intérieur d'une session Terminal.
-* Python 2.7 est nécessaire. Cela est standard sur OS X, et est la valeur par défaut sur presque toutes les distributions Linux et BSD. Si votre distribution emploie Python 3 à la place, vous devrez installer la version 2.7 pour que Streisand fonctionne correctement.
+* Streisand nécessite un système BSD, Linux ou macOS. À partir de maintenant, Windows n'est pas soutenu. Toutes les commandes suivantes doivent être exécutées à l'intérieur d'une session Terminal.
+* Python 2.7 est nécessaire. Cela est standard sur macOS, et est la valeur par défaut sur presque toutes les distributions Linux et BSD. Si votre distribution emploie Python 3 à la place, vous devrez installer la version 2.7 pour que Streisand fonctionne correctement.
 * Assurez-vous qu'une clé SSH est présente dans ~/.ssh/id\_rsa.pub.
   * Si vous n'avez pas de clé SSH, vous pouvez en générer une en utilisant cette commande et en suivant les valeurs par défaut:
 
@@ -107,7 +107,7 @@ Effectuez toutes ces tâches sur votre machine locale.
   * Sur Fedora
 
             sudo yum install git
-  * Sur OS X (via [Homebrew](http://brew.sh/))
+  * Sur macOS (via [Homebrew](http://brew.sh/))
 
             brew install git
 * Installez le système de gestion de paquets [pip](https://pip.pypa.io/en/latest/) pour Python.
@@ -117,13 +117,13 @@ Effectuez toutes ces tâches sur votre machine locale.
   * Sur Fedora
 
             sudo yum install python-pip
-  * Sur OS X
+  * Sur macOS
 
             sudo easy_install pip
             sudo pip install pycurl
 
 * Installez [Ansible](http://www.ansible.com/home).
-  * Sur OS X (via [Homebrew](http://brew.sh/))
+  * Sur macOS (via [Homebrew](http://brew.sh/))
 
             brew install ansible
   * Sur BSD ou Linux (via pip)
@@ -156,7 +156,7 @@ Effectuez toutes ces tâches sur votre machine locale.
 ### Exécution ###
 1. Clonez le répertoire Streisand et entrez dans le répertoire.
 
-        git clone https://github.com/jlund/streisand.git && cd streisand
+        git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 2. Exécuter le script Streisand.
 
         ./streisand
@@ -180,19 +180,27 @@ Le serveur doit être accessible en utilisant la clé SSH `$HOME/id_rsa`, avec *
 
 Nouvelles fonctionnalités à venir
 ---------------------------------
-* Sélection et isolement des rôles, vous permettant de choisir quels services sont installés.
 * Configuration simplifiée.
 
-S'il ya quelque chose que vous pensez que Streisand devrait faire, ou si vous trouviez un bug dans sa documentation ou son exécution, s'il vous plaît déposer un rapport sur le [Issue Tracker](https://github.com/jlund/streisand/issues).
+S'il ya quelque chose que vous pensez que Streisand devrait faire, ou si vous trouviez un bug dans sa documentation ou son exécution, s'il vous plaît déposer un rapport sur le [Issue Tracker](https://github.com/StreisandEffect/streisand/issues).
+
+Contributeurs principaux
+------------------------
+* Jay Carlson (@nopdotcom)
+* Nick Clarke (@nickolasclarke)
+* Joshua Lund (@jlund)
+* Ali Makki (@alimakki)
+* Daniel McCarney (@cpu)
+* Corban Raun (@CorbanR)
 
 Remerciements
 -------------
-[Jason A. Donenfeld](https://www.zx2c4.com/) mérite beaucoup de crédit pour être assez courageux à réimaginer ce qu'est un VPN moderne devrait ressembler et pour mettre au monde quelque chose aussi épatant que [WireGuard](https://www.wireguard.com/). Il a mes sincères remerciements pour toute son aide, patience et ses commentaires.
+[Jason A. Donenfeld](https://www.zx2c4.com/) mérite beaucoup de crédit pour être assez courageux à réimaginer ce qu'est un VPN moderne devrait ressembler et pour mettre au monde quelque chose aussi épatant que [WireGuard](https://www.wireguard.com/). Il a nos sincères remerciements pour toute son aide, patience et ses commentaires.
 
 [Corban Raun](https://github.com/CorbanR) à eu la gentillesse de me prêter un ordinateur portable Windows qui m'a permi de tester et d'affiner les instructions pour cette plate-forme, aussi bien qu'il était un grand partisan du projet dès le début.
 
-Je ne peux pas exprimer à quel point je suis reconnaissant à [Trevor Smith](https://github.com/trevorsmith) pour ses contributions massives au projet. Il a suggéré l'approche passerelle, fourni des tonnes de commentaires inestimable, a fait *tout* pour apparaître mieux, et développé le modèle HTML qui a servi d'inspiration pour faire passer les choses au niveau suivant avant la diffusion publique de Streisand. J'ai également apprécié l'utilisation fréquente de son iPhone tout en testant des clients divers.
+Nous sommes reconnaissants à [Trevor Smith](https://github.com/trevorsmith) pour ses contributions massives au projet. Il a suggéré l'approche passerelle, fourni des tonnes de commentaires inestimable, a fait *tout* pour apparaître mieux, et développé le modèle HTML qui a servi d'inspiration pour faire passer les choses au niveau suivant avant la diffusion publique de Streisand. J'ai également apprécié l'utilisation fréquente de son iPhone tout en testant des clients divers.
 
 Un grand merci à [Paul Wouters](https://nohats.ca/) de [The Libreswan Projet](https://libreswan.org/) à son aide généreuse pour le débogage des configurations d'L2TP/IPsec.
 
-En travaillant sur Streisand, j'ai écouté l'album 'Sunset Blood' de [Starcadian](http://starcadian.com/) environ 300 fois en répétition.
+L'album 'Sunset Blood' de [Starcadian](http://starcadian.com/) a été répété environ 300 fois au cours des premiers mois de travail sur le projet au début de 2014.

@@ -9,25 +9,23 @@ sudo: required
 env:
   global:
     - ANSIBLE_CONFIG=tests/ansible.cfg
+  matrix:
+    - RUN="shellcheck yamlcheck syntax ci" SITE="global_vars/default-site.yml"
+    - RUN="ci" SITE="tests/site_vars/l2tp.yml"
+    - RUN="ci" SITE="tests/site_vars/openconnect.yml"
+    - RUN="ci" SITE="tests/site_vars/openvpn.yml"
+    - RUN="ci" SITE="tests/site_vars/shadowsocks.yml"
+    - RUN="ci" SITE="tests/site_vars/ssh.yml"
+    - RUN="ci" SITE="random"
 
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install python-pip python-dev ca-certificates shellcheck -qq
 
 install:
-  - pip install ansible==2.3.0.0
+  - pip install ansible==2.4.0.0
   - pip install urllib3 yamllint
   - ansible --version
 
 script:
-  # Travis will run all `script` tasks even if one fails. In order to have the
-  # first failure terminate the build we list each script step with the shell
-  # `&&` operator as one script task.
-  #
-  # https://docs.travis-ci.com/user/customizing-the-build/#Customizing-the-Build-Step
-  #
-  # * ./tests/shellcheck.sh tests for shell script errors for all *.sh files
-  # * ./tests/yamlcheck.sh tests for yaml errors for all *.yml files
-  # * ./tests/test.sh syntax will check for Ansible syntax errors
-  # * ./tests/test.sh ci will install dev dependencies and run the ci playbooks
-  - ./tests/shellcheck.sh && ./tests/yamlcheck.sh && ./tests/tests.sh syntax && ./tests/tests.sh ci
+  - ./tests/tests.sh

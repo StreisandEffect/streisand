@@ -2,8 +2,8 @@
 - set_fact:
     streisand_genesis_role: "genesis-linode"
 
-- name: Get the default SSH key
-  command: cat ~/.ssh/id_rsa.pub
+- name: "Get the {{ streisand_ssh_private_key }}.pub contents"
+  command: "cat {{ streisand_ssh_private_key }}.pub"
   register: ssh_key
   changed_when: False
 
@@ -14,6 +14,7 @@
     plan: "{{ linode_plan_id }}"
     datacenter: "{{ regions[linode_datacenter] }}"
     distribution: "{{ linode_distribution_id }}"
+    kernel_id: "{{ linode_kernel_id }}"
     ssh_pub_key: "{{ ssh_key.stdout }}"
     alert_cpu_threshold: "{{ linode_alert_cpu_threshold }}"
     alert_diskio_threshold: "{{ linode_alert_diskio_threshold }}"

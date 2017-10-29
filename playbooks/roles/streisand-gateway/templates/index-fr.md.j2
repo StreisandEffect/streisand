@@ -4,7 +4,7 @@
 {% endfor %}
 - - -
 
-Bienvenue sur le serveur passerelle **{{streisand_server_name}}** de [Streisand](https://github.com/jlund/streisand). Vous n'êtes qu'à quelques minutes d'une connexion libre et non-censurée à l'internet.
+Bienvenue sur le serveur passerelle **{{streisand_server_name}}** de [Streisand](https://github.com/StreisandEffect/streisand). Vous n'êtes qu'à quelques minutes d'une connexion libre et non-censurée à l'internet.
 
 Instructions de connexion
 -------------------------
@@ -37,6 +37,7 @@ Il existe de multiples façons de contourner la censure, et Streisand vous propo
 * [WireGuard](/wireguard/index-fr.html)
 {% endif %}
 
+{% if streisand_mirrored_clients %}
 Miroirs des clients
 -------------------
 ---
@@ -60,4 +61,6 @@ Vous pouvez télécharger le logiciel client nécessaire directement auprès de 
 {% endif %}
 {% if streisand_tor_enabled %}
 * [Tor Browser Bundle](/mirror/tor/index-fr.html)
+{% endif %}
+
 {% endif %}

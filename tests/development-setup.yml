@@ -4,10 +4,6 @@
   remote_user: root
   become: yes
   pre_tasks:
-    - name: Perform global vars sanity check
-      include_role:
-        name: validation
-
     # NOTE(@alimakki): Due to key rotation, we pre-emptivley
     # add the Google linux apt signing key required by some
     # packages
@@ -32,6 +28,12 @@
         url: "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xD5495F657635B973"
         state: present
 
+    # If l2tp is enabled we need to build & prepare the Libreswan kernel module
+    # on the localhost in order for it to be usable by the container
+    - name: Install Libreswan to support L2TP in container
+      include_tasks: libreswan-setup.yml
+      when: streisand_l2tp_enabled
+
     # NOTE(@cpu): We use the `command` module with the `add-apt-repository`
     # command here because the `apt_repository` Ansible module at the time of
     # writing will error on the ubuntu-lxc repo in some instances if a mirror is
@@ -44,63 +46,6 @@
       with_items:
         - "apt-get clean"
         - "apt-get update"
-
-    # Since LXC loads kernal modules from the host, we need to ensure libreswan is compiled and installed
-    - name: Install the Libreswan dependencies that are required for compilation
-      apt:
-        name: "{{ item }}"
-      with_items: "{{ libreswan_compilation_dependencies_trusty }}"
-      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
-
-    - name: Include Libreswan vars
-      include_vars: "../playbooks/roles/l2tp-ipsec/vars/main.yml"
-
-    - name: Install the Libreswan dependencies that are required for compilation
-      apt:
-        name: "{{ item }}"
-      with_items: "{{ libreswan_compilation_dependencies }}"
-      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
-
-    - name: Install xmlto (without the extraordinarily large number of packages it normally recommends)
-      apt:
-        name: xmlto
-        install_recommends: no
-
-    - name: Retrieve the Libreswan source code
-      include_role:
-        name: download-and-verify
-      vars:
-        project_name: "The Libreswan Project"
-        project_signer: "The Libreswan team"
-        project_signing_key: "{{ libreswan_developers_key_id }}"
-        project_expected_fingerprint: "{{ libreswan_developers_expected_fingerprint }}"
-        project_download_location: "{{ libreswan_src_directory }}"
-        project_download_urls: "{{ libreswan_download_urls }}"
-
-    - name: Extract the Libreswan source code
-      unarchive:
-        copy: no
-        src: "{{ libreswan_source_location }}"
-        dest: /usr/local/src
-        owner: root
-        group: root
-        creates: "{{ libreswan_compilation_directory }}/README"
-
-    - name: Compile and install Libreswan (this will take a while)
-      shell: make -j {{ ansible_processor_cores }} programs && make install
-      args:
-        chdir: "{{ libreswan_compilation_directory }}"
-
-    - name: Start ipsec
-      service:
-        name: ipsec
-        state: started
-        enabled: yes
-      register: ipsec_start
-
-    - name: Pause for a few seconds to let ipsec start
-      pause:
-        seconds: 5
 
     - name: Install lxd
       apt:
@@ -135,7 +80,7 @@
         path: /var/lib/lxd/unix.socket
         mode: "0777"
 
-    - name: Launch streisand container(This will take a while)
+    - name: Launch streisand container (this will take a while)
       lxd_container:
         name: streisand
         state: started

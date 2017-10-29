@@ -1,7 +1,7 @@
 <!--
 
 Please share the contents of this file when you open a new Streisand issue
-https://github.com/jlund/streisand-discussions/issues/ 
+https://github.com/StreisandEffect/streisand-discussions/issues/ 
 
 It will help the developers reproduce your problem and provide a fix.
 -->
@@ -48,6 +48,7 @@ It will help the developers reproduce your problem and provide a fix.
 * Streisand Git revision: {{ streisand_diagnostics_git_rev.stdout }}
 * Streisand Git clone has untracked changes: {{ streisand_diagnostics_git_untracked.stdout }}
 * Genesis role: {{ streisand_genesis_role | default("None") }}
+* Custom SSH key: {{ streisand_ssh_private_key != "~/.ssh/id_rsa" }}
 
 ### Enabled Roles
 

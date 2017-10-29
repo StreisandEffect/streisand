@@ -1,7 +1,7 @@
 ---
 
 # Install the WireGuard PPA and packages
-- include: "../../wireguard/tasks/install.yml"
+- import_tasks: "../../wireguard/tasks/install.yml"
 
 - name: "Download the WireGuard wg0-client config file"
   get_url:

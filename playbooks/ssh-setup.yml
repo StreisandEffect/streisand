@@ -1,0 +1,7 @@
+---
+- name: Configure Ansible SSH
+  hosts: streisand-host
+  gather_facts: no
+  tasks:
+    - set_fact:
+        ansible_ssh_private_key_file: "{{ streisand_ssh_private_key }}"
