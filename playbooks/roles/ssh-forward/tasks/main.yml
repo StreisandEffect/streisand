@@ -38,7 +38,7 @@
 
 - name: Authorize the sshuttle users's key for accessing the sshuttle user
   authorized_key:
-    user: forward
+    user: sshuttle
     # NOTE(@cpu): Unlike the forward user the sshuttle user does not have
     # a ssh_force_comamnd in the ssh authorized keys file. This means the
     # sshuttle user is a *full* shell user and can SSH in. They don't have root
