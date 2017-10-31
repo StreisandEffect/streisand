@@ -55,7 +55,6 @@ Streisand介绍
 * [OpenVPN](https://openvpn.net/index.php/open-source.html)
   * 从自带的 .ovpn 配置文件生成一个简单的客户端配置文件；
   * 同时支持 TCP 和 UDP 连接；
-  * 多个客户端可以分享相同的证书和密钥。但默认生成5个单独的配置；
   * 客户端的 DNS 解析由 [Dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html) 负责，避免 DNS 泄露；
   * 启用 TLS 认证，有助于防止主动探测攻击。错误的 HMAC 流量并不会被轻易丢弃。
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
