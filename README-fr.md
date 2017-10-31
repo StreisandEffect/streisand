@@ -56,7 +56,6 @@ Services fournis
 * [OpenVPN](https://openvpn.net/index.php/open-source.html)
   * Des profils autonome "unifiés" .ovpn sont générés pour une configuration de client facile en utilisant un seul fichier.
   * Les connexions TCP et UDP sont prises en charge.
-  * Plusieurs clients peuvent facilement partager les mêmes certificats et clés, mais cinq ensembles distincts sont générés par défaut.
   * La résolution DNS du client est gérée via [Dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html) pour empêcher les fuites DNS.
   * L'authentification TLS est activée, ce qui permet de vous protéger contre les attaques actives. Le trafic qui n'a pas de HMAC approprié est simplement abandonné.
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
