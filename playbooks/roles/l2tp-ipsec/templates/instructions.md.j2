@@ -16,6 +16,46 @@ If the connection appears to time out, first check to make sure the passwords we
 
 <a name="windows"></a>
 ### Windows ###
+
+In order to follow the quick directions, you'll need to use Windows PowerShell ISE. To start it:
+
+1. Look in the *Start* menu, under *Windows PowerShell*.
+1. Right-click on *PowerShell ISE*, and choose "Run as administrator"
+
+#### Windows and NAT ####
+
+If you are connecting from behind a NAT (such as a home router), you need to add a setting to tell Windows to expect the NAT.
+
+Start PowerShell ISE. In the ISE command window, paste the following code, and press *Enter*.
+
+```
+Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\PolicyAgent -Name AssumeUDPEncapsulationContextOnSendRule -Value 2 -Type DWord
+```
+
+If you aren't using PowerShell, you could use `regedit` to add and set the value of `AssumeUDPEncapsulationContextOnSendRule`.
+
+#### Registering the VPN using PowerShell ####
+
+Open *PowerShell ISE* and paste this block into the command window:
+
+```
+Add-VpnConnection -Name {{ streisand_server_name }} -ServerAddress {{ streisand_ipv4_address }} -AuthenticationMethod Chap -EncryptionLevel Optional -TunnelType L2tp -Force -RememberCredential -L2tpPsk {{ ipsec_preshared_key.stdout }}
+```
+
+Windows will print a warning about EAP/MS-CHAPv2. Ignore it.
+
+#### Connecting to the VPN ####
+
+1. Click on the *Network* icon in the task bar (***Windows 10 only?***). There should be an entry for `{{ streisand_server_name }}`.
+1. When prompted for a username, use `streisand`
+1. When prompted for a password, use `{{ chap_password.stdout }}`
+
+You should not be prompted for the username/password again. Skip down to [Checking your connection](#wincheck).
+
+### Manual VPN configuration ###
+
+If you don't want to use PowerShell, you can configure the VPN by hand. ***(Directions were always wrong for Windows 10.)***
+
 1. Click on the Start Menu and go to the Control Panel.
 1. Go to the *Network and Internet* section.
 1. Click *View network status and tasks*.
@@ -39,6 +79,9 @@ If the connection appears to time out, first check to make sure the passwords we
 1. Click *OK* to close the *Advanced settings*.
 1. Click *OK* to save the VPN connection details.
 1. To connect to the VPN, simply right-click on the wireless/network icon in your system tray, select *{{ streisand_server_name }}*, and click *Connect*.
+
+<a name="wincheck"></a>
+#### Checking your connection ####
 
 You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
