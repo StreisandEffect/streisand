@@ -3,8 +3,11 @@ server {
   listen 127.0.0.1:{{ nginx_port }} default_server ssl http2;
 
 {% if le_ok %}
-  ssl_certificate      {{ le_certificate }};
-  ssl_certificate_key  {{ le_private_key }};
+  ssl_certificate         {{ le_certificate }};
+  ssl_certificate_key     {{ le_private_key }};
+  ssl_trusted_certificate {{ le_chain }};
+  ssl_stapling on;
+  ssl_stapling_verify on;
 {% else %}
   ssl_certificate      {{ nginx_self_signed_certificate }};
   ssl_certificate_key  {{ nginx_private_key }};
@@ -21,11 +24,9 @@ server {
   ssl_session_timeout  10m;
   ssl_session_cache shared:SSL:10m;
   ssl_session_tickets off;
-  ssl_stapling on;
-  ssl_stapling_verify on;
 
   # resolver
-  resolver 127.0.0.1 valid=300s;
+  resolver {{ upstream_dns_servers | join(' ') }} valid=300s;
   resolver_timeout 5s;
 
   # headers
