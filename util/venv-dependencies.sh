@@ -1,42 +1,109 @@
 #!/bin/bash
 set -e
 
-# quiet=--quiet
 quiet=
+# pip makes a lot of noise when installing. Uncomment the following
+# line to make it a little quieter.
+# quiet=--quiet
 
 #### Options end here.
 
-willexit=
+is_root=""
+if [ "$(id -u)" == "0" ]; then
+    is_root=1
+fi
+
+sudo_command="sudo"
+sudo_for_pip_install="sudo -H"
+
+# If we're root, get rid of sudo--it may not be there...
+if [ -n "$is_root" ]; then
+    sudo_command=""
+    sudo_for_pip_install=""
+fi
+
+invocation_problems=
 if [ "$#" -ne 1 ]; then
    echo "
 Usage: $0 new-directory
 
 This script installs Streisand builder dependencies. It depends on
 a working Python 2.7 'pip' command on your PATH. I'll install 
-virtualenv for you, but on Linux, this requires sudo access.
+virtualenv for you, but on Linux, this requires sudo/root access.
 
 'new-directory' must be somewhere you can write to. I suggest
 $HOME/streisand-deps. 
 "
-   willexit=1
+   invocation_problems=1
 fi
 
-if ! pip >/dev/null; then
+if ! pip >/dev/null 2>&1; then
    echo "
 You need a working 'pip' command. To get one:
 
 On Ubuntu and WSL:
-   sudo apt-get install python-pip
+   $sudo_command apt-get install python-pip
 
 On macOS:
    # If you haven't, install homebrew from https://brew.sh/
    brew install python
 "
-   willexit=1
+   invocation_problems=1
 fi
 
-if [ -n "$willexit" ]; then
+if [ -n "$invocation_problems" ]; then
     exit 1
+fi
+
+hard_detect_dpkg () {
+    dpkg-query --status "$1" 2>/dev/null | grep '^Status:.* installed' >/dev/null
+}
+
+
+check_deb_dependencies () {
+    critical="$(cat <<EOF
+build-essential
+libffi-dev
+python-dev
+python-pip
+EOF
+	)"
+
+    # Imagine there was once a very complicated /usr/bin/comm pipeline here.
+
+    packages_not_found=""
+    for pkg in $critical; do
+	if ! hard_detect_dpkg "$pkg"; then
+	    echo "*** Missing package: $pkg"
+	    packages_not_found+=" $pkg"
+	else
+	    echo "Found: $pkg"
+	fi
+    done
+
+    if [ -n "$packages_not_found" ]; then
+	echo "-------"
+	echo "Setup will fail without these packages. To install them:"
+	echo ""
+	echo -n "$sudo_command apt-get install "
+	# explicitly want word-spliting here
+	# shellcheck disable=SC2086
+	echo $packages_not_found
+	echo
+	exit 1
+    else
+	echo
+	echo "Found all critical packages."
+	echo
+    fi
+}
+
+if [ -f /etc/debian_version ]; then
+    echo
+    echo "This system appears to be running Ubuntu or Debian. Checking"
+    echo "for critical packages."
+    echo
+    check_deb_dependencies
 fi
 
 die () {
@@ -46,7 +113,7 @@ die () {
 
 sudo_pip () {
     # pip complains loudly about directory permissions when sudo without -H.
-    sudo -H pip $quiet "$@"
+    $sudo_for_pip_install pip $quiet "$@"
 }
 
 our_pip () {
@@ -58,7 +125,7 @@ our_pip_install () {
 }
 
 # An easy way to see if Homebrew is installed.
-if brew command command >/dev/null; then
+if brew command command >/dev/null 2>&1; then
     # If it is, we get our virtualenv as a regular user
     our_pip_install virtualenv
 else
@@ -67,7 +134,7 @@ else
     sudo_pip install virtualenv
 fi
 
-# In case we have a new virtualenv.
+# In case we have a new virtualenv executable.
 hash -r
 
 if ! virtualenv "$1"; then
