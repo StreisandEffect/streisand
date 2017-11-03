@@ -172,7 +172,7 @@ packages="$(cat <<EOF
 boto boto3
 ansible[azure]
 dopy==0.3.5
-apache-libcloud>=1.5.0
+apache-libcloud>=1.5.0 pycrypto
 linode-python
 pyrax
 EOF
