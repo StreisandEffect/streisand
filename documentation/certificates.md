@@ -22,16 +22,15 @@ certificate signed by the newly minted certificate authority.
 
 Client
 ------
-Guarded by `generate_client: yes`
+Generate client certificates using the CA from `generate_ca_server: yes`. 
+These client certificates can be used by VPN clients to authenticate with 
+VPN services on the server.
 
-Generate client side certificates using the same CA used for authenticating
-connecting VPN clients.
-
-Client PKCS
------------
+Client (PKCS#11 format)
+-----------------------
 Guarded by `generate_pkcs: yes`
 
-Generate client PKCS files.
+Also convert client certificates into PKCS#12 format.
 
 Infrastructure
 --------------
@@ -50,9 +49,6 @@ OpenConnect CA:
    \__ OpenConnect client 1
    \__ OpenConnect client ...
    \__ OpenConnect client n
-      \__ OpenConnect client PKCS 1
-      \__ OpenConnect client PKCS ...
-      \__ OpenConnect client PKCS n
 
 OpenVPN CA: 
    \__ OpenVPN server cert
