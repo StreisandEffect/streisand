@@ -2,24 +2,44 @@ Streisand PKI
 =============
 
 Streisand includes a role responsible for PKI certificate generation,
-separated into two distinct tasks:
+separated into three heirarchical tasks:
 
- - CA/Server
- - Client(s)
+```
+CA/Server
+   \__ CA Certificate
+     \__ Server certificate
+    \__ Client (1..n)
+      \__ Client PKCS (1..n)
+ 
+```
 
-The first will generate a certificate authority, and a server 
+CA/Server
+---------
+Guarded by `generate_ca_server: yes`
+
+Generate a certificate authority, and a server 
 certificate signed by the newly minted certificate authority.
 
-The latter task is responsible for generating client side certificates
-(using the same CA) used for authenticating connecting VPN clients.
+Client
+------
+Guarded by `generate_client: yes`
 
-Each VPN service that leverages the Streisand PKI generates its
-own CA/Server certificate and client certificates.
+Generate client side certificates using the same CA used for authenticating
+connecting VPN clients.
+
+Client PKCS
+-----------
+Guarded by `generate_pkcs: yes`
+
+Generate client PKCS files.
 
 Infrastructure
 --------------
 
-The overall PKI infrastructure assumes the following structure:
+Note: Each VPN service that invokes the certificates role will generate it's own 
+distinct public key infrastructure.
+
+The overall Streisand PKI infrastructure assumes the following structure:
 
 ```
 Web Root CA: 
@@ -30,6 +50,9 @@ OpenConnect CA:
    \__ OpenConnect client 1
    \__ OpenConnect client ...
    \__ OpenConnect client n
+      \__ OpenConnect client PKCS 1
+      \__ OpenConnect client PKCS ...
+      \__ OpenConnect client PKCS n
 
 OpenVPN CA: 
    \__ OpenVPN server cert
@@ -45,27 +68,16 @@ ISRG X1:
 Usage
 -----
 
-Utilizing the `certificates` role can be invoked as follows (using OpenVPN as an example):
-(If client certificates need to be generated, a directory for each client must be created
-first)
+The `certificates` role can be invoked as follows (using OpenVPN as an example, with variables expanded for brevity):
 
 ```
-- name: Create directories for clients # needed if client certificates are required
-  file:
-    path: "/etc/openvpn/{{ client_name.stdout }}"
-    state: directory
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client_name"
-    label: "{{ client_name.item }}"
-
 - include_role:
     name: certificates
   vars:
     ca_path:            "/etc/openvpn"
     tls_ca:             "/etc/openvpn/ca"
     tls_client_path:    "/etc/openvpn"
-    generate_ca_server: yes
+    generate_ca_server: yes 
     generate_client:    yes
     tls_request_subject:         "/C=US/ST=California/L=Beverly Hills/O=ACME CORPORATION/OU=Anvil Department"
     tls_server_common_name_file: "/etc/openvpn/openvpn-common-name.txt"
@@ -77,6 +89,7 @@ first)
 Note the following flags:
  - `generate_ca_server: yes`
  - `generate_client: yes`
+ - `generate_pkcs: yes`
 
  These must be made explicit, as the default value is `no`; certificates should not be generated unless
  they have to be.
