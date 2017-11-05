@@ -1,0 +1,55 @@
+---
+# Example site specific configuration for a noninteractive Linode deployment.
+#
+# Copy this and edit it as needed before running streisand-new-cloud-server.
+#
+
+streisand_noninteractive: true
+confirmation: true
+
+# The SSH private key that Ansible will use to connect to the Streisand node.
+streisand_ssh_private_key: "~/.ssh/id_rsa"
+
+vpn_clients: 5
+
+streisand_l2tp_enabled: yes
+streisand_openconnect_enabled: yes
+streisand_openvpn_enabled: yes
+streisand_shadowsocks_enabled: yes
+streisand_ssh_forward_enabled: yes
+# By default sshuttle is disabled because it creates a `sshuttle` user that has
+# full shell privileges on the Streisand host
+streisand_sshuttle_enabled: no
+streisand_stunnel_enabled: yes
+streisand_tinyproxy_enabled: yes
+streisand_tor_enabled: yes
+streisand_wireguard_enabled: yes
+
+# Choose the server location.
+# 1. Atlanta
+# 2. Dallas
+# 3. Frankfurt
+# 4. Fremont
+# 5. London
+# 6. Newark
+# 7. Singapore
+# 8. Tokyo
+# 9. Tokyo 2
+#
+# Note: linode_datacenter must be a number in quotes, e.g. "7" not 7.
+linode_datacenter: "7"
+
+linode_server_name: streisand
+
+# Obtain the API key from the Linode Manager console.
+linode_api_key: ""
+
+# Definitions needed for Let's Encrypt HTTPS (or TLS) certificate setup.
+#
+# If these are both left as empty strings, Let's Encrypt will not be set up and
+# a self-signed certificate will be used instead.
+#
+# The domain to use for Let's Encrypt certificate.
+streisand_domain_var: ""
+# The admin email address for Let's Encrypt certificate registration.
+streisand_admin_email_var: ""

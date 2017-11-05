@@ -42,6 +42,7 @@
         - name: Warn about manual provisioning of GCE instances
           pause:
             prompt: "You are running Streisand in an advanced mode against an existing GCE instance. Unlike the standard GCE provisioning mode this means Streisand *CAN NOT* open ports on your behalf. You will need to manually create the correct VPC Network and firewall rules. See 'generated-docs/' for the firewall-information.html file at the end of installation for a list of ports to open. The Streisand maintainers are not able to support this configuration. Press [enter] to continue"
+          when: not streisand_noninteractive
 
         - name: "Find the external GCE IP from Google Metadata"
           # NOTE: We use the command module and `curl` here because (AFAICT)
@@ -66,6 +67,7 @@
         - name: Warn about manual provisioning of EC2 instances
           pause:
             prompt: "You are running Streisand in an advanced mode against an existing Amazon EC2 instance. Unlike the standard EC2 provisioning mode this means Streisand *CAN NOT* open ports on your behalf. You will need to manually assinging this machine to a security group with the correct firewall rules. See 'generated-docs/' for the firewall-information.html file at the end of installation for a list of ports to open. The Streisand maintainers are not able to support this configuration. Press [enter] to continue"
+          when: not streisand_noninteractive
 
             # EC2 Instance Metadata API is explained in the EC2 docs[0].
             # [0]: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
