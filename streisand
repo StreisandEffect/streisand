@@ -61,7 +61,9 @@ function validate() {
 function customize() {
   read -r -p "
 Do you wish to customize which services Streisand will install?
-Please enter the word 'yes' or hit enter to continue: " confirm
+By default Streisand will use the settings configured in $SITE_VARS
+
+Please enter the word 'yes' to customize or hit enter to continue: " confirm
   case "$confirm" in
     yes) echo; echo "Confirmed. Customizing Streisand services.";
          # NOTE(@cpu): We don't pass the other `--extra-vars` here because the
