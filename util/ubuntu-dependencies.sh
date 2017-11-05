@@ -5,7 +5,10 @@ set -e
 
 # This script installs Streisand builder dependencies on an Ubuntu
 # 16.04 system; Debian jessie has been lightly tested. It installs
-# system-wide packages.
+# system-wide packages. As a result, this is most useful on a fresh
+# machine, where conflicting Python packages won't be installed. If
+# you're not on a fresh regular machine, consider using
+# venv-dependencies.sh instead.
 #
 # It's safe to run this script multiple times.
 
@@ -33,6 +36,9 @@ function our_pip_install () {
 sudo apt-get update
 sudo apt-get $quiet upgrade
 
+# Prefer binaries distributed by upstream OS over those in the pip
+# repository.
+
 # We explicitly want word splitting.
 # shellcheck disable=SC2046
 sudo apt-get $quiet install $(cat <<EOF
@@ -44,7 +50,8 @@ python-cffi libffi-dev
 EOF
 )
 
-# Debian doesn't have python-nacl.
+# Debian doesn't have python-nacl. We'll have to accept the pip
+# version.
 if ! sudo apt-get $quiet install python-nacl libssl-dev; then
     our_pip_install pynacl
 fi
@@ -66,7 +73,7 @@ packages="$(cat <<EOF
 boto boto3
 ansible[azure]
 dopy==0.3.5
-apache-libcloud>=1.5.0
+apache-libcloud>=1.5.0 pycrypto
 linode-python
 pyrax
 EOF

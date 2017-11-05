@@ -1,5 +1,11 @@
 #!/bin/bash
+
+# Abort on any error.
 set -e
+
+# Usage: util/venv-dependencies.sh NEW-DIRECTORY
+#
+# See the usage function below.
 
 quiet=
 # pip makes a lot of noise when installing. Uncomment the following
@@ -7,6 +13,27 @@ quiet=
 # quiet=--quiet
 
 #### Options end here.
+
+usage () {
+       echo "
+Usage: $0 new-directory
+
+This script installs Streisand builder dependencies into an isolated
+Python virtualenv. A virtualenv is one of the most reliable ways of
+avoiding version clashes, and is especially recommended for people
+having problems with initial Streisand installs.
+
+It depends on Python 2.7, and on a pip command functional enough to
+install virtualenv.  If this is a system running Debian or Ubuntu,
+this script will also check for other packages needed to install.
+
+This script can install virtualenv for you, but on Linux, this
+requires sudo/root access.
+
+'new-directory' must be somewhere you can write to. A good place may be
+$HOME/streisand-deps. 
+"
+}
 
 is_root=""
 if [ "$(id -u)" == "0" ]; then
@@ -24,16 +51,7 @@ fi
 
 invocation_problems=
 if [ "$#" -ne 1 ]; then
-   echo "
-Usage: $0 new-directory
-
-This script installs Streisand builder dependencies. It depends on
-a working Python 2.7 'pip' command on your PATH. I'll install 
-virtualenv for you, but on Linux, this requires sudo/root access.
-
-'new-directory' must be somewhere you can write to. I suggest
-$HOME/streisand-deps. 
-"
+   usage
    invocation_problems=1
 fi
 
@@ -47,6 +65,10 @@ On Ubuntu and WSL:
 On macOS:
    # If you haven't, install homebrew from https://brew.sh/
    brew install python
+
+On other systems: please see your OS documentation on how to install
+pip.
+
 "
    invocation_problems=1
 fi
@@ -59,7 +81,6 @@ hard_detect_dpkg () {
     dpkg-query --status "$1" 2>/dev/null | grep '^Status:.* installed' >/dev/null
 }
 
-
 check_deb_dependencies () {
     critical="$(cat <<EOF
 build-essential
@@ -67,9 +88,7 @@ libffi-dev
 python-dev
 python-pip
 EOF
-	)"
-
-    # Imagine there was once a very complicated /usr/bin/comm pipeline here.
+)"
 
     packages_not_found=""
     for pkg in $critical; do
