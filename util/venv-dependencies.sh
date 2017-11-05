@@ -23,6 +23,9 @@ Python virtualenv. A virtualenv is one of the most reliable ways of
 avoiding version clashes, and is especially recommended for people
 having problems with initial Streisand installs.
 
+Note that this script is not guaranteed to work for localhost
+deployments. This will be fixed in a later release.
+
 It depends on Python 2.7, and on a pip command functional enough to
 install virtualenv.  If this is a system running Debian or Ubuntu,
 this script will also check for other packages needed to install.
