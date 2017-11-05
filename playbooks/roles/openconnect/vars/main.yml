@@ -1,5 +1,6 @@
 ---
 ocserv_path: "/etc/ocserv"
+ocserv_ca: "{{ ocserv_path }}/ca"
 ocserv_config_file: "{{ ocserv_path }}/config"
 ocserv_firewall_rule: "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -j MASQUERADE"
 
@@ -21,7 +22,7 @@ ocserv_gpg_key_id:             "0x763712747F343FA7"
 ocserv_gpg_key_fingerprint:    "Key fingerprint = 56EE 7FA9 E817 3B19 FE86  268D 7637 1274 7F34 3FA7"
 ocserv_public_key_fingerprint: "1F42 4189 05D8 206A A754  CCDC 29EE 58B9 9686 5171"
 ocserv_sig_extension:          "sig"
-ocserv_version:                "0.11.8"
+ocserv_version:                "0.11.9"
 ocserv_compilation_directory:  "/usr/local/src/ocserv-{{ ocserv_version }}"
 ocserv_source_filename:        "ocserv-{{ ocserv_version }}.tar.xz"
 ocserv_sig_filename:           "{{ ocserv_source_filename }}.{{ ocserv_sig_extension }}"
@@ -38,17 +39,16 @@ ocserv_sig_location:    "/usr/local/src/{{ ocserv_sig_filename }}"
 ocserv_pid_file:    "/var/run/ocserv.pid"
 ocserv_socket_file: "/var/run/ocserv-socket"
 
-ocserv_ca_certificate_file: "{{ ocserv_path }}/ca-cert.pem"
-ocserv_ca_key_file:         "{{ ocserv_path }}/ca-key.pem"
-ocserv_ca_template_file:    "{{ ocserv_path }}/ca.tmpl"
+ocserv_ca_certificate_file: "{{ ocserv_path }}/ca.crt"
+ocserv_ca_key_file:         "{{ ocserv_path }}/ca.key"
 
-ocserv_server_certificate_file: "{{ ocserv_path }}/server-cert.pem"
-ocserv_server_key_file:         "{{ ocserv_path }}/server-key.pem"
-ocserv_server_template_file:    "{{ ocserv_path }}/server.tmpl"
+ocserv_server_certificate_file: "{{ ocserv_path }}/server.crt"
+ocserv_server_key_file:         "{{ ocserv_path }}/server.key"
 
-ocserv_client_name:          "streisand-openconnect-{{ streisand_ipv4_address }}"
+ocserv_hashed_password_file:    "{{ ocserv_path }}/ocpasswd"
+ocserv_password_file:           "{{ ocserv_path }}/ocserv-password"
+ocserv_server_common_name_file: "{{ ocserv_path }}/ocserv_server_common_name"
 
-ocserv_hashed_password_file: "{{ ocserv_path }}/ocpasswd"
-ocserv_password_file:        "{{ ocserv_path }}/ocserv-password"
+ocserv_client_name: "streisand-openconnect-{{ streisand_ipv4_address }}"
 
-ocserv_gateway_location:     "{{ streisand_gateway_location }}/openconnect"
+ocserv_gateway_location: "{{ streisand_gateway_location }}/openconnect"

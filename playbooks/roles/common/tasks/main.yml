@@ -2,7 +2,7 @@
 - name: Warn users if the server's Linux distribution is not Ubuntu 16.04
   pause:
     prompt: "Ubuntu 16.04 is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
-  when: ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04"
+  when: not streisand_noninteractive and (ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04")
 
 # Set default variables
 - import_tasks: set-default-variables.yml

@@ -58,6 +58,11 @@ The `streisand-host` machine is provisioned with the standard Streisand
 playbooks and replicates a Streisand server created with a cloud provider, but
 running on your local computer.
 
+Note that a throwaway SSH key pair is created in the `streisand-host` virtual
+machine in the location specified in the Anisible variable
+`streisand_ssh_private_key`. This is not needed to SSH into the virtual machine
+using `vagrant ssh streisand-host` and is only used by the provisioning process.
+
 The `streisand-client` machine is provisioned specifically to act as a client of
 the `streisand-host`. It connects to the `streiand-host`'s HTTPS gateway to
 download client configuration files that are used by test scripts to ensure that

@@ -8,116 +8,23 @@
     dest: /etc/dnsmasq.d/openvpn.conf
   notify: Restart dnsmasq
 
-- name: Generate RSA keys for the CA and Server
-  command: openssl genrsa -out {{ item }}.key {{ openvpn_key_size }}
-  args:
-    chdir: "{{ openvpn_path }}"
-    creates: "{{ item }}.key"
-  with_items:
-    - ca
-    - server
-
-- name: Create directories for clients
-  file:
-    path: "{{ openvpn_path}}/{{ client_name.stdout }}"
-    state: directory
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client_name"
-    label: "{{ client_name.item }}"
-
-- name: Generate RSA keys for the clients
-  command: openssl genrsa -out client.key {{ openvpn_key_size }}
-  args:
-    chdir: "{{ openvpn_path }}/{{ client_name.stdout }}"
-    creates: client.key
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client_name"
-    label: "{{ client_name.item }}"
-
-- name: Set the proper permissions on all RSA keys
-  file:
-    path: "{{ openvpn_path }}"
-    recurse: yes
-    state: directory
-    owner: root
-    group: root
-    mode: 0600
-
-- name: Generate CA certificate
-  command: openssl req -nodes -batch -new -x509 -key {{ openvpn_ca }}.key -out {{ openvpn_ca }}.crt -days {{ openvpn_days_valid }} -subj "{{ openvpn_request_subject }}/CN=ca-certificate"
-  args:
-    creates: "{{ openvpn_ca }}.crt"
-
-- name: Generate a random server common name
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g' | cut -c 1-64 > {{ openvpn_server_common_name_file }}
-  args:
-    creates: "{{ openvpn_server_common_name_file }}"
-
-- name: Set permissions on the OpenVPN server common name file
-  file:
-    path: "{{ openvpn_server_common_name_file }}"
-    owner: root
-    group: root
-    mode: 0600
+- include_role:
+    name: certificates
+  vars:
+    ca_path:            "{{ openvpn_path }}"
+    tls_ca:             "{{ openvpn_ca }}"
+    tls_client_path:    "{{ openvpn_path }}"
+    generate_ca_server: yes
+    generate_client:    yes
+    tls_request_subject:         "{{ openvpn_request_subject }}"
+    tls_server_common_name_file: "{{ openvpn_server_common_name_file }}"
+    tls_sans:
+      - "{{ streisand_ipv4_address }}"
 
 - name: Register the OpenVPN server common name
-  command: cat {{ openvpn_server_common_name_file }}
+  command: cat "{{ openvpn_server_common_name_file }}"
   register: openvpn_server_common_name
   changed_when: False
-
-- name: Generate the OpenSSL configuration that will be used for the Server certificate's req and ca commands
-  # Properly sets the attributes that are described here:
-  # https://openvpn.net/index.php/open-source/documentation/howto.html#mitm
-  #
-  # This is required for the 'remote-cert-tls server|client' option to
-  # work, which is a recommended practice to help mitigate MITM attacks
-  template:
-    src: openssl-certificate.cnf.j2
-    dest: "{{ openvpn_path }}/openssl-certificate.cnf"
-
-- name: Seed a blank database file that will be used when generating the Server's certificate
-  file:
-    path: "{{ openvpn_path }}/index.txt"
-    state: touch
-
-- name: Seed a serial file that will be used when generating the Server's certificate
-  copy:
-    content: "01"
-    dest: "{{ openvpn_path }}/serial"
-
-- name: Generate CSR for the Server
-  command: openssl req -batch -extensions server -new -key server.key -out server.csr -config {{ openvpn_path }}/openssl-certificate.cnf
-  args:
-    chdir: "{{ openvpn_path }}"
-    creates: server.csr
-
-- name: Generate certificate for the Server
-  command: openssl ca -batch -extensions server -in server.csr -out server.crt -config openssl-certificate.cnf
-  args:
-    chdir: "{{ openvpn_path }}"
-    creates: server.crt
-
-- name: Generate CSRs for the clients
-  command: openssl req -new -extensions client -key client.key -out client.csr -subj "{{ openvpn_request_subject }}/CN={{ client_name.stdout }}" -config {{ openvpn_path }}/openssl-certificate.cnf
-  args:
-    chdir: "{{ openvpn_path }}/{{ client_name.stdout }}"
-    creates: client.csr
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client_name"
-    label: "{{ client_name.item }}"
-
-- name: Generate certificates for the clients
-  command: openssl x509 -extensions client -CA {{ openvpn_ca }}.crt -CAkey {{ openvpn_ca }}.key -CAcreateserial -req -days {{ openvpn_days_valid }} -in client.csr -out client.crt -extfile {{ openvpn_path }}/openssl-certificate.cnf
-  args:
-    chdir: "{{ openvpn_path }}/{{ client_name.stdout }}"
-    creates: client.crt
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client_name"
-    label: "{{ client_name.item }}"
 
 - name: Generate HMAC firewall key
   command: openvpn --genkey --secret {{ openvpn_hmac_firewall }}

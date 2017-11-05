@@ -1,0 +1,9 @@
+---
+- import_tasks: ca-server.yml
+  when: generate_ca_server
+
+- import_tasks: client.yml
+  when: generate_client
+
+- import_tasks: pkcs.yml
+  when: generate_pkcs
