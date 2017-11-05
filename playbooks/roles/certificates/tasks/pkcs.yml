@@ -1,0 +1,42 @@
+---
+- name: "Generate a random password that will be used during the PKCS #12 conversion"
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ tls_client_path }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password
+  args:
+    creates: "{{ tls_client_path }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: "Set permissions on the PKCS #12 password file"
+  file:
+    path: "{{ tls_client_path }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password"
+    owner: root
+    group: root
+    mode: 0600
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: "Register the PKCS #12 passwords"
+  command: cat {{ tls_client_path }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password
+  register: "vpn_client_pkcs12_password_list"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+  changed_when: False
+
+- name: "Convert the keys and certificates into PKCS #12 format"
+  expect:
+    command: certtool --to-p12 --load-privkey {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.key --pkcs-cipher 3des-pkcs12 --load-certificate {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.crt --outfile {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12 --outder
+    responses:
+      "Enter a name for the key": "{{ vpn_client_password.client_name.stdout }}"
+      "Enter password":   "{{ vpn_client_password.stdout }}"
+      "Confirm password": "{{ vpn_client_password.stdout }}"
+    creates: "{{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12"
+  with_items: "{{ vpn_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "vpn_client_password"
+    label: "{{ vpn_client_password.client_name.item }}"

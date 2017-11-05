@@ -20,7 +20,7 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Votre serveur OpenConnect émet son propre __certificat serveur__. Ceci est utilisé par le logiciel du client de votre appareil (tel que AnyConnect pour iOS) afin de  s'identifier de manière sécurisée avec le serveur VPN. Téléchargez le certificat de ce serveur.
    * [ca.crt](/openconnect/ca.crt)
 1. Chaque appareil que vous souhaitez configurer nécessite un __certificat client__ en plus du certificat serveur ci-dessus. Un certificat client est utilisé pour identifier et authentifier de manière sécurisée votre appareil sur le serveur VPN. Deux appareils ne peuvent pas utiliser le même certificat de client et être connectés simultanément (un certificat de client pour chaque appareil). Chaque certificat client est protégé par une mot de passe, qui sera nécessaire pour le déverrouiller une fois que vous l'importez dans votre appareil.
-{% for client in ocserv_client_pkcs12_password_list.results %}
+{% for client in vpn_client_pkcs12_password_list.results %}
    * [{{ client.client_name.stdout }}.p12](/openconnect/{{ client.client_name.stdout }}.p12), mot de passe: `{{ client.stdout }}` 
 {% endfor %}
 
