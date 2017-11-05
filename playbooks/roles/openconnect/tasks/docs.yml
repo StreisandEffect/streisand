@@ -16,7 +16,7 @@
   command: cp {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}.p12 {{ ocserv_gateway_location }}
   args:
     creates: "{{ ocserv_gateway_location }}/{{ ocserv_client_password.client_name.stdout }}.p12"
-  with_items: "{{ ocserv_client_pkcs12_password_list.results }}"
+  with_items: "{{ vpn_client_pkcs12_password_list.results }}"
   loop_control:
     loop_var: "ocserv_client_password"
     label: "{{ ocserv_client_password.client_name.item }}"

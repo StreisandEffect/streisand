@@ -1,4 +1,13 @@
 ---
+- name: Create directories for clients
+  file:
+    path: "{{ tls_client_path }}/{{ client_name.stdout }}"
+    state: directory
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
 - name: Generate the private keys for the client certificates
   command: openssl genrsa -out client.key {{ tls_key_size }}
   args:
