@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Set errexit option to exit immediately on any non-zero status return
+# Set errexit option to exit immediately on any non-zero status return.
 set -e
 
 # check_ansible checks that Ansible is installed on the local system
