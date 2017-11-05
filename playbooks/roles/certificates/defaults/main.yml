@@ -13,3 +13,4 @@ tls_key_size:     "4096"
 # include the certificates role
 generate_ca_server: no
 generate_client:    no
+generate_pkcs:      no
