@@ -1,0 +1,68 @@
+---
+# Example site specific configuration for a noninteractive AWS deployment.
+#
+# Copy this and edit it as needed before running streisand-new-cloud-server.
+#
+
+streisand_noninteractive: true
+confirmation: true
+
+# The SSH private key that Ansible will use to connect to the Streisand node.
+#
+# This will be added to the AWS console and given the name streisand-ssh.
+streisand_ssh_private_key: "~/.ssh/id_rsa"
+
+vpn_clients: 5
+
+streisand_l2tp_enabled: yes
+streisand_openconnect_enabled: yes
+streisand_openvpn_enabled: yes
+streisand_shadowsocks_enabled: yes
+streisand_ssh_forward_enabled: yes
+# By default sshuttle is disabled because it creates a `sshuttle` user that has
+# full shell privileges on the Streisand host
+streisand_sshuttle_enabled: no
+streisand_stunnel_enabled: yes
+streisand_tinyproxy_enabled: yes
+streisand_tor_enabled: yes
+streisand_wireguard_enabled: yes
+
+# The AWS region number.
+# 1. Asia Pacific   (Mumbai)
+# 2. Asia Pacific   (Seoul)
+# 3. Asia Pacific   (Singapore)
+# 4. Asia Pacific   (Sydney)
+# 5. Asia Pacific   (Tokyo)
+# 6. Canada         (Central)
+# 7. EU             (Frankfurt)
+# 8. EU             (Ireland)
+# 9. EU             (London)
+# 10. South America (Sao Paulo)
+# 11. US East       (Northern Virginia)
+# 12. US East       (Ohio)
+# 13. US West       (Northern California)
+# 14. US West       (Oregon)
+#
+# Note: aws_region_var must be a number in quotes, e.g. "3" not 3.
+aws_region_var: "3"
+
+# The VPC and subnet IDs to use. They can be empty strings to indicate that a
+# VPC will not be used.
+aws_vpc_id_var: ""
+aws_vpc_subnet_id_var: ""
+
+aws_instance_name: streisand
+
+# The AWS credentials to use.
+aws_access_key: ""
+aws_secret_key: ""
+
+# Definitions needed for Let's Encrypt HTTPS (or TLS) certificate setup.
+#
+# If these are both left as empty strings, Let's Encrypt will not be set up and
+# a self-signed certificate will be used instead.
+#
+# The domain to use for Let's Encrypt certificate.
+streisand_domain_var: ""
+# The admin email address for Let's Encrypt certificate registration.
+streisand_admin_email_var: ""

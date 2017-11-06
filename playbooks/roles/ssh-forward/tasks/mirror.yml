@@ -11,6 +11,16 @@
     state: directory
 
 - block:
+    - name: Mirror shuttle if enabled
+      get_url:
+        url: "{{ sshuttle_url }}"
+        dest: "{{ ssh_mirror_location }}/{{ sshuttle_filename }}"
+        checksum: "{{ sshuttle_checksum }}"
+        owner: www-data
+        group: www-data
+        mode: 0644
+      when: streisand_sshuttle_enabled
+
     - include_role:
         name: download-and-verify
       vars:
