@@ -8,6 +8,9 @@ server {
   ssl_trusted_certificate {{ le_chain }};
   ssl_stapling on;
   ssl_stapling_verify on;
+  # resolver
+  resolver {{ upstream_dns_servers | join(' ') }} valid=300s;
+  resolver_timeout 5s;
 {% else %}
   ssl_certificate      {{ nginx_self_signed_certificate }};
   ssl_certificate_key  {{ nginx_private_key }};
@@ -24,10 +27,6 @@ server {
   ssl_session_timeout  10m;
   ssl_session_cache shared:SSL:10m;
   ssl_session_tickets off;
-
-  # resolver
-  resolver {{ upstream_dns_servers | join(' ') }} valid=300s;
-  resolver_timeout 5s;
 
   # headers
   add_header Strict-Transport-Security max-age=63072000;
