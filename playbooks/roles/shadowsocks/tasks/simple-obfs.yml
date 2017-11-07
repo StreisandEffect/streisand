@@ -3,11 +3,7 @@
   git:
     repo: "https://github.com/shadowsocks/simple-obfs"
     dest: "{{ simple_obfs_compilation_directory }}"
-    version: "{{simple_obfs_version}}"
-    # NOTE(@cpu): this force can be removed once a release >0.0.3 of simple-obfs
-    # is cut. There is a cached git copy of aclocal.m4 that causes untracked
-    # changes in 0.0.3 fixed with 8c22d on simple-obfs master.
-    force: yes
+    version: "v{{simple_obfs_version}}"
 
 - name: Update the simple-obfs source code submodules
   command: git submodule update --init --recursive
