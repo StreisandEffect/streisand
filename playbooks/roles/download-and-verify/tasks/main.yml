@@ -37,5 +37,5 @@
   register: gpg_verification_results
   changed_when: False
 
-- name: Make sure the {{ project_name }} files all passed GPG signature verfication
+- name: Make sure the {{ project_name }} files all passed GPG signature verification
   assert: { that: "'BAD signature' not in gpg_verification_results.stderr" }
