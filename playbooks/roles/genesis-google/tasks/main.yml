@@ -18,7 +18,7 @@
     service_account_email: "{{ gce_service_account_email }}"
     image: "{{ gce_image }}"
     tags: "{{ gce_server_name }}"
-    metadata: '{"sshKeys":"root:{{ ssh_key.stdout }}"}'
+    metadata: '{"ssh-keys":"ubuntu:{{ ssh_key.stdout }}"}'
   register: streisand_server
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
