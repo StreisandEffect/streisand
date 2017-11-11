@@ -17,26 +17,28 @@ If the connection appears to time out, first check to make sure the passwords we
 <a name="windows"></a>
 ### Windows ###
 
-In order to follow the quick directions, you'll need to use Windows PowerShell ISE. To start it:
+In order to proceed, you'll need to use Windows PowerShell ISE as an Administrator. To start:
 
-1. Look in the *Start* menu, under *Windows PowerShell*.
+1. Look in the *Start* menu, and navigate to or search for  under *Windows PowerShell*, but don't click it yet.
 1. Right-click on *PowerShell ISE*, and choose "Run as administrator"
 
-#### Windows and NAT ####
+#### Windows L2TP and NAT ####
 
-If you are connecting from behind a NAT (such as a home router), you need to add a setting to tell Windows to expect the NAT.
+If you are connecting from behind a NAT device (such most home routers), you need to add a setting to tell Windows to expect the NAT.
 
-Start PowerShell ISE. In the ISE command window, paste the following code, and press *Enter*.
+Start PowerShell ISE as an Administrator. In the ISE command window, paste the following code, and press *Enter*.
 
 ```
 Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\PolicyAgent -Name AssumeUDPEncapsulationContextOnSendRule -Value 2 -Type DWord
 ```
 
-If you aren't using PowerShell, you could use `regedit` to add and set the value of `AssumeUDPEncapsulationContextOnSendRule`.
+#### Registering the VPN  ####
 
-#### Registering the VPN using PowerShell ####
+You can set up the VPN using a PowerShell ISE command, or you can [set it up manually](#winmanual).
 
-Open *PowerShell ISE* and paste this block into the command window:
+#### Registering the VPN  using PowerShell
+
+Open *PowerShell ISE* as an Administrator, and paste this block into the command window:
 
 ```
 Add-VpnConnection -Name {{ streisand_server_name }} -ServerAddress {{ streisand_ipv4_address }} -AuthenticationMethod Chap -EncryptionLevel Optional -TunnelType L2tp -Force -RememberCredential -L2tpPsk {{ ipsec_preshared_key.stdout }}
@@ -44,17 +46,18 @@ Add-VpnConnection -Name {{ streisand_server_name }} -ServerAddress {{ streisand_
 
 Windows will print a warning about EAP/MS-CHAPv2. Ignore it.
 
-#### Connecting to the VPN ####
+You also need to log in to the L2TP server. On Windows 10, click on the network icon in the task bar. You should see `Connect to  {{ streisand_sever_name }}`. Click on it, and enter:
 
-1. Click on the *Network* icon in the task bar (***Windows 10 only?***). There should be an entry for `{{ streisand_server_name }}`.
-1. When prompted for a username, use `streisand`
-1. When prompted for a password, use `{{ chap_password.stdout }}`
+ Username: `streisand`
+
+Password: `{{ chap_password.stdout }}`
 
 You should not be prompted for the username/password again. Skip down to [Checking your connection](#wincheck).
 
+<a name="winmanual"></a>
 ### Manual VPN configuration ###
 
-If you don't want to use PowerShell, you can configure the VPN by hand. ***(Directions were always wrong for Windows 10.)***
+If you don't want to use PowerShell, you can configure the VPN by hand. These instructions are primarily intended for people using Microsoft operating systems before Windows 10, or for troubleshooting.
 
 1. Click on the Start Menu and go to the Control Panel.
 1. Go to the *Network and Internet* section.
