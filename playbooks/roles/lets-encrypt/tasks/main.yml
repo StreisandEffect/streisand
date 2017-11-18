@@ -6,13 +6,13 @@
     state: directory
     recurse: yes
 
-- name: Query Let's Encrypt to find out the latest agreements
+- name: Query Let's Encrypt to find the current subscriber agreement URL
   uri:
     url: "{{ le_api_endpoint }}"
     body_format: json
   register: http_body
 
-- name: Extract Let's Encrypt agreements URL
+- name: Extract Let's Encrypt subscriber agreement URL
   set_fact:
     le_agreements: "{{ http_body['json']['meta']['terms-of-service'] }}"
 
