@@ -1,5 +1,5 @@
 "acme-enter-email": "{{ streisand_admin_email }}"
-"acme-agreement:{{ le_agreements }}": true
+"acme-agreement:{{ le_agreement.stdout.strip() }}": true
 "acmetool-quickstart-choose-server": "{{ le_api_endpoint }}"
 "acmetool-quickstart-choose-method": redirector
 "acmetool-quickstart-complete": true
