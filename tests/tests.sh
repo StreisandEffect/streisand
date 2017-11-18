@@ -23,10 +23,15 @@ function run_playbook {
     SITE="tests/site_vars/random.yml"
     "$DIR/randomize_sitevars.sh" "$SITE"
   fi
+  SITE_DECL=""
+  if [ -n "$SITE" ]; then
+    SITE_DECL="--extra-vars=@${SITE}"
+  fi
+
   ansible-playbook \
     -i "$DIR/inventory" \
     --extra-vars=@global_vars/vars.yml \
-    --extra-vars="@$SITE" \
+    $SITE_DECL \
     "$PLAYBOOK" "${EXTRA_FLAGS[@]}"
 }
 
