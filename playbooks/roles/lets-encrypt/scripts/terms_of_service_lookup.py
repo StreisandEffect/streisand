@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-terms-of-service-lookup.py fetches the terms-of-service URL from an ACME
+terms_of_service_lookup.py fetches the terms-of-service URL from an ACME
 /directory URL. This can be used to avoid hardcoding the current
 terms-of-service URL somewhere and having to update it every time
 Let's Encrypt migrates to an updated ToS.
