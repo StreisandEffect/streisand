@@ -9,6 +9,7 @@
 - name: Find the current Let's Encrypt subscriber agreement URL
   script: "../scripts/termsOfServiceLookup.py {{ le_api_endpoint }}"
   register: le_agreement
+  changed_when: False
 
 - name: Put reponse file in place
   template:
