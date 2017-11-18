@@ -6,6 +6,11 @@
     state: directory
     recurse: yes
 
+- name: Find the current Let's Encrypt subscriber agreement URL
+  script: "../scripts/terms_of_service_lookup.py {{ le_api_endpoint }}"
+  register: le_agreement
+  changed_when: False
+
 - name: Put reponse file in place
   template:
     src: response.yaml.j2
