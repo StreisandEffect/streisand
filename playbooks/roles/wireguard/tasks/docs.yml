@@ -7,10 +7,14 @@
     mode: 0750
     state: directory
 
-- name: Copy the client configuration file to the WireGuard Gateway directory
-  command: cp {{ wireguard_path }}/wg0-client.conf {{ wireguard_gateway_location }}
+- name: Copy the client configuration files to the WireGuard Gateway directory
+  command: "cp {{ wireguard_client_path }}/{{ client_name.stdout }}/client.conf {{ wireguard_gateway_location }}/{{ client_name.stdout }}.client.conf"
   args:
-    creates: "{{ wireguard_gateway_location }}/wg0-client.conf"
+    creates: "{{ wireguard_gateway_location }}/{{ client_name.stdout }}.client.conf"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
 - name: Generate the Markdown WireGuard instructions
   template:

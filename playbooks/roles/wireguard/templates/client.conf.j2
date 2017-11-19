@@ -1,5 +1,6 @@
+# "{{ item[0].stdout }}" - Streisand WireGuard Client Profile
 [Interface]
-Address = 10.192.122.2/32
+Address = 10.192.122.{{ (item[0].item|int) + 1 }}/32
 # The use of DNS below effectively expands to:
 #   PostUp = echo nameserver {{ dnsmasq_wireguard_ip }} | resolvconf -a tun.%i -m 0 -x
 #   PostDown = resolvconf -d tun.%i
@@ -8,7 +9,7 @@ Address = 10.192.122.2/32
 # The IP address of the DNS server that is available via the encrypted
 # WireGuard interface is {{ dnsmasq_wireguard_ip }}.
 DNS = {{ dnsmasq_wireguard_ip }}
-PrivateKey = {{ wireguard_client_private_key }}
+PrivateKey = {{ item[1].stdout }}
 
 [Peer]
 PublicKey = {{ wireguard_server_public_key }}

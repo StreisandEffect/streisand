@@ -3,41 +3,93 @@
 # Set up the PPA and install packages
 - import_tasks: install.yml
 
-- name: Generate private and public keys for the client and server
-  shell: umask 077; wg genkey | tee {{ item.private }} | wg pubkey > {{ item.public }}
+- name: Generate private and public key for the server
+  shell: "umask 077; wg genkey | tee {{ wireguard_server_private_key_file }} | wg pubkey > {{ wireguard_server_public_key_file }}"
   args:
-    creates: "{{ item.public }}"
-  with_items:
-    - { private: "{{ wireguard_server_private_key_file }}", public: "{{ wireguard_server_public_key_file }}" }
-    - { private: "{{ wireguard_client_private_key_file }}", public: "{{ wireguard_client_public_key_file }}" }
+    creates: "{{ wireguard_server_public_key_file }}"
 
-- name: Register the key file contents
+- name: Register the server key file contents
   command: cat {{ item }}
-  register: wireguard_key_files
+  register: wireguard_server_key_files
   changed_when: False
   with_items:
-    - "{{ wireguard_client_private_key_file }}"
-    - "{{ wireguard_client_public_key_file }}"
     - "{{ wireguard_server_private_key_file }}"
     - "{{ wireguard_server_public_key_file }}"
 
-- name: Set the key material facts
+- name: Set the server key material facts
   set_fact:
-    wireguard_client_private_key: "{{ wireguard_key_files.results[0].stdout }}"
-    wireguard_client_public_key:  "{{ wireguard_key_files.results[1].stdout }}"
-    wireguard_server_private_key: "{{ wireguard_key_files.results[2].stdout }}"
-    wireguard_server_public_key:  "{{ wireguard_key_files.results[3].stdout }}"
+    wireguard_server_private_key: "{{ wireguard_server_key_files.results[0].stdout }}"
+    wireguard_server_public_key:  "{{ wireguard_server_key_files.results[1].stdout }}"
 
-- name: Generate the client and server configuration files
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ wireguard_path }}/{{ item }}"
+- name: Create client directory
+  file:
+    path: "{{ wireguard_client_path }}"
+    state: directory
     owner: root
     group: root
     mode: 0600
-  with_items:
-    - wg0-client.conf
-    - wg0-server.conf
+
+- name: Create a directory for each client
+  file:
+    path: "{{ wireguard_client_path }}/{{ client_name.stdout }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Generate private and public key for each client
+  shell: "umask 077; wg genkey | tee client.key | wg pubkey > client.pub"
+  args:
+    chdir: "{{ wireguard_client_path }}/{{ client_name.stdout }}"
+    creates: client.key
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Register client public keys
+  command: cat client.pub
+  args:
+    chdir: "{{ wireguard_client_path }}/{{ client_name.stdout }}"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+  register: wireguard_client_pubkeys
+  changed_when: False
+
+- name: Register client private keys
+  command: cat client.key
+  args:
+    chdir: "{{ wireguard_client_path }}/{{ client_name.stdout }}"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+  register: wireguard_client_privkeys
+  changed_when: False
+
+- name: Generate the client configuration profiles
+  template:
+    src: client.conf.j2
+    dest: "{{ wireguard_client_path }}/{{ item[0].stdout }}/client.conf"
+  with_together:
+    - "{{ vpn_client_names.results }}"
+    - "{{ wireguard_client_privkeys.results }}"
+  loop_control:
+    label: "{{ item[0].item }}"
+
+- name: Generate the server configuration
+  template:
+    src: "server.conf.j2"
+    dest: "{{ wireguard_path }}/wg0-server.conf"
+    owner: root
+    group: root
+    mode: 0600
 
 # Set up the WireGuard firewall rules
 - import_tasks: firewall.yml

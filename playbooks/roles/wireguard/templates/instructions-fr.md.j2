@@ -10,8 +10,13 @@ WireGuard n'est actuellement disponible que pour Linux, mais support [multi-plat
 <a name="linux"></a>
 ### Linux ###
 1. [Installer WireGuard](https://www.wireguard.com/install/)
-1. Téléchargez le fichier de configuration du client:
-   * [wg0-client.conf](/wireguard/wg0-client.conf)
+1. Téléchargez un fichier de configuration du client. **Un seul ordi peut utiliser un profil à la fois**. Pour cet exemple, nous supposerons que vous avez téléchargéz le fichier {{ vpn_client_names.results[0].stdout }}:
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.client.conf)
+{% endfor %}
+1. Renommez le fichier:
+
+  `mv ~/Downloads/{{ vpn_client_names.results[0].stdout }}.client.conf ~/Downloads/wg0-client.conf`
 1. Définir les autorisations sur le fichier de configuration du client:
 
    `sudo chown -v root:root ~/Downloads/wg0-client.conf; sudo chmod -v 600 ~/Downloads/wg0-client.conf`
@@ -28,4 +33,4 @@ WireGuard n'est actuellement disponible que pour Linux, mais support [multi-plat
    `sudo wg-quick down wg0-client`
 
 #### Une note sur la configuration DNS ####
-Le fichier `wg0-client.conf` inlcure la commande `DNS` qui utilise `resolvconf` afin de diriger le trafic DNS vers le serveur dnsmasq qui est disponible via l'interface cryptée WireGuard à `{{ dnsmasq_wireguard_ip }}`. Bien que `resolvconf` soit un utilitaire commun, vous devrez peut-être remplacer cette ligne avec `PostUp`/`PostDown` pour votre distribution ou votre configuration réseau particulière.
+Chaque fichier inclure la commande `DNS` qui utilise `resolvconf` afin de diriger le trafic DNS vers le serveur dnsmasq qui est disponible via l'interface cryptée WireGuard à `{{ dnsmasq_wireguard_ip }}`. Bien que `resolvconf` soit un utilitaire commun, vous devrez peut-être remplacer cette ligne avec `PostUp`/`PostDown` pour votre distribution ou votre configuration réseau particulière.
