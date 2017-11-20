@@ -17,14 +17,16 @@ If the connection appears to time out, first check to make sure the passwords we
 <a name="windows"></a>
 ### Windows ###
 
+These instructions assume Windows 7 or later.
+
 In order to proceed, you'll need to use Windows PowerShell ISE as an Administrator. To start:
 
-1. Look in the *Start* menu, and navigate to or search for  under *Windows PowerShell*, but don't click it yet.
+1. Look in the *Start* menu, and navigate to or search for *Windows PowerShell*, but don't click it yet.
 1. Right-click on *PowerShell ISE*, and choose "Run as administrator"
 
 #### Windows L2TP and NAT ####
 
-If you are connecting from behind a NAT device (such most home routers), you need to add a setting to tell Windows to expect the NAT.
+If you are connecting from behind a NAT device (such most home routers), you need to add a setting to tell Windows to expect the NAT. You only need to do this once.
 
 Start PowerShell ISE as an Administrator. In the ISE command window, paste the following code, and press *Enter*.
 
@@ -32,11 +34,15 @@ Start PowerShell ISE as an Administrator. In the ISE command window, paste the f
 Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\PolicyAgent -Name AssumeUDPEncapsulationContextOnSendRule -Value 2 -Type DWord
 ```
 
+The setting will take effect after a reboot. Reboot.
+
 #### Registering the VPN  ####
 
-You can set up the VPN using a PowerShell ISE command, or you can [set it up manually](#winmanual).
+You can [configure the VPN manually](#winmanual). If you're using Windows 7, this is required.
 
-#### Registering the VPN  using PowerShell
+If you're using Windows 8 or later, you can set up the VPN using a PowerShell ISE command. 
+
+#### Registering the VPN using PowerShell
 
 Open *PowerShell ISE* as an Administrator, and paste this block into the command window:
 
