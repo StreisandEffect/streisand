@@ -10,7 +10,7 @@ WireGuard n'est actuellement disponible que pour Linux, mais support [multi-plat
 <a name="linux"></a>
 ### Linux ###
 1. [Installer WireGuard](https://www.wireguard.com/install/)
-1. Téléchargez un fichier de configuration du client. **Un seul ordi peut utiliser un profil à la fois**. Pour cet exemple, nous supposerons que vous avez téléchargéz le fichier {{ vpn_client_names.results[0].stdout }}:
+1. Téléchargez un fichier de configuration client. **Un seul ordinateur peut utiliser un profil à la fois**. Pour cet exemple, nous supposerons que vous avez téléchargé le fichier {{ vpn_client_names.results[0].stdout }}:
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.client.conf)
 {% endfor %}
