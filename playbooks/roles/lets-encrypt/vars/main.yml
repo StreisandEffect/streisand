@@ -4,3 +4,4 @@ le_port: 80
 le_api_endpoint: "https://acme-v01.api.letsencrypt.org/directory"
 le_certificate: "{{ le_base }}/live/{{ streisand_domain }}/fullchain"
 le_private_key: "{{ le_base }}/live/{{ streisand_domain }}/privkey"
+le_chain: "{{ le_base }}/live/{{ streisand_domain }}/chain"
