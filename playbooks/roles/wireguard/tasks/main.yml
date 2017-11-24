@@ -106,7 +106,14 @@
   template:
     src: wireguard_dnsmasq.conf.j2
     dest: /etc/dnsmasq.d/wireguard.conf
-  notify: Restart dnsmasq
+
+# NOTE(@cpu): We don't use a `notify` to "Restart dnsmasq" here because it seems
+# that in some conditions Ansible mistakenly believes the dnsmasq restart can be
+# skipped 
+- name: "Reload DNSMasq to pick up the new configuration"
+  service:
+    name: dnsmasq
+    state: reloaded
 
 # Generate Gateway documentation
 - import_tasks: docs.yml
