@@ -109,11 +109,13 @@
 
 # NOTE(@cpu): We don't use a `notify` to "Restart dnsmasq" here because it seems
 # that in some conditions Ansible mistakenly believes the dnsmasq restart can be
-# skipped
-- name: "Reload DNSMasq to pick up the new configuration"
+# skipped. We also don't use "reloaded" instead of "restarted" here because
+# dnsmasq doesn't seem to reload _new_ config files in that case, just existing
+# ones. A full restart is required in practice (sigh)
+- name: "Restart DNSMasq to pick up the new configuration"
   service:
     name: dnsmasq
-    state: reloaded
+    state: restarted
 
 # Generate Gateway documentation
 - import_tasks: docs.yml
