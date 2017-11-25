@@ -1,7 +1,7 @@
 ---
 wireguard_path: "/etc/wireguard"
-wireguard_client_private_key_file: "{{ wireguard_path }}/client.key"
-wireguard_client_public_key_file:  "{{ wireguard_path }}/client.pub"
+wireguard_client_path: "{{ wireguard_path }}/clients"
+
 wireguard_server_private_key_file: "{{ wireguard_path }}/server.key"
 wireguard_server_public_key_file:  "{{ wireguard_path }}/server.pub"
 
