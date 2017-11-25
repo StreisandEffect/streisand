@@ -13,7 +13,7 @@ OpenConnect est un serveur VPN extrêmement performant et léger qui offre une c
   * [iOS](#ios)
 
 <a name="clientcerts"></a>
-### Certificats de serveur et des clients (macOS, Androïde, iOS) ###
+### Certificats de serveur et des clients (macOS, Androïde) ###
 
 Les certificats clients sont un mécanisme par lequel les clients peuvent s'authentifier de manière sécurisée avec un serveur.
 
@@ -131,26 +131,20 @@ Si vous êtes affecté, vous pouvez utiliser cette solution alternatif:
 <a name="ios"></a>
 ### iOS ###
 
-1. Transférer un [certificat client](#clientcerts) à chaque appareil que vous souhaitez configurer:
+1. Transférer un fichier .mobileconfig à chaque appareil que vous souhaitez configurer:
+{% for client in vpn_client_pkcs12_password_list.results %}
+   * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
+{% endfor %}
    * Le profil peut être envoyé par courrier électronique sur votre appareil (simplement appuyez sur la pièce jointe), transféré via l'utilitaire [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12), ou téléchargé directement en regardant ces instructions sur l'appareil lui-même.
-
 1. Suivez les instructions à l'écran.
 1. Vous serez invité à entrer le mot de passe ou le code NIP de votre appareil.
-1. Saisissez mot de passe du certificat lorsque l'invite *MOT DE PASSE POUR LE CERTIFICAT...* s'affiche.
-   * Une fois le profil installé, vous êtes prêt à continuer.
 
-1. Téléchargez l'application [Cisco Legacy AnyConnect](https://itunes.apple.com/fr/app/cisco-legacy-anyconnect/id392790924) depuis l'App Store.
+1. Téléchargez l'application [Cisco AnyConnect](https://itunes.apple.com/fr/app/cisco-anyconnect/id392790924) depuis l'App Store.
 1. Lancez l'application.
 1. Tapez *OK* pour activer le logiciel lorsque la boîte de dialogue apparaît.
 1. Tapez *Paramètres*.
 1. Éteignez l'interrupteur *Bloquer les serveurs non fiable*.
    * Le certificat du serveur sera importé pendant la connexion initiale et vérifié automatiquement pour toutes les connexions ultérieures.
-1. Tapez *Acceuil*.
-1. Tapez *Connexions* et sélectionnez *Ajouter une connexion VPN...*.
-1. Tapez *Description* et saisissez `{{ streisand_server_name }}`.
-1. Tapez *Adresse du* et saisissez `{{ streisand_ipv4_address }}:{{ ocserv_port }}`.
-1. Tapez *Enregistrer* dans le coin supérieur droit.
-1. Tapez *Acceuil*.
 1. Faites glisser l'interrupteur *VPN* vers la position ON.
 1. Tapez *Détails* lorsque l'avertissement de sécurité s'affiche.
 1. Tapez *Importer* dans le coin supérieur droit.

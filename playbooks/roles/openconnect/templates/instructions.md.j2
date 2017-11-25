@@ -13,7 +13,7 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
   * [iOS](#ios)
 
 <a name="clientcerts"></a>
-### Server and client Certifcates (macOS, Android, iOS) ###
+### Server and client Certifcates (macOS, Android) ###
 
 Client certificates are a mechanism by which clients can authenticate themselves securely with the server.
 
@@ -133,24 +133,20 @@ If you're affected, you can use this workaround:
 <a name="ios"></a>
 ### iOS ###
 
-1. Transfer a [client certificate](#clientcerts) to each device you wish to configure:
+1. Transfer a .mobileconfig file for each device you wish to configure:
+{% for client in vpn_client_pkcs12_password_list.results %}
+   * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
+{% endfor %}
   * The profile can be emailed to your device (simply tap the attachment), transferred via the [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12) utility, or downloaded directly by viewing these instructions on the device itself.
 1. Follow the on-screen instructions.
 1. You will be prompted to enter your device password or pin.
-1. Enter your client certificate password when the *ENTER THE PASSWORD FOR THE CERTIFICATE...* prompt is displayed.
-  * Once the profile is installed, you are ready to continue.
 
-1. Download [Cisco Legacy AnyConnect](https://itunes.apple.com/us/app/cisco-legacy-anyconnect/id392790924?mt=8) from the App Store.
+1. Download [Cisco AnyConnect](https://itunes.apple.com/us/app/cisco-anyconnect/id392790924) from the App Store.
 1. Launch the application.
 1. Tap *OK* to enable the software when the dialog box appears.
 1. Tap *Settings*.
 1. Turn off the *Block Untrusted Servers* switch.
    * The server certificate will be imported during the initial login and automatically verified for all future connections.
-1. Tap *Home*.
-1. Tap *Connections* and then tap *Add VPN Connection...*.
-1. Tap *Description* and enter `{{ streisand_server_name }}`.
-1. Tap *Server Address* and enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}`.
-1. Tap *Save* in the top-right corner.
 1. Tap *Home*.
 1. Slide the *AnyConnect VPN* switch on.
 1. Tap *Details* when the Security Warning is displayed.

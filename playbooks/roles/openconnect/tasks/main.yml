@@ -29,6 +29,7 @@
     ca_path:            "{{ ocserv_path }}"
     tls_ca:             "{{ ocserv_ca }}"
     tls_client_path:    "{{ ocserv_path }}"
+    tls_key_ou:         "{{ ocserv_key_ou }}"
     vpn_name:           "ocserv"
     generate_ca_server: yes
     generate_client:    yes
@@ -36,6 +37,65 @@
     tls_server_common_name_file: "{{ ocserv_server_common_name_file }}"
     tls_sans:
       - "{{ streisand_ipv4_address }}"
+
+- name: Register the ocserv server common name
+  command: cat {{ ocserv_server_common_name_file }}
+  register: ocser_server_common_name
+  changed_when: False
+
+- name: Base64 encode the CA and server certificate
+  shell: "cat {{ ocserv_path }}/server.crt {{ ocserv_path }}/ca.crt | openssl base64"
+  register: ocserv_ca_base64
+  changed_when: False
+
+- name: Base64 encode the client PKCS12 file(s)
+  command: "openssl base64 -in {{ ocserv_path }}/{{ client_name.stdout }}.p12"
+  register: ocserv_clients_base64
+  changed_when: False
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Generate a UUID for .mobileconfig root certificate
+  command: uuid -v4
+  register: ocserv_root_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig client PKCS12 certificate
+  command: uuid -v4
+  register: ocserv_client_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig vpn payload identifier
+  command: uuid -v4
+  register: ocserv_payload_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig config payload identifier
+  command: uuid -v4
+  register: ocserv_config_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig global identifier
+  command: uuid -v4
+  register: ocserv_global_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate the iOS client mobileconfig file(s)
+  template:
+    src: client.mobileconfig.j2
+    dest: "{{ ocserv_path }}/{{ client_content[0].stdout }}/{{ client_content[0].stdout }}.mobileconfig"
+    owner: root
+    group: root
+    mode: 0600
+  with_together:
+    - "{{ vpn_client_names.results }}"
+    - "{{ ocserv_clients_base64.results }}"
+    - "{{ vpn_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "client_content"
+    label: "{{ client_content[0].item }}"
 
 - name: Generate a random ocserv password
   shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 4 | xargs | sed -e 's/ /-/g' > {{ ocserv_password_file }}
