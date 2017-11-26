@@ -15,8 +15,6 @@
     src: openssl-local.cnf.j2
     dest: "{{ openssl_ca_base }}/openssl-local.cnf"
 
-# Does this need:     -reqexts v3_ca_req
-
 - name: Create a certificate authority key and certificate
   command:
     openssl req -new -nodes -x509
@@ -54,12 +52,6 @@
   file:
     path: "{{ openssl_ca_base }}/index.txt"
     state: touch
-
-#- name: Change where OpenSSL looks for CA material
-#  lineinfile:
-#    dest: /usr/lib/ssl/openssl.cnf
-#    regexp: "Where everything is kept"
-#    line: "dir             = {{ openssl_ca_base }}"
 
 - name: Generate the self-signed SSL certificate
   command:

@@ -1,9 +1,12 @@
+distinguished_name = req_distinguished_name
+
 [ ca ]
 default_ca = CA_default
 
 [ CA_default ]
 
 dir = {{ openssl_ca_base }}
+certs = $dir
 crl_dir = $dir
 database = $dir/index.txt
 new_certs_dir = {{ openssl_ca_newcerts_dir }}
@@ -16,37 +19,30 @@ RANDFILE = $dir/.rand
 
 copy_extensions = copy
 
-#x509_extensions = server
 x509_extensions = v3_ca
 
 default_days = {{ nginx_days_valid }}
 default_crl_days= 30
-default_md = default
+default_md = {{ openssl_ca_default_md }}
 preserve = no
 
-policy = policy_anything
+policy = policy_anything_including_no_cn
 
 keyUsage = cRLSign, keyCertSign
 
 subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid:always,issuer:always
 
-[ policy_anything ]
+[ policy_anything_including_no_cn ]
 countryName = optional
 stateOrProvinceName = optional
 localityName = optional
 organizationName = optional
 organizationalUnitName = optional
+# This differs from the certificates role:
 commonName = optional
 name = optional
 emailAddress = optional
-
-[ req ]
-distinguished_name = req_distinguished_name
-# req_extensions     = req_ext
-
-# [ req_ext ]
-# subjectAltName = @alt_names
 
 [ alt_names ]
 IP.0 = {{ streisand_ipv4_address }}
@@ -87,45 +83,3 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always
 keyUsage = digitalSignature, keyEncipherment, nonRepudiation
 subjectAltName = @alt_names
-
-# should this be here: 
-
-#[ v3_ca_extensions ]
-#basicConstraints = CA:TRUE
-#subjectKeyIdentifier = hash
-#authorityKeyIdentifier = keyid:always,issuer:always
-#keyUsage = cRLSign, dataEncipherment, digitalSignature, keyCertSign, keyEncipherment, nonRepudiation
-
-[ req ]
-basicConstraints = CA:false
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always
-keyUsage = digitalSignature, keyEncipherment, nonRepudiation
-
-[ server ]
-basicConstraints=CA:FALSE
-nsComment = "Ansible Generated Server Certificate"
-subjectKeyIdentifier=hash
-authorityKeyIdentifier=keyid,issuer:always
-extendedKeyUsage=serverAuth
-keyUsage = digitalSignature, keyEncipherment
-subjectAltName = @alt_names
-
-[ v3_server ]
-basicConstraints=CA:FALSE
-nsCertType = server
-nsComment = "Ansible Generated Server Certificate"
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid,issuer:always
-extendedKeyUsage = serverAuth
-keyUsage = critical, digitalSignature, keyEncipherment
-subjectAltName = @alt_names
-
-
-[ client ]
-basicConstraints=CA:FALSE
-nsComment = "Ansible Generated Client Certificate"
-subjectKeyIdentifier=hash
-authorityKeyIdentifier=keyid,issuer:always
-extendedKeyUsage=clientAuth
-keyUsage = digitalSignature
