@@ -38,11 +38,6 @@
     tls_sans:
       - "{{ streisand_ipv4_address }}"
 
-- name: Register the ocserv server common name
-  command: cat {{ ocserv_server_common_name_file }}
-  register: ocser_server_common_name
-  changed_when: False
-
 - name: Base64 encode the CA and server certificate
   shell: "cat {{ ocserv_path }}/server.crt {{ ocserv_path }}/ca.crt | openssl base64"
   register: ocserv_ca_base64
