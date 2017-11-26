@@ -131,6 +131,8 @@ Si vous êtes affecté, vous pouvez utiliser cette solution alternatif:
 <a name="ios"></a>
 ### iOS ###
 
+#### Note: Lorsque vous utilisez AnyConnect pour la première fois, vous pouvez être invité à entrer un mot de passe avant d'être connecté. Saisissez `{{ocserv_password.stdout}}` et continuez. Les connexions suivantes ne vous demanderont plus.
+
 1. Transférer un fichier .mobileconfig à chaque appareil que vous souhaitez configurer:
 {% for client in vpn_client_pkcs12_password_list.results %}
    * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
