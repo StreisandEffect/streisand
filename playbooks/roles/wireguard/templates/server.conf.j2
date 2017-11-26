@@ -1,0 +1,13 @@
+[Interface]
+Address = 10.192.122.1/24
+SaveConfig = true
+ListenPort = {{ wireguard_port }}
+PrivateKey = {{ wireguard_server_private_key }}
+
+{% for client in vpn_client_names.results %}
+# "{{ client.stdout }}" Client Peer
+[Peer]
+PublicKey = {{ wireguard_client_pubkeys.results[(client.item|int)-1].stdout }}
+AllowedIPs = 10.192.122.{{ (client.item|int)+1 }}/32
+
+{% endfor %}

@@ -18,7 +18,7 @@
     mode: 0600
 
 - name: Generate CA certificate
-  command: openssl req -nodes -batch -new -x509 -key {{ tls_ca }}.key -out {{ tls_ca }}.crt -subj "{{ tls_request_subject }}/CN=ca-certificate"
+  command: openssl req -nodes -batch -new -x509 -key {{ tls_ca }}.key -days {{ tls_days_valid }} -out {{ tls_ca }}.crt -subj "{{ tls_request_subject }}/CN=ca-certificate"
   args:
     creates: "{{ tls_ca }}.crt"
 
