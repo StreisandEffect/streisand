@@ -28,14 +28,16 @@
     label: "{{ client_name.item }}"
   changed_when: False
 
-- name: "Convert the keys and certificates into PKCS #12 format"
-  expect:
-    command: certtool --to-p12 --load-privkey {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.key --pkcs-cipher 3des-pkcs12 --load-certificate {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.crt --outfile {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12 --outder
-    responses:
-      "Enter a name for the key": "{{ vpn_client_password.client_name.stdout }}"
-      "Enter password":   "{{ vpn_client_password.stdout }}"
-      "Confirm password": "{{ vpn_client_password.stdout }}"
-    creates: "{{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12"
+- name: "Convert the {{ vpn_name }} client keys and certificates into PKCS #12 format"
+  command: >
+    openssl pkcs12 -export
+    -in {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.crt
+    -inkey {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.key
+    -name {{ vpn_client_password.client_name.stdout }}
+    -out {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12
+    -certfile {{ tls_client_path }}/ca.crt
+    -passout pass:"{{ vpn_client_password.stdout }}"
+  creates: "{{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12"
   with_items: "{{ vpn_client_pkcs12_password_list.results }}"
   loop_control:
     loop_var: "vpn_client_password"

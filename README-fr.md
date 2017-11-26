@@ -178,6 +178,30 @@ Le serveur doit être accessible en utilisant la clé SSH `$HOME/id_rsa`, avec *
 
 **Note:** L'installation de Streisand sur localhost peut être une action destructive! Vous pourriez potentiellement écraser des fichiers de configuration; vous devez être certain que vous affectez la machine correcte.
 
+### Déploiement non interactif (Avancé) ###
+
+Des scripts alternatifs et des exemples de fichiers de configuration sont fournis pour les déploiements non interactifs, dans lequel toutes les informations requises sont transmises sur la ligne de commande ou dans un fichier de configuration.
+
+Des exemples de fichiers de configuration se trouvent sous `global_vars/noninteractive`. Copiez et modifiez les paramètres souhaités, tels que la fourniture de jetons d'API et d'autres choix, puis exécutez le script.
+
+Pour déployer un nouveau serveur Streisand:
+
+      deploy/streisand-new-cloud-server.sh \
+        --provider digitalocean \
+        --site-config global_vars/noninteractive/digitalocean-site.yml
+
+Pour exécuter l'approvisionnement Streisand sur la machine locale:
+
+      deploy/streisand-local.sh \
+        --site-config global_vars/noninteractive/local-site.yml
+
+Pour exécuter l'approvisionnement Streisand contre un serveur existant:
+
+      deploy/streisand-existing-cloud-server.sh \
+        --ip-address 10.10.10.10 \
+        --ssh-user root \
+        --site-config global_vars/noninteractive/digitalocean-site.yml
+
 Nouvelles fonctionnalités à venir
 ---------------------------------
 * Configuration simplifiée.
