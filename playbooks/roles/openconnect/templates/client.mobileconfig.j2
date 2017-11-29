@@ -79,6 +79,8 @@
         <dict>
           <key>AuthenticationMethod</key>
           <string>Certificate</string>
+		  <key>AuthName</key>
+		  <string>{{ client_content[0].stdout }}</string>
           <key>PayloadCertificateUUID</key>
           <string>{{ ocserv_client_mobileconfig_uuid.stdout }}</string>
           <key>RemoteAddress</key>
