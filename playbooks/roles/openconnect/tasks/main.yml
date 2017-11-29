@@ -38,7 +38,7 @@
     tls_sans:
       - "{{ streisand_ipv4_address }}"
 
-- name: Base64 encode the CA and server certificate
+- name: Base64 encode the server and CA certificate
   shell: "cat {{ ocserv_path }}/server.crt {{ ocserv_path }}/ca.crt | openssl base64"
   register: ocserv_ca_base64
   changed_when: False
