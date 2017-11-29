@@ -48,6 +48,10 @@ server {
   location / {
     autoindex off; 
   }
+  
+  location /openvpn/ {
+    autoindex on;
+  }
 
   location /monit/ {
     rewrite ^/monit/(.*) /$1 break;
