@@ -135,6 +135,8 @@ If you're affected, you can use this workaround:
 
 #### Note: When using AnyConnect for the first time, you may be prompted for a password prior to being connected. Enter `{{ ocserv_password.stdout }}` and continue. Subsequent connections will not prompt you again.
 
+#### Note: Only one AnyConnect profile can be configured at any give time. To remove an existing profile, go to *Settings* -> *General* -> *Profile*, tap on the profile you wish to remove, then tap on *Remove Profile*.
+
 1. Transfer a .mobileconfig file for each device you wish to configure:
 {% for client in vpn_client_pkcs12_password_list.results %}
    * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
