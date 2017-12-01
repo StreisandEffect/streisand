@@ -38,11 +38,6 @@
     tls_sans:
       - "{{ streisand_ipv4_address }}"
 
-- name: Base64 encode the server and CA certificate
-  shell: "cat {{ ocserv_path }}/server.crt {{ ocserv_path }}/ca.crt | openssl base64"
-  register: ocserv_ca_base64
-  changed_when: False
-
 - name: Base64 encode the client PKCS12 file(s)
   command: "openssl base64 -in {{ ocserv_path }}/{{ client_name.stdout }}.p12"
   register: ocserv_clients_base64
@@ -51,11 +46,6 @@
   loop_control:
     loop_var: "client_name"
     label: "{{ client_name.item }}"
-
-- name: Generate a UUID for .mobileconfig root certificate
-  command: uuid -v4
-  register: ocserv_root_mobileconfig_uuid
-  changed_when: False
 
 - name: Generate a UUID for .mobileconfig client PKCS12 certificate
   command: uuid -v4

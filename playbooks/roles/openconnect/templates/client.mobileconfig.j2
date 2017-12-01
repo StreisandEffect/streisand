@@ -5,26 +5,6 @@
     <key>PayloadContent</key>
     <array>
       <dict>
-        <key>PayloadCertificateFileName</key>
-        <string>ca.crt</string>
-        <key>PayloadContent</key>
-        <data>
-        {{ ocserv_ca_base64.stdout }}
-        </data>
-        <key>PayloadDescription</key>
-        <string>OpenConnect Root CA</string>
-        <key>PayloadDisplayName</key>
-        <string>ca-certificate</string>
-        <key>PayloadIdentifier</key>
-        <string>com.apple.security.root.{{ ocserv_root_mobileconfig_uuid.stdout }}</string>
-        <key>PayloadType</key>
-        <string>com.apple.security.root</string>
-        <key>PayloadUUID</key>
-        <string>{{ ocserv_root_mobileconfig_uuid.stdout }}</string>
-        <key>PayloadVersion</key>
-        <integer>1</integer>
-      </dict>
-      <dict>
         <key>Password</key>
         <string>{{ client_content[2].stdout }}</string>
         <key>PayloadCertificateFileName</key>
