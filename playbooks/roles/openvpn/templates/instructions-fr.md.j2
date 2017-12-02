@@ -88,9 +88,13 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 ### Linux (Ubuntu) ###
 Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour NetworkManager. Cela vous donne une jolie petite interface pour la connexion, et il gère correctement les modifications DNS nécessaires lors de la connexion / déconnexion. Malheureusement, le plugin ne prend pas en charge les profils .ovpn, de sorte que la liste des étapes est un peu plus impliquée.
 
-1. Premièrement, téléchargez tous les fichiers .crt et .key de l'un de ces répertoires:
+1. Premièrement, téléchargez le OpenVPN CA Certificate, le certificate `.crt` fichier, la clé privée `.key` fichier, et la TLS authentication clé `ta.key` fichier pour l'un ces profils en dessous:
 {% for client in vpn_client_names.results %}
-   * [{{ client.stdout }}](/openvpn/{{ client.stdout }})
+   * {{ client.stdout }}
+      * CA Cert: [ca.crt](/openvpn/{{ client.stdout }}/ca.crt)
+      * Client Cert: [{{ client.stdout }}.crt](/openvpn/{{ client.stdout }}/client.crt)
+      * Client Clé: [{{ client.stdout }}.key](/openvpn/{{ client.stdout }}/client.key)
+      * TA Clé: [ta.key](/openvpn/{{ client.stdout }}/ta.key)
 {% endfor %}
 1. Installez le plugin OpenVPN pour NetworkManager.
 
@@ -103,9 +107,9 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 1. Saisissez `{{ streisand_server_name }}` pour la *Nom de la connexion*.
 1. Saisissez `{{ openvpn_server }}` pour le *Gateway*.
 1. Assurez-vous que *Certificates (TLS)* est sélectionné pour le *Type*.
-1. Sélectionnez `client.crt` dans le répertoire des fichiers clients de votre choix pour le *User Certificate*.
-1. Sélectionnez `ca.crt` à partir du même répertoire de fichiers clients pour le *CA Certificate*.
-1. Sélectionnez `client.key` dans le même répertoire de fichiers clients pour le *Private Key*.
+1. Sélectionnez le `client.crt` fichier de votre choix pour le *User Certificate*.
+1. Sélectionnez le `ca.crt` fichier pour le *CA Certificate*.
+1. Sélectionnez le `client.key` ficher pour le *Private Key*.
 1. Cliquez le bouton *Advanced*.
 1. Accédez à l'onglet *General*.
    * Vérifier *Use custom gateway port* et entrer `{{openvpn_port}}` comme sa valeur.
@@ -121,7 +125,7 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
    * Dans le menu déroulant *Server Certificate Check* selectionnez `verify name exactly` et saisissez `{{ openvpn_server_common_name.stdout }}` pour sa valeur.
    * Cocher *Verify peer (server) certificate usage signature*.
    * Cocher *Use additional TLS authentication*.
-     * Sélectionnez la `ta.key` à partir du répertoire client-fichiers pour le *Key File*.
+     * Sélectionnez le `ta.key` fichier pour le *Key File*.
      * Sélectionnez `1` pour la *Key Direction*.
    * Cliquez *Valider*.
 1. Cliquez *Enregistrer*
