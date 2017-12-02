@@ -12,12 +12,6 @@ gateway_test_user: "streisand"
 # The directory to copy test scripts to
 test_script_dir: "/usr/local/bin/"
 
-# Test scripts to install & run
-test_scripts:
-  - { template: 'streisand-gateway-test.sh.j2',             cmd: 'streisand-gateway-test' }
-  - { template: 'streisand-ssh-forward-test.sh.j2',         cmd: 'streisand-ssh-forward-test' }
-  - { template: 'streisand-shadowsocks-forward-test.sh.j2', cmd: 'streisand-shadowsocks-forward-test' }
-
 # An external URL used to test connectivity through Shadowsocks/WireGuard/etc
 external_test_url: "https://github.com"
 
@@ -62,3 +56,11 @@ test_client_profiles_file: "/tmp/test-client-inventory"
 openvpn_profile_dir: "/etc/openvpn"
 openvpn_profile_addons: "/tmp/openvpn-profile-addons"
 openvpn_pid_file: "/tmp/openvpn.pid"
+
+gateway_openconnect_ca_file: "{{ gateway_test_url }}/openconnect/ca.crt"
+gateway_openconnect_password_file: "{{ gateway_test_url }}/openconnect/password.txt"
+
+openconnect_ca_file: "/root/openconnect.ca.crt"
+openconnect_pid_file: "/tmp/openconnect.pid"
+openconnect_profile_dir: "/root/openconnect-profiles"
+openconnect_password_file: "{{ openconnect_profile_dir }}/openconnect.password.txt"

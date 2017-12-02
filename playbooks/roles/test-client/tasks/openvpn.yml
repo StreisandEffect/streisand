@@ -24,20 +24,6 @@
     group: root
     mode: 0600
 
-- name: "Download client profile list"
-  get_url:
-    url: "{{ gateway_profile_inventory }}"
-    dest: "{{ test_client_profiles_file }}"
-    force_basic_auth: yes
-    url_username: "{{ gateway_test_user }}"
-    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
-    validate_certs: no
-    mode: 0600
-
-- name: "Register the client profile list contents"
-  command: "cat {{ test_client_profiles_file }}"
-  register: test_client_profiles
-
 - name: "Download and test each OpenVPN profile type"
   include_tasks: openvpn-test.yml
   vars:
