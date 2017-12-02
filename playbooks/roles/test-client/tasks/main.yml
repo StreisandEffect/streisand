@@ -61,9 +61,9 @@
 #    - shadowsocks
 
 # Run the WireGuard tests
-#- import_tasks: wireguard.yml
-#  tags:
-#    - wireguard
+- import_tasks: wireguard.yml
+  tags:
+    - wireguard
 
 # Run the OpenVPN tests
 #- import_tasks: openvpn.yml
@@ -71,7 +71,7 @@
 #    - openvpn
 
 # Run the OpenConnect tests
-- import_tasks: openconnect.yml
-  tags:
-    - openconnect
+#- import_tasks: openconnect.yml
+#  tags:
+#    - openconnect
 ...

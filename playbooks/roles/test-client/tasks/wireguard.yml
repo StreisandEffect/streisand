@@ -6,64 +6,30 @@
 # Import the Wireguard Streisand playbook vars
 - include_vars: "../../wireguard/vars/main.yml"
 
-- name: "Remove any stale Wireguard config files"
+- name: "Remove any stale Wireguard profiles"
   file:
-    path: "{{ wireguard_config }}"
+    path: "{{ wireguard_profile_dir }}"
     state: absent
 
-- name: "Download the WireGuard wg0-client config file"
+- name: "Create WireGuard profile directory"
+  file:
+    path: "{{ wireguard_profile_dir }}"
+    state: directory
+
+- name: "Download each of the WireGuard client profiles"
   get_url:
-    url: "{{ gateway_wireguard_config }}"
-    dest: "{{ wireguard_config }}"
+    url: "{{ gateway_test_url }}/wireguard/{{ profile_name }}.client.conf"
+    dest: "{{ wireguard_profile_dir }}/{{ profile_name }}.client.conf"
     force_basic_auth: yes
     url_username: "{{ gateway_test_user }}"
     url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
     validate_certs: no
-    mode: 0600
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"
 
-- block:
-    - name: "Bring up the WireGuard interface"
-      shell: "wg-quick up wg0-client"
-
-    - name: "Register the updated /etc/resolv.conf contents"
-      shell: "cat /etc/resolv.conf"
-      register: wgclient_resolv_conf
-      changed_when: "False"
-
-    - name: "Assert that /etc/resolv.conf was updated for the DNSMasq WireGuard IP"
-      assert:
-        that:
-          - "'nameserver {{ dnsmasq_wireguard_ip }}' in wgclient_resolv_conf.stdout"
-
-    - name: "Check {{ external_test_url }} through the WireGuard route"
-      get_url:
-        url: "{{ external_test_url }}"
-        dest: "/dev/null"
-        force: "yes"
-
-    - name: "Register the output from `wg` to check Wireguard status"
-      shell: "wg"
-      register: wgclient_wg_output
-      changed_when: "False"
-
-    - name: "Assert that there has been a successful Wireguard handshake"
-      assert:
-        that:
-          - "'latest handshake' in wgclient_wg_output.stdout"
-
-    - name: "Bring down the WireGuard interface"
-      command: "wg-quick down wg0-client"
-
-    - name: "Register the updated /etc/resolv.conf contents"
-      shell: "cat /etc/resolv.conf"
-      register: wgclient_resolv_conf
-      changed_when: "False"
-
-    - name: "Assert that the DNS was restored to pre-WireGuard state"
-      assert:
-        that:
-          - "'nameserver {{ dnsmasq_wireguard_ip }}' not in wgclient_resolv_conf.stdout"
-  rescue:
-    - name: "Remove the wg0-client interface if present"
-      command: "wg-quick down wg0-client"
-      ignore_errors: "yes"
+- name: "Test each WireGuard client profile"
+  include: wireguard-profiletest.yml
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"

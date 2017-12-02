@@ -47,8 +47,7 @@ shadowsocks_client_zip: "{{ shadowsocks_client }}.gz"
 # The gateway URL for clients to download the WireGuard config file
 gateway_wireguard_config: "{{ gateway_test_url }}/wireguard/wg0-client.conf"
 
-# Path to the WireGuard config file on the Streisand client
-wireguard_config: "/etc/wireguard/wg0-client.conf"
+wireguard_profile_dir: "/root/wireguard-profiles"
 
 gateway_profile_inventory: "{{ gateway_test_url }}/test-client-inventory"
 test_client_profiles_file: "/tmp/test-client-inventory"
