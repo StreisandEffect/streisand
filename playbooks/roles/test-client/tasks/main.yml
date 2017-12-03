@@ -74,4 +74,9 @@
 - import_tasks: openconnect.yml
   tags:
     - openconnect
+
+# Run the Tor tests
+- import_tasks: tor.yml
+  tags:
+    - tor
 ...

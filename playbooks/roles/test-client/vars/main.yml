@@ -63,3 +63,12 @@ openconnect_ca_file: "/root/openconnect.ca.crt"
 openconnect_pid_file: "/tmp/openconnect.pid"
 openconnect_profile_dir: "/root/openconnect-profiles"
 openconnect_password_file: "{{ openconnect_profile_dir }}/openconnect.password.txt"
+
+gateway_tor_qr: "{{ gateway_test_url }}/tor/tor-obfs4-qr-code.png"
+gateway_tor_hidden_service_hostname: "{{ gateway_test_url }}/tor/hidden-service-hostname.txt"
+tor_pid_file: "/tmp/tor.pid"
+tor_socks_port: 9050
+tor_obfs4_qr: "/root/tor-obs4-qr-code.png"
+tor_config: "/etc/tor/streisand.obfs4.relay"
+tor_hidden_service_hostname: "/tmp/hidden-service-hostname.txt"
+

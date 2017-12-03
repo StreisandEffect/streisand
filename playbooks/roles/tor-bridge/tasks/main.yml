@@ -95,6 +95,13 @@
   register: tor_hidden_service_hostname_output
   changed_when: False
 
+- name: Copy the hidden service hostname to the webroot when in test client mode
+  file:
+    src: "{{ tor_hidden_service_directory }}/hostname"
+    remote_src: yes
+    dest: "{{ tor_gateway_location }}/hidden-service-hostname.txt"
+    force: yes
+
 - name: Register the Tor Hidden Service URL fact
   set_fact:
     tor_hidden_service_url: "http://{{ tor_hidden_service_hostname_output.stdout }}"
