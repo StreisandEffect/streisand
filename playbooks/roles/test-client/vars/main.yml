@@ -71,4 +71,3 @@ tor_socks_port: 9050
 tor_obfs4_qr: "/root/tor-obs4-qr-code.png"
 tor_config: "/etc/tor/streisand.obfs4.relay"
 tor_hidden_service_hostname: "/tmp/hidden-service-hostname.txt"
-
