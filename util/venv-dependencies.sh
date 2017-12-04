@@ -183,26 +183,8 @@ our_pip_install --upgrade pip
 # The pip we want should be in our path now. Make sure we use it.
 hash -r
 
-our_pip_install ansible
-
-# Python dependencies for various providers. Note that
-# "ansible[azure]" means "install ansible, and add additional
-# dependencies packages from ansible's 'azure' set. Since ansible is
-# already installed (see above), this just means "Azure dependencies".
-
-packages="$(cat <<EOF
-boto boto3
-ansible[azure]
-dopy==0.3.5
-apache-libcloud>=1.5.0 pycrypto
-linode-python
-pyrax
-EOF
-)"
-
-# We want word splitting.
-# shellcheck disable=SC2059,SC2086
-our_pip_install $packages
+# Now we can install all the Python modules.
+our_pip_install -r requirements.txt
 
 echo "
 *************
