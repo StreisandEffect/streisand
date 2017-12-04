@@ -7,8 +7,11 @@
 
 - name: "Remove existing gateway password file from client if required"
   file:
-    path: "{{ gateway_password_file }}"
+    path: "{{ item }}"
     state: absent
+  with_items:
+    - "{{ gateway_password_file }}"
+    - "{{ test_client_profiles_file }}"
 
 - name: "Copy gateway password file to client"
   copy:
@@ -51,32 +54,36 @@
   register: test_client_profiles
 
 # Run the SSH forwarding tests
-- import_tasks: ssh-forward.yml
-  tags:
-    - ssh-forward
+#- import_tasks: ssh-forward.yml
+#  tags:
+#    - ssh-forward
 
 # Run the Shadowsocks tests
-- import_tasks: shadowsocks.yml
-  tags:
-    - shadowsocks
+#- import_tasks: shadowsocks.yml
+#  tags:
+#    - shadowsocks
 
 # Run the WireGuard tests
-- import_tasks: wireguard.yml
-  tags:
-    - wireguard
+#- import_tasks: wireguard.yml
+#  tags:
+#    - wireguard
 
 # Run the OpenVPN tests
-- import_tasks: openvpn.yml
-  tags:
-    - openvpn
+#- import_tasks: openvpn.yml
+#  tags:
+#    - openvpn
 
 # Run the OpenConnect tests
-- import_tasks: openconnect.yml
-  tags:
-    - openconnect
+#- import_tasks: openconnect.yml
+#  tags:
+#    - openconnect
 
 # Run the Tor tests
-- import_tasks: tor.yml
+#- import_tasks: tor.yml
+#  tags:
+#    - tor
+
+- import_tasks: stunnel.yml
   tags:
     - tor
 ...
