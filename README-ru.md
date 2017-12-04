@@ -155,6 +155,7 @@
 
 ### Выполнение ###
 1. Склонируйте репозиторий Стрейзанд и перейдите в директорию
+
        git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 2. Запустите скрипт Стрейзанд.
 
