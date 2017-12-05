@@ -16,6 +16,56 @@ Si la connexion semble instable, vérifiez d'abord que les mots de passe ont ét
 
 <a name="windows"></a>
 ### Windows ###
+
+Ces instructions supposent Windows 7 ou version ultérieure.
+
+Pour continuer, vous devez utiliser Windows PowerShell ISE en tant qu'administrateur. Pour commencer:
+
+1. Navigeuz vers *Windows Powershell* dans le menu *Démarrer*.
+1. Faites un clic droit sur *PowerShell ISE*, et choisissez "Exécuter en tant qu'administrateur"
+
+#### Windows L2TP et NAT ####
+
+Si vous vous connectez derrière un périphérique NAT (comme la plupart des routeurs domestiques), vous devez configurer un paramètre pour indiquer à Windows d'attendre le NAT. Cela doit être fait qu'une seule fois.
+
+Lancez PowerShell ISE en tant qu'administrateur. Dans la fenêtre de commande ISE, collez le code suivant et appuyez sur *Retour*.
+
+```
+Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\PolicyAgent -Name AssumeUDPEncapsulationContextOnSendRule -Value 2 -Type DWord
+```
+
+Le réglage prendra effet après un redémarrage. Redémarrez votre ordinateur.
+
+#### Enregistrement du VPN ####
+
+Vous pouvez [configurer le VPN manuellement](#winmanual). Si vous utilisez Windows 7, cela est nécessaire.
+
+Si vous utilisez Windows 8 ou une version ultérieure, vous pouvez configurer le VPN avec une commande de PowerShell ISE.
+
+#### Enregistrement du VPN avec PowerShell
+
+Lancez *PowerShell ISE* en tant qu'administrateur et collez ce bloc de code dans la fenêtre de commande:
+
+```
+Add-VpnConnection -Name {{ streisand_server_name }} -ServerAddress {{ streisand_ipv4_address }} -AuthenticationMethod Chap -EncryptionLevel Optional -TunnelType L2tp -Force -RememberCredential -L2tpPsk {{ ipsec_preshared_key.stdout }}
+```
+
+Windows vous imprimera un avertissement à propos de EAP/MS-CHAPv2. Ignorez-le.
+
+Vous devez également vous connecter au serveur L2TP. Sur Windows 10, cliquez sur l'icône réseau dans la barre des tâches. Vous devriez voir `Se connecter à {{ streisand_server_name }}`. Cliquez dessus, et saisissez:
+
+Nom d'utilisateur: `streisand`
+
+Mot de passe: `{{ chap_password.stdout }}`
+
+Vous ne devriez plus être invité à entrer le nom d'utilisateur/mot de passe. Passer à la [vérification de votre connexion](#wincheck)
+
+<a name="winmanual"></a>
+
+### Configuration VPN manuelle ###
+
+Si vous ne souhaitez pas utiliser PowerShell, vous pouvez configurer le VPN à la main. Ces instructions sont principalement destinées aux personnes utilisant les systèmes d'exploitation Microsoft avant Windows 10, ou pour le dépannage.
+
 1. Cliquez sur le menu *Démarrer* et sélectionnez le panneau de configuration.
 1. Accédez à la section *Réseau et Internet*.
 1. Cliquez sur *Afficher l'état du réseau*.
@@ -39,6 +89,24 @@ Si la connexion semble instable, vérifiez d'abord que les mots de passe ont ét
 1. Cliquez *OK* pour fermer *Paramètres avancés*.
 1. Cliquez *OK* pour sauvegarder les détails de connexion VPN.
 1. Pour vous connecter au VPN, cliquez simplement sur l'icône sans fil/réseau dans votre barre d'état système, sélectionnez *{{streisand_server_name}}*, puis cliquez sur *Connecter*.
+
+Si vous utilisez Windows 10, vous pouvez configurer le VPN manuellement en suivant les instructions ci-dessous.
+
+1. Cliquez sur le menu *Démarrer* et lancez *Paramètres*.
+1. Cliquez sur *Réseau et Internet*.
+1. Cliquez sur *VPN*.
+1. Cliquez sur *Ajouter une connexion VPN*.
+1. Sélectionnez *Windows (built-in)* dans la liste déroulante *Fournisseur de VPN*.
+1. Saisissez `{{ streisand_server_name }}` dans le champ *Nom de connexion*.
+1. Saisissez `{{ streisand_ipv4_address }}` dans le champ *Nom ou adresse de serveur*.
+1. Sélectionnez *L2TP/IPsec with pre-shared key* dans la liste déroulante *Type de VPN*.
+1. Saisissez `{{ ipsec_preshared_key.stdout }}` dans le champ *Clé prépartagée*.
+1. Sélectionnez *Nom d'utilisateur et mot de passe* dans la liste déroulante *Type d'informations de connexion*.
+1. Saisissez `streisand` dans le champ *Nom d'utilisateur*. 
+1. Saisissez `{{ chap_password.stdout }}` dans le champ *Mot de pass*.
+1. Cocher l'option *Souvenez-vous de mes informations d'inscription* box.
+1. Cliquez *Sauvgarder*.
+1. Cliquez *Se Connecter*.
 
 Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
