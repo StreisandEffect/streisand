@@ -9,6 +9,13 @@ server-cert = {{ ocserv_server_certificate_file }}
 server-key = {{ ocserv_server_key_file }}
 ca-cert = {{ ocserv_ca_certificate_file }}
 isolate-workers = true
+
+# The anyconnect client issues a bye and expects for the session to
+# be usable afterwards, however ocserv on a bye packet invalidates the
+# session. Use 'persistent-cookies = true' to force the server keep
+# these sessions even after disconnect.
+persistent-cookies = true
+
 keepalive = 32400
 dpd = 240
 mobile-dpd = 1800

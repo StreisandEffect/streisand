@@ -17,10 +17,6 @@
   shell: markdown {{ l2tp_ipsec_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ l2tp_ipsec_gateway_location }}/index{{ item.value.file_suffix }}.html
   with_dict: "{{ streisand_languages }}"
 
-- name: Get a UUID generator with an explicit random function.
-  apt:
-    name: uuid
-
 - name: Generate a UUID for the Apple .mobileconfig package
   shell: uuid -v4
   register: l2tp_mobileconfig_package_uuid
