@@ -179,27 +179,55 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 
 **但是需要注意的是**这个操作是无法挽回的，它将把你正在使用的 VPS 完全转变为网关后，之前如果你在上面搭建博客或者用于测试某些软件，那完成这个操作后，它们将不复存在。
 
-### 在其他的 VPS 供应商上运行 ###
+### 在其他的 VPS 供应商上运行 （高级使用）###
 
 你同样可以将 Streisand 运行在其他 VPS 供应商（提供更好的硬件也没问题，奇葩的 VPS 供应商也行）的 16.04 Ubuntu 上，只需要你在运行 ./streisand 的时候选择菜单中的 "Existing Server (Advanced)" 就可以。你需要提供这个 VPS 的 IP 地址。
 
 这个 VPS 必须使用 `$HOME/id_rsa` 来储存 SSH key，并且可以使用 **root** 作为默认用户登录 VPS，如果提供商没有给你 root 用户作为默认用户登录，而是别的用户名，比如：`ubuntu` ，那么在运行 `./streisand` 之前需要额外配置 `ANSIBLE_SSH_USER` 环境变量，比如修改为：`ANSIBLE_SSH_USER=ubuntu` 。
 
+### 非交互式部署 （高级使用）###
+
+如果你想做非交互式部署, 你可以在 `global_vars/noninteractive`找到配置文件和脚本文件。你需要在配置文件或命令行录入必要信息。
+
+将 Streisand 在 VPS 供应商上运行:
+
+      deploy/streisand-new-cloud-server.sh \
+        --provider digitalocean \
+        --site-config global_vars/noninteractive/digitalocean-site.yml
+
+将 Streisand 在正在使用中的服务器上运行:
+
+      deploy/streisand-local.sh \
+        --site-config global_vars/noninteractive/local-site.yml
+
+将 Streisand 在已现有的服务器上运行 :
+
+      deploy/streisand-existing-cloud-server.sh \
+        --ip-address 10.10.10.10 \
+        --ssh-user root \
+        --site-config global_vars/noninteractive/digitalocean-site.yml
+
 未来特性
 -----------------
-* 提供可选择性的安装和隔离，让服务器只运行某几（一）个服务或者守护进程。
 * 更简便的设置
 
 如果你对 Streisand 有任何期待和想法，或者你找到 BUG ，请联系我们并且发 [Issue Tracker](https://github.com/StreisandEffect/streisand/issues) 。
+
+核心的贡献者们
+----------------
+* Jay Carlson (@nopdotcom)
+* Nick Clarke (@nickolasclarke)
+* Joshua Lund (@jlund)
+* Ali Makki (@alimakki)
+* Daniel McCarney (@cpu)
+* Corban Raun (@CorbanR)
 
 相关知识
 ----------------
 [Jason A. Donenfeld](https://www.zx2c4.com/) 凭借他的智慧和果敢重新设计一个现代的 VPN，就像我们看到的 [WireGuard](https://www.wireguard.com/) 。他非常耐心和认真的给予帮助并提供了优质的反馈，在此，向他表示我由衷的感谢。
 
-[Corban Raun](https://github.com/CorbanR) 超好，他借了我一台 Windows 笔记本来测试和完善该平台的说明，他算是从项目开始就给予我最大的支持。谢谢你。
-
-对 [Trevor Smith](https://github.com/trevorsmith) 在项目上的付出，简直无法形容，非常感谢他，正是他提出了网关的提案，提供了数不胜数反馈，在公布前灵机一动，创建了 html 模板，让现在的**一切看上去那么屌**。另外还要感谢他频繁使用 iPhone 测试不同的客户端。
+对 [Trevor Smith](https://github.com/trevorsmith) 在项目上的付出，简直无法形容，非常感谢他，正是他提出了网关的提案，提供了数不胜数反馈，在公布前灵机一动，创建了 html 模板，让现在的**一切看上去那么屌**。
 
 非常感谢 [Paul Wouters](https://nohats.ca/) 的 [The Libreswan Project](https://libreswan.org/) ，正是他的耐心调试和设置，才让 L2TP/IPsec 工作的那么好。
 
-另外，在我工作期间，我差不多把 [Starcadian's](http://starcadian.com/) 的 'Sunset Blood' 听了300遍（译者：这张专辑节奏感不错）。
+另外，[Joshua Lund](https://github.com/jlund)开始这个项目工作的时候，他差不多把 [Starcadian's](http://starcadian.com/) 的 'Sunset Blood' 听了300遍（译者：这张专辑节奏感不错）。
