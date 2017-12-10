@@ -21,11 +21,6 @@
       register: openvpn_resolv_conf
       changed_when: "False"
 
-    # TODO(@cpu): Delete this before PR
-    - name: "Debug the resolv.conf contents"
-      debug:
-        var: openvpn_resolv_conf.stdout
-
     - name: "Assert that /etc/resolv.conf was updated for the DNSMasq OpenVPN IP"
       assert:
         that:
