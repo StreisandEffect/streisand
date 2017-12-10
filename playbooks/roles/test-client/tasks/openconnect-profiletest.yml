@@ -11,10 +11,10 @@
       changed_when: False
 
     - name: "Start OpenConnect with PKCS12 auth and the {{ profile_name }} profile"
-      # openconnect expects the PKCS12 password to be provided via stdin so we
+      # OpenConnect expects the PKCS12 password to be provided via stdin so we
       # use `echo -n` to send it to stdin without a newline.
       # We use `--background` as an argument to make sure the shell returns
-      # immeidately. `--pid-file` helps us kill openconnect later.
+      # immeidately. `--pid-file` helps us kill OpenConnect later.
       # `--cafile` is used to validate the server's certificate against the
       # Streisand OpenConnect CA. `--certificate` is used to specify our client
       # PKCS12 file for client cert auth.
