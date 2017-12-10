@@ -5,7 +5,7 @@
 - name: "Include the Shadowsocks default vars"
   include_vars: "../../shadowsocks/defaults/main.yml"
 
-- name: "Remove existing gateway password file from client if required"
+- name: "Remove existing state from client if required"
   file:
     path: "{{ item }}"
     state: absent
@@ -54,36 +54,23 @@
   register: test_client_profiles
 
 # Run the SSH forwarding tests
-#- import_tasks: ssh-forward.yml
-#  tags:
-#    - ssh-forward
+- import_tasks: ssh-forward.yml
 
 # Run the Shadowsocks tests
-#- import_tasks: shadowsocks.yml
-#  tags:
-#    - shadowsocks
+- import_tasks: shadowsocks.yml
 
 # Run the WireGuard tests
-#- import_tasks: wireguard.yml
-#  tags:
-#    - wireguard
+- import_tasks: wireguard.yml
 
 # Run the OpenVPN tests
-#- import_tasks: openvpn.yml
-#  tags:
-#    - openvpn
+- import_tasks: openvpn.yml
 
 # Run the OpenConnect tests
-#- import_tasks: openconnect.yml
-#  tags:
-#    - openconnect
+- import_tasks: openconnect.yml
 
 # Run the Tor tests
-#- import_tasks: tor.yml
-#  tags:
-#    - tor
+- import_tasks: tor.yml
 
+# Run the Stunnel tests
 - import_tasks: stunnel.yml
-  tags:
-    - tor
 ...
