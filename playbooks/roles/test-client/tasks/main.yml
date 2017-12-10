@@ -18,7 +18,7 @@
     group: root
     mode: 0600
 
-- name: "Install gateway test script"
+- name: "Install the gateway test script"
   template:
     src: "streisand-gateway-test.sh.j2"
     dest: "{{ test_script_dir }}/streisand-gateway-test"
@@ -26,7 +26,7 @@
     group: root
     mode: 0755
 
-- name: "Wait for Streisand gateway"
+- name: "Wait for the Streisand gateway"
   wait_for:
     host: "{{ streisand_ip }}"
     port: 443
@@ -36,7 +36,7 @@
 - name: "Run the gateway test script"
   command: "streisand-gateway-test"
 
-- name: "Download client profile list"
+- name: "Download the client profile list"
   get_url:
     url: "{{ gateway_profile_inventory }}"
     dest: "{{ test_client_profiles_file }}"
