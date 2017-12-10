@@ -67,13 +67,13 @@
       register: stunnel_pid_output
       changed_when: False
 
-    - name: "Stop the stunnel daemon"
-      command: "kill -INT {{ stunnel_pid_output.stdout }}"
-
-    - name: "Download and test each OpenVPN profile type"
+    - name: "Download and test each OpenVPN stunnel profile"
       include_tasks: openvpn-test.yml
       vars:
         openvpn_profile_type: "stunnel"
+
+    - name: "Stop the stunnel daemon"
+      command: "kill -INT {{ stunnel_pid_output.stdout }}"
 
   rescue:
     - name: "kill stunnel instances"
