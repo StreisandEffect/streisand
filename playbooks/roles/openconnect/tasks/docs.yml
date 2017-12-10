@@ -21,6 +21,15 @@
     loop_var: "ocserv_client_password"
     label: "{{ ocserv_client_password.client_name.item }}"
 
+- name: "Copy the client .mobileconfig files to the OpenConnect Gateway directory"
+  command: cp {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}/{{ ocserv_client_password.client_name.stdout }}.mobileconfig {{ ocserv_gateway_location }}
+  args:
+    creates: "{{ ocserv_gateway_location }}/{{ ocserv_client_password.client_name.stdout }}.mobileconfig"
+  with_items: "{{ vpn_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "ocserv_client_password"
+    label: "{{ ocserv_client_password.client_name.item }}"
+
 - name: Generate the Markdown OpenConnect/AnyConnect instructions
   template:
     src: instructions{{ item.value.file_suffix }}.md.j2

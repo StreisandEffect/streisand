@@ -33,6 +33,9 @@ streisand_common_packages:
   # Word List dictionary used by several roles to generate random
   # (yet typeable!) passphrases
   - wamerican-huge
+  # A UUID generator with an explicit random function.
+  # Used for generating UUIDs for mobileconfig files
+  - uuid
 
 # Services that are running by default but not needed by Streisand
 streisand_unneeded_packages:

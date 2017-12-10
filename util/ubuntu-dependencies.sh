@@ -10,9 +10,16 @@ set -e
 # you're not on a fresh regular machine, consider using
 # venv-dependencies.sh instead.
 #
-# It's safe to run this script multiple times.
+# It's safe to run this script multiple times. For most cloud
+# providers, it should work as a boot/cloud-init script.
+#
+# The defaults are fine for an interactive install. If you are using
+# this as a cloud-init script, change the first two settings:
+#
+#  *  quiet must be "--yes"
+#  *  The "DEBIAN_FRONTEND" line must be uncommented.
 
-# We default to a regular, interactive upgrade:
+# We default to a regular, interactive upgrade.
 quiet=
 # quiet='--yes'
 
