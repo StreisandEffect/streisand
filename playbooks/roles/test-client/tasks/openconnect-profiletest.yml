@@ -4,8 +4,20 @@
     - name: "Read the {{ profile_name }} PKCS12 password from the mobileconfig file"
       # Use `xmllint` to evaluate an XPATH against the client mobileconfig XML.
       # The XPATH provided will extract the PKCS12 password for the given profile.
+      #
+      # Short breakdown of the XPATH expression:
+      #   `/plist/dict/array/dict`
+      #     Gets to the dict's with the config content
+      #   `/plist/dict/array/dict/key[text()="Password"]
+      #     Finds the "<key>Password</key>" element
+      #   `/plist/dict/array/dict/key[text()="Password"]/following-sibling::string[1]`
+      #     Finds the "<string>...</string>" element that is the
+      #     <key>Password</key> elements first sibling.
+      #   `/plist/dict/array/dict/key[text()="Password"]/following-sibling::string[1]/text()`
+      #     Extracts the node text value from the <string>...</string> - this is
+      #     the PKCS12 password! Nice!
       shell: >
-        xmllint --xpath '/plist[@version="1.0"]/dict/array/dict[2]//string[1]/text()' \
+        xmllint --xpath '/plist/dict/array/dict/key[text()="Password"]/following-sibling::string[1]/text()' \
                 {{ openconnect_profile_dir }}/{{ profile_name }}.mobileconfig
       register: openconnect_pkcs12_password_contents
       changed_when: False
