@@ -70,3 +70,20 @@ streisand_languages:
     file_suffix: "-fr"
     language_name: "Français"
     tor_locale: "fr"
+
+streisand_word_gen:
+  gateway:
+    shuf -n 6 /usr/share/dict/english.txt |
+    paste -s -d '.' -
+  identifier:
+    shuf -n 2 /usr/share/dict/english.txt |
+    paste -s -d '-' -
+  long_identifier:
+    shuf -n 3 /usr/share/dict/english.txt |
+    paste -s -d '-' -    
+  weak_password:
+    shuf -n 3 /usr/share/dict/english.txt |
+    paste -s -d '.' -
+  psk:
+    shuf -n 5 /usr/share/dict/english.txt |
+    paste -s -d '.' -
