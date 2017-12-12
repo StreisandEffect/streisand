@@ -31,7 +31,7 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui ne permet l'accès aux ports `80` et` 443`.*
+   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui ne permet l'accès au port `443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
    * *[Profils combinés](#combined-profiles) sont maintenant disponibles.*
 1. Ouvrez le directoire *config* situé dans le dossier de destination. Pour la plupart des utilisateurs, ça sera *C:\Programmes\OpenVPN\config* ou *C:\Program Files (x86)\OpenVPN\config*. Vous verrez un seul fichier README dans ce répertoire.
@@ -50,7 +50,7 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui ne permet l'accès aux ports `80` et` 443`.*
+   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui ne permet l'accès au port `443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
    * *[Profils combinés](#combined-profiles) sont maintenant disponibles.*
 1. Double-cliquez le profile OpenVPN.
@@ -69,7 +69,7 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès aux ports `80` et` 443`.*
+   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès au port `443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
    * *[Profils combinés](#combined-profiles) sont maintenant disponibles.*
 1. Copiez le fichier `{{ openvpn_direct_profile_filename }}` téléchargé vers l'emplacement de votre choix. */etc/openvpn/* est une bonne option.
@@ -113,7 +113,7 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 1. Cliquez le bouton *Advanced*.
 1. Accédez à l'onglet *General*.
    * Vérifier *Use custom gateway port* et entrer `{{openvpn_port}}` comme sa valeur.
-     * Port `443` est disponible en alternative si vous êtes sur un réseau qui ne permet l'accès aux deux ports HTTP standard.
+     * Port `443` est disponible en alternative si vous êtes sur un réseau qui ne permet l'accès au le port HTTPS standard.
      * Vous pouvez également utiliser le port `{{ openvpn_port_udp }}` pour une connexion UDP.
      * Le profil combiné qui parcourt le port UDP `{{ openvpn_port_udp }}`, le port TCP `{{ openvpn_port }}`et `{{ openvpn_port_sslh }}` est également disponible.
    * Cocher *Use LZO data compression*.
@@ -139,7 +139,7 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès aux ports `80` et` 443`.*
+   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès au port `443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
    * *[Profils combinés](#combined-profiles) sont maintenant disponibles.*
 1. Copiez le fichier `{{ openvpn_direct_profile_filename }}` sur votre téléphone.
@@ -158,7 +158,7 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès aux ports `80` et` 443`.*
+   * *[Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès au port `443`.*
    * *[Profils UDP](#udp-profiles) sont disponibles.*
    * *[Profils combinés](#combined-profiles) sont maintenant disponibles.*
 1. Ouvrez iTunes sur votre ordinateur et connectez votre téléphone.
