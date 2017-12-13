@@ -23,7 +23,7 @@
     creates: "{{ tls_ca }}.crt"
 
 - name: Generate a random server common name
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g' | cut -c 1-64 > {{ tls_server_common_name_file }}
+  shell: "{{ streisand_word_gen.long_identifier }} > {{ tls_server_common_name_file }}"
   args:
     creates: "{{ tls_server_common_name_file }}"
 
