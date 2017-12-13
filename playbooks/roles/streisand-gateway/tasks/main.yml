@@ -7,7 +7,7 @@
 - include_vars: ../../lets-encrypt/vars/main.yml
 
 - name: Generate a random Gateway password
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 4 | xargs | sed -e 's/ /-/g' > {{ streisand_gateway_password_file }}
+  shell: "{{ streisand_word_gen.gateway }} > {{ streisand_gateway_password_file }}"
   args:
     creates: "{{ streisand_gateway_password_file }}"
 
