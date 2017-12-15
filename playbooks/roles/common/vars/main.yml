@@ -30,6 +30,9 @@ streisand_common_packages:
   - qrencode
   # Used for automatically installing security updates
   - unattended-upgrades
+  # Word List dictionary used by several roles to generate random
+  # (yet typeable!) passphrases
+  - wamerican-huge
   # A UUID generator with an explicit random function.
   # Used for generating UUIDs for mobileconfig files
   - uuid
