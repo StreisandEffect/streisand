@@ -38,7 +38,7 @@
     mode: 0644
 
 - name: Generate random VPN client names
-  shell: "{{ streisand_word_gen.identifier }}"
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/english.txt | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g'
   register: "vpn_client_names"
   with_sequence: count={{ vpn_clients }}
 
