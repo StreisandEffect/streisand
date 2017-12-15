@@ -1,6 +1,6 @@
 ---
 - name: "Generate a random password that will be used during the PKCS #12 conversion"
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ tls_client_path }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password
+  shell: "{{ streisand_word_gen.weak_password }} > {{ tls_client_path }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password"
   args:
     creates: "{{ tls_client_path }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password"
   with_items: "{{ vpn_client_names.results }}"
