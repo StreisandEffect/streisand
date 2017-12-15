@@ -27,7 +27,7 @@
 - import_tasks: firewall.yml
 
 - name: Generate a random Nickname for the bridge
-  shell: "{{ streisand_word_gen.identifier }} > {{ tor_bridge_nickname_file }}"
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ //' | cut -c 1-16 > {{ tor_bridge_nickname_file }}
   args:
     creates: "{{ tor_bridge_nickname_file }}"
 
