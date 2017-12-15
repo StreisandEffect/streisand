@@ -27,8 +27,7 @@
 - import_tasks: firewall.yml
 
 - name: Generate a random Nickname for the bridge
-  shell: "{{ streisand_word_gen.tor_nickname }} > {{ tor_bridge_nickname_file }}"
-  args:
+  shell: "{{ streisand_word_gen.tor_nickname }} > {{ tor_bridge_nickname_file }}  args:
     creates: "{{ tor_bridge_nickname_file }}"
 
 - name: Register the bridge's random Nickname
