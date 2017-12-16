@@ -90,6 +90,8 @@ build-essential
 libffi-dev
 python-dev
 python-pip
+libssl-dev
+libcurl4-openssl-dev
 EOF
 )"
 
