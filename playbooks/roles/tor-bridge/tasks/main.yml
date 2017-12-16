@@ -126,5 +126,13 @@
 # Generate the docs gateway page
 - import_tasks: docs.yml
 
+# This needs to be done after the docs folder structure is generated
+- name: Copy the hidden service hostname to the webroot when in test client mode
+  copy:
+    src: "{{ tor_hidden_service_directory }}/hostname"
+    remote_src: yes
+    dest: "{{ tor_gateway_location }}/hidden-service-hostname.txt"
+    force: yes
+
 # Mirror the Tor browser bundle
 - import_tasks: mirror.yml

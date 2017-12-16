@@ -1,0 +1,9 @@
+---
+- name: "Download each {{ openvpn_profile_type }} OpenVPN profile"
+  include: openvpn-profileget.yml
+
+- name: "Test each {{ openvpn_profile_type }} OpenVPN profile"
+  include: openvpn-profiletest.yml
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"

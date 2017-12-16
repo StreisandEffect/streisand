@@ -1,0 +1,54 @@
+---
+- name: "Remove existing forward SSH key from client if required"
+  file:
+    path: "{{ forward_ssh_key }}"
+    state: absent
+
+- name: "Download the forward user SSH key to the client"
+  get_url:
+    url: "{{ gateway_ssh_key }}"
+    dest: "{{ forward_ssh_key }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Remove any existing Streisand SSH known hosts files"
+  file:
+    path: "{{ forward_ssh_hosts }}"
+    state: absent
+
+- name: "Download the Streisand server SSH known hosts file"
+  get_url:
+    url: "{{ gateway_ssh_hosts }}"
+    dest: "{{ forward_ssh_hosts }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Remove existing forward SSH config from client if required"
+  file:
+    path: "{{ forward_ssh_config }}"
+    state: absent
+
+- name: "Install an SSH config file for a SSH SOCKS connection with the forward user"
+  template:
+    src: "ssh-config.j2"
+    dest: "{{ forward_ssh_config }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: "Install SSH forwarding test script"
+  template:
+    src: "streisand-ssh-forward-test.sh.j2"
+    dest: "{{ test_script_dir }}/streisand-ssh-forward-test"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Run SSH forwarding test script"
+  command: "streisand-ssh-forward-test"
