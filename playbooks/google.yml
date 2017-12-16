@@ -11,32 +11,41 @@
       "2":  "us-central1-b"
       "3":  "us-central1-c"
       "4":  "us-central1-f"
-      "5":  "us-east1-b"
-      "6":  "us-east1-c"
-      "7":  "us-east1-d"
-      "8":  "us-east4-b"
-      "9":  "us-east4-c"
+      "5":  "us-east4-a"
+      "6":  "us-east4-b"
+      "7":  "us-east4-c"
+      "8":  "us-east1-b"
+      "9":  "us-east1-c"
       "10": "us-east1-d"
       "11": "us-west1-a"
       "12": "us-west1-b"
-      "13": "europe-west1-b"
-      "14": "europe-west1-c"
-      "15": "europe-west1-d"
-      "16": "asia-east1-a"
-      "17": "asia-east1-b"
-      "18": "asia-east1-c"
-      "19": "asia-northeast1-a"
-      "20": "asia-northeast1-b"
-      "21": "asia-northeast1-c"
-      "22": "asia-southeast1-a"
-      "23": "asia-southeast1-b"
-      "24": "australia-southeast1-a"
-      "25": "australia-southeast1-b"
-      "26": "australia-southeast1-c"
-      "27": "southamerica-east1-a"
-      "28": "southamerica-east1-b"
-      "29": "southamerica-east1-c"
-
+      "13": "us-west1-c"
+      "14": "europe-west1-b"
+      "15": "europe-west1-c"
+      "16": "europe-west1-d"
+      "17": "europe-west2-a"
+      "18": "europe-west2-b"
+      "19": "europe-west2-c"
+      "20": "europe-west3-a"
+      "21": "europe-west3-b"
+      "22": "europe-west3-c"
+      "23": "asia-east1-a"
+      "24": "asia-east1-b"
+      "25": "asia-east1-c"
+      "26": "asia-northeast1-a"
+      "27": "asia-northeast1-b"
+      "28": "asia-northeast1-c"
+      "29": "asia-south1-a"
+      "30": "asia-south1-b"
+      "31": "asia-south1-c"
+      "32": "asia-southeast1-a"
+      "33": "asia-southeast1-b"
+      "34": "australia-southeast1-a"
+      "35": "australia-southeast1-b"
+      "36": "australia-southeast1-c"
+      "37": "southamerica-east1-a"
+      "38": "southamerica-east1-b"
+      "39": "southamerica-east1-c"
 
   # These variable files are included so the gce-network role
   # knows which ports to open
@@ -60,31 +69,41 @@
           2. Central US            (Iowa B)
           3. Central US            (Iowa C)
           4. Central US            (Iowa F)
-          5. Eastern US            (Northern Virginia B)
-          6. Eastern US            (Northern Virginia C)
-          7. Eastern US            (Northern Virginia D)
+          5. Eastern US            (Northern Virginia A)
+          6. Eastern US            (Northern Virginia B)
+          7. Eastern US            (Northern Virginia C)
           8. Eastern US            (South Carolina B)
           9. Eastern US            (South Carolina C)
           10. Eastern US           (South Carolina D)
           11. Western US           (Oregon A)
           12. Western US           (Oregon B)
-          13. Western Europe       (Belgium B)
-          14. Western Europe       (Belgium C)
-          15. Western Europe       (Belgium D)
-          16. East Asia            (Taiwan A)
-          17. East Asia            (Taiwan B)
-          18. East Asia            (Taiwan C)
-          19. Northeast Asia       (Tokyo A)
-          20. Northeast Asia       (Tokyo B)
-          21. Northeast Asia       (Tokyo C)
-          22. Southeast Asia       (Singapore A)
-          23. Southeast Asia       (Singapore B)
-          24. Southeast Australia  (Sydney A)
-          25. Southeast Australia  (Sydney B)
-          26. Southeast Australia  (Sydney C)
-          27. South America        (São Paulo A)
-          28. South America        (São Paulo B)
-          29. South America        (São Paulo C)
+          13. Western US           (Oregon C)
+          14. Western Europe       (Belgium B)
+          15. Western Europe       (Belgium C)
+          16. Western Europe       (Belgium D)
+          17. Western Europe       (London A)
+          18. Western Europe       (London B)
+          19. Western Europe       (London C)
+          20. Western Europe       (Frankfurt A)
+          21. Western Europe       (Frankfurt B)
+          22. Western Europe       (Frankfurt C)
+          23. East Asia            (Taiwan A)
+          24. East Asia            (Taiwan B)
+          25. East Asia            (Taiwan C)
+          26. Northeast Asia       (Tokyo A)
+          27. Northeast Asia       (Tokyo B)
+          28. Northeast Asia       (Tokyo C)
+          29. South Asia           (Mumbai A)
+          30. South Asia           (Mumbai B)
+          31. South Asia           (Mumbai C)
+          32. Southeast Asia       (Singapore A)
+          33. Southeast Asia       (Singapore B)
+          34. Southeast Australia  (Sydney A)
+          35. Southeast Australia  (Sydney B)
+          36. Southeast Australia  (Sydney C)
+          37. South America        (São Paulo A)
+          38. South America        (São Paulo B)
+          39. South America        (São Paulo C)
         Please choose the number of your zone. Press enter for default (#3) zone.
       default: "3"
       private: no
