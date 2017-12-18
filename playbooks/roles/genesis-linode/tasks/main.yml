@@ -24,9 +24,11 @@
     wait: yes
   register: streisand_server
 
-- name: Debug the streisand_server info
-  debug:
-    var: streisand_server
+- name: Output instance metadata when in test client mode
+  template:
+    src: integration.test.metadata.json.j2
+    dest: generated-docs/integration.test.metadata.json
+   when: streisand_client_test
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for:
