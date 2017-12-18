@@ -24,6 +24,10 @@
     wait: yes
   register: streisand_server
 
+- name: Debug the streisand_server info
+  debug:
+    var: streisand_server
+
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for:
     host: "{{ streisand_server.instance.ipv4 }}"
