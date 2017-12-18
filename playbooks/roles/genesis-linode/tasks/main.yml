@@ -28,7 +28,7 @@
   template:
     src: integration.test.metadata.json.j2
     dest: generated-docs/integration.test.metadata.json
-   when: streisand_client_test
+  when: streisand_client_test
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for:
