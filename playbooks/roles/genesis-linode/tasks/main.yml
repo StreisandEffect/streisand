@@ -24,10 +24,16 @@
     wait: yes
   register: streisand_server
 
+- name: Ensure the metadata folder exists when in test client mode
+  file:
+    path: integration-data
+    state: directory
+  when: streisand_client_test
+
 - name: Output instance metadata when in test client mode
   template:
     src: integration.test.metadata.json.j2
-    dest: generated-docs/integration.test.metadata.json
+    dest: integration-data/linode.metadata.json
   when: streisand_client_test
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
