@@ -125,6 +125,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
    * Under *Server Certificate Check* choose `verify name exactly` and enter `{{ openvpn_server_common_name.stdout }}` as its value.
    * Check *Verify peer (server) certificate usage signature*.
    * Check *Use additional TLS authentication*.
+     * Select TLS-Auth as the Mode
      * Select the `ta.key` file you downloaded from the client-files directory for the *Key File*.
      * Select `1` as the *Key Direction*.
    * Click *OK*.
