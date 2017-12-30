@@ -89,6 +89,7 @@
           mode: pull
           server: https://images.linuxcontainers.org
           protocol: lxd
+          # This fingerprint references the ubuntu/xenial/amd64 image
           alias: 15979fa5ecd96e183d08a83451752bed05e63d1f21a2aae9e7162d19d54996f7
         profiles: ["default"]
         config:
