@@ -19,7 +19,7 @@ shadowsocks_dependencies:
   - rng-tools
   - libssl-dev
 
-shadowsocks_version: "3.1.1"
+shadowsocks_version: "3.1.2"
 shadowsocks_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ shadowsocks_version }}"
 
 # Configuring the build without documentation means we save close to 900mb of deps
