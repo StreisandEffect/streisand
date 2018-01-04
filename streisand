@@ -128,7 +128,7 @@ Please enter the word 'streisand' to continue: "
 }
 
 function existing_server() {
-  read -r -p "What is the IP of the existing server: " SERVER_IP
+  read -r -p "What is the IP of the existing server (you may choose to set a domain name later): " SERVER_IP
 
   be_careful_friend "
 THIS WILL OVERWRITE CONFIGURATION ON THE EXISTING SERVER.
