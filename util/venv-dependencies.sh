@@ -34,7 +34,7 @@ This script can install virtualenv for you, but on Linux, this
 requires sudo/root access.
 
 'new-directory' must be somewhere you can write to. A good place may be
-$HOME/streisand-deps. 
+$HOME/streisand-deps.
 "
 }
 
@@ -58,9 +58,20 @@ if [ "$#" -ne 1 ]; then
    invocation_problems=1
 fi
 
-if ! pip >/dev/null 2>&1; then
+PIP="pip"
+if pip -V 2>/dev/null | grep -q 'python 3'; then
+    echo "
+
+On your system, 'pip' appears to invoke Python 3's pip. This might cause problems.
+This script will try switching to 'pip2', but your pip2 install might be broken too.
+
+"
+    PIP="pip2"
+fi
+
+if ! "$PIP" >/dev/null 2>&1; then
    echo "
-You need a working 'pip' command. To get one:
+You need a working pip command. To get one:
 
 On Ubuntu and WSL:
    $sudo_command apt-get install python-pip
@@ -87,9 +98,12 @@ hard_detect_dpkg () {
 check_deb_dependencies () {
     critical="$(cat <<EOF
 build-essential
+libcurl4-openssl-dev
+libssl-dev
 libffi-dev
 python-dev
 python-pip
+python-apt
 EOF
 )"
 
@@ -135,21 +149,28 @@ die () {
 
 sudo_pip () {
     # pip complains loudly about directory permissions when sudo without -H.
-    $sudo_for_pip_install pip $quiet "$@"
+    $sudo_for_pip_install "$PIP" $quiet "$@"
 }
 
 our_pip () {
-    pip $quiet "$@"
+    "$PIP" $quiet "$@"
 }
 
 our_pip_install () {
     our_pip install "$@"
 }
 
-# An easy way to see if Homebrew is installed.
+NO_SITE_PACKAGES=""
+
+# An easy way to see if Homebrew is installed and vaguely working.
+
 if brew command command >/dev/null 2>&1; then
     # If it is, we get our virtualenv as a regular user
     our_pip_install virtualenv
+    # Homebrew's virtualenv defaults to using site-wide settings.
+    # We don't want this. But --no-site-packages is deprecated, so
+    # we should only set it for Homebrew.
+    NO_SITE_PACKAGES="--no-site-packages"
 else
     # We may not need this installed as root; we just need it on
     # $PATH somewhere. But do root for now.
@@ -159,7 +180,8 @@ fi
 # In case we have a new virtualenv executable.
 hash -r
 
-if ! virtualenv "$1"; then
+
+if ! virtualenv $NO_SITE_PACKAGES "$1"; then
     dn="$(dirname "$1")"
     echo "
 virtualenv failed to create directory '$1'. Note that $1 must not exist, but
@@ -178,7 +200,7 @@ source "$1/bin/activate"
 
 # Below this line, we are only installing into the virtualenv at "$1"
 
-our_pip_install --upgrade pip 
+our_pip_install --upgrade pip
 
 # The pip we want should be in our path now. Make sure we use it.
 hash -r
