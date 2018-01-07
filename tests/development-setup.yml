@@ -80,6 +80,12 @@
         path: /var/lib/lxd/unix.socket
         mode: "0777"
 
+    - name: Retrieve the Ubuntu Xenial AMD64 LXC image fingerprint
+      uri:
+        url: https://images.linuxcontainers.org/1.0/images/aliases/ubuntu/xenial/amd64
+        return_content: yes
+      register: xenial_fingerprint
+
     - name: Launch streisand container (this will take a while)
       lxd_container:
         name: streisand
@@ -89,7 +95,8 @@
           mode: pull
           server: https://images.linuxcontainers.org
           protocol: lxd
-          alias: ubuntu/xenial/amd64
+          # Use the retrieved alias to fetch the image
+          alias: "{{ xenial_fingerprint['json']['metadata']['target'] }}"
         profiles: ["default"]
         config:
           security.privileged: "true"

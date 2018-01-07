@@ -1,0 +1,114 @@
+---
+- name: "Remove existing state from client if required"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ forward_ssh_key }}"
+    - "{{ forward_ssh_config }}"
+    - "{{ forward_ssh_hosts }}"
+    - "{{ ssh_pid_file }}"
+
+- name: "Download the forward user SSH key to the client"
+  get_url:
+    url: "{{ gateway_ssh_key }}"
+    dest: "{{ forward_ssh_key }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Download the Streisand server SSH known hosts file"
+  get_url:
+    url: "{{ gateway_ssh_hosts }}"
+    dest: "{{ forward_ssh_hosts }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Install an SSH config file for a SSH SOCKS connection with the forward user"
+  template:
+    src: "ssh-config.j2"
+    dest: "{{ forward_ssh_config }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: "Test SSH forward user SOCKS proxy"
+  block:
+    - name: "Start an SSH connection with dynamic port forwarding"
+      shell: >
+        nohup ssh streisand-host -N -T & \
+        echo $! > {{ ssh_pid_file }}
+      args:
+        creates: "{{ ssh_pid_file }}"
+
+    - name: "Read the SSH connect PID file into a var"
+      command: "cat {{ ssh_pid_file }}"
+      register: ssh_pid_output
+      changed_when: False
+
+    - name: "Wait for port {{ forward_socks_port }} to become open"
+      wait_for:
+        port: "{{ forward_socks_port }}"
+        delay: 2
+        timeout: 60
+
+    - name: "Access a test URL through the SSH SOCKS proxy"
+      command: "curl --socks5-hostname localhost:{{ forward_socks_port }} {{ external_test_url }}"
+      # Don't warn about using command to execute curl - the get_url module
+      # doesn't support specifying a socks5 proxy
+      args:
+        warn: no
+
+    - name: "Stop the SSH connection"
+      command: "kill {{ ssh_pid_output.stdout }}"
+
+  rescue:
+    - name: "kill any hanging SSH connections"
+      command: "kill -9 {{ ssh_pid_output.stdout }}"
+      ignore_errors: "yes"
+
+
+- name: "Test TinyProxy through a SSH forward user connection"
+  block:
+    - name: "Remove the SSH PID file"
+      file:
+        path: "{{ ssh_pid_file }}"
+        state: absent
+
+    - name: "Start an SSH connection with TinyProxy's port forwarded"
+      shell: >
+        nohup ssh streisand-host-tinyproxy -N -T & \
+        echo $! > {{ ssh_pid_file }}
+      args:
+        creates: "{{ ssh_pid_file }}"
+
+    - name: "Read the SSH connect PID file into a var"
+      command: "cat {{ ssh_pid_file }}"
+      register: ssh_pid_output
+      changed_when: False
+
+    - name: "Wait for port {{ tinyproxy_local_port }} to become open"
+      wait_for:
+        port: "{{ tinyproxy_local_port }}"
+        delay: 2
+        timeout: 120
+
+    - name: "Access a test URL through the TinyProxy proxy"
+      command: "curl -x localhost:{{ tinyproxy_local_port }} {{ external_test_url }}"
+      # Don't warn about using command to execute curl - the get_url module's
+      # support for HTTP proxies isn't great
+      args:
+        warn: no
+
+    - name: "Stop the SSH connection"
+      command: "kill {{ ssh_pid_output.stdout }}"
+
+  rescue:
+    - name: "kill any hanging SSH connections"
+      command: "kill -9 {{ ssh_pid_output.stdout }}"
+      ignore_errors: "yes"

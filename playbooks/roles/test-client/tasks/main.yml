@@ -5,10 +5,13 @@
 - name: "Include the Shadowsocks default vars"
   include_vars: "../../shadowsocks/defaults/main.yml"
 
-- name: "Remove existing gateway password file from client if required"
+- name: "Remove existing state from client if required"
   file:
-    path: "{{ gateway_password_file }}"
+    path: "{{ item }}"
     state: absent
+  with_items:
+    - "{{ gateway_password_file }}"
+    - "{{ test_client_profiles_file }}"
 
 - name: "Copy gateway password file to client"
   copy:
@@ -18,124 +21,56 @@
     group: root
     mode: 0600
 
-- name: "Remove existing forward SSH key from client if required"
-  file:
-    path: "{{ forward_ssh_key }}"
-    state: absent
-
-- name: "Download the forward user SSH key to the client"
-  get_url:
-    url: "{{ gateway_ssh_key }}"
-    dest: "{{ forward_ssh_key }}"
-    force_basic_auth: yes
-    url_username: "{{ gateway_test_user }}"
-    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
-    validate_certs: no
-    mode: 0600
-
-- name: "Remove any existing Streisand SSH known hosts files"
-  file:
-    path: "{{ forward_ssh_hosts }}"
-    state: absent
-
-- name: "Download the Streisand server SSH known hosts file"
-  get_url:
-    url: "{{ gateway_ssh_hosts }}"
-    dest: "{{ forward_ssh_hosts }}"
-    force_basic_auth: yes
-    url_username: "{{ gateway_test_user }}"
-    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
-    validate_certs: no
-    mode: 0600
-
-- name: "Remove existing forward SSH config from client if required"
-  file:
-    path: "{{ forward_ssh_config }}"
-    state: absent
-
-- name: "Install an SSH config file for a SSH SOCKS connection with the forward user"
+- name: "Install the gateway test script"
   template:
-    src: "ssh-config.j2"
-    dest: "{{ forward_ssh_config }}"
-    owner: root
-    group: root
-    mode: 0600
-
-- name: "Download the Linux Shadowsocks client zip to the client machine"
-  get_url:
-    url: "{{ gateway_shadowsocks_client }}"
-    dest: "{{ shadowsocks_client_zip }}"
-    force_basic_auth: yes
-    url_username: "{{ gateway_test_user }}"
-    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
-    validate_certs: no
-    mode: 0600
-
-- name: "Extract the Shadowsocks client on the client machine"
-  # NOTE(@cpu): It's tempting to try and use the `unarchive` module here but with
-  # a brief test it seemed to barf trying to use `unzip` on a `.gz` file. This
-  # isn't a `tar.gz` and is probably too edge-case for `unarchive` so `command`
-  # it is!
-  command: "gunzip -f {{ shadowsocks_client_zip }}"
-  args:
-    chdir: "/root"
-    creates: "{{ shadowsocks_client }}"
-
-- name: "Set executable mode on Shadowsocks client"
-  file:
-    path: "{{ shadowsocks_client }}"
-    mode: 0700
-
-- name: "Remove existing Shadowsocks QR code from client if required"
-  file:
-    path: "{{ shadowsocks_qr_file }}"
-    state: absent
-
-- name: "Download the Shadowsocks QR code to the client machine"
-  get_url:
-    url: "{{ gateway_shadowsocks_qr }}"
-    dest: "{{ shadowsocks_qr_file }}"
-    force_basic_auth: yes
-    url_username: "{{ gateway_test_user }}"
-    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
-    validate_certs: no
-    mode: 0600
-
-- name: "Install zbar-tools"
-  apt:
-    name: zbar-tools
-    force: yes
-
-- name: "Copy Shadowsocks QR code parser tool to client machine"
-  copy:
-    src: shadowsocks-qr-decode.py
-    dest: "{{ test_script_dir }}/shadowsocks-qr-decode"
+    src: "streisand-gateway-test.sh.j2"
+    dest: "{{ test_script_dir }}/streisand-gateway-test"
     owner: root
     group: root
     mode: 0755
 
-- name: "Install test scripts"
-  template:
-    src: "{{ item.template }}"
-    dest: "{{ test_script_dir }}/{{ item.cmd }}"
-    owner: root
-    group: root
-    mode: 0755
-  with_items: "{{ test_scripts }}"
-
-- name: "Wait for Streisand gateway"
+- name: "Wait for the Streisand gateway"
   wait_for:
     host: "{{ streisand_ip }}"
     port: 443
     state: started
     timeout: 60
 
-- name: "Run test scripts"
-  command: "{{ item.cmd }}"
-  with_items: "{{ test_scripts }}"
+- name: "Run the gateway test script"
+  command: "streisand-gateway-test"
+
+- name: "Download the client profile list"
+  get_url:
+    url: "{{ gateway_profile_inventory }}"
+    dest: "{{ test_client_profiles_file }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Register the client profile list contents"
+  command: "cat {{ test_client_profiles_file }}"
+  register: test_client_profiles
+
+# Run the SSH forwarding tests
+- import_tasks: ssh-forward.yml
+
+# Run the Shadowsocks tests
+- import_tasks: shadowsocks.yml
 
 # Run the WireGuard tests
 - import_tasks: wireguard.yml
-  tags:
-    - wireguard
+
+# Run the OpenVPN tests
+- import_tasks: openvpn.yml
+
+# Run the OpenConnect tests
+- import_tasks: openconnect.yml
+
+# Run the Tor tests
+- import_tasks: tor.yml
+
+# Run the Stunnel tests
+- import_tasks: stunnel.yml
 ...

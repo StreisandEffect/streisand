@@ -1,0 +1,24 @@
+---
+# Test site configuration for the end-to-end integration tests.
+
+# Don't ask questions
+streisand_noninteractive: true
+confirmation: true
+streisand_domain_var: ""
+streisand_admin_email_var: ""
+
+# Take a few extra steps during server provisioning to make the client tests work
+streisand_client_test: true
+
+# Only services with corresponding tests are enabled.
+streisand_shadowsocks_enabled: yes
+streisand_ssh_forward_enabled: yes
+streisand_openvpn_enabled: yes
+streisand_wireguard_enabled: yes
+streisand_openconnect_enabled: yes
+streisand_tor_enabled: yes
+streisand_stunnel_enabled: yes
+streisand_tinyproxy_enabled: yes
+# TODO(@cpu): The services below need some manner of integration test written
+streisand_l2tp_enabled: no
+streisand_sshuttle_enabled: no

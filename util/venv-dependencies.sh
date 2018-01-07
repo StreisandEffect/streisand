@@ -34,7 +34,9 @@ This script can install virtualenv for you, but on Linux, this
 requires sudo/root access.
 
 'new-directory' must be somewhere you can write to. A good place may be
-$HOME/streisand-deps.
+$HOME/streisand-deps. If it already exists,
+please delete the directory, or use a different name.
+
 "
 }
 
@@ -73,7 +75,7 @@ if ! "$PIP" >/dev/null 2>&1; then
    echo "
 You need a working pip command. To get one:
 
-On Ubuntu and WSL:
+On Debian, Ubuntu, and WSL:
    $sudo_command apt-get install python-pip
 
 On macOS:
@@ -147,6 +149,35 @@ die () {
     exit 1
 }
 
+dn="$(dirname "$1")"
+
+if [ ! -d "$dn" ]; then
+    die "
+The parent directory of $1 ($dn) does not exist. Please specify a
+parent directory you can write to. $HOME/streisand-deps
+may be a good choice.
+
+"
+fi
+
+if [ ! -w "$dn" ]; then
+    die "
+The parent directory of $1 ($dn) is not writable. Please specify a
+parent directory you can write to. $HOME/streisand-deps
+may be a good choice.
+
+"
+fi
+
+if [ -e "$1" ]; then
+    die "
+$1 already exists. Please specify a place for a
+new directory to be created. $HOME/streisand-deps
+is a good choice if it doesn't exist.
+
+"
+fi
+
 sudo_pip () {
     # pip complains loudly about directory permissions when sudo without -H.
     $sudo_for_pip_install "$PIP" $quiet "$@"
@@ -180,12 +211,17 @@ fi
 # In case we have a new virtualenv executable.
 hash -r
 
-
-if ! virtualenv $NO_SITE_PACKAGES "$1"; then
+if ! virtualenv --python=python2 $NO_SITE_PACKAGES "$1"; then
     dn="$(dirname "$1")"
     echo "
-virtualenv failed to create directory '$1'. Note that $1 must not exist, but
+virtualenv failed to create directory '$1'
+using 'virtualenv --python=python2 $1'. Note that $1 must not exist, but
 its parent ($dn) must exist.
+
+The first argument, 'new-directory', must be somewhere you can write
+to. A good place may be $HOME/streisand-deps. If it already exists,
+please delete the directory, or use a different name.
+
 "
     exit 1
 fi

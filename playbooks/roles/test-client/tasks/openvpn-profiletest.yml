@@ -1,0 +1,55 @@
+---
+- name: "Testing {{ profile_name }} - {{ openvpn_profile_type }}"
+  block:
+    - name: "Start OpenVPN with the {{ profile_name }} {{ openvpn_profile_type }} client profile"
+      shell: "nohup openvpn {{ openvpn_profile_dir }}/{{ profile_name }}-{{ openvpn_profile_type }}.client-test.ovpn&"
+
+    - name: "Read the OpenVPN PID file into a var"
+      command: "cat {{ openvpn_pid_file }}"
+      register: openvpn_pid_output
+
+    # TODO(cpu): A nice follow up would be finding a way to add a second "up"
+    # command to the OVPN profile that tells Ansible somehow that the tunnel
+    # is up. It seems like you can only specify one "up" handler and we're using
+    # it to run the DHCP update per the Streisand docs.
+    - name: "Sleep a short time to allow OpenVPN to connect"
+      pause:
+        seconds: 20
+
+    - name: "Register the updated /etc/resolv.conf contents"
+      shell: "cat /etc/resolv.conf"
+      register: openvpn_resolv_conf
+      changed_when: "False"
+
+    - name: "Assert that /etc/resolv.conf was updated for the DNSMasq OpenVPN IP"
+      assert:
+        that:
+          - "'nameserver {{ dnsmasq_openvpn_tcp_ip }}' in openvpn_resolv_conf.stdout"
+
+    - name: "Check {{ external_test_url }} with OpenVPN up"
+      get_url:
+        url: "{{ external_test_url }}"
+        dest: "/dev/null"
+        force: "yes"
+
+    - name: "Stop OpenVPN"
+      command: "kill {{ openvpn_pid_output.stdout }}"
+
+    - name: "Register the updated /etc/resolv.conf contents"
+      shell: "cat /etc/resolv.conf"
+      register: openvpn_resolv_conf
+      changed_when: "False"
+
+    - name: "Assert that the DNS was restored to pre-OpenVPN state"
+      assert:
+        that:
+          - "'nameserver {{ dnsmasq_openvpn_tcp_ip }}' not in openvpn_resolv_conf.stdout"
+
+    - name: "Remove the OpenVPN pid file"
+      file:
+        path: "{{ openvpn_pid_file }}"
+        state: absent
+  rescue:
+    - name: "Bring down OpenVPN"
+      command: "killall openvpn"
+      ignore_errors: "yes"
