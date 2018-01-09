@@ -10,9 +10,16 @@ set -e
 # you're not on a fresh regular machine, consider using
 # venv-dependencies.sh instead.
 #
-# It's safe to run this script multiple times.
+# It's safe to run this script multiple times. For most cloud
+# providers, it should work as a boot/cloud-init script.
+#
+# The defaults are fine for an interactive install. If you are using
+# this as a cloud-init script, change the first two settings:
+#
+#  *  quiet must be "--yes"
+#  *  The "DEBIAN_FRONTEND" line must be uncommented.
 
-# We default to a regular, interactive upgrade:
+# We default to a regular, interactive upgrade.
 quiet=
 # quiet='--yes'
 
@@ -47,6 +54,8 @@ python-dev
 python-setuptools
 python-pip
 python-cffi libffi-dev
+libssl-dev
+libcurl4-openssl-dev
 EOF
 )
 
@@ -62,26 +71,9 @@ our_pip_install pip
 # The pip we want should be in our path now. Make sure we use it.
 hash -r
 
-our_pip_install ansible
-
-# Python dependencies for various providers. Note that
-# "ansible[azure]" means "install ansible, and add additional
-# dependencies packages from ansible's 'azure' set. Since ansible is
-# already installed (see above), this just means "Azure dependencies".
-
-packages="$(cat <<EOF
-boto boto3
-ansible[azure]
-dopy==0.3.5
-apache-libcloud>=1.5.0 pycrypto
-linode-python
-pyrax
-EOF
-)"
-
 # We explicitly want word splitting.
 # shellcheck disable=SC2059,SC2086
-our_pip_install $packages
+our_pip_install -r requirements.txt
 
 echo '
 Streisand dependencies installed.

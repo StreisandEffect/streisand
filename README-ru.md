@@ -140,7 +140,7 @@
         sudo pip install dopy==0.3.5
   * Google
 
-        sudo pip install "apache-libcloud>=1.5.0"
+        sudo pip install "apache-libcloud>=1.17.0"
 
   * Linode
 
@@ -155,6 +155,7 @@
 
 ### Выполнение ###
 1. Склонируйте репозиторий Стрейзанд и перейдите в директорию
+
        git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 2. Запустите скрипт Стрейзанд.
 

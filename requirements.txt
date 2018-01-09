@@ -1,0 +1,26 @@
+# Install Streisand requirements with:
+#
+#   pip install -r ./requirements.txt
+#
+# If you have problems running this, try the util/venv-builder.sh script.
+
+# Core with Azure dependencies
+ansible[azure]
+
+# AWS
+boto
+boto3
+
+# Digital Ocean
+packaging
+dopy==0.3.5
+
+# Google Compute Engine
+apache-libcloud>=1.17.0
+
+# Linode
+pycurl
+linode-python
+
+# Rackspace
+pyrax

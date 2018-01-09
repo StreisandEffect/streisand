@@ -1,0 +1,6 @@
+RunAsDaemon 1
+SOCKSPort {{ tor_socks_port }}
+PidFile {{ tor_pid_file }}
+UseBridges 1
+ClientTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+Bridge {{ tor_obfs4_qr_contents.stdout }}

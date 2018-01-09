@@ -34,7 +34,8 @@ This script can install virtualenv for you, but on Linux, this
 requires sudo/root access.
 
 'new-directory' must be somewhere you can write to. A good place may be
-$HOME/streisand-deps. 
+$HOME/streisand-deps. If it already exists,
+please delete the directory, or use a different name.
 "
 }
 
@@ -58,11 +59,14 @@ if [ "$#" -ne 1 ]; then
    invocation_problems=1
 fi
 
-if ! pip >/dev/null 2>&1; then
-   echo "
-You need a working 'pip' command. To get one:
+echo "Checking for pip2..."
 
-On Ubuntu and WSL:
+if ! pip2 --version >/dev/null 2>&1; then
+   echo "
+You need a working 'pip2' command. pip2 is the standard name for using
+pip with Python 2.x. To get one:
+
+On Debian, Ubuntu, and WSL:
    $sudo_command apt-get install python-pip
 
 On macOS:
@@ -90,6 +94,8 @@ build-essential
 libffi-dev
 python-dev
 python-pip
+libssl-dev
+libcurl4-openssl-dev
 EOF
 )"
 
@@ -133,23 +139,57 @@ die () {
     exit 1
 }
 
+dn="$(dirname "$1")"
+
+if [ ! -d "$dn" ]; then
+    die "
+The parent directory of $1 ($dn) does not exist. Please specify a
+parent directory you can write to. $HOME/streisand-deps
+may be a good choice.
+
+"
+fi
+
+if [ ! -w "$dn" ]; then
+    die "
+The parent directory of $1 ($dn) is not writable. Please specify a
+parent directory you can write to. $HOME/streisand-deps
+may be a good choice.
+
+"
+fi
+
+if [ -e "$1" ]; then
+    die "
+$1 already exists. Please specify a place for a
+new directory to be created. $HOME/streisand-deps
+is a good choice if it doesn't exist.
+
+"
+fi
+
 sudo_pip () {
     # pip complains loudly about directory permissions when sudo without -H.
-    $sudo_for_pip_install pip $quiet "$@"
+    $sudo_for_pip_install pip2 $quiet "$@"
 }
 
 our_pip () {
-    pip $quiet "$@"
+    pip2 $quiet "$@"
 }
 
 our_pip_install () {
     our_pip install "$@"
 }
 
+# What to do, what to do. Homebrew Python jams the site library into
+# virtualenvs. But --no-site-packages is deprecated.
+virtualenv_no_site=
+
 # An easy way to see if Homebrew is installed.
 if brew command command >/dev/null 2>&1; then
     # If it is, we get our virtualenv as a regular user
     our_pip_install virtualenv
+    virtualenv_no_site="--no-site-packages"
 else
     # We may not need this installed as root; we just need it on
     # $PATH somewhere. But do root for now.
@@ -159,11 +199,16 @@ fi
 # In case we have a new virtualenv executable.
 hash -r
 
-if ! virtualenv "$1"; then
-    dn="$(dirname "$1")"
+if ! virtualenv --python=python2 $virtualenv_no_site "$1"; then
     echo "
-virtualenv failed to create directory '$1'. Note that $1 must not exist, but
+virtualenv failed to create directory '$1'
+using 'virtualenv --python=python2 $1'. Note that $1 must not exist, but
 its parent ($dn) must exist.
+
+The first argument, 'new-directory', must be somewhere you can write
+to. A good place may be $HOME/streisand-deps. If it already exists,
+please delete the directory, or use a different name.
+
 "
     exit 1
 fi
@@ -178,31 +223,13 @@ source "$1/bin/activate"
 
 # Below this line, we are only installing into the virtualenv at "$1"
 
-our_pip_install --upgrade pip 
+our_pip_install --upgrade pip
 
 # The pip we want should be in our path now. Make sure we use it.
 hash -r
 
-our_pip_install ansible
-
-# Python dependencies for various providers. Note that
-# "ansible[azure]" means "install ansible, and add additional
-# dependencies packages from ansible's 'azure' set. Since ansible is
-# already installed (see above), this just means "Azure dependencies".
-
-packages="$(cat <<EOF
-boto boto3
-ansible[azure]
-dopy==0.3.5
-apache-libcloud>=1.5.0 pycrypto
-linode-python
-pyrax
-EOF
-)"
-
-# We want word splitting.
-# shellcheck disable=SC2059,SC2086
-our_pip_install $packages
+# Now we can install all the Python modules.
+our_pip_install -r requirements.txt
 
 echo "
 *************
