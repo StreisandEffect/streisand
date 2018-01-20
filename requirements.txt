@@ -4,24 +4,22 @@
 #
 # If you have problems running this, try the util/venv-builder.sh script.
 
-# Core
-ansible
+# Core with Azure dependencies
+ansible[azure]
 
 # AWS
 boto
 boto3
-
-# Azure
-ansible[azure]
 
 # Digital Ocean
 packaging
 dopy==0.3.5
 
 # Google Compute Engine
-apache-libcloud>=1.5.0
+apache-libcloud>=1.17.0
 
 # Linode
+pycurl
 linode-python
 
 # Rackspace

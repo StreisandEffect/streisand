@@ -1,12 +1,24 @@
 # Connection profile for a SOCKS proxy over a SSH connection to the forward user
 # on a Streisand server instance
 Host streisand-host
-  User         {{ forward_ssh_user }}
   HostName     {{ streisand_ip }}
-  Port         22
   # Open a SOCKS proxy port equivalent to using `-D {{ forward_socks_port }}` on
   # the command line
   DynamicForward {{ forward_socks_port }}
+
+# Connection profile for using the TinyProxy HTTP(S) proxy over SSH to the
+# Streisand server instance
+Host streisand-host-tinyproxy
+  HostName     {{ streisand_ip }}
+  # Forward port {{ tinyproxy_remote_port }} on the streisand_ip host to port 
+  # {{ tinyproxy_local_port }} localhost. This  makes TinyProxy (bound to
+  # 127.0.0.1 on the Streisand host) accessible
+  LocalForward {{ tinyproxy_local_port }} localhost:{{ tinyproxy_remote_port }}
+
+# Default settings for all hosts
+Host *
+  Port         22
+  User         {{ forward_ssh_user }}
   # Only use keys specified in this config
   IdentitiesOnly yes
   # Never try password authentication

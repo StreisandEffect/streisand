@@ -140,7 +140,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
         sudo pip install dopy==0.3.5
   * Google
 
-        sudo pip install "apache-libcloud>=1.5.0"
+        sudo pip install "apache-libcloud>=1.17.0"
   * Linode
 
         sudo pip install linode-python

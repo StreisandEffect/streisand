@@ -1,0 +1,78 @@
+---
+
+# Import the Streisand OpenConnect playbook default vars
+- include_vars: "../../openconnect/defaults/main.yml"
+
+- name: "Remove stale test state if required"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ openconnect_profile_dir }}"
+    - "{{ openconnect_ca_file }}"
+    - "{{ openconnect_pid_file }}"
+
+- name: "Create OpenConnect profile directory"
+  file:
+    path: "{{ openconnect_profile_dir }}"
+    state: directory
+
+- name: "Install OpenConnect & required tools"
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - "openconnect"
+    # libxml2-utils provides xmllint which we use to extract a PKCS12 password
+    # from the mobileconfig XML files for testing
+    - "libxml2-utils"
+
+- name: "Download OpenConnect CA certificate from the gateway"
+  get_url:
+    url: "{{ gateway_openconnect_ca_file }}"
+    dest: "{{ openconnect_ca_file }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Remove existing OpenConnect PKCS12 files if they exist"
+  file:
+    path: "{{ openconnect_profile_dir }}/{{ profile_name }}.p12"
+    state: absent
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"
+
+- name: "Download each of the OpenConnect PKCS12 client profiles"
+  get_url:
+    url: "{{ gateway_test_url }}/openconnect/{{ profile_name }}.p12"
+    dest: "{{ openconnect_profile_dir }}/{{ profile_name }}.p12"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"
+
+  # NOTE(@cpu) - The Linux OpenConnect client cann not _use_ the mobileconfig
+  # profiles but they are a convenient way to get the PKCS12 password
+  # programmatically so we download them for this purpose.
+- name: "Download each of the OpenConnect mobileconfig profiles"
+  get_url:
+    url: "{{ gateway_test_url }}/openconnect/{{ profile_name }}.mobileconfig"
+    dest: "{{ openconnect_profile_dir }}/{{ profile_name }}.mobileconfig"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"
+
+- name: "Test each Openconnect PKCS12 client profile"
+  include: openconnect-profiletest.yml
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"

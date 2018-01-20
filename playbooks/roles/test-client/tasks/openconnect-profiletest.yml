@@ -1,0 +1,104 @@
+---
+- name: "Testing {{ profile_name }} OpenConnect PKCS12 client profile"
+  block:
+    - name: "Read the {{ profile_name }} PKCS12 password from the mobileconfig file"
+      # Use `xmllint` to evaluate an XPATH against the client mobileconfig XML.
+      # The XPATH provided will extract the PKCS12 password for the given profile.
+      #
+      # Short breakdown of the XPATH expression:
+      #   `/plist/dict/array/dict`
+      #     Gets to the dict's with the config content
+      #   `/plist/dict/array/dict/key[text()="Password"]
+      #     Finds the "<key>Password</key>" element
+      #   `/plist/dict/array/dict/key[text()="Password"]/following-sibling::string[1]`
+      #     Finds the "<string>...</string>" element that is the
+      #     <key>Password</key> elements first sibling.
+      #   `/plist/dict/array/dict/key[text()="Password"]/following-sibling::string[1]/text()`
+      #     Extracts the node text value from the <string>...</string> - this is
+      #     the PKCS12 password! Nice!
+      shell: >
+        xmllint --xpath '/plist/dict/array/dict/key[text()="Password"]/following-sibling::string[1]/text()' \
+                {{ openconnect_profile_dir }}/{{ profile_name }}.mobileconfig
+      register: openconnect_pkcs12_password_contents
+      changed_when: False
+
+    - name: "Start OpenConnect with PKCS12 auth and the {{ profile_name }} profile"
+      # OpenConnect expects the PKCS12 password to be provided via stdin so we
+      # use `echo -n` to send it to stdin without a newline.
+      # We use `--background` as an argument to make sure the shell returns
+      # immeidately. `--pid-file` helps us kill OpenConnect later.
+      # `--cafile` is used to validate the server's certificate against the
+      # Streisand OpenConnect CA. `--certificate` is used to specify our client
+      # PKCS12 file for client cert auth.
+      shell: >
+        echo -n '{{ openconnect_pkcs12_password_contents.stdout }}' | \
+        openconnect \
+          --background --pid-file {{ openconnect_pid_file }} \
+          --cafile {{ openconnect_ca_file }} \
+          --certificate {{ openconnect_profile_dir }}/{{ profile_name }}.p12 \
+          {{ streisand_ip }}:{{ ocserv_port }}
+
+    - name: "Read the OpenConnect PID file into a var"
+      command: "cat {{ openconnect_pid_file }}"
+      register: openconnect_pid_output
+      changed_when: False
+
+    - name: "Sleep a short time to allow OpenConnect to connect"
+      pause:
+        seconds: 2
+
+    - name: "Register the updated /etc/resolv.conf contents"
+      shell: "cat /etc/resolv.conf"
+      register: openconnect_resolv_conf
+      changed_when: "False"
+
+    # TODO(@cpu) - We should be sending the dnsmasq server address down to
+    # clients instead of Google DNS. We also shouldn't be sending a bogus
+    # `search` parameter. For now, test against what Streisand does today.
+    - name: "Assert that /etc/resolv.conf was updated with the correct nameservers"
+      assert:
+        that:
+          - "'nameserver 8.8.8.8' in openconnect_resolv_conf.stdout"
+          - "'nameserver 8.8.4.4' in openconnect_resolv_conf.stdout"
+          - "'search example.com' in openconnect_resolv_conf.stdout"
+
+    - name: "Check {{ external_test_url }} with OpenConnect up"
+      get_url:
+        url: "{{ external_test_url }}"
+        dest: "/dev/null"
+        force: "yes"
+
+    - name: "Stop OpenConnect"
+      command: "kill -INT {{ openconnect_pid_output.stdout }}"
+
+    - name: "Remove tun0 from resolvconf"
+      command: "resolvconf -d tun0"
+      ignore_errors: "yes"
+
+    - name: "Register the updated /etc/resolv.conf contents"
+      shell: "cat /etc/resolv.conf"
+      register: openconnect_resolv_conf
+      changed_when: "False"
+
+    - name: "Assert that the DNS was restored to pre-OpenConnect state"
+      assert:
+        that:
+          - "'nameserver 8.8.8.8' not in openconnect_resolv_conf.stdout"
+          - "'nameserver 8.8.4.4' not in openconnect_resolv_conf.stdout"
+          - "'search example.com' not in openconnect_resolv_conf.stdout"
+
+    - name: "Remove the OpenConnect pid file"
+      file:
+        path: "{{ openconnect_pid_file }}"
+        state: absent
+
+  rescue:
+    - name: "Bring down OpenConnect"
+      command: "killall openconnect"
+      ignore_errors: "yes"
+    - name: "Remove tun0 from resolvconf"
+      command: "resolvconf -d tun0"
+      ignore_errors: "yes"
+    - name: "Delete the tun0 interface"
+      command: "ip link delete tun0"
+      ignore_errors: "yes"

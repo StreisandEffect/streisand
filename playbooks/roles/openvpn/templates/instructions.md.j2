@@ -31,7 +31,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to ports `80` and `443`.*
+   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to port `443`.*
    * *[UDP profiles](#udp-profiles) available.*
    * *[Combined profiles](#combined-profiles) are now available.*
 1. Open the *config* directory that is located in the Destination Folder. For most users, this will either be in *C:\Program Files\OpenVPN\config* or *C:\Program Files (x86)\OpenVPN\config*. You will see a single README file in this directory.
@@ -50,7 +50,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to ports `80` and `443`.*
+   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to port `443`.*
    * *[UDP profiles](#udp-profiles) available.*
    * *[Combined profiles](#combined-profiles) are now available.*
 1. Double-click the OpenVPN profile.
@@ -69,7 +69,7 @@ For security reasons, OpenVPN clients typically have their own unique certificat
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
 {% endfor %}
-   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to ports `80` and `443`.*
+   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to port `443`.*
    * *[UDP profiles](#udp-profiles) available.*
    * *[Combined profiles](#combined-profiles) are now available.*
 1. Copy the downloaded `{{ openvpn_direct_profile_filename }}` file to the location of your choice. */etc/openvpn/* is a decent option.
@@ -113,7 +113,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 1. Click the *Advanced* button.
 1. Go to the *General* tab.
    * Check *Use custom gateway port* and enter `{{ openvpn_port }}` as its value.
-     * Port `443` is available as an alternative if you are on a network that only allows access to the two standard HTTP ports.
+     * Port `443` is available as an alternative if you are on a network that only allows access to the standard HTTPS port.
      * You can also use port `{{ openvpn_port_udp }}` for a UDP connection.
      * A combined profile which cycles through UDP port `{{ openvpn_port_udp }}`, TCP port `{{ openvpn_port }}` and `{{ openvpn_port_sslh }}` is also available.
    * Check *Use LZO data compression*.
@@ -125,6 +125,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
    * Under *Server Certificate Check* choose `verify name exactly` and enter `{{ openvpn_server_common_name.stdout }}` as its value.
    * Check *Verify peer (server) certificate usage signature*.
    * Check *Use additional TLS authentication*.
+     * Select `TLS-Auth` as the *Mode*.
      * Select the `ta.key` file you downloaded from the client-files directory for the *Key File*.
      * Select `1` as the *Key Direction*.
    * Click *OK*.
