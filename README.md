@@ -213,6 +213,20 @@ To run the Streisand provisioning against an existing server:
         --ssh-user root \
         --site-config global_vars/noninteractive/digitalocean-site.yml
 
+Docker Installation
+-------------------
+
+If you don't want to pollute your local environment, you can use docker.
+Just build the image, then run it with your ssh key and output folder
+mounted:
+
+    # build
+    docker build . -t streisand
+
+    # run
+    docker run -it -v ~/.ssh:/root/.ssh -v $PWD/generated-docs:/root/generated-docs streisand:latest
+
+
 Upcoming Features
 -----------------
 * Easier setup.

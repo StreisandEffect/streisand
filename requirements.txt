@@ -4,6 +4,9 @@
 #
 # If you have problems running this, try the util/venv-builder.sh script.
 
+ansible
+markupsafe
+
 # Core with Azure dependencies
 ansible[azure]
 
