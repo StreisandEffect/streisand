@@ -33,10 +33,8 @@ policy = policy_anything_including_no_cn
 
 keyUsage = cRLSign, keyCertSign
 
-# Commented out for testing
-# subjectKeyIdentifier=hash
-# Commented out for testing
-# authorityKeyIdentifier=keyid:always,issuer:always
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer:always
 
 [ policy_anything_including_no_cn ]
 countryName = optional
@@ -51,8 +49,7 @@ emailAddress = optional
 
 [ alt_names ]
 IP.0 = {{ streisand_ipv4_address }}
-# Commented out for testing
-# DNS.0 = {{ streisand_ipv4_address }}
+DNS.0 = {{ streisand_ipv4_address }}
 
 [ req_distinguished_name ]
 countryName = Country Name (2 letter code)
@@ -77,21 +74,16 @@ commonName_default = STREISAND
 basicConstraints = CA:TRUE
 subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always,issuer:always
-keyUsage = cRLSign, dataEncipherment, digitalSignature, keyCertSign, keyEncipherment, nonRepudiation
-# Commented out for testing
+# When we do OCSP:
 # extendedKeyUsage = OCSPSigning
 
 [ v3_ca_req ]
 basicConstraints = CA:FALSE
 subjectKeyIdentifier = hash
 keyUsage = digitalSignature, keyEncipherment, nonRepudiation
-# Commented out for testing
-# extendedKeyUsage = serverAuth,clientAuth
 
 [ v3_req ]
 basicConstraints = CA:false
 subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always
-# commented out for testing
-# keyUsage = digitalSignature, keyEncipherment, nonRepudiation
 subjectAltName = @alt_names
