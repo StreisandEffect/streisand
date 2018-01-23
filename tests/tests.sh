@@ -28,6 +28,11 @@ function run_playbook {
     SITE_DECL="--extra-vars=@${SITE}"
   fi
 
+  # The `development-setup.yml` playbook will use snap to install LXD. We need
+  # to make sure the snap installed binaries are on the $PATH for Ansible
+  PATH=$PATH:/snap/bin:/var/lib/snapd/snap/bin
+  export PATH
+
   ansible-playbook \
     -i "$DIR/inventory" \
     --extra-vars=@global_vars/vars.yml \
