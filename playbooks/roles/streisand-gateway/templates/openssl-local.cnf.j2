@@ -28,10 +28,7 @@ default_days = {{ nginx_days_valid }}
 default_crl_days= 30
 default_md = {{ openssl_ca_default_md }}
 preserve = no
-
 policy = policy_anything_including_no_cn
-
-keyUsage = cRLSign, keyCertSign
 
 [ policy_anything_including_no_cn ]
 countryName = optional
@@ -69,18 +66,15 @@ commonName_default = STREISAND
 
 [ v3_ca ]
 basicConstraints = CA:TRUE
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always,issuer:always
-# When we do OCSP:
+# Note: we need an EKU when we do OCSP, but don't open that can of worms yet.
 # extendedKeyUsage = OCSPSigning
 
 [ v3_ca_req ]
 basicConstraints = CA:FALSE
-subjectKeyIdentifier = hash
 keyUsage = digitalSignature, keyEncipherment, nonRepudiation
 
 [ v3_req ]
 basicConstraints = CA:false
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always
 subjectAltName = @alt_names
+keyUsage = digitalSignature, keyEncipherment, nonRepudiation
+extendedKeyUsage=serverAuth,clientAuth
