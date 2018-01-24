@@ -97,8 +97,8 @@ Complete all of these tasks on your local home machine.
 * Streisand requires a BSD, Linux, or macOS system. As of now, Windows is not supported. All of the following commands should be run inside a Terminal session.
 * Python 2.7 is required. This comes standard on macOS, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
-  * SSH keys use public-key cryptography to prove your identity to a server or service.
-  * To check if you already have an SSH key, please enter the following command at a Bash prompt.
+  * SSH keys are a more secure alternative to passwords that allow you to prove your identity to a server or service built on public key cryptography.
+  * To check if you already have an SSH key, please enter the following command at a command prompt.
   
         ls ~/.ssh
   * If you see an id_rsa.pub file, then you have an SSH key.
