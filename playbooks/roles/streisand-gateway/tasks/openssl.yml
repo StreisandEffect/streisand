@@ -24,7 +24,7 @@
     -newkey rsa:{{ streisand_gateway_rsa_key_size }}
     -keyout {{ openssl_ca_key }}
     -out {{ openssl_ca_certificate }}
-    -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}"
+    -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}/CN=Streisand {{ streisand_ipv4_address }} Root CA"
   args:
     creates: "{{ openssl_ca_certificate }}"
 
@@ -37,7 +37,7 @@
     -keyout {{ nginx_private_key }}
     -out {{ nginx_self_signed_certificate_request }}
     -reqexts v3_ca_req
-    -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}/CN={{ streisand_ipv4_address }}"
+    -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}/CN=Streisand at {{ streisand_ipv4_address }}"
   args:
     creates: "{{ nginx_self_signed_certificate_request }}"
 
