@@ -5,6 +5,7 @@
 - - -
 
 [![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/espadrine.svg?style=social&label=Follow%20%40StreisandVPN)](https://twitter.com/StreisandVPN)
 
 Streisand
 =========
@@ -140,7 +141,7 @@ Complete all of these tasks on your local home machine.
     you can skip this section.
   * Amazon EC2
 
-        sudo pip install boto
+        sudo pip install boto boto3
   * Azure
 
         sudo pip install ansible[azure]
