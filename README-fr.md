@@ -133,7 +133,7 @@ Effectuez toutes ces tâches sur votre machine locale.
 * Installez les bibliothèques Python nécessaires pour votre fournisseur de cloud.
   * Amazon EC2
 
-            sudo pip install boto
+            sudo pip install boto boto3
   * Azure
 
             sudo pip install ansible[azure]

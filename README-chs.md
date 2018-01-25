@@ -132,7 +132,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 * 以下使用 pip 安装的 Python 库根据你所使用的 VPS 供应商不同而不同。如果你准备将目前使用的 VPS 变成网关，可以跳过此步。
   * 亚马逊 EC2
 
-        sudo pip install boto
+        sudo pip install boto boto3
   * 微软云服务
 
         sudo pip install ansible[azure]

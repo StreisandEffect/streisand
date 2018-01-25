@@ -132,7 +132,7 @@
 * Установите необходимые библиотеки Python для вашего облачного хостера. Если вы настраиваете локальный или существующий сервер, вы можете пропустить этот шаг.
   * Amazon EC2
 
-        sudo pip install boto
+        sudo pip install boto boto3
   * Azure
 
         sudo pip install ansible[azure]
