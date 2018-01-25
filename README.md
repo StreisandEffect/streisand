@@ -141,7 +141,7 @@ Complete all of these tasks on your local home machine.
     you can skip this section.
   * Amazon EC2
 
-        sudo pip install boto
+        sudo pip install boto3
   * Azure
 
         sudo pip install ansible[azure]
