@@ -4,6 +4,20 @@
   remote_user: root
   become: yes
   pre_tasks:
+
+    # NOTE(@cpu): CI builds are frequently failing with the error:
+    #   GPG error: http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4
+    #   Release: The following signatures were invalid: KEYEXPIRED 1515625755
+    #
+    # To work around this we fetch an updated key before doing an apt-get update
+    # See https://github.com/travis-ci/travis-ci/issues/9037 for more
+    # information
+    - name: Install an updated MongoDB Repo key
+      command: >
+        apt-key adv \
+        --keyserver hkp://keyserver.ubuntu.com:80 \
+        --recv 0C49F3730359A14518585931BC711F9BA15703C6
+
     # NOTE(@alimakki): Due to key rotation, we pre-emptivley
     # add the Google linux apt signing key required by some
     # packages
