@@ -89,7 +89,7 @@ hard_detect_dpkg () {
 }
 
 check_deb_dependencies () {
-    critical="$(cat dependencies.txt)"
+    critical="$(cat ./util/dependencies.txt)"
 
     packages_not_found=""
     for pkg in $critical; do

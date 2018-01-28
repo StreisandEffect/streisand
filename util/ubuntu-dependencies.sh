@@ -48,7 +48,7 @@ sudo apt-get $quiet upgrade
 
 # We explicitly want word splitting.
 # shellcheck disable=SC2046
-sudo apt-get $quiet install $(cat dependencies.txt)
+sudo apt-get $quiet install $(cat ./util/dependencies.txt)
 
 # Debian doesn't have python-nacl. We'll have to accept the pip
 # version.
