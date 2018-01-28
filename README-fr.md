@@ -5,6 +5,7 @@
 - - -
 
 [![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/espadrine.svg?style=social&label=Follow%20%40StreisandVPN)](https://twitter.com/StreisandVPN)
 
 Streisand
 =========
@@ -32,7 +33,7 @@ Plus de fonctionnalités
   * Un mot de passe unique, un certificat SSL et une clé privée SSL sont générés pour chaque passerelle Streisand. Les instructions de la passerelle et le certificat sont transférés via SSH à la fin de l'exécution de Streisand.
 * Des services distincts et des daemons multiples offrent une énorme flexibilité. Si une méthode de connexion est bloquée, il existe de nombreuses options disponibles, dont la plupart sont résistantes à l'inspection des paquets en profondeur.
   * Toutes les méthodes de connexion (y compris L2TP/IPsec et connexions directes OpenVPN) sont efficaces contre le type de blocage avec lequel la Turquie a expérimenté.
-  * OpenConnect/AnyConnect, OpenSSH, OpenVPN (enveloppé dans stunnel), Shadowsocks et Tor (avec obfsproxy et obfs4 transports enfichables) sont tous actuellement efficace contre le grand pare-feu de la Chine.
+  * OpenConnect/AnyConnect, OpenSSH, OpenVPN (enveloppé dans stunnel), Shadowsocks, Tor (avec obfsproxy et obfs4 transports enfichables), et WireGuard sont tous actuellement efficace contre le grand pare-feu de la Chine.
 * Chaque tâche a été bien documentée et a donné une description détaillée. Streisand est simultanément le HOWTO le plus complet en existance pour l'installation de tous les logiciels qu'il installe, et aussi l'antidote pour avoir à faire jamais tout cela à la main de nouveau.
 * Tous les logiciels fonctionnent sur des ports qui ont été délibérément choisis pour rendre le blocage de ports simpliste irréaliste sans causer de dommages collatéraux massifs. OpenVPN, par exemple, ne fonctionne pas sur le port défaut de 1194, mais utilise le port standard 636 pour les connexions LDAP/SSL qui sont aimés par des entreprises du monde entier.
   * *L2TP/IPsec est une exception notable à cette règle car les ports ne peuvent pas être modifiés sans rompre la compatibilité du client*
@@ -97,9 +98,15 @@ Effectuez toutes ces tâches sur votre machine locale.
 * Streisand nécessite un système BSD, Linux ou macOS. À partir de maintenant, Windows n'est pas soutenu. Toutes les commandes suivantes doivent être exécutées à l'intérieur d'une session Terminal.
 * Python 2.7 est nécessaire. Cela est standard sur macOS, et est la valeur par défaut sur presque toutes les distributions Linux et BSD. Si votre distribution emploie Python 3 à la place, vous devrez installer la version 2.7 pour que Streisand fonctionne correctement.
 * Assurez-vous qu'une clé SSH est présente dans ~/.ssh/id\_rsa.pub.
+  * Les clés SSH constituent une alternative plus sécurisé aux mots de passe qui vous permettent de prouver votre identité à un serveur ou à un service basé sur la cryptographie à clé publique.
+  * Pour vérifier si vous avez déjà une clé SSH, entrez la commande suivante à l'invite de commande.
+
+        ls ~/.ssh
+  * Si vous voyez un fichier id_rsa.pub, vous avez une clé SSH.
   * Si vous n'avez pas de clé SSH, vous pouvez en générer une en utilisant cette commande et en suivant les valeurs par défaut:
 
-            ssh-keygen
+        ssh-keygen
+  * Si vous souhaitez utiliser une clé SSH avec un nom différent ou dans un emplacement non standard, veuillez entrer 'oui' lorsqu'on vous demande si vous souhaitez personnaliser votre instance lors de l'installation.
 * Installez Git.
   * Sur Debian et Ubuntu
 
@@ -132,7 +139,7 @@ Effectuez toutes ces tâches sur votre machine locale.
 * Installez les bibliothèques Python nécessaires pour votre fournisseur de cloud.
   * Amazon EC2
 
-            sudo pip install boto
+            sudo pip install boto boto3
   * Azure
 
             sudo pip install ansible[azure]
