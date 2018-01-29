@@ -89,15 +89,7 @@ hard_detect_dpkg () {
 }
 
 check_deb_dependencies () {
-    critical="$(cat <<EOF
-build-essential
-libffi-dev
-python-dev
-python-pip
-libssl-dev
-libcurl4-openssl-dev
-EOF
-)"
+    critical="$(cat ./util/dependencies.txt)"
 
     packages_not_found=""
     for pkg in $critical; do

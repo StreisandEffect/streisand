@@ -1,0 +1,7 @@
+build-essential
+python-dev
+python-setuptools
+python-pip
+python-cffi libffi-dev
+libssl-dev
+libcurl4-openssl-dev
