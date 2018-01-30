@@ -60,8 +60,18 @@ if [ "$#" -ne 1 ]; then
    invocation_problems=1
 fi
 
+# Some systems have a pip2 but no pip.
 PIP="pip"
-if pip -V 2>/dev/null | grep -q 'python 3'; then
+
+if ! "$PIP" --version >/dev/null 2>&1; then
+    echo "could not find pip, trying pip2"
+    PIP="pip2"
+fi
+
+# Hopefully $PIP should be pointing at an appropriate executable name.
+# We just checked if the pip command is broken; let's see if it
+# points to the wrong spot.
+if "$PIP" --version 2>/dev/null | grep -q 'python 3'; then
     echo "
 
 On your system, 'pip' appears to invoke Python 3's pip. This might cause problems.
@@ -71,7 +81,7 @@ This script will try switching to 'pip2', but your pip2 install might be broken 
     PIP="pip2"
 fi
 
-if ! "$PIP" >/dev/null 2>&1; then
+if ! "$PIP" --version >/dev/null 2>&1; then
    echo "
 You need a working pip command. To get one:
 
@@ -139,20 +149,22 @@ die () {
     exit 1
 }
 
-dn="$(dirname "$1")"
+# We want to run some tests on the parent of the path on the command
+# line.
+parent_dirname="$(dirname "$1")"
 
-if [ ! -d "$dn" ]; then
+if [ ! -d "$parent_dirname" ]; then
     die "
-The parent directory of $1 ($dn) does not exist. Please specify a
+The parent directory of $1 ($parent_dirname) does not exist. Please specify a
 parent directory you can write to. $HOME/streisand-deps
 may be a good choice.
 
 "
 fi
 
-if [ ! -w "$dn" ]; then
+if [ ! -w "$parent_dirname" ]; then
     die "
-The parent directory of $1 ($dn) is not writable. Please specify a
+The parent directory of $1 ($parent_dirname) is not writable. Please specify a
 parent directory you can write to. $HOME/streisand-deps
 may be a good choice.
 
@@ -202,11 +214,11 @@ fi
 hash -r
 
 if ! virtualenv --python=python2 $NO_SITE_PACKAGES "$1"; then
-    dn="$(dirname "$1")"
+    parent_dirname="$(dirname "$1")"
     echo "
 virtualenv failed to create directory '$1'
 using 'virtualenv --python=python2 $1'. Note that $1 must not exist, but
-its parent ($dn) must exist.
+its parent ($parent_dirname) must exist.
 
 The first argument, 'new-directory', must be somewhere you can write
 to. A good place may be $HOME/streisand-deps. If it already exists,
