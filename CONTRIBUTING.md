@@ -20,7 +20,7 @@ commitments (family, vacation, jobs, hobbies, relaxation!).
 
 If your issue is a question or you need help with setting up / configuring Streisand, then please ask on the [streisand-discussions](https://github.com/StreisandEffect/streisand-discussions/) Github repository. 
 
-Similarly, ff you are requesting a new feature we prefer it be done on the [streisand-discussions](https://github.com/StreisandEffect/streisand-discussions) Github repository.
+Similarly, if you are requesting a new feature we prefer it be done on the [streisand-discussions](https://github.com/StreisandEffect/streisand-discussions) Github repository.
 
 ### Before Submitting an Issue
 
