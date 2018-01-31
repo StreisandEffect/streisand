@@ -47,7 +47,7 @@
     mode: 0644
 
 - name: Generate a random IPsec pre-shared key
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 3 | xargs | sed -e 's/ /-/g' > {{ ipsec_preshared_key_file }}
+  shell: "{{ streisand_word_gen.psk }}  > {{ ipsec_preshared_key_file }}"
   args:
     creates: "{{ ipsec_preshared_key_file }}"
 
@@ -101,7 +101,7 @@
     mode: 0644
 
 - name: Generate a random CHAP password
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ chap_password_file }}
+  shell: "{{ streisand_word_gen.weak_password }} > {{ chap_password_file }}"
   args:
     creates: "{{ chap_password_file }}"
 
