@@ -12,7 +12,7 @@ server {
   resolver {{ upstream_dns_servers | join(' ') }} valid=300s;
   resolver_timeout 5s;
   # It'd be great to include HSTS in non-LE installs too, but
-  # HSTS diables "clicking through" the HTTPS error pages.
+  # HSTS disables "clicking through" the HTTPS error pages.
   add_header Strict-Transport-Security max-age=63072000;
 {% else %}
   ssl_certificate      {{ nginx_self_signed_certificate }};
