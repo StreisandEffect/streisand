@@ -36,6 +36,7 @@ requires sudo/root access.
 'new-directory' must be somewhere you can write to. A good place may be
 $HOME/streisand-deps. If it already exists,
 please delete the directory, or use a different name.
+
 "
 }
 
@@ -59,12 +60,30 @@ if [ "$#" -ne 1 ]; then
    invocation_problems=1
 fi
 
-echo "Checking for pip2..."
+# Some systems have a pip2 but no pip.
+PIP="pip"
 
-if ! pip2 --version >/dev/null 2>&1; then
+if ! "$PIP" --version >/dev/null 2>&1; then
+    echo "could not find pip, trying pip2"
+    PIP="pip2"
+fi
+
+# Hopefully $PIP should be pointing at an appropriate executable name.
+# We just checked if the pip command is broken; let's see if it
+# points to the wrong spot.
+if "$PIP" --version 2>/dev/null | grep -q 'python 3'; then
+    echo "
+
+On your system, 'pip' appears to invoke Python 3's pip. This might cause problems.
+This script will try switching to 'pip2', but your pip2 install might be broken too.
+
+"
+    PIP="pip2"
+fi
+
+if ! "$PIP" --version >/dev/null 2>&1; then
    echo "
-You need a working 'pip2' command. pip2 is the standard name for using
-pip with Python 2.x. To get one:
+You need a working pip command. To get one:
 
 On Debian, Ubuntu, and WSL:
    $sudo_command apt-get install python-pip
@@ -90,7 +109,6 @@ hard_detect_dpkg () {
 
 check_deb_dependencies () {
     critical="$(cat ./util/dependencies.txt)"
-
     packages_not_found=""
     for pkg in $critical; do
 	if ! hard_detect_dpkg "$pkg"; then
@@ -131,20 +149,22 @@ die () {
     exit 1
 }
 
-dn="$(dirname "$1")"
+# We want to run some tests on the parent of the path on the command
+# line.
+parent_dirname="$(dirname "$1")"
 
-if [ ! -d "$dn" ]; then
+if [ ! -d "$parent_dirname" ]; then
     die "
-The parent directory of $1 ($dn) does not exist. Please specify a
+The parent directory of $1 ($parent_dirname) does not exist. Please specify a
 parent directory you can write to. $HOME/streisand-deps
 may be a good choice.
 
 "
 fi
 
-if [ ! -w "$dn" ]; then
+if [ ! -w "$parent_dirname" ]; then
     die "
-The parent directory of $1 ($dn) is not writable. Please specify a
+The parent directory of $1 ($parent_dirname) is not writable. Please specify a
 parent directory you can write to. $HOME/streisand-deps
 may be a good choice.
 
@@ -162,26 +182,28 @@ fi
 
 sudo_pip () {
     # pip complains loudly about directory permissions when sudo without -H.
-    $sudo_for_pip_install pip2 $quiet "$@"
+    $sudo_for_pip_install "$PIP" $quiet "$@"
 }
 
 our_pip () {
-    pip2 $quiet "$@"
+    "$PIP" $quiet "$@"
 }
 
 our_pip_install () {
     our_pip install "$@"
 }
 
-# What to do, what to do. Homebrew Python jams the site library into
-# virtualenvs. But --no-site-packages is deprecated.
-virtualenv_no_site=
+NO_SITE_PACKAGES=""
 
-# An easy way to see if Homebrew is installed.
+# An easy way to see if Homebrew is installed and vaguely working.
+
 if brew command command >/dev/null 2>&1; then
     # If it is, we get our virtualenv as a regular user
     our_pip_install virtualenv
-    virtualenv_no_site="--no-site-packages"
+    # Homebrew's virtualenv defaults to using site-wide settings.
+    # We don't want this. But --no-site-packages is deprecated, so
+    # we should only set it for Homebrew.
+    NO_SITE_PACKAGES="--no-site-packages"
 else
     # We may not need this installed as root; we just need it on
     # $PATH somewhere. But do root for now.
@@ -191,11 +213,12 @@ fi
 # In case we have a new virtualenv executable.
 hash -r
 
-if ! virtualenv --python=python2 $virtualenv_no_site "$1"; then
+if ! virtualenv --python=python2 $NO_SITE_PACKAGES "$1"; then
+    parent_dirname="$(dirname "$1")"
     echo "
 virtualenv failed to create directory '$1'
 using 'virtualenv --python=python2 $1'. Note that $1 must not exist, but
-its parent ($dn) must exist.
+its parent ($parent_dirname) must exist.
 
 The first argument, 'new-directory', must be somewhere you can write
 to. A good place may be $HOME/streisand-deps. If it already exists,
