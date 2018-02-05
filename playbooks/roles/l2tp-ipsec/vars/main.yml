@@ -19,7 +19,7 @@ libreswan_compilation_dependencies:
   - libldns-dev
   - pkg-config
 
-libreswan_version: "3.22"
+libreswan_version: "3.23"
 libreswan_src_directory: "/usr/local/src"
 libreswan_compilation_directory: "{{ libreswan_src_directory }}/libreswan-{{ libreswan_version }}"
 libreswan_source_filename: "libreswan-{{ libreswan_version }}.tar.gz"
