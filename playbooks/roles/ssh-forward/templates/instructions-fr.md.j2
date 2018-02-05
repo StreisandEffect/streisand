@@ -70,10 +70,11 @@ Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transpor
 1. Ajoutez une nouvelle entrée à votre fichier `.ssh / config`. Il devrait ressembler à ceci.Le port `443` est disponible en option de recharge si vous êtes sur un réseau qui restreint l'accès au port SSH par défaut. Assurez-vous d'ajuster l'emplacement du IdentityFile:
 
          Host {{ streisand_server_name }}
-           User         sshuttle 
-           Port         {{ ssh_port }}
-           HostName     {{ streisand_ipv4_address }}
-           IdentityFile ~/.ssh/streisand_rsa
+           User           sshuttle
+           Port           {{ ssh_port }}
+           HostName       {{ streisand_ipv4_address }}
+           IdentitiesOnly yes
+           IdentityFile   ~/.ssh/streisand_rsa
 
 1. Téléchargez [sshuttle](https://github.com/sshuttle/sshuttle) en exécutant la commande suivante dans une répertoire de votre choix:
 
@@ -103,10 +104,11 @@ Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transpor
 1. Ajoutez une nouvelle entrée à votre fichier `.ssh / config`. Il devrait ressembler à ceci.Le port `443` est disponible en option de recharge si vous êtes sur un réseau qui restreint l'accès au port SSH par défaut. Assurez-vous d'ajuster l'emplacement du IdentityFile:
 
          Host {{ streisand_server_name }}
-           User         forward
-           Port         {{ ssh_port }}
-           HostName     {{ streisand_ipv4_address }}
-           IdentityFile ~/.ssh/streisand_rsa
+           User           forward
+           Port           {{ ssh_port }}
+           HostName       {{ streisand_ipv4_address }}
+           IdentitiesOnly yes
+           IdentityFile   ~/.ssh/streisand_rsa
 
 1. `SSH`ez dans le serveur et transférer un port SOCKS dynamique:
 
