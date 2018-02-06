@@ -5,6 +5,7 @@
 - - -
 
 [![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/espadrine.svg?style=social&label=Follow%20%40StreisandVPN)](https://twitter.com/StreisandVPN)
 
 Streisand
 =========
@@ -131,7 +132,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 * 以下使用 pip 安装的 Python 库根据你所使用的 VPS 供应商不同而不同。如果你准备将目前使用的 VPS 变成网关，可以跳过此步。
   * 亚马逊 EC2
 
-        sudo pip install boto
+        sudo pip install boto boto3
   * 微软云服务
 
         sudo pip install ansible[azure]
@@ -140,7 +141,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
         sudo pip install dopy==0.3.5
   * Google
 
-        sudo pip install "apache-libcloud>=1.5.0"
+        sudo pip install "apache-libcloud>=1.17.0"
   * Linode
 
         sudo pip install linode-python

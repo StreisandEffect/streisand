@@ -1,21 +1,11 @@
 ---
-#Run main playbook
-- hosts: streisand
-  gather_facts: no
-  remote_user: root
-  become: yes
-  pre_tasks:
-    - name: Ensure python is installed
-      raw: sudo apt update && apt install python -y
-  tasks:
-    - set_fact:
-        ansible_ssh_private_key_file: "{{ streisand_ssh_private_key }}"
-
 - hosts: streisand
   gather_facts: yes
   remote_user: root
   become: yes
   tasks:
+    - set_fact:
+        ansible_ssh_private_key_file: "{{ streisand_ssh_private_key }}"
     - block:
         - name: Generate SSH Key's for CI run
           shell: "ssh-keygen -b 2048 -t rsa -f /tmp/id_rsa_insecure -q -N ''"

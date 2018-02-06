@@ -10,7 +10,7 @@ openssl_ca_private_dir: "{{ openssl_ca_base }}/private"
 openssl_ca_newcerts_dir: "{{ openssl_ca_base }}/newcerts"
 openssl_ca_key: "{{ openssl_ca_private_dir }}/cakey.pem"
 openssl_ca_certificate: "{{ openssl_ca_base }}/cacert.pem"
-
+openssl_ca_default_md: "sha256"
 
 nginx_days_valid: "1825"
 

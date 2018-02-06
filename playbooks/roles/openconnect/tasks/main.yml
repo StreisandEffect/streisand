@@ -83,7 +83,7 @@
     label: "{{ client_content[0].item }}"
 
 - name: Generate a random ocserv password
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 4 | xargs | sed -e 's/ /-/g' > {{ ocserv_password_file }}
+  shell: "{{ streisand_word_gen.psk }} > {{ ocserv_password_file }}"
   args:
     creates: "{{ ocserv_password_file }}"
 

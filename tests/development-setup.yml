@@ -4,6 +4,20 @@
   remote_user: root
   become: yes
   pre_tasks:
+
+    # NOTE(@cpu): CI builds are frequently failing with the error:
+    #   GPG error: http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4
+    #   Release: The following signatures were invalid: KEYEXPIRED 1515625755
+    #
+    # To work around this we fetch an updated key before doing an apt-get update
+    # See https://github.com/travis-ci/travis-ci/issues/9037 for more
+    # information
+    - name: Install an updated MongoDB Repo key
+      command: >
+        apt-key adv \
+        --keyserver hkp://keyserver.ubuntu.com:80 \
+        --recv 0C49F3730359A14518585931BC711F9BA15703C6
+
     # NOTE(@alimakki): Due to key rotation, we pre-emptivley
     # add the Google linux apt signing key required by some
     # packages
@@ -22,76 +36,94 @@
   remote_user: root
   become: yes
   tasks:
-    - name: Install lxc ppa key
-      apt_key:
-        id: 7635B973
-        url: "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xD5495F657635B973"
-        state: present
-
     # If l2tp is enabled we need to build & prepare the Libreswan kernel module
     # on the localhost in order for it to be usable by the container
     - name: Install Libreswan to support L2TP in container
       include_tasks: libreswan-setup.yml
       when: streisand_l2tp_enabled
 
-    # NOTE(@cpu): We use the `command` module with the `add-apt-repository`
-    # command here because the `apt_repository` Ansible module at the time of
-    # writing will error on the ubuntu-lxc repo in some instances if a mirror is
-    # missing 32bit binary builds even though CI uses a 64bit architecture.
-    - name: Install LXC ppa
-      command: add-apt-repository ppa:ubuntu-lxc/lxd-stable
-
     - name: Ensure consistent & clean apt state
       shell: "{{ item }}"
       with_items:
         - "apt-get clean"
         - "apt-get update"
+      args:
+        warn: no
 
-    - name: Install lxd
+    - name: "Remove old LXD from distro"
       apt:
-        name: lxd
-        state: latest
+        name: "lxd"
+        state: "absent"
 
-    - name: lxd new group
-      shell: newgrp lxd
+    - name: "Install snapd"
+      apt:
+        name: "snapd"
 
-    - block:
-        - name: lxd init config
-          shell: lxd init --auto --storage-backend dir
+    - name: "Install LXD snap"
+      command: "snap install lxd"
 
-        - name: lxd create network
-          shell: lxc network create testbr0
+    - name: "Start lxd"
+      command: "snap start lxd"
 
-        - name: lxd attach network to default profile
-          shell: lxc network attach-profile testbr0 default eth0
-      ignore_errors: yes
+    - name: "Wait for the LXD socket"
+      wait_for:
+        path: "/var/snap/lxd/common/lxd/unix.socket"
+        state: present
+        sleep: 5
 
-    - name: restart lxd
-      service:
-        name: lxd
-        state: restarted
+    - name: lxd init config
+      command: lxd init --auto --storage-backend dir
 
-    - name: pause
-      pause:
-        seconds: 10
+    # NOTE(@cpu): This could be improved - it will fail if the `testbr0` network
+    # already exists. This is fine for CI but a pain for local development using
+    # the container.
+    - name: lxd create network
+      command: lxc network create testbr0
 
-    - name: set permission on lxd daemon
-      file:
-        path: /var/lib/lxd/unix.socket
-        mode: "0777"
+    - name: lxd attach network to default profile
+      command: lxc network attach-profile testbr0 default eth0
+
+    - name: Retrieve the Ubuntu Xenial AMD64 LXC image fingerprint
+      uri:
+        url: https://images.linuxcontainers.org/1.0/images/aliases/ubuntu/xenial/amd64
+        return_content: yes
+      register: xenial_fingerprint
 
     - name: Launch streisand container (this will take a while)
       lxd_container:
         name: streisand
         state: started
+        url: "unix:/var/snap/lxd/common/lxd/unix.socket"
         source:
           type: image
           mode: pull
           server: https://images.linuxcontainers.org
           protocol: lxd
-          alias: ubuntu/xenial/amd64
+          # Use the retrieved alias to fetch the image
+          alias: "{{ xenial_fingerprint['json']['metadata']['target'] }}"
         profiles: ["default"]
         config:
           security.privileged: "true"
         wait_for_ipv4_addresses: true
         timeout: 300
+
+    # TODO(@cpu): Why this is required is a mystery to me. Everything in
+    # development-setup.yml is able to access the unix socket without error.
+    # Without this gross chmod the LXD connection used to run the Streisand
+    # playbooks on the container fails with an access error. It would be nice to
+    # reduce these permissions. It's likely dangerous in a non-CI environment
+    - name: Open the permissions on the LXD socket
+      command: chmod 777 /var/snap/lxd/common/lxd/unix.socket
+
+    # Install Python in the container now to avoid needing to do it later
+    - name: Check if python is installed in container
+      delegate_to: streisand
+      raw: dpkg -s python
+      register: python_install_check
+      failed_when: python_install_check.rc not in [0, 1]
+      changed_when: false
+
+    - name: Install python in container if required
+      delegate_to: streisand
+      raw: apt-get install -y python
+      when: python_install_check.rc == 1

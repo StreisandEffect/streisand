@@ -10,6 +10,13 @@
     line: "Listen 127.0.0.1"
   notify: Restart Tinyproxy
 
+- name: Reconfigure TinyProxy to accept connections from the Streisand server IP
+  lineinfile:
+    dest: /etc/tinyproxy.conf
+    line: "Allow {{ streisand_ipv4_address }}"
+    insertafter: "^Allow 127\\.0\\.0\\.1$"
+    state: present
+
 - name: Reconfigure Tinyproxy so it doesn't log incoming connections
   lineinfile:
     dest: /etc/tinyproxy.conf

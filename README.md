@@ -5,6 +5,7 @@
 - - -
 
 [![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/espadrine.svg?style=social&label=Follow%20%40StreisandVPN)](https://twitter.com/StreisandVPN)
 
 Streisand
 =========
@@ -32,7 +33,7 @@ More Features
   * A unique password, SSL certificate, and SSL private key are generated for each Streisand Gateway. The Gateway instructions and certificate are transferred via SSH at the conclusion of Streisand's execution.
 * Distinct services and multiple daemons provide an enormous amount of flexibility. If one connection method gets blocked there are numerous options available, most of which are resistant to Deep Packet Inspection.
   * All of the connection methods (including L2TP/IPsec and direct OpenVPN connections) are effective against the type of blocking Turkey has been experimenting with.
-  * OpenConnect/AnyConnect, OpenSSH, OpenVPN (wrapped in stunnel), Shadowsocks, and Tor (with obfsproxy and the obfs4 pluggable transport) are all currently effective against China's Great Firewall.
+  * OpenConnect/AnyConnect, OpenSSH, OpenVPN (wrapped in stunnel), Shadowsocks, Tor (with obfsproxy and the obfs4 pluggable transport), and WireGuard are all currently effective against China's Great Firewall.
 * Every task has been thoroughly documented and given a detailed description. Streisand is simultaneously the most complete HOWTO in existence for the setup of all of the software it installs, and also the antidote for ever having to do any of this by hand again.
 * All software runs on ports that have been deliberately chosen to make simplistic port blocking unrealistic without causing massive collateral damage. OpenVPN, for example, does not run on its default port of 1194, but instead uses port 636, the standard port for LDAP/SSL connections that are beloved by companies worldwide.
   * *L2TP/IPsec is a notable exception to this rule because the ports cannot be changed without breaking client compatibility*
@@ -97,9 +98,15 @@ Complete all of these tasks on your local home machine.
 * Streisand requires a BSD, Linux, or macOS system. As of now, Windows is not supported. All of the following commands should be run inside a Terminal session.
 * Python 2.7 is required. This comes standard on macOS, and is the default on almost all Linux and BSD distributions as well. If your distribution packages Python 3 instead, you will need to install version 2.7 in order for Streisand to work properly.
 * Make sure an SSH key is present in ~/.ssh/id\_rsa.pub.
+  * SSH keys are a more secure alternative to passwords that allow you to prove your identity to a server or service built on public key cryptography.
+  * To check if you already have an SSH key, please enter the following command at a command prompt.
+  
+        ls ~/.ssh
+  * If you see an id_rsa.pub file, then you have an SSH key.
   * If you do not have an SSH key, you can generate one by using this command and following the defaults:
 
         ssh-keygen
+  * If you'd like to use an SSH key with a different name or in a non-standard location, please enter 'yes' when asked if you'd like to customize your instance during installation.
 * Install Git.
   * On Debian and Ubuntu
 
@@ -134,7 +141,7 @@ Complete all of these tasks on your local home machine.
     you can skip this section.
   * Amazon EC2
 
-        sudo pip install boto
+        sudo pip install boto boto3
   * Azure
 
         sudo pip install ansible[azure]
@@ -143,7 +150,7 @@ Complete all of these tasks on your local home machine.
         sudo pip install dopy==0.3.5
   * Google
 
-        sudo pip install "apache-libcloud>=1.5.0"
+        sudo pip install "apache-libcloud>=1.17.0"
 
   * Linode
 

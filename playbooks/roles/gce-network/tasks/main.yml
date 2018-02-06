@@ -100,7 +100,7 @@
 - name: Open the OpenVPN stunnel port in the GCE firewall
   gce_net:
     name: "{{ gce_network }}"
-    fwname: "streisand-{{ gce_server_name }}-openvpn"
+    fwname: "streisand-{{ gce_server_name }}-openvpn-stunnel"
     allowed: "tcp:{{ stunnel_remote_port }}"
     state: "present"
     mode: auto
