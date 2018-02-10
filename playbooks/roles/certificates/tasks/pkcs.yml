@@ -37,7 +37,8 @@
     -out {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12
     -certfile {{ tls_client_path }}/ca.crt
     -passout pass:"{{ vpn_client_password.stdout }}"
-  creates: "{{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12"
+  args:
+    creates: "{{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12"
   with_items: "{{ vpn_client_pkcs12_password_list.results }}"
   loop_control:
     loop_var: "vpn_client_password"
