@@ -47,9 +47,17 @@ In the four years since Streisand was announced the project has seen users adapt
 
 Inspired by these creative modifications we’re happy to announce that we have added several new “advanced” deployment modes:
 
-Localhost - Use Streisand to set up the machine it’s running on as a VPN server.
-Existing Server - Use Streisand to set up an existing Ubuntu 16.04 cloud server. This allows Streisand to run on servers from a variety of cloud providers that Streisand does not support out of the box (It works great with [Vultr](https://www.vultr.com/) for example!).
-Non-Interactive - Use Streisand without having to answer any prompts by editing a configuration file in advance. This can be great for programmatic or container-based usage. Thanks to @exratione for this feature.
+Localhost:
+
+* Use Streisand to set up the machine it’s running on as a VPN server.
+
+Existing Server:
+
+* Use Streisand to set up an existing Ubuntu 16.04 cloud server. This allows Streisand to run on servers from a variety of cloud providers that Streisand does not support out of the box (It works great with [Vultr](https://www.vultr.com/) for example!).
+
+Non-Interactive:
+
+* Use Streisand without having to answer any prompts by editing a configuration file in advance. This can be great for programmatic or container-based usage. Thanks to @exratione for this feature.
 
 
 ### Let’s Encrypt Support
