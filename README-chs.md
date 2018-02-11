@@ -1,7 +1,7 @@
 ![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Automate the effect")
 
 - - -
-[English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Mirror](https://area51.threeletter.agency/mirrors/streisand) | [Mirror 2](https://gitlab.com/alimakki/streisand)
+[English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Mirror ](https://gitlab.com/alimakki/streisand)
 - - -
 
 [![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
@@ -157,9 +157,6 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 1. 从 Streisand 抓取源码
 
         git clone https://github.com/StreisandEffect/streisand.git && cd streisand
-   如果 Github 被封锁了，就用我们提供的镜像。
-
-        git clone https://area51.threeletter.agency/mirrors/streisand.git && cd streisand
 2. 执行 Streisand 脚本。
 
         ./streisand
