@@ -13,7 +13,7 @@ Pour des raisons de sécurité, les clients OpenVPN ont généralement leurs pro
   * [Windows](#windows)
   * [macOS](#macos)
   * [Linux](#linux)
-  * [Androïde](#android)
+  * [Android](#android)
   * [iOS](#ios)
 
 <a name="windows"></a>
@@ -47,7 +47,7 @@ Maintenant, vous êtes prêt à installer OpenVPN et à le configurer pour achem
 1. Faites glisser et déposez le `{{ openvpn_stunnel_profile_filename }}` téléchargé a cette location juste à côté du fichier README.
 1. Faites un clic droit sur l'icône OpenVPN dans la barre des tâches et choisissez *Connecter*.
 1. Vous verrez des journaux se déplacent à mesure que la connexion est établie, suivie d'une notification de la barre des tâches indiquant votre adresse IP attribuée.
-1. Succès! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="macos"></a>
 ### macOS ###
@@ -105,12 +105,12 @@ Maintenant, vous êtes prêt à installer OpenVPN et à le configurer pour achem
 
 #### Installation OpenVPN ####
 
-1. Installer OpenVPN:
+1. Installer OpenVPN :
 
    `sudo apt-get install openvpn` où `sudo yum install openvpn` où `gestionnaire-de-paquetage-esoterique hipster openvpn`
 
    * Si l'installation de OpenVPN via votre gestionnaire de paquetage n'est pas une option, vous pouvez également télécharger et compiler le [code source OpenVPN](/mirror/index-fr.html#openvpn).
-1. Téléchargez l'un de ces profils OpenVPN unifiés:
+1. Téléchargez l'un de ces profils OpenVPN unifiés :
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
@@ -126,12 +126,12 @@ Maintenant, vous êtes prêt à installer OpenVPN et à le configurer pour achem
 
    `sudo openvpn {{ openvpn_stunnel_profile_filename }}`
 
-1. Succès! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 Le plugin OpenVPN pour NetworkManager semble devenir très confus à la manière dont il doit acheminer le trafic lorsque vous vous connectez à un serveur OpenVPN via une connexion stunnel. L'ajout manuelle d'informations sur l'itinéraire ne semble pas aider. Par conséquent, contrairement aux [instructions non stunnel](/openvpn/index-fr.html), les étapes ci-dessus sont également la méthode de connexion recommandée pour Ubuntu.
 
 <a name="android"></a>
-### Androïde ###
+### Android ###
 #### Installation SSLDroid ####
 1. Téléchargez la clé PKCS #12 stunnel
    * [stunnel.p12](/openvpn/stunnel.p12)
@@ -149,19 +149,19 @@ Le plugin OpenVPN pour NetworkManager semble devenir très confus à la manière
 Maintenant, vous êtes prêt à installer OpenVPN pour Android et à le configurer pour acheminer son trafic via SSLDroid, qui est connecté au port Stunnel sur le serveur distant. Un profil .ovpn personnalisé qui est préconfiguré pour fonctionner avec SSLDroid rendra cela facile.
 
 ### Installation OpenVPN ###
-1. Installez [OpenVPN pour Androïde](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=fr).
-1. Téléchargez l'un de ces profils OpenVPN unifiés:
+1. Installez [OpenVPN pour Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=fr).
+1. Téléchargez l'un de ces profils OpenVPN unifiés :
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_stunnel_profile_filename }})
 {% endfor %}
 1. Copiez le fichier `{{ openvpn_stunnel_profile_filename }}` sur votre téléphone.
-1. Lancez OpenVPN pour Androïde.
+1. Lancez OpenVPN pour Android.
 1. Appuyez sur l'icône du dossier en bas à droite de l'écran.
 1. Sélectionnez le profil `{{ openvpn_stunnel_profile_filename }}` que vous avez copié sur votre téléphone.
 1. Tapez sur l'icône de sauvegarde (disquette) en bas à droite de l'écran une fois l'importation est terminée.
 1. Tapez le profil.
-1. Acceptez l'avertissement de connexion VPN Androïde.
-1. Succès! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Acceptez l'avertissement de connexion VPN Android.
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 
 <a name="ios"></a>
