@@ -107,7 +107,7 @@ Complete all of these tasks on your local home machine.
 
         ssh-keygen
   * If you'd like to use an SSH key with a different name or in a non-standard location, please enter 'yes' when asked if you'd like to customize your instance during installation.
-  * Please note: You will need these keys to SSH into your Streisand instance. Please keep them for the duration of the installation.
+  * **Please note**: You will need these keys to access your Streisand instance over SSH. Please keep them for the lifetime of the Streisand server.
 * Install Git.
   * On Debian and Ubuntu
 
