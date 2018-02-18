@@ -12,7 +12,7 @@ Pour des raisons de sécurité, les clients OpenVPN généralement ont leurs pro
   * [macOS](#macos)
   * [Linux](#linux)
   * [Linux (Ubuntu)](#linux-ubuntu)
-  * [Androïde](#android)
+  * [Android](#android)
   * [iOS](#ios)
 
 <a name="windows"></a>
@@ -134,8 +134,8 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 1. Succès! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="android"></a>
-### Androïde ###
-1. Installez [OpenVPN pour Androïde](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=fr).
+### Android ###
+1. Installez [OpenVPN pour Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=fr).
 1. Téléchargez l'un de ces profils OpenVPN unifiés:
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
@@ -144,12 +144,12 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
    * *[Profils UDP](#udp-profiles) sont disponibles.*
    * *[Profils combinés](#combined-profiles) sont maintenant disponibles.*
 1. Copiez le fichier `{{ openvpn_direct_profile_filename }}` sur votre téléphone.
-1. Lancez OpenVPN pour Androïde.
+1. Lancez OpenVPN pour Android.
 1. Appuyez sur l'icône du dossier en bas à droite de l'écran.
 1. Sélectionnez le profil `{{ openvpn_direct_profile_filename }}` que vous avez copié sur votre téléphone.
 1. Tapez sur l'icône de sauvegarde (disquette) en bas à droite de l'écran une fois l'importation est terminée.
 1. Tapez le profil.
-1. Acceptez l'avertissement de connexion VPN Androïde.
+1. Acceptez l'avertissement de connexion VPN Android.
 1. Succès! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="ios"></a>

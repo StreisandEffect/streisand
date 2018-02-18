@@ -6,7 +6,7 @@ Shadowsocks
   * [Windows](#windows)
   * [macOS](#macos)
   * [Linux](#linux)
-  * [Androïde](#android)
+  * [Android](#android)
   * [iOS](#ios)
 * Plugins
   * [simple-obfs](#simple-obfs)
@@ -86,8 +86,8 @@ Une fois que vous avez Shadowsocks fonctionnant localement, vous devrez transfé
 
 
 <a name="android"></a>
-### Androïde ###
-1. Téléchargez Shadowsocks pour Androïde à partir de [Google Play](https://play.google.com/store/apps/details?id=com.github.shadowsocks&hl=fr). Si Google Play est bloqué dans votre pays, vous pouvez [télécharger une copie en miroir](/mirror/shadowsocks/index-fr.html) de ce serveur!
+### Android ###
+1. Téléchargez Shadowsocks pour Android à partir de [Google Play](https://play.google.com/store/apps/details?id=com.github.shadowsocks&hl=fr). Si Google Play est bloqué dans votre pays, vous pouvez [télécharger une copie en miroir](/mirror/shadowsocks/index-fr.html) de ce serveur!
 1. Lancez l'application.
 1. Tapez sur l'icône Ajouter un profil +, en haut à droite de l'écran.
 1. Tapez l'icône *+* en bas à droite.
@@ -96,7 +96,7 @@ Une fois que vous avez Shadowsocks fonctionnant localement, vous devrez transfé
 
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
 1. Tapez sur l'icône de l'avion en haut.
-1. Acceptez l'avertissement de connexion VPN Androïde.
+1. Acceptez l'avertissement de connexion VPN Android.
 1. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 
@@ -124,4 +124,4 @@ Pour les utilisateurs sur des réseaux peu fiables ou hostiles (en particulier l
         Encryption Method: {{ shadowsocks_encryption_method }}
         Plugin: {{ shadowsocks_client_obfs_plugin }}
         Plugin_Options: {{ shadowsocks_obfs_client_plugin_opts }}
-Les utilisateurs d'Androïde devront d'abord télécharger l'application [Simple obfuscation] (https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.obfs_local&hl=fr), puis modifier le profil existant de Streisand sur votre client pour utiliser ce plugin. Vous pouvez le faire en appuyant sur le bouton d'édition (edit) à côté du profil, en tapant l'option Plugin en bas du profil et en sélectionnant le plugin "Simple obfuscation" dans le menu. Votre trafic Shadowsocks sera maintenant obscurci en tant que {{shadowsocks_obfs_cover_protocol}} trafic vers {{shadowsocks_obfs_cover_domain}}.
+Les utilisateurs d'Android devront d'abord télécharger l'application [Simple obfuscation] (https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.obfs_local&hl=fr), puis modifier le profil existant de Streisand sur votre client pour utiliser ce plugin. Vous pouvez le faire en appuyant sur le bouton d'édition (edit) à côté du profil, en tapant l'option Plugin en bas du profil et en sélectionnant le plugin "Simple obfuscation" dans le menu. Votre trafic Shadowsocks sera maintenant obscurci en tant que {{shadowsocks_obfs_cover_protocol}} trafic vers {{shadowsocks_obfs_cover_domain}}.
