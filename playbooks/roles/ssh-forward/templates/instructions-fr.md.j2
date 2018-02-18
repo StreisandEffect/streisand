@@ -6,7 +6,7 @@ Tunnel SSH
   * [Windows](#windows)
   * [Linux et macOS](#linux-and-macos)
 {% if streisand_tinyproxy_enabled %}
-  * [Androïde](#android)
+  * [Android](#android)
 {% endif %}
   * [Notes](#notes)
 
@@ -122,7 +122,7 @@ Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transpor
 
 {% if streisand_tinyproxy_enabled %}
 <a name="android"></a>
-### Androïde ###
+### Android ###
 1. Installez [SSH persistent tunnels](https://play.google.com/store/apps/details?id=org.ayal.SPT&hl=fr) par Shai Ayal. Cette application permet de transférer facilement plusieurs ports via un tunnel SSH, et fonctionne assez bien pour s'assurer que les tunnels restent actifs même lorsque vous changez régulièrement entre LTE, 3G et WiFi. L'application est [open source](https://bitbucket.org/ayal_org/ssh-persistent-tunnel/) et peut être compilée gratuitement, mais la version Play Store coûte $1,50 (USD).
 1. Téléchargez la clé privée `streisand_rsa` qui sert à authentifier la connexion SSH:
    * [streisand\_rsa](/ssh/streisand_rsa)
@@ -159,7 +159,7 @@ Ces étapes ne fonctionneront que si vous êtes connecté via WiFi. Ils doivent 
 8. Tapez *Port du proxy* et saisissez `8888`.
 9. Tapez *Enregistrer*.
 
-Certaines applications vous permettent de rendre ces paramètres persistants pour tous les réseaux. Twitter pour Androïde et Firefox pour Androïde peut acheminer son trafic via le tunnel SPT SSH indépendamment de votre connexion actuelle (WiFi, 3G, HSPA +, LTE, etc.).
+Certaines applications vous permettent de rendre ces paramètres persistants pour tous les réseaux. Twitter pour Android et Firefox pour Android peut acheminer son trafic via le tunnel SPT SSH indépendamment de votre connexion actuelle (WiFi, 3G, HSPA +, LTE, etc.).
 
 #### Configuration de Twitter pour Android pour utiliser SPT ####
 1. Ouvrez Twitter.
