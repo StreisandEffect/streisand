@@ -43,12 +43,12 @@ Services fournis
 ----------------
 * L2TP/IPsec en utilisant [Libreswan](https://libreswan.org/) et [xl2tpd](https://www.xelerance.com/software/xl2tpd/)
   * Une clé et un mot de passe pré-partagés choisis au hasard sont générés.
-  * Les utilisateurs Windows, macOS, Androïde et iOS peuvent tous se connecter en utilisant le support VPN natif intégré à chaque système d'exploitation sans installer de logiciel supplémentaire.
+  * Les utilisateurs Windows, macOS, Android et iOS peuvent tous se connecter en utilisant le support VPN natif intégré à chaque système d'exploitation sans installer de logiciel supplémentaire.
 * [Monit](https://mmonit.com/monit/)
   * Surveille la santé du processus et redémarre automatiquement les services dans le cas improbable où ils se plante ou ne répondent pas.
 * [OpenSSH](http://www.openssh.com/)
-  * Les tunnels Windows et Androïde SSH sont également pris en charge et une copie des clés sont exportée dans le format .ppk que PuTTY requiert.
-  * [Tinyproxy](https://banu.com/tinyproxy/) est installé et lié à localhost. Il peut être accédé sur un tunnel SSH par des programmes qui ne prennent pas en charge nativement SOCKS et qui nécessitent un proxy HTTP, comme Twitter pour Androïde.
+  * Les tunnels Windows et Android SSH sont également pris en charge et une copie des clés sont exportée dans le format .ppk que PuTTY requiert.
+  * [Tinyproxy](https://banu.com/tinyproxy/) est installé et lié à localhost. Il peut être accédé sur un tunnel SSH par des programmes qui ne prennent pas en charge nativement SOCKS et qui nécessitent un proxy HTTP, comme Twitter pour Android.
   * Un utilisateur de transfert non privilégié et une paire paire de clés asymétriques SSH sont générés pour les fonctionnalités [sshuttle](https://github.com/sshuttle/sshuttle) et SOCKS.
 * [OpenConnect](http://www.infradead.org/ocserv/index.html)/[Cisco AnyConnect](http://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
   * OpenConnect (ocserv) est un serveur VPN extrêmement performant et léger qui offre également une compatibilité totale avec les clients officiels Cisco AnyConnect.
@@ -61,7 +61,7 @@ Services fournis
   * L'authentification TLS est activée, ce qui permet de vous protéger contre les attaques actives. Le trafic qui n'a pas de HMAC approprié est simplement abandonné.
 * [Shadowsocks](http://shadowsocks.org/en/index.html)
   * La [variante libev](https://github.com/shadowsocks/shadowsocks-libev) haute performance est installée. Cette version est capable de gérer des milliers de connexions simultanées.
-  * Un code QR est généré qui peut être utilisé pour configurer automatiquement les clients Androïde et iOS en prenant simplement une photo. Vous pouvez étiqueter "8.8.8.8" sur ce mur de béton, ou vous pouvez coller les instructions de Shadowsocks et quelques codes QR à la place!
+  * Un code QR est généré qui peut être utilisé pour configurer automatiquement les clients Android et iOS en prenant simplement une photo. Vous pouvez étiqueter "8.8.8.8" sur ce mur de béton, ou vous pouvez coller les instructions de Shadowsocks et quelques codes QR à la place!
   * [AEAD](https://shadowsocks.org/fr/spec/AEAD-Ciphers.html) est activé avec ChaCha20 et Poly1305 pour un contournement plus efficace du GFW.
   * Le plugin [simple-obfs](https://github.com/shadowsocks/simple-obfs) est installé afin de fournir une techique d'évasion du votre trafic sur des réseaux hostiles (en particulier ceux qui appliquent la limitation de la qualité de service (QOS)).
 * [sslh](http://www.rutschle.net/tech/sslh.shtml)
@@ -69,11 +69,11 @@ Services fournis
 * [Stunnel](https://www.stunnel.org/index.html)
   * Écoute et enveloppe les connexions OpenVPN. Cela les fait ressembler au trafic SSL standard et permet aux clients OpenVPN d'établir avec succès des tunnels même en présence d'une inspection approfondie des paquets.
   * Des profils unifiés pour les connexions OpenVPN enveloppées de stunnel sont générés à côté des profils de connexion directe. Des instructions détaillées sont également générées.
-  * Le certificat stunnel et la clé sont exportés au format PKCS # 12 afin qu'ils soient compatibles avec d'autres applications de tunneling SSL. Notamment, cela permet à [OpenVPN pour Androïde](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=fr) de tunneliser son trafic via [SSLDroid](https://play.google .com / store / apps / details? Id = hu.blint.ssldroid). OpenVPN en Chine sur un appareil mobile? Oui!
+  * Le certificat stunnel et la clé sont exportés au format PKCS # 12 afin qu'ils soient compatibles avec d'autres applications de tunneling SSL. Notamment, cela permet à [OpenVPN pour Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=fr) de tunneliser son trafic via [SSLDroid](https://play.google .com / store / apps / details? Id = hu.blint.ssldroid). OpenVPN en Chine sur un appareil mobile? Oui!
 * [Tor](https://www.torproject.org/)
   * Un [pont relais](https://www.torproject.org/docs/bridges) est mis en place avec un surnom aléatoire.
   * [Obfsproxy](https://www.torproject.org/projects/obfsproxy.html.en) est installé et configuré avec le support pour le transport enfichable obfs4.
-  * Un code BridgeQR est généré et peut être utilisé pour configurer automatiquement [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android&hl=fr) pour Androïde.
+  * Un code BridgeQR est généré et peut être utilisé pour configurer automatiquement [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android&hl=fr) pour Android.
 * [UFW](https://wiki.ubuntu.com/UncomplicatedFirewall)
   * Les règles de pare-feu sont configurées pour chaque service et tout trafic qui est envoyé vers un port non autorisé sera bloqué.
 * [unattended-upgrades](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
