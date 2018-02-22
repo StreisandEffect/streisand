@@ -46,24 +46,24 @@
   * Пользователи Windows, macOS, Android, и iOS  могут подключаться с использованием встроенной поддержки VPN без установки дополнительного ПО.
 * [Monit](https://mmonit.com/monit/)
   * Отслеживает здоровье процессов и автоматически перезапускает их , если они падают или зависают.
-* [OpenSSH](http://www.openssh.com/)
+* [OpenSSH](https://www.openssh.com/)
   * Создается непривилегированный пользователь и пара ключей для [sshuttle](https://github.com/sshuttle/sshuttle) и SOCKS.
   * Поддерживаются также SSH-туннели Windows и Android, создается копия пары ключей в .ppk формате для PuTTY
   * Установлен [Tinyproxy](https://banu.com/tinyproxy/) и подключен к localhost. Программы, которые не поддерживают SOCKS и требуют наличия HTTP proxy, такие как Twitter для Android, могу подключиться к нему через SSH-туннель.
-* [OpenConnect](http://www.infradead.org/ocserv/index.html) / [Cisco AnyConnect](http://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
+* [OpenConnect](https://ocserv.gitlab.io/www/index.html) / [Cisco AnyConnect](https://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
   * OpenConnect (ocserv) - высокопроизводительный и легковесный VPN-сервер полностью совместимый с официальными клиентами Cisco AnyConnect.
-  * Его [протокол](http://www.infradead.org/ocserv/technical.html) построен на классических стандартах, таких как HTTP, TLS и  DTLS и является одним из самых популярных и широко используемых мультинациональными корпорациями VPN технологий.
+  * Его [протокол](https://ocserv.gitlab.io/www/technical.html) построен на классических стандартах, таких как HTTP, TLS и  DTLS и является одним из самых популярных и широко используемых мультинациональными корпорациями VPN технологий.
     * Это означает, что кроме своей простоты и скорости, OpenConnect также устойчив к цензуре и практически никогда не блокируется.
 * [OpenVPN](https://openvpn.net/index.php/open-source.html)
   * Для каждого клиента создаются унифицированные .ovpn профили для простой настройки клиента с использованием только одного файла.
   * Поддерживаются соединения TCP и UDP.
   * Определение адресов для клиента исползует [Dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html) для предотвращения утечек DNS-запросов.
    *  Включена TLS Authentication для защиты от зондирующих атак. Трафик не имеющий корректного HMAC будет попросту проигнорирован.
-* [Shadowsocks](http://shadowsocks.org/en/index.html)
+* [Shadowsocks](https://shadowsocks.org/en/index.html)
   * Установлен высокопроизводительный [вариант libev](https://github.com/shadowsocks/shadowsocks-libev). Эта версия обрабатывает тысячи одновременных соединений.
   * Создается QR код который можно использовать для автоматической настройки Android и iOS клиентов. Вы можете написать '8.8.8.8' на бетонной стене, или вы можете наклеить инструкции для Shadowsocks и QR коды на ту же стену.
   * Включена поддержка [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) с ChaCha20 и Poly1305 для усиленной безопасности и уклонения от GFW.
-* [sslh](http://www.rutschle.net/tech/sslh.shtml)
+* [sslh](https://www.rutschle.net/tech/sslh/README.html)
   * Sslh - демультиплексор протоколов, позволяющий Nginx, OpenSSH и  OpenVPN совместно использовать порт 443. Это предоставляет альтернативный метод подключения и означает, что вы можете перенаправлять трафик через OpenSSH и OpenVPN даже если вы находитесь в сети с очень строгими правилами, которая блокирует все соединения не с HTTP.
 * [Stunnel](https://www.stunnel.org/index.html)
   * Слушает и упаковывает соединения OpenVPN. Это заставляет их выглядеть как стандартный SSL трафик и позволяет OpenVPN клиентам устанавливать туннели даже в случае использования Deep Packet Inspection.
@@ -85,7 +85,7 @@
 Пожалуйста **внимательно** прочитайте инструкции по установке перед тем, как продолжать.
 
 ### Важное разъяснение ###
-Стрейзанд основан на [Ansible](http://www.ansible.com/home), инструменте автоматизации, который обычно используется для установки и настройки файлов и пакетов на удалённых серверах. Стрейзанд автоматически создает **новый удалённый сервер** с пакетами и конфигурационными файлами VPN.
+Стрейзанд основан на [Ansible](https://www.ansible.com/), инструменте автоматизации, который обычно используется для установки и настройки файлов и пакетов на удалённых серверах. Стрейзанд автоматически создает **новый удалённый сервер** с пакетами и конфигурационными файлами VPN.
 
 Когда вы запустите Стрейзанд **на вашей домашней машине** (например на вашем лэптопе), он создаст и запустит **новый отдельный сервер** у хостера по вашему выбору. Обычно, вам **не надо запускать Стрейзанд на удалённом сервере** , так как по умолчанию это приведет к созданию нового сервера с вашего текущего сервера и первый сервер будет излишним.  (фух!).
 
@@ -107,7 +107,7 @@
   * На Fedora
 
         sudo yum install git
-  * На macOS (с использованием [Homebrew](http://brew.sh/))
+  * На macOS (с использованием [Homebrew](https://brew.sh/))
 
         brew install git
 * Установите  [pip](https://pip.pypa.io/en/latest/) - систему управления пакетами для Python.
@@ -122,7 +122,7 @@
         sudo easy_install pip
         sudo pip install pycurl
 
-* Установите [Ansible](http://www.ansible.com/home).
+* Установите [Ansible](https://www.ansible.com/).
   * На macOS (с использованием [Homebrew](http://brew.sh/))
 
         brew install ansible
@@ -203,4 +203,4 @@
 
 Огромное спасибо  [Paul Wouters](https://nohats.ca/) из [The Libreswan Project](https://libreswan.org/) за его великодушную помощь в отладке инсталляции  L2TP/IPsec.
 
-Альбом 'Sunset Blood' группы [Starcadian's](http://starcadian.com/) был прослушан примерно 300 раз в цикле в течение первых месяцев работы над этим проектом в начале 2014 года.
+Альбом 'Sunset Blood' группы [Starcadian's](https://www.starcadian.com/) был прослушан примерно 300 раз в цикле в течение первых месяцев работы над этим проектом в начале 2014 года.
