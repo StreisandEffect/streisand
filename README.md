@@ -46,25 +46,25 @@ Services Provided
   * Windows, macOS, Android, and iOS users can all connect using the native VPN support that is built into each operating system without installing any additional software.
 * [Monit](https://mmonit.com/monit/)
   * Monitors process health and automatically restarts services in the unlikely event that they crash or become unresponsive.
-* [OpenSSH](http://www.openssh.com/)
+* [OpenSSH](https://www.openssh.com/)
   * Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
   * [Tinyproxy](https://banu.com/tinyproxy/) is installed and bound to localhost. It can be accessed over an SSH tunnel by programs that do not natively support SOCKS and that require an HTTP proxy, such as Twitter for Android.
   * An unprivileged forwarding user and SSH keypair are generated for [sshuttle](https://github.com/sshuttle/sshuttle) and SOCKS capabilities.
-* [OpenConnect](http://www.infradead.org/ocserv/index.html) / [Cisco AnyConnect](http://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
+* [OpenConnect](https://ocserv.gitlab.io/www/index.html) / [Cisco AnyConnect](https://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
   * OpenConnect (ocserv) is an extremely high-performance and lightweight VPN server that also features full compatibility with the official Cisco AnyConnect clients.
-  * The [protocol](http://www.infradead.org/ocserv/technical.html) is built on top of standards like HTTP, TLS, and DTLS, and it's one of the most popular and widely used VPN technologies among large multi-national corporations.
+  * The [protocol](https://ocserv.gitlab.io/www/technical.html) is built on top of standards like HTTP, TLS, and DTLS, and it's one of the most popular and widely used VPN technologies among large multi-national corporations.
     * This means that in addition to its ease-of-use and speed, OpenConnect is also highly resistant to censorship and is almost never blocked.
 * [OpenVPN](https://openvpn.net/index.php/open-source.html)
   * Self-contained "unified" .ovpn profiles are generated for easy client configuration using only a single file.
   * Both TCP and UDP connections are supported.
   * Client DNS resolution is handled via [Dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html) to prevent DNS leaks.
   * TLS Authentication is enabled which helps protect against active probing attacks. Traffic that does not have the proper HMAC is simply dropped.
-* [Shadowsocks](http://shadowsocks.org/en/index.html)
+* [Shadowsocks](https://shadowsocks.org/en/index.html)
   * The high-performance [libev variant](https://github.com/shadowsocks/shadowsocks-libev) is installed. This version is capable of handling thousands of simultaneous connections.
   * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
   * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
   * The [simple-obfs](https://github.com/shadowsocks/simple-obfs) plugin is installed to provide robust traffic evasion on hostile networks (especially those implementing quality of service (QOS) throttling).
-* [sslh](http://www.rutschle.net/tech/sslh.shtml)
+* [sslh](https://www.rutschle.net/tech/sslh/README.html)
   * Sslh is a protocol demultiplexer that allows Nginx, OpenSSH, and OpenVPN to share port 443. This provides an alternative connection option and means that you can still route traffic via OpenSSH and OpenVPN even if you are on a restrictive network that blocks all access to non-HTTP ports.
 * [Stunnel](https://www.stunnel.org/index.html)
   * Listens for and wraps OpenVPN connections. This makes them look like standard SSL traffic and allows OpenVPN clients to successfully establish tunnels even in the presence of Deep Packet Inspection.
@@ -86,7 +86,7 @@ Installation
 Please read all installation instructions **carefully** before proceeding.
 
 ### Important Clarification ###
-Streisand is based on [Ansible](http://www.ansible.com/home), an automation tool that is typically used to provision and configure files and packages on remote servers. Streisand automatically sets up **another remote server** with the VPN packages and configuration.
+Streisand is based on [Ansible](https://www.ansible.com/), an automation tool that is typically used to provision and configure files and packages on remote servers. Streisand automatically sets up **another remote server** with the VPN packages and configuration.
 
 Streisand will spin up and deploy **another server** on your chosen hosting provider when you run **on your home machine** (e.g. your laptop). Usually, you **do not run Streisand on the remote server** as by default this would result in the deployment of another server from your server and render the first server redundant (whew!).
 
@@ -115,7 +115,7 @@ Complete all of these tasks on your local home machine.
   * On Fedora
 
         sudo yum install git
-  * On macOS (via [Homebrew](http://brew.sh/))
+  * On macOS (via [Homebrew](https://brew.sh/))
 
         brew install git
 * Install the [pip](https://pip.pypa.io/en/latest/) package management system for Python.
@@ -130,8 +130,8 @@ Complete all of these tasks on your local home machine.
         sudo easy_install pip
         sudo pip install pycurl
 
-* Install [Ansible](http://www.ansible.com/home).
-  * On macOS (via [Homebrew](http://brew.sh/))
+* Install [Ansible](https://www.ansible.com/).
+  * On macOS (via [Homebrew](https://brew.sh/))
 
         brew install ansible
   * On BSD or Linux (via pip)
@@ -241,4 +241,4 @@ We are grateful to [Trevor Smith](https://github.com/trevorsmith) for his massiv
 
 Huge thanks to [Paul Wouters](https://nohats.ca/) of [The Libreswan Project](https://libreswan.org/) for his generous help troubleshooting the L2TP/IPsec setup.
 
-[Starcadian's](http://starcadian.com/) 'Sunset Blood' album was played on repeat approximately 300 times during the first few months of work on the project in early 2014.
+[Starcadian's](https://www.starcadian.com/) 'Sunset Blood' album was played on repeat approximately 300 times during the first few months of work on the project in early 2014.
