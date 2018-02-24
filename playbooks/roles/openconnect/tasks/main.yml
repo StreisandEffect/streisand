@@ -39,7 +39,7 @@
       - "{{ streisand_ipv4_address }}"
 
 - name: Base64 encode the client PKCS12 file(s)
-  command: "openssl base64 -in {{ ocserv_path }}/{{ client_name.stdout }}.p12"
+  command: "openssl base64 -in {{ ocserv_path }}/{{ client_name.stdout }}/{{ client_name.stdout }}.p12"
   register: ocserv_clients_base64
   changed_when: False
   with_items: "{{ vpn_client_names.results }}"
