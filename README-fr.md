@@ -97,16 +97,17 @@ Effectuez toutes ces tâches sur votre machine locale.
 
 * Streisand nécessite un système BSD, Linux ou macOS. À partir de maintenant, Windows n'est pas soutenu. Toutes les commandes suivantes doivent être exécutées à l'intérieur d'une session Terminal.
 * Python 2.7 est nécessaire. Cela est standard sur macOS, et est la valeur par défaut sur presque toutes les distributions Linux et BSD. Si votre distribution emploie Python 3 à la place, vous devrez installer la version 2.7 pour que Streisand fonctionne correctement.
-* Assurez-vous qu'une clé SSH est présente dans ~/.ssh/id\_rsa.pub.
-  * Les clés SSH constituent une alternative plus sécurisé aux mots de passe qui vous permettent de prouver votre identité à un serveur ou à un service basé sur la cryptographie à clé publique.
-  * Pour vérifier si vous avez déjà une clé SSH, entrez la commande suivante à l'invite de commande.
+* Assurez-vous qu'une clé publique SSH est présente dans ~/.ssh/id\_rsa.pub.
+  * Les clés SSH constituent une alternative plus sécurisé aux mots de passe qui vous permettent de prouver votre identité à un serveur ou à un service basé sur la cryptographie à clé publique. Fondamentalement, la clé publique est quelque chose que vous pouvez partager aux autres, alors que la clé privée doit être gardée secrète (comme un mot de passe).
+  * Pour vérifier si vous avez déjà une clé publique SSH, entrez la commande suivante à l'invite de commande.
 
         ls ~/.ssh
-  * Si vous voyez un fichier id_rsa.pub, vous avez une clé SSH.
-  * Si vous n'avez pas de clé SSH, vous pouvez en générer une en utilisant cette commande et en suivant les valeurs par défaut:
+  * Si vous voyez un fichier id_rsa.pub, vous avez une clé publique SSH.
+  * Si vous n'avez pas de paire de clés SSH, vous pouvez en générer une en utilisant cette commande et en suivant les valeurs par défaut:
 
         ssh-keygen
   * Si vous souhaitez utiliser une clé SSH avec un nom différent ou dans un emplacement non standard, veuillez entrer 'oui' lorsqu'on vous demande si vous souhaitez personnaliser votre instance lors de l'installation.
+  * **Notez**: Vous aurez besoin de ces clés pour accéder à votre instance Streisand via SSH. Conservez-les pour la durée de vie de votre serveur Streisand.
 * Installez Git.
   * Sur Debian et Ubuntu
 
