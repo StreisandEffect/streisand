@@ -60,12 +60,12 @@ if [ "$#" -ne 1 ]; then
    invocation_problems=1
 fi
 
-# Some systems have a pip2 but no pip.
+# Some systems have a pip2.7 but no pip.
 PIP="pip"
 
 if ! "$PIP" --version >/dev/null 2>&1; then
-    echo "could not find pip, trying pip2"
-    PIP="pip2"
+    echo "could not find pip, trying pip2.7"
+    PIP="pip2.7"
 fi
 
 # Hopefully $PIP should be pointing at an appropriate executable name.
@@ -75,10 +75,10 @@ if "$PIP" --version 2>/dev/null | grep -q 'python 3'; then
     echo "
 
 On your system, 'pip' appears to invoke Python 3's pip. This might cause problems.
-This script will try switching to 'pip2', but your pip2 install might be broken too.
+This script will try switching to 'pip2.7', but your pip2.7 install might be broken too.
 
 "
-    PIP="pip2"
+    PIP="pip2.7"
 fi
 
 if ! "$PIP" --version >/dev/null 2>&1; then
@@ -213,11 +213,11 @@ fi
 # In case we have a new virtualenv executable.
 hash -r
 
-if ! virtualenv --python=python2 $NO_SITE_PACKAGES "$1"; then
+if ! virtualenv --python=python2.7 $NO_SITE_PACKAGES "$1"; then
     parent_dirname="$(dirname "$1")"
     echo "
 virtualenv failed to create directory '$1'
-using 'virtualenv --python=python2 $1'. Note that $1 must not exist, but
+using 'virtualenv --python=python2.7 $1'. Note that $1 must not exist, but
 its parent ($parent_dirname) must exist.
 
 The first argument, 'new-directory', must be somewhere you can write
