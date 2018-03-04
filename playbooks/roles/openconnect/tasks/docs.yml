@@ -13,7 +13,7 @@
     creates: "{{ ocserv_gateway_location }}/ca-cert.pem"
 
 - name: "Copy the client PKCS #12 files to the OpenConnect Gateway directory"
-  command: cp {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}.p12 {{ ocserv_gateway_location }}
+  command: cp {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}/{{ ocserv_client_password.client_name.stdout }}.p12 {{ ocserv_gateway_location }}
   args:
     creates: "{{ ocserv_gateway_location }}/{{ ocserv_client_password.client_name.stdout }}.p12"
   with_items: "{{ vpn_client_pkcs12_password_list.results }}"
