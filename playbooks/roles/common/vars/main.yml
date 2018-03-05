@@ -33,6 +33,8 @@ streisand_common_packages:
   # A UUID generator with an explicit random function.
   # Used for generating UUIDs for mobileconfig files
   - uuid
+  # Install Ubuntu LTS Enablement Stacks (HWE or Hardware Enablement) kernel
+  - linux-generic-hwe-16.04
 
 # Services that are running by default but not needed by Streisand
 streisand_unneeded_packages:
