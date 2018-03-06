@@ -37,7 +37,7 @@ function check_python() {
   if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 2\..* ]]; then
     local INVENTORY_DIR="$SCRIPT_DIR/inventories/"
     for INV_FILE in $INVENTORY_DIR/*; do
-      sed 's/=python$/=python2/' "$INV_FILE" > "$INV_FILE.new"
+      sed 's/=python$/=python2.7/' "$INV_FILE" > "$INV_FILE.new"
       mv "$INV_FILE.new" "$INV_FILE"
       git -C "$INVENTORY_DIR" update-index --assume-unchanged "$INV_FILE" 2>/dev/null || true
     done
