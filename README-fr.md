@@ -25,7 +25,7 @@ Présentation de Streisand
 
 Plus de fonctionnalités
 -----------------------
-* Nginx alimente la passerelle protégée par mot de passe et cryptée qui sert de point de départ pour les nouveaux utilisateurs. La passerelle est accessible via SSL, ou comme [service caché](https://www.torproject.org/docs/hidden-services.html.en) Tor.
+* Nginx alimente la passerelle protégée par mot de passe et chiffrée qui sert de point de départ pour les nouveaux utilisateurs. La passerelle est accessible via SSL, ou comme [service caché](https://www.torproject.org/docs/hidden-services.html.en) Tor.
   * Instructions belles, personnalisées, et étape par étape, les configurations du client sont générées pour chaque nouveau serveur que Streisand crée. Les utilisateurs peuvent accéder rapidement à ces instructions via n'importe quel navigateur Web. Les instructions sont réactives et fantastiques sur les téléphones mobiles.
   * L'intégrité du logiciel mis en miroir est assurée en utilisant les sommes de contrôle SHA-256 ou en vérifiant les signatures GPG si le projet les fournit. Cela protège les utilisateurs contre le téléchargement de fichiers corrompus.
   * Tous les fichiers auxiliaires, tels que les profils de configuration OpenVPN, sont également disponibles via la passerelle.
