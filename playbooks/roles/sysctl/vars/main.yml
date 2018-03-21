@@ -27,3 +27,5 @@ sysctl_values:
   - { key: fs.suid_dumpable, value: 0 }
   - { key: fs.protected_hardlinks, value: 1 }
   - { key: fs.protected_symlinks, value: 1 }
+  - { key: net.core.default_qdisc, value: fq }
+  - { key: net.ipv4.tcp_congestion_control, value: bbr }
