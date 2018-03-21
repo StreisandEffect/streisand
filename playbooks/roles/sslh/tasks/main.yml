@@ -13,4 +13,4 @@
   template:
     src: sslh.cfg.j2
     dest: /etc/sslh.cfg
-  notify: Restart ssh
+  notify: Restart sslh
