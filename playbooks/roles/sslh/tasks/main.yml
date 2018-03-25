@@ -3,8 +3,25 @@
   apt:
     name: sslh
 
-- name: Generate the sslh port multiplexer configuration file
+- name: Generate the sslh port multiplexer systemd defaults file
   template:
-    src: sslh.j2
+    src: sslh.default.j2
     dest: /etc/default/sslh
+  notify: Restart sslh
+
+- name: Generate the sslh port multiplexer config file
+  template:
+    src: sslh.cfg.j2
+    dest: /etc/sslh.cfg
+  notify: Restart sslh
+
+- name: Redirect sslh output to /dev/null for privacy
+  lineinfile:
+    path: "/lib/systemd/system/sslh.service"
+    line: "StandardOutput=null"
+    insertafter: "^KillMode=process$"
+    state: present
+
+- name: Reload the systemctl units from disk
+  command: systemctl daemon-reload
   notify: Restart sslh

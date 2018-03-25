@@ -6,49 +6,19 @@
     state: present
   when: ansible_virtualization_type != 'lxc'
 
-- name: Install the shadowsocks-libev dependencies
+- name: Add the Shadowsocks PPA
+  apt_repository:
+    repo: 'ppa:max-c-lv/shadowsocks-libev'
+
+- name: Install shadowsocks-libev
+  apt:
+    name: "shadowsocks-libev"
+
+- name: Install the simple-obfs dependencies
   apt:
     name: "{{ item }}"
     install_recommends: no
   with_items: "{{ shadowsocks_dependencies }}"
-
-- name: Clone the shadowsocks-libev source code at tag {{ shadowsocks_version }}
-  git:
-    repo: "https://github.com/shadowsocks/shadowsocks-libev.git"
-    dest: "{{ shadowsocks_compilation_directory }}"
-    version: "v{{shadowsocks_version}}"
-
-- name: Update the shadowsocks-libev source code submodules
-  command: git submodule update --init --recursive
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    # if one of the submodules (libbloom) has been populated we assume all of
-    # the submodules were updated.
-    creates: "{{ shadowsocks_compilation_directory }}/libbloom/Makefile.am"
-
-- name: Autogen shadowsocks-libev {{ shadowsocks_version }} source
-  command: ./autogen.sh
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    creates: "{{ shadowsocks_compilation_directory }}/configure"
-
-- name: Configure shadowsocks-libev {{ shadowsocks_version }} source
-  command: ./configure {{ shadowsocks_configure_flags }}
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    creates: "{{ shadowsocks_compilation_directory }}/Makefile"
-
-- name: Compile shadowsocks-libev {{ shadowsocks_version }} source
-  command: make -j{{ ansible_processor_cores }}
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    creates: "{{ shadowsocks_compilation_directory }}/src/ss-server"
-
-- name: Install shadowsocks-libev {{ shadowsocks_version }} binaries
-  command: make install
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    creates: "/usr/bin/ss-server"
 
 - name: Create the shadowsocks-libev config directory
   file:
@@ -60,15 +30,6 @@
     # file and config file are not
     mode: 0755
     state: directory
-
-- name: Copy the shadowsocks-libev systemd service in place
-  copy:
-    src: "{{ shadowsocks_compilation_directory }}/debian/shadowsocks-libev.service"
-    dest: "/lib/systemd/system/shadowsocks-libev.service"
-    # Using remote_src=true since we are copying files from the remote host to
-    # another place on the remote host. NOTE: requires Ansible 2.0+
-    remote_src: true
-    mode: 0644
 
 - name: Populate the shadowsocks-libev systemd defaults
   template:
