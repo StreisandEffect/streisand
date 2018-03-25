@@ -125,7 +125,7 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
    * Dans le menu déroulant *Server Certificate Check* selectionnez `verify name exactly` et saisissez `{{ openvpn_server_common_name.stdout }}` pour sa valeur.
    * Cocher *Verify peer (server) certificate usage signature*.
    * Cocher *Additional TLS authentication or encryption*.
-     * Sélectionnez `TLS-Auth` pour *Mode*.
+     * Sélectionnez `TLS-Crypt` pour *Mode*.
      * Sélectionnez le fichier `ta.key` que vous avez téléchargé depuis le répertoire client-files pour le *Key File*.
      * Sélectionnez `1` pour la *Key Direction*.
    * Cliquez *Valider*.
