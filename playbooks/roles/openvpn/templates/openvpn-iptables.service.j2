@@ -1,0 +1,14 @@
+[Unit]
+Description=Set the firewall rules required for openvpn
+After=network.target
+Before=openvpn-server@server.service openvpn-server@server-udp.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+{% for rule in openvpn_firewall_rules %}
+ExecStart=/sbin/{{ rule }}
+{% endfor %}
+
+[Install]
+WantedBy=multi-user.target

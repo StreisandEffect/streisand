@@ -29,13 +29,15 @@
     proto: "udp"
     rule: "allow"
 
-- name: "Add OpenVPN firewall persistence service to init"
+- name: Install the OpenVPN iptables service file
   template:
-    src: streisand-openvpn-service.sh.j2
-    dest: /etc/init.d/streisand-openvpn
-    mode: 0755
+    src: openvpn-iptables.service.j2
+    dest: /etc/systemd/system/openvpn-iptables.service
+    mode: 0644
 
-- name: "Enable the streisand-openvpn init service"
-  service:
-    name: "streisand-openvpn"
+- name: Enable the openvpn-iptables service
+  systemd:
+    daemon_reload: yes
+    name: openvpn-iptables.service
     enabled: yes
+    state: started

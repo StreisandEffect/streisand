@@ -11,15 +11,15 @@ streisand_ssh_private_key: "~/.ssh/id_rsa"
 
 vpn_clients: 5
 
-streisand_l2tp_enabled: yes
-streisand_openconnect_enabled: yes
-streisand_openvpn_enabled: yes
-streisand_shadowsocks_enabled: yes
-streisand_ssh_forward_enabled: yes
+streisand_l2tp_enabled: no
+streisand_openconnect_enabled: no
+streisand_openvpn_enabled: no
+streisand_shadowsocks_enabled:  
+streisand_ssh_forward_enabled:  
 # By default sshuttle is disabled because it creates a `sshuttle` user that has
 # full shell privileges on the Streisand host
 streisand_sshuttle_enabled: no
-streisand_stunnel_enabled: yes
-streisand_tinyproxy_enabled: yes
-streisand_tor_enabled: yes
-streisand_wireguard_enabled: yes
+streisand_stunnel_enabled:  
+streisand_tinyproxy_enabled:  
+streisand_tor_enabled: no
+streisand_wireguard_enabled: no

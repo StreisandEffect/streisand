@@ -1,41 +1,12 @@
 ---
 ocserv_path: "/etc/ocserv"
 ocserv_ca: "{{ ocserv_path }}/ca"
-ocserv_config_file: "{{ ocserv_path }}/config"
+ocserv_config_file: "{{ ocserv_path }}/ocserv.conf"
 ocserv_firewall_rule: "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -j MASQUERADE"
 
 ocserv_days_valid: "1825"
-ocserv_dependencies:
-  - autogen
-  - gnutls-bin
-  - libev-dev
-  - libgnutls-dev
-  - libgnutls30
-  - libnl-route-3-dev
-  - libpam0g-dev
-  - libreadline-dev
-  - libseccomp-dev
-  - libwrap0-dev
-  - pkg-config
-
-ocserv_sig_extension:          "sig"
-ocserv_version:                "0.11.10"
-ocserv_compilation_directory:  "/usr/local/src/ocserv-{{ ocserv_version }}"
-ocserv_source_filename:        "ocserv-{{ ocserv_version }}.tar.xz"
-ocserv_sig_filename:           "{{ ocserv_source_filename }}.{{ ocserv_sig_extension }}"
-
-ocserv_download_base_url: "https://d25kfp60e9u1dw.cloudfront.net"
-
-ocserv_gpg_keyid: "9013B842"
-ocserv_download_files:
-  - { "file": "{{ ocserv_source_filename }}", "sig": "{{ ocserv_sig_filename }}" }
-
-ocserv_source_location: "/usr/local/src/{{ ocserv_source_filename }}"
-ocserv_sig_location:    "/usr/local/src/{{ ocserv_sig_filename }}"
-
 ocserv_pid_file:    "/var/run/ocserv.pid"
 ocserv_socket_file: "/var/run/ocserv-socket"
-
 ocserv_ca_certificate_file: "{{ ocserv_path }}/ca.crt"
 ocserv_ca_key_file:         "{{ ocserv_path }}/ca.key"
 
