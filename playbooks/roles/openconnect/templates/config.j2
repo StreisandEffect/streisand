@@ -46,6 +46,10 @@ max-clients = {{ vpn_clients + 1 }}
 # multiple times). Unset or set to zero for unlimited. 
 max-same-clients = 1
 
+# Whether to tunnel all DNS queries via the VPN. This is the default
+# when a default route is set.
+tunnel-all-dns = true
+
 {% for item in upstream_dns_servers %}
 dns = {{ item }}
 {% endfor %}

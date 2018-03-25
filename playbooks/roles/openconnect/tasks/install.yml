@@ -1,33 +1,12 @@
 ---
-- name: Install the ocserv dependencies
+- name: Enable the Universe repository
+  apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} universe"
+    state: present
+
+- name: Install ocserv
   apt:
-    name: "{{ item }}"
-  with_items: "{{ ocserv_dependencies }}"
-
-- name: Download the ocserv source code and signature file
-  include_role:
-    name: download-and-verify
-  vars:
-    project_name: "OpenConnect"
-    project_download_baseurl: "{{ ocserv_download_base_url }}"
-    project_download_files: "{{ ocserv_download_files }}"
-    project_download_location: "/usr/local/src/"
-    project_signer_keyid: "{{ ocserv_gpg_keyid }}"
-
-- name: Extract the ocserv source code
-  unarchive:
-    copy: no
-    src: "{{ ocserv_source_location }}"
-    dest: /usr/local/src
-    owner: root
-    group: root
-    creates: "{{ ocserv_compilation_directory }}/README.md"
-
-- name: Compile and install ocserv
-  shell: ./configure && make -j {{ ansible_processor_cores }} && make install
-  args:
-    chdir: "{{ ocserv_compilation_directory }}"
-    creates: "{{ ocserv_compilation_directory }}/config.log"
+    name: ocserv
 
 - name: Create the OpenConnect rsyslog configuration directory
   file:

@@ -12,16 +12,15 @@
     proto: "any"
     rule: "allow"
 
-- name: Enable NAT
-  command: "{{ ocserv_firewall_rule }}"
-
-- name: "Add Openconnect firewall persistence service to init"
+- name: Install the ocserv iptables service file
   template:
-    src: streisand-openconnect-service.sh.j2
-    dest: /etc/init.d/streisand-openconnect
-    mode: 0755
+    src: ocserv-iptables.service.j2
+    dest: /etc/systemd/system/ocserv-iptables.service
+    mode: 0644
 
-- name: "Enable the streisand-openconnect init service"
-  service:
-    name: streisand-openconnect
+- name: Enable the ocserv-iptables service
+  systemd:
+    daemon_reload: yes
+    name: ocserv-iptables.service
     enabled: yes
+    state: started
