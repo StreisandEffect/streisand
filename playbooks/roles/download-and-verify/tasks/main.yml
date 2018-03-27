@@ -33,6 +33,11 @@
       - "item.rc == 0"
     msg: "Verifying {{ item.item.file }} GPG signature failed!!"
   with_items: "{{ gpg_verification_results.results }}"
+  # NOTE(@cpu): We really need a loop_control.label here because `assert` is
+  # extremely verbose by default and the `{{ item }}` value used as the default
+  # loop label will have *all* of the `gpgv2` output in it :-X
+  loop_control:
+    label: "{{ item.item.file }}"
 
 - name: "Verify the {{ project_name }} download signatures were from the correct keys"
   assert:
@@ -48,3 +53,7 @@
       - "'key ID {{ project_signer_keyid }}' in '{{ item.stderr_lines[0] }}'"
     msg: "The GPG signature on {{ item.item.file }} was not from {{ project_signer_keyid }}"
   with_items: "{{ gpg_verification_results.results }}"
+  # NOTE(@cpu): Similar to the assert above, this loop_control.label is
+  # important to not flood stdout
+  loop_control:
+    label: "{{ item.item.file }}"
