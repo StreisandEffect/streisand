@@ -50,7 +50,8 @@ keepalive {{ openvpn_keepalive_interval }} {{ openvpn_keepalive_timeout }}
 # the modern replacement to `tls-auth`. It does not require `key-direction`.
 tls-crypt ta.key
 # Data channel encryption cipher. For OpenVPN clients >2.4 an upgrade to the
-# ncp-cipher understood by both sides.
+# ncp-cipher understood by both sides should occur. The `cipher` is used only by
+# OpenVPN clients <2.4 that can't handle negotiation.
 cipher {{ openvpn_cipher }}
 # Possible negotiated ciphers for modern OpenVPN clients
 ncp-ciphers {{ openvpn_ncp_ciphers }}
