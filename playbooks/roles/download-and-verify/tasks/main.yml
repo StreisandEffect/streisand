@@ -1,41 +1,63 @@
 ---
-- name: "{{ project_signer }} signs the {{ project_name }} downloads. Import the correct GPG key."
-  command: gpg --keyserver {{ gpg_key_server_address }} --recv-keys {{ project_signing_key }}
-  register: gpg_recv_keys_result
-  changed_when: False
-  until: gpg_recv_keys_result | success
-  retries: 10
-  delay: 5
 
-- name: Register the GPG Key fingerprint output
-  command: gpg --fingerprint {{ project_signing_key }}
-  register: retrieved_fingerprint
-  changed_when: False
+# Import the GPG playbook vars
+- include_vars: "../../gpg/vars/main.yml"
 
-- name: Make sure the retrieved fingerprint perfectly matches the expected fingerprint
-  assert: { that: "project_expected_fingerprint in retrieved_fingerprint.stdout" }
-
-- name: Download the {{ project_name }} files and signatures
+- name: "Download the {{ project_name }} files"
   get_url:
-    url: "{{ item }}"
-    dest: "{{ project_download_location }}"
+    url: "{{ project_download_baseurl }}/{{ item.file }}"
+    dest: "{{ project_download_location }}/{{ item.file }}"
     owner: www-data
     group: www-data
     mode: 0644
-  with_items: "{{ project_download_urls }}"
+  with_items: "{{ project_download_files }}"
 
-- name: If necessary, rename signature files to match the GPG default of '.asc'
-  shell: for file in *.{{ signature_extension }}; do mv $file ${file%.*}.asc; done
-  args:
-    chdir: "{{ project_download_location }}"
-  when: signature_extension != "asc"
+- name: "Download the {{ project_name }} signatures"
+  get_url:
+    url: "{{ project_download_baseurl }}/{{ item.sig }}"
+    dest: "{{ project_download_location }}/{{ item.sig }}"
+    owner: www-data
+    group: www-data
+    mode: 0644
+  with_items: "{{ project_download_files }}"
 
-- name: Register GPG signature verification results
-  shell: for file in *.asc; do gpg --verify $file; done
-  args:
-    chdir: "{{ project_download_location }}"
+- name: "Verify the {{ project_name }} download signatures with the Streisand GPG keyring"
+  command: "gpgv2 --keyring {{ streisand_gpg_keyring }} {{ project_download_location }}/{{ item.sig }} {{ project_download_location }}/{{ item.file }}"
   register: gpg_verification_results
-  changed_when: False
+  with_items: "{{ project_download_files }}"
 
-- name: Make sure the {{ project_name }} files all passed GPG signature verification
-  assert: { that: "'BAD signature' not in gpg_verification_results.stderr" }
+- name: "Verify the {{ project_name }} download signature checks all passed"
+  assert:
+    that:
+      - "not item.failed"
+      - "item.rc == 0"
+    msg: "Verifying {{ item.item.file }} GPG signature failed!!"
+  with_items: "{{ gpg_verification_results.results }}"
+  loop_control:
+    label: "{{ item.item.file }}"
+  # NOTE(@cpu): Unfortunately because of an open Ansible issue[0] related to the
+  # verbosity of `assert` tasks we need a `no_log: true` here to avoid creating
+  # a TON of output in the "pass" case. This `no_log` will complicate debugging
+  # and should be removed if the assertions are failing.
+  #
+  # [0]: https://github.com/ansible/ansible/issues/27124#issuecomment-376523736
+  no_log: true
+
+- name: "Verify the {{ project_name }} download signatures were from the correct keys"
+  assert:
+    that:
+      # By default gpgv outputs to stderr. For a good signature the first line
+      # always ends being like:
+      # "gpgv: Signature made Fri 16 Mar 2018 11:16:40 PM UTC using RSA key ID
+      #   C3C07136"
+      # Since we've already verified the gpgv2 return code we can just check for
+      # the presence of the key ID we expect in the first line of stderr output
+      # and be confident we saw a valid signature from the expected key ID and
+      # not another unrelated key in the Streisand keyring.
+      - "'key ID {{ project_signer_keyid }}' in '{{ item.stderr_lines[0] }}'"
+    msg: "The GPG signature on {{ item.item.file }} was not from {{ project_signer_keyid }}"
+  with_items: "{{ gpg_verification_results.results }}"
+  loop_control:
+    label: "{{ item.item.file }}"
+  # See the above `assert`'s discussion on the purpose of `no_log`.
+  no_log: true

@@ -10,22 +10,6 @@
     mode: 0755
     state: directory
 
-- name: Copy the OpenVPN security mailing list key
-  copy:
-    src:  "{{ openvpn_security_mailing_list_key_name }}"
-    dest: "{{ openvpn_mirror_location }}"
-    mode: 0600
-
-- name: Import the OpenVPN security mailing list key into the GPG keyring
-  command: "gpg --import {{ openvpn_mirror_location }}/{{ openvpn_security_mailing_list_key_name }}"
-
-- name: Register the gpg key fingerprints
-  command: "gpg --list-keys --fingerprint"
-  register: gpg_fingerprint_results
-
-- name: Ensure the OpenVPN security mailing list key fingerprint matches the expected fingerint
-  assert: { that: "openvpn_security_mailing_list_key_fingerprint in gpg_fingerprint_results.stdout" }
-
 - block:
     - name: Mirror Tunnelblick for macOS
       get_url:
@@ -40,11 +24,10 @@
         name: download-and-verify
       vars:
         project_name: "OpenVPN Community"
-        project_signer: "Samuli Seppanen"
-        project_signing_key: "{{ openvpn_gpg_release_key_id }}"
-        project_expected_fingerprint: "{{ openvpn_gpg_release_key_fingerprint }}"
+        project_download_baseurl: "{{ openvpn_base_download_url }}"
+        project_download_files: "{{ openvpn_download_files }}"
         project_download_location: "{{ openvpn_mirror_location }}"
-        project_download_urls: "{{ openvpn_download_urls }}"
+        project_signer_keyid: "{{ openvpn_gpg_keyid }}"
   rescue:
     - name: "{{ streisand_mirror_warning }}"
       pause:

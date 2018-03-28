@@ -1,5 +1,9 @@
 ---
 
+- name: Set up the Streisand GPG keyring required to verify Libreswan releases
+  include_role:
+    name: gpg
+
 # Since LXC loads kernel modules from the host, we need to ensure LibreSwan is compiled and installed
 - name: Install the Libreswan dependencies that are required for compilation
   apt:
@@ -26,11 +30,10 @@
     name: download-and-verify
   vars:
     project_name: "The Libreswan Project"
-    project_signer: "The Libreswan team"
-    project_signing_key: "{{ libreswan_developers_key_id }}"
-    project_expected_fingerprint: "{{ libreswan_developers_expected_fingerprint }}"
+    project_download_baseurl: "{{ libreswan_download_baseurl }}"
+    project_download_files: "{{ libreswan_download_files }}"
     project_download_location: "{{ libreswan_src_directory }}"
-    project_download_urls: "{{ libreswan_download_urls }}"
+    project_signer_keyid: "{{ libreswan_gpg_keyid }}"
 
 - name: Extract the Libreswan source code
   unarchive:
