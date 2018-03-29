@@ -53,7 +53,7 @@ Vous êtes maintenant connecté à un proxy SOCKS qui est prêt à transférer v
 1. Sélectionnez *Utiliser un DNS distant lorsque SOCKS v5 est actif*. Cela configure Firefox pour envoyer toutes les requêtes DNS via le proxy SOCKS. Cela vous protégera contre l'empoisonnement du DNS et vous garantira que les fausses entrées DNS ne peuvent pas être utilisées pour censurer votre accès.
 1. Cliquez *OK*.
 1. Cliquez *OK* encore pour fermer la fenêtre de paramètres de Firefox..
-1. C'est tout! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+1. C'est tout! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
 <a name="linux-and-macos"></a>
 ### Linux et macOS ###
@@ -94,7 +94,7 @@ Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transpor
    `{{ ssh_server_fingerprints.results[0].stdout }}`
 
    `{{ ssh_server_fingerprints.results[1].stdout }}`
-1. Tout votre trafic, y compris DNS, est maintenant transmis de manière transparente via une connexion SSH cryptée. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+1. Tout votre trafic, y compris DNS, est maintenant transmis de manière transparente via une connexion SSH cryptée. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
 #### SSH forward ####
 

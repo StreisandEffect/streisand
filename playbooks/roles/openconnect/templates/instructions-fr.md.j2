@@ -53,7 +53,7 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 {% endfor %}
    1. Cliquez *OK*.
    1. Cliquez *OK* pour fermer les propriétés de connexion.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="macos"></a>
 ### macOS ###
@@ -72,7 +72,7 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Cliquez *Connect* (Connexion).
 1. Une invite apparaîtra pendant la connexion initiale en vous demandant de faire confiance au certificat du serveur. Cliquez *The information is accurate* (l'information est précise) et le serveur sera automatiquement vérifié pour toutes les connexions suivantes.
 1. Saisissez `{{ ocserv_password.stdout }}` pour le *Password* (mot de passe) et cliquez *OK*.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="macos-openconnect-cli"></a>
 #### OpenConnect CLI
@@ -87,7 +87,7 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Lancez OpenConnect:
 
    `sudo openconnect --cafile ca.crt --certificate votre-certificat-client.p12 --key-password 'mot-de-passe-du-certificat' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="linux"></a>
 ### Linux ###
@@ -108,7 +108,7 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Sélectionnez le VPN dans le menu à gauche, et faites glisser l'interrupteur vers la position *ON*. Vous pouvez également activer/désactiver le VPN en cliquant sur l'icône WiFi/Réseau dans la barre de menu, défiler vers *Connexions VPN* et en cliquant sur son nom.
 1. Saisissez `streisand` pour le champ *Nom d'utilisateur* puis cliquez *Connexion*.
 1. Saisissez `{{ ocserv_password.stdout }}` pour le champ *Mot de passe*, cocher *Enregistrer mots de passe*, et cliquez *Connexion*.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="android"></a>
 ### Android ###
@@ -137,7 +137,7 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Tapez *Import and Continue* sommaire du certificat est achhife when the Certificate Summary is displayed.
 1. Tapez *Se Connecter* dans l'écran de selection de groupe. Le défaut correct a déjà été choisi.
 1. Si c'est la première fois que vous utilisez AnyConnect, vous devrez accepter la boîte de dialogue de la demande de connexion affichée par Android.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 #### Avez-vous été demandé pour le nom d'utilisateur? ####
 
@@ -173,4 +173,4 @@ Si vous êtes affecté, vous pouvez utiliser cette solution alternatif:
 1. Tapez *Détails* lorsque l'avertissement de sécurité s'affiche.
 1. Tapez *Importer* dans le coin supérieur droit.
 1. Tapez *Se Connecter* dans l'écran de selection de groupe. Le défaut correct a déjà été choisi.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
