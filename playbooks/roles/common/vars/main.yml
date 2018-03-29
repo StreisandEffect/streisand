@@ -96,3 +96,14 @@ streisand_word_gen:
   psk:
     shuf -n 5 /usr/share/dict/english.txt |
     paste -s -d '.' -
+
+# In online documentation, we recommand a URL for people to check
+# their effective IP address.
+
+streisand_my_ip_url: https://duckduckgo.com/?q=ip+address
+
+# We used to use Google; it has marginally better usability, but there
+# are reasons not to use it.  If you're reading this, you know enough
+# to make your own decision.
+#
+# streisand_my_ip_url: https://encrypted.google.com/search?hl=en&q=my%20ip%20address

@@ -8,5 +8,3 @@ streisand_client_test: no
 streisand_site_vars: "{{ lookup('env','HOME') }}/.streisand/site.yml"
 
 gpg_key_server_address: "x-hkp://pool.sks-keyservers.net"
-
-streisand_my_ip_url: https://encrypted.google.com/search?hl=en&q=my%20ip%20address
