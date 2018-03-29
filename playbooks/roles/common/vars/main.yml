@@ -13,7 +13,7 @@ streisand_common_packages:
   - curl
   # Enables automation of programs and scripts that ask for user input
   - expect
-  # Used to verify GPG signatures for mirrored packages
+  # Legacy GPG is required by the Ansible apt_repository task
   - gnupg
   # Used to configure firewall rules
   - iptables
