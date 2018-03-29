@@ -1,13 +1,5 @@
-# Use mode `server`- This will route all client connections through a central
-# TUN interface
 server 10.8.0.0 255.255.255.0
-# Push the `dhcp-option` to clients with the DNSMasq IP address bound for
-# OpenVPN and TCP. This will set the primary DNS for the client (with
-# a corresponding `pull` in their config)
 push "dhcp-option DNS {{ dnsmasq_openvpn_tcp_ip }}"
-# Use TCP for the proto
 proto tcp
-# Listen on the OpenVPN TCP port
 port {{ openvpn_port }}
-
 {% include "etc_openvpn_server_common.j2" %}
