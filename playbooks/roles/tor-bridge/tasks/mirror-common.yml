@@ -23,19 +23,5 @@
   set_fact:
     tor_browser_bundle_version: "{{ tor_latest_recommended_check.stdout }}"
 
-- name: "Import GPG key ID {{ tor_browser_developers_key_id }} for verifying {{ tor_project_name }} downloads"
-  command: gpg --keyserver {{ gpg_key_server_address }} --recv-keys {{ tor_browser_developers_key_id }}
-  register: gpg_recv_keys_result
-  until: gpg_recv_keys_result | success
-  retries: 10
-  delay: 5
-
-- name: Register the GPG Key fingerprint output
-  command: gpg --fingerprint {{ tor_browser_developers_key_id }}
-  register: retrieved_fingerprint
-
-- name: Make sure the retrieved fingerprint perfectly matches the expected fingerprint
-  assert: { that: "tor_browser_developers_expected_fingerprint in retrieved_fingerprint.stdout" }
-
 - name: Include the mirror variables for Tor Browser Bundle
   include_vars: mirror.yml

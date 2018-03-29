@@ -1,5 +1,3 @@
 ---
 streisand_ci: no
 streisand_noninteractive: no
-
-gpg_key_server_address: "x-hkp://pool.sks-keyservers.net"
