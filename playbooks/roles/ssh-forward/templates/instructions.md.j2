@@ -53,7 +53,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Select *Remote DNS*. This configures Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
 1. Click *OK*.
 1. Click *OK* again to close the Firefox preferences window.
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux-and-macos"></a>
 ### Linux and macOS ###
@@ -119,7 +119,7 @@ Sshuttle is a simple VPN tunnelling solution that operates over the SSH transpor
    `{{ ssh_server_fingerprints.results[0].stdout }}`
 
    `{{ ssh_server_fingerprints.results[1].stdout }}`
-1. All of your traffic, including DNS, is now being transparently forwarded through an encrypted SSH connection. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. All of your traffic, including DNS, is now being transparently forwarded through an encrypted SSH connection. You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 {% endif %}
 

@@ -31,7 +31,7 @@ WireGuard is currently only available for Linux, but [cross-platform](https://ww
 
    'sudo systemctl enable wg-quick@wg0-client.service'
 
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 1. To stop routing your traffic through WireGuard, simply bring the interface back down:
 
    `sudo wg-quick down wg0-client`

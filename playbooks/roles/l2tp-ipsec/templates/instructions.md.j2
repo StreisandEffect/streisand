@@ -110,7 +110,7 @@ If you're using Windows 10, you can configure the VPN by hand using the followin
 <a name="wincheck"></a>
 #### Checking your connection ####
 
-You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="macOS"></a>
 ### macOS ###
@@ -154,7 +154,7 @@ To activate the VPN:
 * Use the VPN icon in the menu bar, or
 * Open *Network* in *System Preferences*. Click on the Streisand entry in the list of connections. There's a *Connect* button there.
 
-You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
 ### Linux ###
@@ -183,7 +183,7 @@ L2TP/IPsec connections are not supported out-of-the-box on most Linux distributi
 1. Enter `{{ chap_password.stdout }}` in the *Password* field.
 1. Check the *Save account information* checkbox.
 1. Tap *Connect*.
-1. Once connected, you will see a VPN icon in the notification bar. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. Once connected, you will see a VPN icon in the notification bar. You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
 ### iOS ###
@@ -220,7 +220,7 @@ To activate the VPN:
 
 1. Go to *Settings* -> *General* -> *VPN*.
 1. Slide the *VPN* switch on.
-1. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. Once connected, you will see a VPN icon in the status bar. You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="chromebook"></a>
 ### Chromebook ###
@@ -234,4 +234,4 @@ To activate the VPN:
 1. Enter `streisand` for the *Username*.
 1. Enter `{{ chap_password.stdout }}` for the *Password*.
 1. Click *Connect*.
-1. Once connected, you will see a VPN icon overlay on the network status icon. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. Once connected, you will see a VPN icon overlay on the network status icon. You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.

@@ -1,13 +1,5 @@
-# Use mode `server`- This will route all client connections through a central
-# TUN interface
 server 10.9.0.0 255.255.255.0
-# Push the `dhcp-option` to clients with the DNSMasq IP address bound for
-# OpenVPN and UDP. This will set the primary DNS for the client (with
-# a corresponding `pull` in their config)
 push "dhcp-option DNS {{ dnsmasq_openvpn_udp_ip }}"
-# Use UDP protocol
 proto udp
-# Listen on the UDP OpenVPN port
 port {{ openvpn_port_udp }}
-
 {% include "etc_openvpn_server_common.j2" %}
