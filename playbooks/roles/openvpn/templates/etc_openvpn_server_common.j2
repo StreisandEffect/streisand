@@ -1,38 +1,16 @@
-# Use dynamic TUN device
 dev tun
-
-# Certificate authority file. PEM encoded root certificate(s)
 ca ca.crt
-
-# Local peer's signed certificate. PEM encoded end-entity cert
 cert server.crt
-
-# Local peer's private key. PEM encoded private key. Must correspond to `cert`'s
-# public key.
-key server.key
-
-# Diffie hellman parameters. PEM encoded.
+key server.key  # This file should be kept secret
 dh {{ dhparams_location }}
-
-# Persist ifconfig-pool data to ipp.txt every 600 seconds (and on startup/shutdown)
 ifconfig-pool-persist ipp.txt
-
-# Push the redirect-gateway option to clients. This will redirect all client
-# traffic over the VPN (per
-# https://openvpn.net/index.php/open-source/documentation/howto.html)
-#
-# TODO(@cpu): I think this is missing a `pull` in the client side...
 push "redirect-gateway def1"
 
 # Fix for the Windows 10 DNS leak described here:
 # https://community.openvpn.net/openvpn/ticket/605
 push block-outside-dns
 
-# Internally route traffic between OpenVPN clients so they can "see" each other.
 client-to-client
-
-# Require peer certificates are signed with x509 client extended key usage bits
-# set (e.g. "TLS Web Client Authentication" EKU)
 remote-cert-tls client
 
 # Allow multiple clients with the same common name to concurrently connect.
@@ -40,49 +18,15 @@ remote-cert-tls client
 # upon connection of a new client having the same common name.
 # duplicate-cn
 
-# Keepalive sets both the client and server ping frequency and timeout interval.
-# It is equivalent to separately setting `ping` and `ping-restart`.
-# On the server the timeout will automatically be adjusted to be 2x as large as
-# the timeout pushed to the client so that the client detects disconnects first.
-keepalive {{ openvpn_keepalive_interval }} {{ openvpn_keepalive_timeout }}
-
-# Encrypt and authenticate all control channel packets with `ta.key`. This is
-# the modern replacement to `tls-auth`. It does not require `key-direction`.
-tls-crypt ta.key
-# Data channel encryption cipher. For OpenVPN clients >2.4 an upgrade to the
-# ncp-cipher understood by both sides should occur. The `cipher` is used only by
-# OpenVPN clients <2.4 that can't handle negotiation.
+keepalive 1800 3600
+tls-crypt ta.key # This file is secret
 cipher {{ openvpn_cipher }}
-# Possible negotiated ciphers for modern OpenVPN clients
 ncp-ciphers {{ openvpn_ncp_ciphers }}
-# HMAC For authenticating data channel packets (Only used for non-AEAD ciphers)
 auth {{ openvpn_auth_digest }}
-# Minimum supported TLS version
 tls-version-min 1.2
-
-# Use LZO compression algorithm. This has better compatibility with OpenVPN
-# clients <2.4.
-# TODO(@cpu): We should consider changing this to `lz4` for better
-# performance/less CPU usage.
 compress lzo
-
-# Avoid paging secrets to disk.
-mlock
-
-# Downgrade UID to `nobody`
 user nobody
-# Downgrade GID to `nobody`
 group nogroup
-
-# Persist keys so they don't need to be re-read when reloading because of
-# keepalive/ping-restart. Since we drop perms to `nobody`/`nogroup` the daemon
-# wouldn't be able to read them from disk again.
 persist-key
-# Similarly, don't close the tun device across restarts because
-# `nobody`/`nogroup` can't open it!
 persist-tun
-
-# Disable all output except for fatal errors
 verb 0
-# Don't log more than 3 identical messages in a row
-mute 3

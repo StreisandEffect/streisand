@@ -13,17 +13,6 @@ openvpn_sslh_profile_filename:       "{{ openvpn_server }}-sslh.ovpn"
 openvpn_stunnel_profile_filename:    "{{ openvpn_server }}-stunnel.ovpn"
 openvpn_combined_profile_filename:   "{{ openvpn_server }}-combined.ovpn"
 
-# Streisand presently uses `keepalive 10 60` which results in the following:
-# On the client:
-#   * Pings are sent every 10s.
-#   * After 60s without pings the connection is restarted
-# On the server:
-#   * Pings are sent every 10s
-#   * After 120s (timeout * 2) without pings the connection is restarted.
-# 10 and 60 are the recommended OpenVPN settings.
-openvpn_keepalive_interval: 10
-openvpn_keepalive_timeout: 60
-
 dnsmasq_openvpn_tcp_ip: "10.8.0.1"
 dnsmasq_openvpn_udp_ip: "10.9.0.1"
 
