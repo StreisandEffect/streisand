@@ -157,7 +157,7 @@
   with_items:
     - "openvpn@server.service"
     - "openvpn@server-udp.service"
-  
+
 - name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server
   command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0].stdout }}
   with_nested:
