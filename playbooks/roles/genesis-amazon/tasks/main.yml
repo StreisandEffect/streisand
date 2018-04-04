@@ -26,15 +26,13 @@
     wait: yes
 
 - name: Determine which AMI to use
-  ec2_ami_find:
+  ec2_ami_facts:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
-    owner: "{{ aws_ami_owner }}"
+    owners: "{{ aws_ami_owner }}"
     region: "{{ aws_region }}"
-    name: "{{ aws_ami_name }}"
-    sort: name
-    sort_order: descending
-    sort_end: 1
+    filters:
+      name: "{{ aws_ami_name }}"
   register: ami
 
 - name: Create the EC2 instance
@@ -42,7 +40,7 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     instance_type: "{{ aws_instance_type }}"
-    image: "{{ ami.results[0].ami_id }}"
+    image: "{{ ami.images|sort(reverse=True,attribute='name')|map(attribute='image_id')|first }}"
     region: "{{ aws_region }}"
     vpc_subnet_id: "{{ aws_vpc_subnet_id | default(omit) }}"
     assign_public_ip: "{{ aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '' }}"
