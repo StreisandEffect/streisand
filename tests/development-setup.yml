@@ -62,6 +62,12 @@
     - name: "Install LXD snap"
       command: "snap install lxd"
 
+    - name: "Connect LXD plug to slots"
+      command: "{{ item }}"
+      with_items:
+        - "snap connect lxd:lxd-support"
+        - "snap connect lxd:network"
+
     - name: "Start lxd"
       command: "snap start lxd"
 
