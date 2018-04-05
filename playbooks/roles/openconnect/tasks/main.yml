@@ -10,19 +10,6 @@
     mode: 0750
     state: directory
 
-- name: Generate the ocserv init script
-  template:
-    src: ocserv-init.j2
-    dest: /etc/init.d/ocserv
-    owner: root
-    group: root
-    mode: 0755
-
-- name: Enable the ocserv init script so the service will start at boot
-  command: update-rc.d ocserv defaults
-  args:
-    creates: /etc/rc0.d/K20ocserv
-
 - include_role:
     name: certificates
   vars:
@@ -114,7 +101,25 @@
     owner: root
     group: root
     mode: 0600
-  notify: Restart ocserv
+
+- name: Generate the ocserv systemd service file
+  template:
+    src: ocserv.service.j2
+    dest: /etc/systemd/system/ocserv.service
+    mode: 0644
+
+- name: Stop and disable ocserv.socket
+  systemd:
+    name: ocserv.socket
+    state: stopped
+    enabled: no
+
+- name: Enable the ocserv service
+  systemd:
+    daemon_reload: yes
+    name: ocserv.service
+    enabled: yes
+    state: restarted
 
 # Set up the openconnect firewall rules
 - import_tasks: firewall.yml
