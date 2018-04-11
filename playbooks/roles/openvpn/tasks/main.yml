@@ -133,7 +133,7 @@
     src: etc_openvpn_server_udp.conf.j2
     dest: "{{ openvpn_path }}/server-udp.conf"
 
-- name: Stop and disable openvpn.service
+- name: Stop and disable the bundled openvpn.service
   systemd:
     name: openvpn.service
     state: stopped
@@ -145,8 +145,7 @@
     dest: /etc/systemd/system/{{ item }}
     mode: 0644
   with_items:
-    - "openvpn@server.service"
-    - "openvpn@server-udp.service"
+    - "{{ openvpn_service_names }}"
 
 - name: Enable the OpenVPN services
   systemd:
@@ -155,8 +154,7 @@
     enabled: yes
     state: restarted
   with_items:
-    - "openvpn@server.service"
-    - "openvpn@server-udp.service"
+    - "{{ openvpn_service_names }}"
 
 - name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server
   command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0].stdout }}

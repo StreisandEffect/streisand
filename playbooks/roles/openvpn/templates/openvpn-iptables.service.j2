@@ -1,7 +1,7 @@
 [Unit]
-Description=Set the firewall rules required for openvpn
+Description=Firewall rules required for OpenVPN
 After=network.target
-Before=openvpn-server@server.service openvpn-server@server-udp.service
+Before={{ openvpn_service_names | join(' ') }}
 
 [Service]
 Type=oneshot

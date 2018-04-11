@@ -12,8 +12,8 @@ Type=forking
 ExecStart=/usr/bin/stunnel {{ stunnel_path }}/stunnel.conf
 ExecStop=/usr/bin/killall -9 stunnel
 
-# Give up if ping don't get an answer
+# Give up if ping doesn't get an answer within the timeout
 TimeoutSec=600
 
 Restart=always
-PrivateTmp=false
+PrivateTmp=true
