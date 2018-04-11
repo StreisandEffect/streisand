@@ -13,6 +13,8 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
     * [OpenConnect GUI](#macos-openconnect-gui)
     * [OpenConnect CLI](#macos-openconnect-cli)
   * [Linux](#linux)
+    * [NetworkManager](#linux-openconnect-gui)
+    * [OpenConnect CLI](#linux-openconnect-cli)
   * [Android](#android)
   * [iOS](#ios)
 
@@ -84,16 +86,24 @@ Client certificates are a mechanism by which clients can authenticate themselves
    `brew install openconnect`
 
    * If installing Homebrew is not an option, you can also download and compile the [OpenConnect source code](/mirror/#openconnect).
-1. Download the [server certificate](/openconnect/ca.crt) file, and a [client certificate file](#clientcerts) from the list above.
+
+{% for client in vpn_client_pkcs12_password_list.results %}
+##### Instructions for {{ client.client_name.stdout }}
+1. Download the [server certificate](/openconnect/ca.crt) file
+1. Download the client [pcsk12 file](/openconnect/{{ client.client_name.stdout }}.p12)
+   * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
 1. Place the downloaded server certificate and a selected client certificate into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
 1. Run OpenConnect:
 
-  `sudo openconnect --cafile ca.crt --certificate your-client-certificate.p12 --key-password 'your-client-certificate-password' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
+  `sudo openconnect --cafile ca.crt --certificate {{ client.client_name.stdout }}.p12 --key-password '{{ client.stdout }}' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
-
+{% endfor %}
 
 <a name="linux"></a>
 ### Linux ###
+
+<a name="linux-openconnect-gui"></a>
+#### NetworkManager
 
 1. Install the OpenConnect plugin for NetworkManager.
 
@@ -113,6 +123,27 @@ Client certificates are a mechanism by which clients can authenticate themselves
 1. Enter `streisand` for the *Username* and click *Login*.
 1. Enter `{{ ocserv_password.stdout }}` for the *Password*, check *Save passwords*, and click *Login*.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+<a name="linux-openconnect-cli"></a>
+#### OpenConnect CLI
+
+1. Install OpenConnect:
+
+   `sudo apt install openconnect`
+
+   * Alternatively, you can also download and compile the [OpenConnect source code](/mirror/#openconnect).
+
+{% for client in vpn_client_pkcs12_password_list.results %}
+##### Instructions for {{ client.client_name.stdout }}
+1. Download the [server certificate](/openconnect/ca.crt) file
+1. Download the client [pcsk12 file](/openconnect/{{ client.client_name.stdout }}.p12)
+   * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
+1. Place the downloaded server certificate and a selected client certificate into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
+1. Run OpenConnect:
+
+  `sudo openconnect --cafile ca.crt --certificate {{ client.client_name.stdout }}.p12 --key-password '{{ client.stdout }}' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+{% endfor %}
 
 <a name="android"></a>
 ### Android ###
