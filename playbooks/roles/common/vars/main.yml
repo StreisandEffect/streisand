@@ -68,12 +68,14 @@ streisand_languages:
     language_name: "Français"
     tor_locale: "fr"
 
+streisand_shuf: "shuf --random-source=/dev/urandom"
+
 streisand_word_gen:
-  gateway:
-    shuf -n 6 /usr/share/dict/english.txt |
+  gateway: >
+    {{ streisand_shuf }} -n 6 /usr/share/dict/english.txt |
     paste -s -d '.' -
-  identifier:
-    shuf -n 2 /usr/share/dict/english.txt |
+  identifier: >
+    {{ streisand_shuf }} -n 2 /usr/share/dict/english.txt |
     paste -s -d '-' -
   # Tor only likes [A-Za-z0-9] for nicknames.
   #
@@ -82,19 +84,19 @@ streisand_word_gen:
   # Tor nicknames should be 19 characters or fewer; cut ours off at 18.
   #
   # Caps script from https://www.unix.com/302904939-post2.html
-  tor_nickname:
-    shuf -n 2 /usr/share/dict/english.txt |
+  tor_nickname: >
+    {{ streisand_shuf }} -n 2 /usr/share/dict/english.txt |
     awk '{OFS=""; for(j=1;j<=NF;j++){ $j=toupper(substr($j,1,1)) substr($j,2) }}1' |
     tr -d '\n' |
     cut -b 1-18
-  long_identifier:
-    shuf -n 3 /usr/share/dict/english.txt |
+  long_identifier: >
+    {{ streisand_shuf }} -n 3 /usr/share/dict/english.txt |
     paste -s -d '-' -
-  weak_password:
-    shuf -n 3 /usr/share/dict/english.txt |
+  weak_password: >
+    {{ streisand_shuf }} -n 3 /usr/share/dict/english.txt |
     paste -s -d '.' -
-  psk:
-    shuf -n 5 /usr/share/dict/english.txt |
+  psk: >
+    {{ streisand_shuf }} -n 5 /usr/share/dict/english.txt |
     paste -s -d '.' -
 
 # In online documentation, we recommand a URL for people to check
