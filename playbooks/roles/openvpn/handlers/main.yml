@@ -4,5 +4,4 @@
     name: "{{ item }}"
     state: restarted
   with_items:
-    - "openvpn@server.service"
-    - "openvpn@server-udp.service"
+    - "{{ openvpn_service_names }}"
