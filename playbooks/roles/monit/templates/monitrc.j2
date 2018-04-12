@@ -22,42 +22,6 @@ check process nginx with pidfile /var/run/nginx.pid
     status = 401
   then restart
 
-{% if streisand_openvpn_enabled %}
-
-# OpenVPN
-check process vpn-network with pidfile /var/run/openvpn/server.pid
-   start program = "/usr/sbin/service openvpn start server"
-   stop program = "/usr/sbin/service openvpn stop server"
-
-check host tun0 with address 10.8.0.1
-    start program = "/usr/sbin/service openvpn start server"
-    stop program = "/usr/sbin/service openvpn stop server"
-    if failed
-        icmp type echo count 5 with timeout 15 seconds
-    then restart
-
-check process vpn-network-udp with pidfile /var/run/openvpn/server-udp.pid
-   start program = "/usr/sbin/service openvpn start server-udp"
-   stop program = "/usr/sbin/service openvpn stop server-udp"
-
-check host tun1 with address 10.9.0.1
-    start program = "/usr/sbin/service openvpn start server-udp"
-    stop program = "/usr/sbin/service openvpn stop server-udp"
-    if failed
-        icmp type echo count 5 with timeout 15 seconds
-    then restart
-
-{% if streisand_stunnel_enabled %}
-# stunnel
-check process stunnel4 with pidfile /var/run/stunnel4.pid
-	  start program = "/usr/sbin/service stunnel4 start" with timeout 20 seconds
-	  stop program = "/usr/sbin/service stunnel4 stop"
-	  if failed host 127.0.0.1 port {{ stunnel_remote_port }} with timeout 20 seconds then restart
-    if 3 restarts within 5 cycles then unmonitor
-{% endif %}
-
-{% endif %}
-
 # OpenSSH
 check process sshd with pidfile /var/run/sshd.pid
    start program  "/usr/sbin/service ssh start"

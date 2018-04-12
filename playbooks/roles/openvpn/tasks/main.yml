@@ -126,13 +126,35 @@
 - name: Copy OpenVPN configuration file into place
   template:
     src: etc_openvpn_server.conf.j2
-    dest: /etc/openvpn/server.conf
+    dest: "{{ openvpn_path }}/server.conf"
 
 - name: Copy OpenVPN UDP configuration file into place
   template:
     src: etc_openvpn_server_udp.conf.j2
-    dest: /etc/openvpn/server-udp.conf
-  notify: Restart OpenVPN
+    dest: "{{ openvpn_path }}/server-udp.conf"
+
+- name: Stop and disable the bundled openvpn.service
+  systemd:
+    name: openvpn.service
+    state: stopped
+    enabled: no
+
+- name: Copy the OpenVPN system unit files
+  template:
+    src: openvpn.service.j2
+    dest: /etc/systemd/system/{{ item }}
+    mode: 0644
+  with_items:
+    - "{{ openvpn_service_names }}"
+
+- name: Enable the OpenVPN services
+  systemd:
+    daemon_reload: yes
+    name: "{{ item }}"
+    enabled: yes
+    state: restarted
+  with_items:
+    - "{{ openvpn_service_names }}"
 
 - name: Copy the ca.crt and ta.key files that clients will need in order to connect to the OpenVPN server
   command: cp {{ openvpn_path }}/{{ item[1] }} {{ openvpn_path }}/{{ item[0].stdout }}

@@ -24,3 +24,7 @@ openvpn_firewall_rules:
   - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 10.9.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
 
 openvpn_gateway_location: "{{ streisand_gateway_location }}/openvpn"
+
+openvpn_service_names:
+  - "openvpn@server.service"
+  - "openvpn@server-udp.service"
