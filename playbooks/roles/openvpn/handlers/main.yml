@@ -1,5 +1,7 @@
 ---
 - name: Restart OpenVPN
-  service:
-    name: openvpn
+  systemd:
+    name: "{{ item }}"
     state: restarted
+  with_items:
+    - "{{ openvpn_service_names }}"
