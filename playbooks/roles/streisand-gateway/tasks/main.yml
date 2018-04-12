@@ -7,7 +7,7 @@
 - include_vars: ../../lets-encrypt/vars/main.yml
 
 - name: Generate a random Gateway password
-  shell: "{{ streisand_word_gen.gateway }} > {{ streisand_gateway_password_file }}"
+  shell: "{{ streisand_word_gen.gateway | trim }} > {{ streisand_gateway_password_file }}"
   args:
     creates: "{{ streisand_gateway_password_file }}"
 

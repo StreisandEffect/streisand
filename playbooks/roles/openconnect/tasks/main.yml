@@ -70,7 +70,7 @@
     label: "{{ client_content[0].item }}"
 
 - name: Generate a random ocserv password
-  shell: "{{ streisand_word_gen.psk }} > {{ ocserv_password_file }}"
+  shell: "{{ streisand_word_gen.psk | trim }} > {{ ocserv_password_file }}"
   args:
     creates: "{{ ocserv_password_file }}"
 

@@ -46,7 +46,7 @@
     mode: 0644
 
 - name: Generate a random IPsec pre-shared key
-  shell: "{{ streisand_word_gen.psk }}  > {{ ipsec_preshared_key_file }}"
+  shell: "{{ streisand_word_gen.psk | trim }}  > {{ ipsec_preshared_key_file }}"
   args:
     creates: "{{ ipsec_preshared_key_file }}"
 
@@ -100,7 +100,7 @@
     mode: 0644
 
 - name: Generate a random CHAP password
-  shell: "{{ streisand_word_gen.weak_password }} > {{ chap_password_file }}"
+  shell: "{{ streisand_word_gen.weak_password | trim }} > {{ chap_password_file }}"
   args:
     creates: "{{ chap_password_file }}"
 
