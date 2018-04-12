@@ -70,6 +70,16 @@ streisand_languages:
 
 streisand_shuf: "shuf --random-source=/dev/urandom"
 
+# NOTE(@cpu): using the "folded block scalar" YAML syntax in the
+# `streisand_word_gen` entries seems to be the best way to both:
+#   a) split up the long command lines
+#   b) use templated variables like {{ striesand_shuf }}.
+# It has the unfortunate downside of leaving a trailing `\n` in the var content
+# which can cause problems in usage like:
+#  `shell: {{ streisand_word_gen.identifier }} > foo`
+# The work-around/solution is to use:
+#  `shell: {{ streisand_word_gen.identifier | trim }} > foo`
+# If you, clever reader, have a better idea please open a PR! :-)
 streisand_word_gen:
   gateway: >
     {{ streisand_shuf }} -n 6 /usr/share/dict/english.txt |
