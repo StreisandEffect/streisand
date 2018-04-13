@@ -1,8 +1,4 @@
-- - -
-{% for key, value in streisand_languages.items() %}
-  [{{ value.language_name }}]({{ streisand_server_name }}{{value.file_suffix}}.html)&nbsp;
-{% endfor %}
-- - -
+{% include "languages.md.j2" %}
 
 Votre passerelle Streisand contient des instructions étape par étape pour les services qu'elle fournit, et des miroirs de tous les logiciels clients nécessaires.
 

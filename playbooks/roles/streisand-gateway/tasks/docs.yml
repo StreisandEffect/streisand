@@ -1,0 +1,23 @@
+---
+- include_role:
+    name: i18n-docs
+  vars:
+    vpn_name: "Gateway index"
+    i18n_location: "{{ streisand_gateway_location }}"
+    input_template_name: "index"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    vpn_name: "Gateway instructions"
+    i18n_location: "/tmp/"
+    input_template_name: "instructions"
+    output_file_name: "{{ streisand_server_name }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    vpn_name: "Gateway firewall"
+    i18n_location: "/tmp/"
+    input_template_name: "firewall"
+    output_file_name: "{{ streisand_server_name }}-firewall-information"

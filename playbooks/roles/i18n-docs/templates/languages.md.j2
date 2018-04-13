@@ -1,0 +1,5 @@
+- - -
+{% for key, value in streisand_languages.items() %}
+  [{{ value.language_name }}]({{ output_file_name }}{{ value.file_suffix }}.html)&nbsp;
+{% endfor %}
+- - -

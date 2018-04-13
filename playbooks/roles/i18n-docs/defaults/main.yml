@@ -1,0 +1,5 @@
+---
+# The jina2 template filename (without extensions)
+input_template_name: "instructions"
+# The output file name (without extensions)
+output_file_name: "index"

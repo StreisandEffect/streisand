@@ -1,0 +1,32 @@
+---
+- name: Fetch the Gateway HTML instructions information ({{item.value.language_name}})
+  fetch:
+    dest: ../{{ streisand_local_directory }}/
+    src: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.html"
+    flat: yes
+
+- name: Fetch the Gateway HTML firewall information ({{item.value.language_name}})
+  fetch:
+    dest: ../{{ streisand_local_directory }}/
+    src: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.html"
+    flat: yes
+
+- name: Clean up the temporary Gateway instruction information file once it has been retrieved ({{item.value.language_name}})
+  file:
+    path: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.html"
+    state: absent
+
+- name: Clean up the temporary Gateway markdown instruction information file once it has been retrieved ({{item.value.language_name}})
+  file:
+    path: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.md"
+    state: absent
+
+- name: Clean up the temporary Gateway firewall information file once it has been retrieved ({{item.value.language_name}})
+  file:
+    path: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.html"
+    state: absent
+
+- name: Clean up the temporary Gateway markdown firewall information file once it has been retrieved ({{item.value.language_name}})
+  file:
+    path: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.md"
+    state: absent

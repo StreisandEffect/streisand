@@ -1,0 +1,14 @@
+---
+- name: Generate the {{ vpn_name }} Markdown page
+  template:
+    src: "{{ input_template_name }}{{ item.value.file_suffix }}.md.j2"
+    dest: "{{ i18n_location }}/{{ output_file_name }}{{ item.value.file_suffix }}.md"
+  with_dict: "{{ streisand_languages }}"
+  loop_control:
+    label: "{{ item.value.language_name }}"
+
+- name: Convert the {{ vpn_name }} Markdown page into HTML
+  shell: markdown {{ i18n_location }}/{{ output_file_name }}{{ item.value.file_suffix }}.md | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ i18n_location }}/{{ output_file_name }}{{ item.value.file_suffix }}.html
+  with_dict: "{{ streisand_languages }}"
+  loop_control:
+    label: "{{ item.value.language_name }}"

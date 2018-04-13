@@ -1,0 +1,28 @@
+---
+- name: Create the L2TP/IPsec Gateway directory
+  file:
+    path: "{{ l2tp_ipsec_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- include_role:
+    name: i18n-docs
+  vars:
+    vpn_name: "L2TP/IPsec"
+    i18n_location: "{{ l2tp_ipsec_gateway_location }}"
+    input_template_name: "instructions"
+
+- name: Generate a UUID for the Apple .mobileconfig package
+  shell: uuid -v4
+  register: l2tp_mobileconfig_package_uuid
+
+- name: Generate a UUID for the VPN for the Apple .mobileconfig package
+  shell: uuid -v4
+  register: l2tp_mobileconfig_vpn_uuid
+
+- name: Generate a mobileconfig
+  template:
+    src: streisand.mobileconfig.j2
+    dest: "{{ l2tp_ipsec_gateway_location }}/streisand.mobileconfig"
