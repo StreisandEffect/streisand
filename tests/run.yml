@@ -26,7 +26,7 @@
         - name: Check Streisand configuration is valid
           include_role:
             name: validation
-      delegate_to: 127.0.0.1
+      delegate_to: localhost
 
     - name: Ensure openssh is installed
       apt:
