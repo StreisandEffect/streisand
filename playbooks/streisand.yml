@@ -20,8 +20,6 @@
     - common
     - gpg
     - ssh
-    # OpenConnect must be set up before L2TP/IPsec in order to avoid
-    # compilation issues.
     - role: openconnect
       when: streisand_openconnect_enabled
     - role: openvpn
