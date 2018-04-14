@@ -1,4 +1,0 @@
----
-dependencies:
-  - { role: ip-forwarding }
-  - { role: ufw }
