@@ -25,8 +25,7 @@
 - name: Validate that at least one VPN is specified
   fail:
     msg: "At least one Streisand VPN service must be enabled."
-  when: (not streisand_l2tp_enabled)
-    and (not streisand_openconnect_enabled)
+  when: (not streisand_openconnect_enabled)
     and (not streisand_openvpn_enabled)
     and (not streisand_shadowsocks_enabled)
     and (not streisand_ssh_forward_enabled)

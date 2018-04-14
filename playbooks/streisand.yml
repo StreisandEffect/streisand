@@ -24,8 +24,6 @@
     # compilation issues.
     - role: openconnect
       when: streisand_openconnect_enabled
-    - role: l2tp-ipsec
-      when: streisand_l2tp_enabled
     - role: openvpn
       when: streisand_openvpn_enabled
     - role: shadowsocks

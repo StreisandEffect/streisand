@@ -45,33 +45,6 @@
         to_port: 65535
         cidr_ip: 0.0.0.0/0
 
-# L2TP/IPsec
-# ---
-- name: Open the L2TP/IPsec ports in the EC2 security group
-  ec2_group:
-    name: "{{ aws_security_group }}"
-    description: Security group for Streisand
-    region: "{{ aws_region }}"
-    vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
-    purge_rules: no
-    purge_rules_egress: no
-    rules:
-      - proto: udp
-        from_port: "500"
-        to_port: "500"
-        cidr_ip: 0.0.0.0/0
-      - proto: udp
-        from_port: "4500"
-        to_port: "4500"
-        cidr_ip: 0.0.0.0/0
-      - proto: udp
-        from_port: "1701"
-        to_port: "1701"
-        cidr_ip: 0.0.0.0/0
-  when: streisand_l2tp_enabled
-
 # OpenConnect
 # ---
 - name: Open the OpenConnect ports in the EC2 security group
