@@ -15,11 +15,11 @@ openconnect_source_url: "https://d25kfp60e9u1dw.cloudfront.net/{{ openconnect_so
 openconnect_source_checksum: "sha256:1c44ec1f37a6a025d1ca726b9555649417f1d31a46f747922b84099ace628a03"
 
 # Windows
-openconnect_windows_version: "v1.5.2"
-openconnect_windows_filename: "openconnect-gui-1.5.2-win32.exe"
+openconnect_windows_version: "v1.5.3"
+openconnect_windows_filename: "openconnect-gui-1.5.3-win32.exe"
 openconnect_windows_href: "{{ openconnect_mirror_href_base }}/{{ openconnect_windows_filename }}"
 openconnect_windows_url: "https://github.com/openconnect/openconnect-gui/releases/download/{{ openconnect_windows_version }}/{{ openconnect_windows_filename }}"
-openconnect_windows_checksum: "sha256:8bfa90fd9932007fe53699b886ad987b6aba337a78c3f9da9c3ff39582af0680"
+openconnect_windows_checksum: "sha256:b1d4bd76b41f32d08287bf043b3dc8c798a145c02319217d45a74b0d9545a23d"
 
 # macOS
 openconnect_macos_version: "v1.5.1"
