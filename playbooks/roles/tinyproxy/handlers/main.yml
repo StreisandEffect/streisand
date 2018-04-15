@@ -1,5 +1,5 @@
 ---
 - name: Restart Tinyproxy
-  service:
-    name: tinyproxy
+  systemd:
+    name: tinyproxy.service
     state: restarted
