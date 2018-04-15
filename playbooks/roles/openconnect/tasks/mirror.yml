@@ -28,6 +28,6 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "OpenConnect mirror"
+    title: "OpenConnect mirror"
     i18n_location: "{{ openconnect_mirror_location }}"
     input_template_name: "mirror"

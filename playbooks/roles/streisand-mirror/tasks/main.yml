@@ -22,7 +22,7 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "Streisand mirror"
+    title: "Streisand mirror"
     i18n_location: "{{ streisand_mirror_location }}"
     input_template_name: "mirror-index"
   # Only generate the Markdown mirror page when there is a role enabled that

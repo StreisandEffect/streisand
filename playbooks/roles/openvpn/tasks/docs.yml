@@ -19,14 +19,14 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "OpenVPN"
+    title: "OpenVPN"
     input_template_name: "instructions"
     i18n_location: "{{ openvpn_gateway_location }}"
 
 - include_role:
     name: i18n-docs
   vars:
-    name: "OpenVPN stunnel"
+    title: "OpenVPN stunnel"
     input_template_name: "stunnel-instructions"
     output_file_name: "stunnel"
     i18n_location: "{{ openvpn_gateway_location }}"

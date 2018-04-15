@@ -2,7 +2,7 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "Gateway index"
+    title: "Gateway index"
     i18n_location: "{{ streisand_gateway_location }}"
     input_template_name: "index"
 
@@ -17,7 +17,7 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "Gateway instructions"
+    title: "Gateway instructions"
     i18n_location: "{{ streisand_temp_gateway_path }}"
     input_template_name: "instructions"
     output_file_name: "{{ streisand_server_name }}"
@@ -25,7 +25,7 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "Gateway firewall"
+    title: "Gateway firewall"
     i18n_location: "{{ streisand_temp_gateway_path }}"
     input_template_name: "firewall"
     output_file_name: "{{ streisand_server_name }}-firewall-information"

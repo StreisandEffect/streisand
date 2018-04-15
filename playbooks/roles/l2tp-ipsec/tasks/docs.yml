@@ -10,7 +10,7 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "L2TP/IPsec"
+    title: "L2TP/IPsec"
     i18n_location: "{{ l2tp_ipsec_gateway_location }}"
     input_template_name: "instructions"
 

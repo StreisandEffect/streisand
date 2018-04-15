@@ -36,6 +36,6 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "OpenVPN mirror"
+    title: "OpenVPN mirror"
     i18n_location: "{{ openvpn_mirror_location }}"
     input_template_name: "mirror"

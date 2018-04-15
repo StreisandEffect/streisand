@@ -30,6 +30,6 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "Tor mirror"
+    title: "Tor mirror"
     i18n_location: "{{ tor_mirror_location }}"
     input_template_name: "mirror"

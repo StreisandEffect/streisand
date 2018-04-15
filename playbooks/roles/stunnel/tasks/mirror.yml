@@ -40,6 +40,6 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "stunnel mirror"
+    title: "stunnel mirror"
     i18n_location: "{{ stunnel_mirror_location }}"
     input_template_name: "mirror"

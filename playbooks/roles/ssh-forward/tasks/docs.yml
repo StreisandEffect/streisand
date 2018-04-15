@@ -10,7 +10,7 @@
 - include_role:
     name: i18n-docs
   vars:
-    name: "SSH instructions"
+    title: "SSH instructions"
     i18n_location: "{{ ssh_gateway_location }}"
     input_template_name: "instructions"
 
