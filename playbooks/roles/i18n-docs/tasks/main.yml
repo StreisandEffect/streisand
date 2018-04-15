@@ -1,5 +1,5 @@
 ---
-- name: "Generate the {{ name }} Markdown page"
+- name: "Generate the {{ title }} Markdown page"
   template:
     src: "{{ input_template_name }}{{ item.value.file_suffix }}.md.j2"
     dest: "{{ i18n_location }}/{{ output_file_name }}{{ item.value.file_suffix }}.md"
@@ -7,7 +7,7 @@
   loop_control:
     label: "{{ item.value.language_name }}"
 
-- name: "Convert the {{ name }} Markdown page into HTML"
+- name: "Convert the {{ title }} Markdown page into HTML"
   shell: >
     markdown {{ output_file_name }}{{ item.value.file_suffix }}.md | \
     cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ output_file_name }}{{ item.value.file_suffix }}.html
