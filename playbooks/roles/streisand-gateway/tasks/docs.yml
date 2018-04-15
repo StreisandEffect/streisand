@@ -17,12 +17,13 @@
 - include_role:
     name: i18n-docs
   vars:
-    title: "Gateway {{ item.template }}"
+    title: "Gateway {{ doc.template }}"
     i18n_location: "{{ streisand_temp_gateway_path }}"
-    input_template_name: "{{ item.template }}"
-    output_file_name: "{{ item.output_file }}"
+    input_template_name: "{{ doc.template }}"
+    output_file_name: "{{ doc.output_file }}"
   with_items:
     - { template: "instructions", output_file: "{{ streisand_server_name }}" }
     - { template: "firewall", output_file: "{{ streisand_server_name }}-firewall-information" }
   loop_control:
-    label: "{{ item.template }}"
+    loop_var: "doc"
+    label: "{{ doc.template }}"
