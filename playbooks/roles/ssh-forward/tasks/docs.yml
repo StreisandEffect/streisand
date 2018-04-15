@@ -10,7 +10,7 @@
 - include_role:
     name: i18n-docs
   vars:
-    vpn_name: "SSH instructions"
+    name: "SSH instructions"
     i18n_location: "{{ ssh_gateway_location }}"
     input_template_name: "instructions"
 

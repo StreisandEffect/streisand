@@ -13,6 +13,6 @@
 - include_role:
     name: i18n-docs
   vars:
-    vpn_name: "Tor"
+    name: "Tor"
     i18n_location: "{{ tor_gateway_location }}"
     input_template_name: "instructions"

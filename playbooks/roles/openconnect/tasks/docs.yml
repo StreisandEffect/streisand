@@ -33,6 +33,6 @@
 - include_role:
     name: i18n-docs
   vars:
-    vpn_name: "OpenConnect/AnyConnect"
+    name: "OpenConnect/AnyConnect"
     input_template_name: "instructions"
     i18n_location: "{{ ocserv_gateway_location }}"

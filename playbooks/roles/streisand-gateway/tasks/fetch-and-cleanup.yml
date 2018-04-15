@@ -1,32 +1,21 @@
 ---
-- name: Fetch the Gateway HTML instructions information ({{item.value.language_name}})
+- name: Find the files to fetch from the Streisand temporary gateway directory
+  find:
+    paths: "{{ streisand_temp_gateway_path }}"
+    recurse: no
+    pattern: "*.html"
+  register: gateway_local_files
+
+- name: Fetch the local Gateway files
   fetch:
     dest: ../{{ streisand_local_directory }}/
-    src: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.html"
+    src: "{{ file.path }}"
     flat: yes
+  with_items: "{{ gateway_local_files.files }}"
+  loop_control:
+    loop_var: file
 
-- name: Fetch the Gateway HTML firewall information ({{item.value.language_name}})
-  fetch:
-    dest: ../{{ streisand_local_directory }}/
-    src: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.html"
-    flat: yes
-
-- name: Clean up the temporary Gateway instruction information file once it has been retrieved ({{item.value.language_name}})
+- name: Delete the Streisand temporary gateway directory
   file:
-    path: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.html"
-    state: absent
-
-- name: Clean up the temporary Gateway markdown instruction information file once it has been retrieved ({{item.value.language_name}})
-  file:
-    path: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.md"
-    state: absent
-
-- name: Clean up the temporary Gateway firewall information file once it has been retrieved ({{item.value.language_name}})
-  file:
-    path: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.html"
-    state: absent
-
-- name: Clean up the temporary Gateway markdown firewall information file once it has been retrieved ({{item.value.language_name}})
-  file:
-    path: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.md"
-    state: absent
+    path: "{{ streisand_temp_gateway_path }}"
+    state: "absent"

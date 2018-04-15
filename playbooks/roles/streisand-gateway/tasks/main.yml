@@ -64,9 +64,6 @@
 
     # fetch and clean up
     - include_tasks: fetch-and-cleanup.yml
-      with_dict: "{{ streisand_languages }}"
-      loop_control:
-        label: "{{ item.value.language_name }}"
 
     - name: Ensure that all of the files in the Gateway have the proper permissions
       file:

@@ -37,6 +37,6 @@
 - include_role:
     name: i18n-docs
   vars:
-    vpn_name: "SSH mirror"
+    name: "SSH mirror"
     i18n_location: "{{ ssh_mirror_location }}"
     input_template_name: "mirror"
