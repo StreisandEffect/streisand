@@ -23,6 +23,6 @@
     output_file_name: "{{ item.output_file }}"
   with_items:
     - { template: "instructions", output_file: "{{ streisand_server_name }}" }
-    - { template: "firewall", output_file: "{{ {{ streisand_server_name }}-firewall-information }}" }
+    - { template: "firewall", output_file: "{{ streisand_server_name }}-firewall-information" }
   loop_control:
     label: "{{ item.template }}"
