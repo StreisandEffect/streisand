@@ -14,6 +14,7 @@
   with_items: "{{ gateway_local_files.files }}"
   loop_control:
     loop_var: file
+    label: "{{ file.path }}"
 
 - name: Delete the Streisand temporary gateway directory
   file:
