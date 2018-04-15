@@ -34,3 +34,16 @@
   with_items:
     - sites-available
     - sites-enabled
+
+- name: Generate the nginx systemd service file
+  template:
+    src: nginx.service.j2
+    dest: /etc/systemd/system/nginx.service
+    mode: 0644
+
+- name: Enable the nginx service
+  systemd:
+    daemon_reload: yes
+    name: nginx.service
+    enabled: yes
+    state: restarted

@@ -11,17 +11,6 @@ set httpd port 2812 and
     # and requiring basic auth (through nginx) should be sufficient to protect this interface.
     allow 0.0.0.0/0.0.0.0 # allow any ip to connect to monit.
 
-# Nginx
-check process nginx with pidfile /var/run/nginx.pid
-  start program = "/usr/sbin/service nginx start"
-  stop  program = "/usr/sbin/service nginx stop"
-  if cpu is greater than 40% for 2 cycles then alert
-  if cpu > 60% for 5 cycles then restart
-  if 10 restarts within 10 cycles then timeout
-  if failed host 127.0.0.1 port {{ nginx_port }} protocol https and
-    status = 401
-  then restart
-
 # OpenSSH
 check process sshd with pidfile /var/run/sshd.pid
    start program  "/usr/sbin/service ssh start"
