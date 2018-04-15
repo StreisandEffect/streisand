@@ -27,9 +27,10 @@ cert-group-oid = 2.5.4.11
 # SECURE192: All known to be secure ciphersuites that offer a security level 192-bit or more.
 # %SERVER_PRECEDENCE: The ciphersuite will be selected according to server priorities and not the client’s.
 # %LATEST_RECORD_VERSION: Use the latest TLS version record version in client hello.
-# -VERS-ALL: Disable all SSL/TLS versions
+# -VERS-ALL: Disable all TLS/DTLS versions
 # +VERS-TLS1.2: Allow TLSv1.2
-tls-priorities = "SECURE192:%SERVER_PRECEDENCE:%LATEST_RECORD_VERSION:-VERS-ALL:+VERS-TLS1.2"
+# +VERS-DTLS1.2: Allow DLSv1.2
+tls-priorities = "SECURE192:%SERVER_PRECEDENCE:%LATEST_RECORD_VERSION:-VERS-ALL:+VERS-TLS1.2:+VERS-DTLS1.2"
 
 auth-timeout = 40
 min-reauth-time = 300
