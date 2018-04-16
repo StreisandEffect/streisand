@@ -35,14 +35,11 @@ Streisand介绍
   * OpenConnect/AnyConnect, OpenSSH（没有测试）, OpenVPN (stunnel加持的), Shadowsocks, and Tor (obfs4进行混淆传输)都可以在中国使用
 * 每一个科学上网工具都提供了文档和详细的描述。 Streisand 或许是迄今为止最为全面的指南，帮助你安装和配置客户端。在必要的时候也能够再次通过手动完成任何相关操作。
 * 为了避免科学上网工具被大面积破坏，端口在设计上也是有讲究的。比方说 OpenVPN ，并没有运行在默认的1194端口，而是636端口，这个是很多跨国公司使用的标准 LDAP/SSL 连接端口。
-  * *这里需要特别注意的是 L2TP/IPsec 为了不影响兼容性，无法修改为其他特定端口。*
 
 <a name="提供的服务"></a>
 提供的服务
 -----------------
-* L2TP/IPsec 使用 [Libreswan](https://libreswan.org/)/[xl2tpd](https://www.xelerance.com/software/xl2tpd/) 架设。
-  * 随机生成、选择预分享密钥和密码；
-  * Windows, macOS, Android 和 iOS 用户可以使用系统自带的 VPN 进行设置、连接，而不需要另外下载第三方的软件来实现。
+
 * [Monit](https://mmonit.com/monit/)
   * 能够监视、处理运行状态，针对那些奔溃的进程或者没有响应的进程进行自动重启和维护。
 * [OpenSSH](https://www.openssh.com/)

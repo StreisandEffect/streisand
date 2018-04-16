@@ -35,8 +35,6 @@ streisand_bootstrap_gpg_keys:
   - B43434E4.putty@projects.tartarus.org.asc
   # Stunnel release signing key
   - DD3AAAA3.Michal.Trojnara@stunnel.org.asc
-  # LibreSwan release signing key
-  - B30FC6F9.team@libreswan.org.asc
   # Streisand maintainer - Github @cpu
   - 2D8330C2.daniel@binaryparadox.net.asc
   # Streisand maintainer - Github @jlund
