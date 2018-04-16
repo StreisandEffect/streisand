@@ -58,19 +58,6 @@
     project_id: "{{ gce_project_id }}"
   when: streisand_tor_enabled
 
-- name: Open the L2TP/IPsec ports in the GCE firewall
-  gce_net:
-    name: "{{ gce_network }}"
-    fwname: "streisand-{{ gce_server_name }}-l2tp-ipsec"
-    allowed: "udp:500,4500,1701"
-    state: "present"
-    mode: auto
-    src_range: 0.0.0.0/0
-    service_account_email: "{{ gce_service_account_email }}"
-    credentials_file: "{{ gce_json_file_location }}"
-    project_id: "{{ gce_project_id }}"
-  when: streisand_l2tp_enabled
-
 - name: Open the OpenConnect (ocserv) port in the GCE firewall
   gce_net:
     name: "{{ gce_network }}"

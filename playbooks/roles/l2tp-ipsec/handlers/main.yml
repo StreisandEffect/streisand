@@ -1,5 +1,0 @@
----
-- name: Restart rsyslog for Libreswan
-  systemd:
-    name: rsyslog
-    state: restarted

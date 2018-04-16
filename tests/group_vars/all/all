@@ -3,22 +3,3 @@ streisand_ci: yes
 streisand_noninteractive: no
 
 server_name: streisand
-
-libreswan_compilation_dependencies_trusty:
-  - bison
-  - flex
-  - gcc
-  - libcap-ng-dev
-  - libcap-ng-utils
-  - libcurl3-nss-dev
-  - libevent-dev
-  - libnspr4-dev
-  - libnss3-dev
-  - libnss3-tools
-  - libpam0g-dev
-  - libselinux1-dev
-  - libsystemd-daemon-dev
-  - libunbound-dev
-  - libldns-dev
-  - make
-  - pkg-config

@@ -20,5 +20,4 @@ streisand_tor_enabled: yes
 streisand_stunnel_enabled: yes
 streisand_tinyproxy_enabled: yes
 # TODO(@cpu): The services below need some manner of integration test written
-streisand_l2tp_enabled: no
 streisand_sshuttle_enabled: no

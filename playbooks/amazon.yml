@@ -25,7 +25,6 @@
   # These variable files are included so the ec2-security-group role
   # knows which ports to open
   vars_files:
-    - roles/l2tp-ipsec/defaults/main.yml
     - roles/openconnect/defaults/main.yml
     - roles/openvpn/defaults/main.yml
     - roles/shadowsocks/defaults/main.yml

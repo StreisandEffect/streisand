@@ -1,7 +1,6 @@
 ---
 # This site config only enables Shadowsocks
 vpn_clients: 5
-streisand_l2tp_enabled: no
 streisand_openconnect_enabled: no
 streisand_openvpn_enabled: no
 streisand_shadowsocks_enabled: yes
