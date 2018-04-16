@@ -36,12 +36,6 @@
   remote_user: root
   become: yes
   tasks:
-    # If l2tp is enabled we need to build & prepare the Libreswan kernel module
-    # on the localhost in order for it to be usable by the container
-    - name: Install Libreswan to support L2TP in container
-      include_tasks: libreswan-setup.yml
-      when: streisand_l2tp_enabled
-
     - name: Ensure consistent & clean apt state
       shell: "{{ item }}"
       with_items:

@@ -75,7 +75,6 @@
     - genesis-linode
     - genesis-rackspace
     - ip-forwarding
-    - l2tp-ipsec
     - lets-encrypt
     - monit
     - nginx
