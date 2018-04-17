@@ -9,7 +9,7 @@
       default: "~/.ssh/id_rsa"
       private: no
     - name: vpn_clients
-      prompt: "How many VPN client profiles should be generated per-service? Press enter for default "
+      prompt: "How many VPN client profiles should be generated per-service (min: 1 max: 20)? Press enter for default "
       default: 5
       private: no
     - name: streisand_openconnect_enabled
