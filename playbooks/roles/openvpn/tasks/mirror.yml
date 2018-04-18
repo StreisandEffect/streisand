@@ -33,12 +33,9 @@
       pause:
         seconds: "{{ streisand_mirror_warning_seconds }}"
 
-- name: Generate the OpenVPN Markdown mirror page
-  template:
-    src: mirror{{ item.value.file_suffix }}.md.j2
-    dest: "{{ openvpn_mirror_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the OpenVPN Markdown mirror page into HTML
-  shell: markdown {{ openvpn_mirror_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ openvpn_mirror_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "OpenVPN mirror"
+    i18n_location: "{{ openvpn_mirror_location }}"
+    input_template_name: "mirror"

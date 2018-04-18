@@ -16,24 +16,18 @@
     loop_var: "client_name"
     label: "{{ client_name.item }}"
 
-- name: Generate the Markdown OpenVPN instructions
-  template:
-    src: "instructions{{ item.value.file_suffix }}.md.j2"
-    dest: "{{ openvpn_gateway_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "OpenVPN"
+    input_template_name: "instructions"
+    i18n_location: "{{ openvpn_gateway_location }}"
 
-- name: Generate the Markdown OpenVPN stunnel instructions
-  template:
-    src: "stunnel-instructions{{ item.value.file_suffix}}.md.j2"
-    dest: "{{ openvpn_gateway_location }}/stunnel{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
-  when: streisand_stunnel_enabled
-
-- name: Convert the Markdown OpenVPN instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ openvpn_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ openvpn_gateway_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the Markdown OpenVPN stunnel instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ openvpn_gateway_location }}/stunnel{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ openvpn_gateway_location }}/stunnel{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "OpenVPN stunnel"
+    input_template_name: "stunnel-instructions"
+    output_file_name: "stunnel"
+    i18n_location: "{{ openvpn_gateway_location }}"
   when: streisand_stunnel_enabled

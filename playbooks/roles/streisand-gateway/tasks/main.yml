@@ -58,73 +58,12 @@
   # TODO:
   #   Add to CI testing https://github.com/StreisandEffect/streisand/issues/643
 - block:
-    - name: Generate the Markdown Gateway index information
-      template:
-        src: "index{{ item.value.file_suffix }}.md.j2"
-        dest: "{{ streisand_gateway_location }}/index{{ item.value.file_suffix }}.md"
-      with_dict: "{{ streisand_languages }}"
 
-    - name: Generate the Markdown Gateway instructions
-      template:
-        src: "instructions{{ item.value.file_suffix }}.md.j2"
-        dest: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.md"
-      with_dict: "{{ streisand_languages }}"
+    # generate the streisand server instructions and documentation
+    - include_tasks: docs.yml
 
-    - name: Generate the Markdown Gateway firewall instructions
-      template:
-        src: "firewall{{ item.value.file_suffix }}.md.j2"
-        dest: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.md"
-      with_dict: "{{ streisand_languages }}"
-
-    - name: Convert the Markdown Gateway index instructions
-      shell: markdown {{ streisand_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > {{ streisand_gateway_location }}/index{{ item.value.file_suffix }}.html
-      with_dict: "{{ streisand_languages }}"
-
-    - name: Convert the Markdown Gateway instructions
-      shell: markdown /tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.md | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > /tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.html
-      with_dict: "{{ streisand_languages }}"
-
-    - name: Convert the Markdown Gateway firewall instructions
-      shell: markdown /tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.md | cat {{ streisand_header_template }} - {{ streisand_footer_template }} > /tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.html
-      with_dict: "{{ streisand_languages }}"
-
-    - name: Fetch the Gateway HTML instructions information
-      fetch:
-        dest: ../{{ streisand_local_directory }}/
-        src: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.html"
-        flat: yes
-      with_dict: "{{ streisand_languages }}"
-
-    - name: Fetch the Gateway HTML firewall information
-      fetch:
-        dest: ../{{ streisand_local_directory }}/
-        src: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.html"
-        flat: yes
-      with_dict: "{{ streisand_languages }}"
-
-    - name: Clean up the temporary Gateway instruction information file once it has been retrieved
-      file:
-        path: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.html"
-        state: absent
-      with_dict: "{{ streisand_languages }}"
-
-    - name: Clean up the temporary Gateway markdown instruction information file once it has been retrieved
-      file:
-        path: "/tmp/{{ streisand_server_name }}{{ item.value.file_suffix }}.md"
-        state: absent
-      with_dict: "{{ streisand_languages }}"
-
-    - name: Clean up the temporary Gateway firewall information file once it has been retrieved
-      file:
-        path: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.html"
-        state: absent
-      with_dict: "{{ streisand_languages }}"
-
-    - name: Clean up the temporary Gateway markdown firewall information file once it has been retrieved
-      file:
-        path: "/tmp/{{ streisand_server_name }}-firewall-information{{ item.value.file_suffix }}.md"
-        state: absent
-      with_dict: "{{ streisand_languages }}"
+    # fetch and clean up
+    - include_tasks: fetch-and-cleanup.yml
 
     - name: Ensure that all of the files in the Gateway have the proper permissions
       file:

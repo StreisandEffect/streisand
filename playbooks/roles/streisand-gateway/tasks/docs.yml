@@ -1,0 +1,29 @@
+---
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "Gateway index"
+    i18n_location: "{{ streisand_gateway_location }}"
+    input_template_name: "index"
+
+- name: Ensure the Streisand temporary gateway directory exists
+  file:
+    path: "{{ streisand_temp_gateway_path }}"
+    owner: root
+    group: root
+    mode: 0600
+    state: directory
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "Gateway {{ doc.template }}"
+    i18n_location: "{{ streisand_temp_gateway_path }}"
+    input_template_name: "{{ doc.template }}"
+    output_file_name: "{{ doc.output_file }}"
+  with_items:
+    - { template: "instructions", output_file: "{{ streisand_server_name }}" }
+    - { template: "firewall", output_file: "{{ streisand_server_name }}-firewall-information" }
+  loop_control:
+    loop_var: "doc"
+    label: "{{ doc.template }}"
