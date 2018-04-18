@@ -7,3 +7,5 @@ apache_packages_to_remove:
   - apache2-mpm-itk
   - apache2-mpm-prefork
   - apache2-mpm-worker
+
+nginx_systemd_service_path: /etc/systemd/system/nginx.service.d
