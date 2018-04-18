@@ -77,9 +77,6 @@ Localizing gateway instructions
 
 The following roles contain user instructions that will require translation:
 
- - `playbooks/roles/l2tp-ipsec/templates/`
-  1. `instructions.md.j2`
-
  - `playbooks/roles/openconnect/templates`
   1. `instructions.md.j2`
   1. `mirror.md.j2`
