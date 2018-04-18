@@ -48,7 +48,6 @@ streisand_local_directory: "generated-docs"
 streisand_header_template: "/tmp/header.html"
 streisand_footer_template: "/tmp/footer.html"
 streisand_language_selector: "/tmp/languages.html"
-streisand_i18n_header_template: "/tmp/headeri18n.html"
 
 # By default concurrent executions of `iptables` will fail immediately if unable
 # to acquire a lock. We use the `--wait` argument to instead specify a maximum
