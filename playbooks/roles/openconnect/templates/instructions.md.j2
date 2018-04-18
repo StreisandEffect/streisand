@@ -33,7 +33,7 @@ Client certificates are a mechanism by which clients can authenticate themselves
 <a name="windows"></a>
 ### Windows ###
 
-1. Download the [OpenConnect GUI installer](/mirror/#openconnect).
+1. Download the [OpenConnect GUI installer](/mirror/openconnect).
 1. Run the OpenConnect GUI installer.
 1. Complete the TAP-Windows Setup Wizard.
    * Choose the default options, and allow the TAP driver from the OpenVPN project to be installed.
@@ -65,7 +65,7 @@ Client certificates are a mechanism by which clients can authenticate themselves
 <a name="macos-openconnect-gui"></a>
 #### OpenConnect GUI
 
-1. Download the [OpenConnect GUI installer](/mirror/#openconnect).
+1. Download the [OpenConnect GUI installer](/mirror/openconnect).
 1. Run the OpenConnect GUI installer.
 1. Launch the OpenConnect application.
 1. Click the *Edit* icon (gear) and select 'New profile advanced'.
@@ -85,13 +85,12 @@ Client certificates are a mechanism by which clients can authenticate themselves
 
    `brew install openconnect`
 
-   * If installing Homebrew is not an option, you can also download and compile the [OpenConnect source code](/mirror/#openconnect).
+   * If installing Homebrew is not an option, you can also download and compile the [OpenConnect source code](/mirror/openconnect).
 
 {% for client in vpn_client_pkcs12_password_list.results %}
 ##### Instructions for {{ client.client_name.stdout }}
 1. Download the [server certificate](/openconnect/ca.crt) file
 1. Download the client [pcsk12 file](/openconnect/{{ client.client_name.stdout }}.p12)
-   * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
 1. Place the downloaded server certificate and a selected client certificate into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
 1. Run OpenConnect:
 
@@ -131,13 +130,12 @@ Client certificates are a mechanism by which clients can authenticate themselves
 
    `sudo apt install openconnect`
 
-   * Alternatively, you can also download and compile the [OpenConnect source code](/mirror/#openconnect).
+   * Alternatively, you can also download and compile the [OpenConnect source code](/mirror/openconnect).
 
 {% for client in vpn_client_pkcs12_password_list.results %}
 ##### Instructions for {{ client.client_name.stdout }}
 1. Download the [server certificate](/openconnect/ca.crt) file
 1. Download the client [pcsk12 file](/openconnect/{{ client.client_name.stdout }}.p12)
-   * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
 1. Place the downloaded server certificate and a selected client certificate into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
 1. Run OpenConnect:
 
