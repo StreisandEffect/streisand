@@ -178,7 +178,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 
 你同样可以将 Streisand 运行在其他 VPS 供应商（提供更好的硬件也没问题，奇葩的 VPS 供应商也行）的 16.04 Ubuntu 上，只需要你在运行 ./streisand 的时候选择菜单中的 "Existing Server (Advanced)" 就可以。你需要提供这个 VPS 的 IP 地址。
 
-这个 VPS 必须使用 `$HOME/id_rsa` 来储存 SSH key，并且可以使用 **root** 作为默认用户登录 VPS，如果提供商没有给你 root 用户作为默认用户登录，而是别的用户名，比如：`ubuntu` ，那么在运行 `./streisand` 之前需要额外配置 `ANSIBLE_SSH_USER` 环境变量，比如修改为：`ANSIBLE_SSH_USER=ubuntu` 。
+这个 VPS 必须使用 `$HOME/.ssh/id_rsa` 来储存 SSH key，并且可以使用 **root** 作为默认用户登录 VPS，如果提供商没有给你 root 用户作为默认用户登录，而是别的用户名，比如：`ubuntu` ，那么在运行 `./streisand` 之前需要额外配置 `ANSIBLE_SSH_USER` 环境变量，比如修改为：`ANSIBLE_SSH_USER=ubuntu` 。
 
 ### 非交互式部署 （高级使用）###
 
