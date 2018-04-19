@@ -54,7 +54,7 @@ Defining locales
 ----------------
 
 In order to define a locale for Streisand, a new entry defining your language must be
-added to the `streisand_languages` dict object in the `playbooks/common/vars/main.yml` file,
+added to the `streisand_languages` dict object in the `playbooks/roles/common/vars/main.yml` file,
 where the 2 letter code is considered the key, and a list of key-value pairs with additional data
 as its value.
 
