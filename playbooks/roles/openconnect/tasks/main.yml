@@ -25,18 +25,8 @@
     tls_sans:
       - "{{ streisand_ipv4_address }}"
 
-- name: Encrypt the client private keys
-  command: "openssl rsa -aes128 -outform pem -in client.key -out clientencrypted.key -passout file:ocserv-{{ client_name.stdout }}-pkcs12-password"
-  chdir: "{{ ocserv_path }}/{{ client_name.stdout }}"
-  creates: "clientencrypted.key"
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client_name"
-    label: "{{ client_name.item }}"
-
 - name: Base64 encode the client PKCS12 file(s)
-  command: "openssl base64 -in {{ client_name.stdout }}.p12"
-  chdir: "{{ ocserv_path }}/{{ client_name.stdout }}"
+  command: "openssl base64 -in {{ ocserv_path }}/{{ client_name.stdout }}/{{ client_name.stdout }}.p12"
   register: ocserv_clients_base64
   changed_when: False
   with_items: "{{ vpn_client_names.results }}"
