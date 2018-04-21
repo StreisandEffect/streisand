@@ -17,6 +17,10 @@
     name: "{{ item }}"
   with_items: "{{ streisand_common_packages }}"
 
+- name: Install python markdown
+  pip:
+    name: markdown
+
 - name: Purge unneeded services
   apt:
     name: "{{ item }}"
@@ -25,9 +29,9 @@
     autoremove: yes
   with_items: "{{ streisand_unneeded_packages }}"
 
-- name: Perform a full system upgrade
-  apt:
-    upgrade: "safe"
+#- name: Perform a full system upgrade
+#  apt:
+#    upgrade: "safe"
 
 - name: Copy the English BIP-0039 wordlist
   copy:

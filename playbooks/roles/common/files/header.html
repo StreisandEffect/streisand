@@ -302,6 +302,17 @@
           e.preventDefault(); document.getElementById('download').click();
         }
       });
+      function showInstructions(instance) {
+        for (let i = 0; i < instance.children.length; i++) {
+          let option = instance.children[i];
+          let div = document.getElementById(option.value);
+          if (option.selected == true) {
+            div.style.display = "";
+          } else {
+            div.style.display = "none";
+          }
+        }
+      }
     </script>
   </head>
   <body>
