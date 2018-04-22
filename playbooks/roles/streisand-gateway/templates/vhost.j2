@@ -49,9 +49,4 @@ server {
     autoindex off; 
   }
 
-  location /monit/ {
-    rewrite ^/monit/(.*) /$1 break;
-    proxy_ignore_client_abort on;
-    proxy_pass   http://localhost:2812;
-  }
 }

@@ -35,7 +35,6 @@
     - role: tor-bridge
       when: not streisand_ci and streisand_tor_enabled
     - sslh
-    - monit
     - ufw
     - role: wireguard
       when: streisand_wireguard_enabled
