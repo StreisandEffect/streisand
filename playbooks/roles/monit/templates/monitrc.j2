@@ -53,14 +53,6 @@ check process tinyproxy with pidfile /var/run/tinyproxy/tinyproxy.pid
 
 {% endif %}
 
-# sslh
-check process sslh with pidfile /var/run/sslh/sslh.pid
-   start program  "/usr/sbin/service sslh start"
-   stop program  "/usr/sbin/service sslh stop"
-   if failed host {{ ansible_default_ipv4.address }} port 443 type tcp then restart
-   # if 5 restarts within 5 cycles then timeout
-
-
 # Configuration Credits
 # --
 # dnsmasq

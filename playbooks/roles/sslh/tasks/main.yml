@@ -15,13 +15,20 @@
     dest: /etc/sslh.cfg
   notify: Restart sslh
 
-- name: Redirect sslh output to /dev/null for privacy
-  lineinfile:
-    path: "/lib/systemd/system/sslh.service"
-    line: "StandardOutput=null"
-    insertafter: "^KillMode=process$"
-    state: present
+- name: Create the sslh systemd drop-in configuration directory
+  file:
+    path: "{{ sslh_systemd_service_path }}"
+    state: directory
 
-- name: Reload the systemctl units from disk
-  command: systemctl daemon-reload
-  notify: Restart sslh
+- name: Generate the sslh systemd drop-in service file
+  template:
+    src: sslh.service.j2
+    dest: "{{ sslh_systemd_service_path }}/10-restart-failure.conf"
+    mode: 0644
+
+- name: Enable the sslh service
+  systemd:
+    daemon_reload: yes
+    name: sslh.service
+    enabled: yes
+    state: restarted
