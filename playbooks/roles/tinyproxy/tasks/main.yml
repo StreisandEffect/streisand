@@ -29,11 +29,6 @@
     name: tinyproxy.service
     state: stopped
 
-- name: Remove the tinyproxy init.d script
-  file:
-    state: absent
-    path: "/etc/init.d/tinyproxy"
-
 - name: Copy the tinyproxy system unit file
   template:
     src: tinyproxy.service.j2
