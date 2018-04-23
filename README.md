@@ -41,8 +41,6 @@ More Features
 Services Provided
 -----------------
 
-* [Monit](https://mmonit.com/monit/)
-  * Monitors process health and automatically restarts services in the unlikely event that they crash or become unresponsive.
 * [OpenSSH](https://www.openssh.com/)
   * Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the .ppk format that PuTTY requires.
   * [Tinyproxy](https://banu.com/tinyproxy/) is installed and bound to localhost. It can be accessed over an SSH tunnel by programs that do not natively support SOCKS and that require an HTTP proxy, such as Twitter for Android.
