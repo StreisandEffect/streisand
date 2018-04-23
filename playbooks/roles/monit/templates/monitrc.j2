@@ -11,14 +11,6 @@ set httpd port 2812 and
     # and requiring basic auth (through nginx) should be sufficient to protect this interface.
     allow 0.0.0.0/0.0.0.0 # allow any ip to connect to monit.
 
-# OpenSSH
-check process sshd with pidfile /var/run/sshd.pid
-   start program  "/usr/sbin/service ssh start"
-   stop program  "/usr/sbin/service ssh stop"
-   if failed port {{ ssh_port }} protocol ssh then restart
-   # if 5 restarts within 5 cycles then timeout
-
-
 # dnsmasq
 check process dnsmasq with pidfile /var/run/dnsmasq/dnsmasq.pid
   start program = "/usr/sbin/service dnsmasq start" with timeout 60 seconds
@@ -41,17 +33,6 @@ check file dnsmasq-bin with path /usr/sbin/dnsmasq
 
 check file dnsmasq-hosts with path /etc/hosts
    if changed timestamp then restart
-
-{% if streisand_tinyproxy_enabled %}
-
-# Tinyproxy
-check process tinyproxy with pidfile /var/run/tinyproxy/tinyproxy.pid
-   start program  "/usr/sbin/service tinyproxy start"
-   stop program  "/usr/sbin/service tinyproxy stop"
-   if failed host 127.0.0.1 port 8888 type tcp then restart
-   # if 5 restarts within 5 cycles then timeout
-
-{% endif %}
 
 # Configuration Credits
 # --
