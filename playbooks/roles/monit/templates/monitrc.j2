@@ -34,17 +34,6 @@ check file dnsmasq-bin with path /usr/sbin/dnsmasq
 check file dnsmasq-hosts with path /etc/hosts
    if changed timestamp then restart
 
-{% if streisand_tinyproxy_enabled %}
-
-# Tinyproxy
-check process tinyproxy with pidfile /var/run/tinyproxy/tinyproxy.pid
-   start program  "/usr/sbin/service tinyproxy start"
-   stop program  "/usr/sbin/service tinyproxy stop"
-   if failed host 127.0.0.1 port 8888 type tcp then restart
-   # if 5 restarts within 5 cycles then timeout
-
-{% endif %}
-
 # sslh
 check process sslh with pidfile /var/run/sslh/sslh.pid
    start program  "/usr/sbin/service sslh start"

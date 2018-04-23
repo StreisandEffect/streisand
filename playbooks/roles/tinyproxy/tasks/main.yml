@@ -23,3 +23,21 @@
     regexp: "^#?LogLevel"
     line: "LogLevel Critical"
   notify: Restart Tinyproxy
+
+- name: Stop (init.d's) tinyproxy
+  systemd:
+    name: tinyproxy.service
+    state: stopped
+
+- name: Copy the tinyproxy system unit file
+  template:
+    src: tinyproxy.service.j2
+    dest: /etc/systemd/system/tinyproxy.service
+    mode: "0644"
+
+- name: Enable the tinyproxy service
+  systemd:
+    daemon_reload: yes
+    name: tinyproxy.service
+    enabled: yes
+    state: restarted
