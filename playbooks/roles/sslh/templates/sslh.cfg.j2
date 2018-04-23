@@ -2,7 +2,7 @@ verbose: false;
 foreground: true;
 timeout: 5;
 user: "sslh";
-pidfile: "/var/run/sslh/sslh.pid";
+pidfile: "{{ sslh_pid_file }}";
 
 listen:
 (
