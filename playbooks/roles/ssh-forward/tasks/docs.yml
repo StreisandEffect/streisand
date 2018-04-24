@@ -7,15 +7,12 @@
     mode: 0750
     state: directory
 
-- name: Generate the Markdown SSH instructions
-  template:
-    src: instructions{{ item.value.file_suffix }}.md.j2
-    dest: "{{ ssh_gateway_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the Markdown SSH instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ ssh_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ ssh_gateway_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "SSH instructions"
+    i18n_location: "{{ ssh_gateway_location }}"
+    input_template_name: "instructions"
 
 - name: Copy the SSH private key that can be used to connect as the 'forward' user to the SSH Gateway directory
   command: cp {{ forward_location }}/.ssh/id_rsa {{ ssh_rsa_key }}

@@ -1,3 +1,5 @@
+{% include "languages.md.j2" %}
+
 SSH Tunnel
 ----------
 
@@ -63,6 +65,8 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Download the `streisand_rsa` private key that is used to authenticate the SSH connection:
    * [streisand\_rsa](/ssh/streisand_rsa)
 1. Copy the `streisand_rsa` file to the directory of your choice.
+1. Set the correct permissions on the RSA key file:
+   * `chmod 600 streisand_rsa`
 1. Add a new entry to your `.ssh/config` file. It should look like this. Port `443` is available as a fallback option if you are on a network that restricts access to the default SSH port. Be sure to adjust the location of the IdentityFile:
 
          Host {{ streisand_server_name }}

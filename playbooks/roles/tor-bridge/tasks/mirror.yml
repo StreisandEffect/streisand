@@ -27,12 +27,9 @@
       pause:
         seconds: "{{ streisand_mirror_warning_seconds }}"
 
-- name: Generate the Tor Markdown mirror page
-  template:
-    src: mirror{{ item.value.file_suffix }}.md.j2
-    dest: "{{ tor_mirror_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the Tor Markdown mirror page into HTML
-  shell: markdown {{ tor_mirror_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ tor_mirror_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "Tor mirror"
+    i18n_location: "{{ tor_mirror_location }}"
+    input_template_name: "mirror"

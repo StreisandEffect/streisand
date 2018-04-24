@@ -1,8 +1,4 @@
-- - -
-{% for key, value in streisand_languages.items() %}
-  [{{ value.language_name }}](index{{ value.file_suffix }}.html)&nbsp;
-{% endfor %}
-- - -
+{% include "languages.md.j2" %}
 
 Welcome to the **{{ streisand_server_name }}** [Streisand](https://github.com/StreisandEffect/streisand) Gateway server. You are only moments away from an uncensored connection to the Internet.
 
@@ -54,7 +50,7 @@ You can download the necessary client software directly from Streisand in case t
 * [Shadowsocks](/mirror/shadowsocks/)
 {% endif %}
 {% if streisand_ssh_forward_enabled %}
-* [SSH](/mirror/#ssh)
+* [SSH](/mirror/ssh/)
 {% endif %}
 {% if streisand_tor_enabled %}
 * [Tor Browser Bundle](/mirror/tor/)

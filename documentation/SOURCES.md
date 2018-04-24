@@ -7,7 +7,6 @@
   - [`bind`](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/dnsmasq/tasks/main.yml)
   - [`dnsmasq`](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/dnsmasq/tasks/main.yml)
   - [Libreswan Compilation Dependencies](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/l2tp-ipsec/vars/main.yml)
-  - [`monit`](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/monit/tasks/main.yml)
   - [OpenConnect Dependencies](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/openconnect/vars/main.yml)
   - [Shadowsocks Dependencies](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/shadowsocks/vars/main.yml)
   - [`sslh`](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/sslh/tasks/main.yml)

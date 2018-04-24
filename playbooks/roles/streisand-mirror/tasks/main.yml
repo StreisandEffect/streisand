@@ -19,15 +19,12 @@
     mode: 0755
     state: directory
 
-- name: Generate the Markdown mirror page
-  template:
-    src: mirror-index{{ item.value.file_suffix }}.md.j2
-    dest: "{{ streisand_mirror_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "Streisand mirror"
+    i18n_location: "{{ streisand_mirror_location }}"
+    input_template_name: "mirror-index"
   # Only generate the Markdown mirror page when there is a role enabled that
   # mirrors client software
   when: streisand_mirrored_clients
-
-- name: Convert the Markdown mirror page into HTML
-  shell: markdown {{ streisand_mirror_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ streisand_mirror_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"

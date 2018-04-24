@@ -30,12 +30,9 @@
     loop_var: "ocserv_client_password"
     label: "{{ ocserv_client_password.client_name.item }}"
 
-- name: Generate the Markdown OpenConnect/AnyConnect instructions
-  template:
-    src: instructions{{ item.value.file_suffix }}.md.j2
-    dest: "{{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the Markdown OpenConnect/AnyConnect instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "OpenConnect/AnyConnect"
+    input_template_name: "instructions"
+    i18n_location: "{{ ocserv_gateway_location }}"

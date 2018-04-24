@@ -1,8 +1,4 @@
-- - -
-{% for key, value in streisand_languages.items() %}
-  [{{ value.language_name }}](index{{ value.file_suffix }}.html)&nbsp;
-{% endfor %}
-- - -
+{% include "languages.md.j2" %}
 
 Bienvenue sur le serveur passerelle **{{streisand_server_name}}** de [Streisand](https://github.com/StreisandEffect/streisand). Vous n'êtes qu'à quelques minutes d'une connexion libre et non-censurée à l'internet.
 
@@ -54,7 +50,7 @@ Vous pouvez télécharger le logiciel client nécessaire directement auprès de 
 * [Shadowsocks](/mirror/shadowsocks/index-fr.html)
 {% endif %}
 {% if streisand_ssh_forward_enabled %}
-* [SSH](/mirror/index-fr.html#ssh)
+* [SSH](/mirror/ssh/index-fr.html)
 {% endif %}
 {% if streisand_tor_enabled %}
 * [Tor Browser Bundle](/mirror/tor/index-fr.html)
