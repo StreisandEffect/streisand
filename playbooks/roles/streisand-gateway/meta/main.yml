@@ -1,4 +1,3 @@
 ---
 dependencies:
-  - { role: diffie-hellman-group }
   - { role: nginx }
