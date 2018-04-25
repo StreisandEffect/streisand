@@ -12,12 +12,13 @@
     - name: "Stat the Streisand SSH public key"
       stat:
         path: "{{ streisand_ssh_private_key }}.pub"
+      when: no_check_pub_key is undefined
       register: streisand_ssh_key_status
       changed_when: False
     - name: "Fail if the Streisand SSH public key file doesn't exist"
       fail:
         msg: "The Streisand SSH public key \"{{ streisand_ssh_private_key }}.pub\" does not exist."
-      when: streisand_ssh_key_status.stat.exists == False
+      when: (no_check_pub_key is undefined) and (streisand_ssh_key_status.stat.exists == False)
       #- name: "Register the Streisand SSH public key"
       #command: "cat {{ streisand_ssh_private_key }}.pub"
       #register: streisand_ssh_key

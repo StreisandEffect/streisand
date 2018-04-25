@@ -24,6 +24,8 @@ function init_homedir() {
   if [ ! -f "$SITE_VARS" ]; then
     cp "$DEFAULT_SITE_VARS" "$SITE_VARS"
     echo "Created new Streisand site vars file: $SITE_VARS"
+  else
+    sed -i /^no_check_pub_key/d "$SITE_VARS"
   fi
 }
 
@@ -124,6 +126,9 @@ ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
 
 Please enter the word 'streisand' to continue: "
 
+  # Disable presence of public key checking
+  echo "no_check_pub_key: True" >> "$SITE_VARS"
+
   run_genesis localhost.yml inventories/inventory-local-provision
 }
 
@@ -154,6 +159,9 @@ localhost ansible_connection=local ansible_python_interpreter=python
 [streisand-host]
 $SERVER_IP ansible_user=$SSH_USER
 EOF
+
+  # Disable presence of public key checking
+  echo "no_check_pub_key: True" >> "$SITE_VARS"
 
   # Create the inventory file
   echo "$TEMPL" > inventories/inventory-existing
