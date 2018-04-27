@@ -21,6 +21,11 @@ Unattended-Upgrade::Allowed-Origins {
     // Autoupdate Tor
     "TorProject:${distro_codename}";
 {% endif %}
+
+{% if streisand_wireguard_enabled %}
+    // Autoupdate WireGuard
+    "LP-PPA-wireguard-wireguard:${distro_codename}";
+{% endif %}
 };
 
 // List of packages to not update
