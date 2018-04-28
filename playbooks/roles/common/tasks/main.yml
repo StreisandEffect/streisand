@@ -23,9 +23,20 @@
     purge: yes
     autoremove: yes
 
-- name: Perform a full system upgrade
-  apt:
-    upgrade: "safe"
+#- name: Perform a full system upgrade
+#  apt:
+#    upgrade: "safe"
+
+- name: Generate the custom resolvd.conf file
+  template:
+    src: resolvd.conf.j2
+    dest: "/etc/systemd/resolved.conf"
+
+- name: Restart systemd-resolve for settings to take effect
+  systemd:
+    name: "systemd-resolved.service"
+    daemon_reload: yes
+    state: restarted
 
 - name: Copy the English BIP-0039 wordlist
   copy:
@@ -73,6 +84,6 @@
     - { src: "20auto-upgrades.j2",       dest: "/etc/apt/apt.conf.d/20auto-upgrades" }
     - { src: "50unattended-upgrades.j2", dest: "/etc/apt/apt.conf.d/50unattended-upgrades" }
 
-- name: Apply the custom sysctl values
-  include_role:
-    name: sysctl
+#- name: Apply the custom sysctl values
+#  include_role:
+#    name: sysctl

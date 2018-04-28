@@ -14,6 +14,11 @@
     # fact with an interface's details. Without the below route being added this
     # results in enp0s3 being used when we want enp0s8 to be used. We work
     # around this by setting a route for 8.8.8.8 through enp0s8.
+    - name: Install ifupdown
+      apt:
+        name: ifupdown
+        state: present
+
     - name: Workaround Ansible default ipv4 interface detection
       raw: route add -net 8.8.8.8 netmask 255.255.255.255 enp0s8
       args:
