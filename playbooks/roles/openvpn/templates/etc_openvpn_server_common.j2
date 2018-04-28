@@ -22,6 +22,10 @@ keepalive 1800 3600
 tls-crypt ta.key # This file is secret
 cipher {{ openvpn_cipher }}
 ncp-ciphers {{ openvpn_ncp_ciphers }}
+
+# limit the tls ciphers
+tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+
 auth {{ openvpn_auth_digest }}
 tls-version-min 1.2
 compress lz4
