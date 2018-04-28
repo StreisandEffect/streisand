@@ -28,7 +28,7 @@ tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
 
 auth {{ openvpn_auth_digest }}
 tls-version-min 1.2
-compress lzo
+compress lz4
 user nobody
 group nogroup
 persist-key
