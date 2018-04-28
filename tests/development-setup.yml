@@ -80,7 +80,10 @@
     - name: lxd create network
       command: lxc network create testbr0
 
-    - name: Retrieve the Ubuntu Xenial AMD64 LXC image fingerprint
+    - name: lxd attach network to default profile
+      command: lxc network attach-profile testbr0 default eth0
+
+    - name: Retrieve the Ubuntu Bionic AMD64 LXC image fingerprint
       uri:
         url: https://images.linuxcontainers.org/1.0/images/aliases/ubuntu/bionic/amd64
         return_content: yes
