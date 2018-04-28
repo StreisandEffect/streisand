@@ -8,4 +8,4 @@ ciphers = HIGH
 
 [stunnel]
 accept = {{ stunnel_remote_port }}
-connect = {{ openvpn_port }}
+connect = 127.0.0.1:{{ openvpn_port }}
