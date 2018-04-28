@@ -5,7 +5,19 @@
 # If you have problems running this, try the util/venv-builder.sh script.
 
 # Core with Azure dependencies
-ansible[azure]
+#
+# Quick fix: Ansible 2.5.1 is broken; use 2.5.0 until at least version
+# 2.5.2 is released.
+#
+ansible[azure]==2.5.0
+
+# Multiple packages depend on SecretStorage, and versions >= 3 require
+# Python 3. Until we're ready for Python 3, specify the earlier rev.
+#
+# If we end up pinning more package versions, we should consider using
+# pip constraints files instead of forcing installation.
+#
+SecretStorage<3.0
 
 # AWS
 boto
@@ -17,6 +29,7 @@ dopy==0.3.5
 
 # Google Compute Engine
 apache-libcloud>=1.17.0
+pycrypto
 
 # Linode
 pycurl

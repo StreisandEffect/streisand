@@ -25,23 +25,18 @@
         name: download-and-verify
       vars:
         project_name: "PuTTY"
-        project_signer: "PuTTY Releases"
-        project_signing_key: "{{ putty_key_id }}"
-        project_expected_fingerprint: "{{ putty_expected_fingerprint }}"
+        project_download_baseurl: "{{ putty_base_download_url }}"
+        project_download_files: "{{ putty_download_files }}"
         project_download_location: "{{ ssh_mirror_location }}"
-        project_download_urls: "{{ putty_download_urls }}"
-        signature_extension: "gpg"
+        project_signer_keyid: "{{ putty_gpg_keyid }}"
   rescue:
     - name: "{{ streisand_mirror_warning }}"
       pause:
         seconds: "{{ streisand_mirror_warning_seconds }}"
 
-- name: Generate the SSH mirror page
-  template:
-    src: mirror{{ item.value.file_suffix }}.md.j2
-    dest: "{{ ssh_mirror_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the SSH mirror page into HTML
-  shell: markdown {{ ssh_mirror_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ ssh_mirror_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "SSH mirror"
+    i18n_location: "{{ ssh_mirror_location }}"
+    input_template_name: "mirror"

@@ -4,6 +4,7 @@ streisand_gateway_url: "https://{{ streisand_ipv4_address }}"
 streisand_gateway_htpasswd_file: "/etc/nginx/htpasswd"
 streisand_gateway_password_file: "/etc/nginx/gateway-password.txt"
 streisand_gateway_password_localpath: "../{{ streisand_local_directory }}/gateway-password.txt"
+streisand_temp_gateway_path: "/var/local/streisand.gateway"
 
 openssl_ca_base: "/root/ca"
 openssl_ca_private_dir: "{{ openssl_ca_base }}/private"

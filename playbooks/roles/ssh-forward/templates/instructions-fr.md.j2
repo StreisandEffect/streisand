@@ -1,3 +1,5 @@
+{% include "languages.md.j2" %}
+
 Tunnel SSH
 ----------
 
@@ -6,7 +8,7 @@ Tunnel SSH
   * [Windows](#windows)
   * [Linux et macOS](#linux-and-macos)
 {% if streisand_tinyproxy_enabled %}
-  * [Androïde](#android)
+  * [Android](#android)
 {% endif %}
   * [Notes](#notes)
 
@@ -53,7 +55,7 @@ Vous êtes maintenant connecté à un proxy SOCKS qui est prêt à transférer v
 1. Sélectionnez *Utiliser un DNS distant lorsque SOCKS v5 est actif*. Cela configure Firefox pour envoyer toutes les requêtes DNS via le proxy SOCKS. Cela vous protégera contre l'empoisonnement du DNS et vous garantira que les fausses entrées DNS ne peuvent pas être utilisées pour censurer votre accès.
 1. Cliquez *OK*.
 1. Cliquez *OK* encore pour fermer la fenêtre de paramètres de Firefox..
-1. C'est tout! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+1. C'est tout! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
 <a name="linux-and-macos"></a>
 ### Linux et macOS ###
@@ -94,7 +96,7 @@ Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transpor
    `{{ ssh_server_fingerprints.results[0].stdout }}`
 
    `{{ ssh_server_fingerprints.results[1].stdout }}`
-1. Tout votre trafic, y compris DNS, est maintenant transmis de manière transparente via une connexion SSH cryptée. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur Google](https://encrypted.google.com/search?hl=fr&q=ip%20address). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+1. Tout votre trafic, y compris DNS, est maintenant transmis de manière transparente via une connexion SSH cryptée. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
 #### SSH forward ####
 
@@ -112,7 +114,7 @@ Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transpor
 
 1. `SSH`ez dans le serveur et transférer un port SOCKS dynamique:
 
-   `ssh -D {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
+   `ssh -vND {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
 1. Vérifiez que les empreintes numériques correspondent à l'un des éléments ci-dessous:
 
    `{{ ssh_server_fingerprints.results[0].stdout }}`
@@ -122,7 +124,7 @@ Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transpor
 
 {% if streisand_tinyproxy_enabled %}
 <a name="android"></a>
-### Androïde ###
+### Android ###
 1. Installez [SSH persistent tunnels](https://play.google.com/store/apps/details?id=org.ayal.SPT&hl=fr) par Shai Ayal. Cette application permet de transférer facilement plusieurs ports via un tunnel SSH, et fonctionne assez bien pour s'assurer que les tunnels restent actifs même lorsque vous changez régulièrement entre LTE, 3G et WiFi. L'application est [open source](https://bitbucket.org/ayal_org/ssh-persistent-tunnel/) et peut être compilée gratuitement, mais la version Play Store coûte $1,50 (USD).
 1. Téléchargez la clé privée `streisand_rsa` qui sert à authentifier la connexion SSH:
    * [streisand\_rsa](/ssh/streisand_rsa)
@@ -159,7 +161,7 @@ Ces étapes ne fonctionneront que si vous êtes connecté via WiFi. Ils doivent 
 8. Tapez *Port du proxy* et saisissez `8888`.
 9. Tapez *Enregistrer*.
 
-Certaines applications vous permettent de rendre ces paramètres persistants pour tous les réseaux. Twitter pour Androïde et Firefox pour Androïde peut acheminer son trafic via le tunnel SPT SSH indépendamment de votre connexion actuelle (WiFi, 3G, HSPA +, LTE, etc.).
+Certaines applications vous permettent de rendre ces paramètres persistants pour tous les réseaux. Twitter pour Android et Firefox pour Android peut acheminer son trafic via le tunnel SPT SSH indépendamment de votre connexion actuelle (WiFi, 3G, HSPA +, LTE, etc.).
 
 #### Configuration de Twitter pour Android pour utiliser SPT ####
 1. Ouvrez Twitter.

@@ -19,9 +19,6 @@ shadowsocks_dependencies:
   - rng-tools
   - libssl-dev
 
-shadowsocks_version: "3.1.2"
-shadowsocks_compilation_directory: "/usr/local/src/shadowsocks-libev-{{ shadowsocks_version }}"
-
 # Configuring the build without documentation means we save close to 900mb of deps
 # with the tradeoff of not creating man pages
 shadowsocks_configure_flags: "--disable-documentation --prefix=/usr"
@@ -40,3 +37,5 @@ shadowsocks_daemon_args: "-u"
 shadowsocks_gateway_location: "{{ streisand_gateway_location }}/shadowsocks"
 
 shadowsocks_qr_code: "{{ shadowsocks_gateway_location }}/shadowsocks-qr-code.png"
+
+shadowsocks_systemd_service_path: "/etc/systemd/system/shadowsocks-libev.service.d"

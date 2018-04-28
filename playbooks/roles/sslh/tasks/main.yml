@@ -3,8 +3,32 @@
   apt:
     name: sslh
 
-- name: Generate the sslh port multiplexer configuration file
+- name: Generate the sslh port multiplexer systemd defaults file
   template:
-    src: sslh.j2
+    src: sslh.default.j2
     dest: /etc/default/sslh
   notify: Restart sslh
+
+- name: Generate the sslh port multiplexer config file
+  template:
+    src: sslh.cfg.j2
+    dest: /etc/sslh.cfg
+  notify: Restart sslh
+
+- name: Create the sslh systemd drop-in configuration directory
+  file:
+    path: "{{ sslh_systemd_service_path }}"
+    state: directory
+
+- name: Generate the sslh systemd drop-in service file
+  template:
+    src: sslh.service.j2
+    dest: "{{ sslh_systemd_service_path }}/10-restart-failure.conf"
+    mode: 0644
+
+- name: Enable the sslh service
+  systemd:
+    daemon_reload: yes
+    name: sslh.service
+    enabled: yes
+    state: restarted

@@ -12,9 +12,19 @@ Unattended-Upgrade::Allowed-Origins {
     "Freight:${distro_codename}";
 {% endif %}
 
+{% if streisand_shadowsocks_enabled %}
+    // Autoupdate shadowsocks-libev
+    "LP-PPA-max-c-lv-shadowsocks-libev:${distro_codename}";
+{% endif %}
+
 {% if streisand_tor_enabled %}
     // Autoupdate Tor
     "TorProject:${distro_codename}";
+{% endif %}
+
+{% if streisand_wireguard_enabled %}
+    // Autoupdate WireGuard
+    "LP-PPA-wireguard-wireguard:${distro_codename}";
 {% endif %}
 };
 

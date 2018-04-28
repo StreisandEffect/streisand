@@ -1,8 +1,4 @@
-- - -
-{% for key, value in streisand_languages.items() %}
-  [{{ value.language_name }}]({{ streisand_server_name }}-firewall-information{{ value.file_suffix }}.html)&nbsp;
-{% endfor %}
-- - -
+{% include "languages.md.j2" %}
 
 Informations à propos du pare-feu
 ---------------------------------
@@ -12,12 +8,6 @@ Ces ports sont ouverts par défaut lorsque Streisand crée un nouveau serveur à
 Si vous installez Streisand sur un serveur existant ou un fournisseur alternatif, vous devez vous assurer que le pare-feu autorise les ports suivants:
 
 ---
-{% if streisand_l2tp_enabled %}
-* L2TP/IPsec
-  * UDP - 500
-  * UDP - 1701
-  * UDP - 4500
-{% endif %}
 * Nginx (Passerelle Streisand)
   * TCP - {{ nginx_port }}
 {% if streisand_le_enabled %}

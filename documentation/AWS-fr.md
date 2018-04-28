@@ -50,6 +50,14 @@ Configuration d'accès IAM
             ],
             "Effect": "Allow",
             "Resource": "*"
+        },
+        {
+            "Sid": "IAMPolicies",
+            "Action": [
+                "iam:CreateServiceLinkedRole"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
         }
     ]
 }

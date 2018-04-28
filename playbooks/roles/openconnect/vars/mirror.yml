@@ -15,23 +15,20 @@ openconnect_source_url: "https://d25kfp60e9u1dw.cloudfront.net/{{ openconnect_so
 openconnect_source_checksum: "sha256:1c44ec1f37a6a025d1ca726b9555649417f1d31a46f747922b84099ace628a03"
 
 # Windows
-openconnect_windows_version: "v1.5.2"
-openconnect_windows_filename: "openconnect-gui-1.5.2-win32.exe"
+openconnect_windows_version: "v1.5.3"
+openconnect_windows_filename: "openconnect-gui-1.5.3-win32.exe"
 openconnect_windows_href: "{{ openconnect_mirror_href_base }}/{{ openconnect_windows_filename }}"
 openconnect_windows_url: "https://github.com/openconnect/openconnect-gui/releases/download/{{ openconnect_windows_version }}/{{ openconnect_windows_filename }}"
-openconnect_windows_checksum: "sha256:8bfa90fd9932007fe53699b886ad987b6aba337a78c3f9da9c3ff39582af0680"
+openconnect_windows_checksum: "sha256:b1d4bd76b41f32d08287bf043b3dc8c798a145c02319217d45a74b0d9545a23d"
 
-# The below section is commented out as v1.5.1 OpenConnect GUI for macOS crashes on El Capitan when
-# attempting to connect.
-# see issue: https://github.com/openconnect/openconnect-gui/issues/160
 # macOS
-#openconnect_macos_version: "v1.5.1"
-#openconnect_macos_filename: "openconnect-gui-1.5.1-Darwin.dmg"
-#openconnect_macos_href: "{{ openconnect_mirror_href_base }}/{{ openconnect_macos_filename }}"
-#openconnect_macos_url: "https://github.com/openconnect/openconnect-gui/releases/download/{{ openconnect_macos_version }}/{{ openconnect_macos_filename }}"
-#openconnect_macos_checksum: "sha256:b2c338cfe9d0725bee98893225449e27cf7e337d43b0f8b08aec96de6f761f08"
+openconnect_macos_version: "v1.5.1"
+openconnect_macos_filename: "openconnect-gui-1.5.1-Darwin.dmg"
+openconnect_macos_href: "{{ openconnect_mirror_href_base }}/{{ openconnect_macos_filename }}"
+openconnect_macos_url: "https://github.com/openconnect/openconnect-gui/releases/download/{{ openconnect_macos_version }}/{{ openconnect_macos_filename }}"
+openconnect_macos_checksum: "sha256:b2c338cfe9d0725bee98893225449e27cf7e337d43b0f8b08aec96de6f761f08"
 
 openconnect_download_urls:
   - { url: "{{ openconnect_source_url }}",  checksum: "{{ openconnect_source_checksum }}" }
   - { url: "{{ openconnect_windows_url }}", checksum: "{{ openconnect_windows_checksum }}" }
-  #- { url: "{{ openconnect_macos_url }}", checksum: "{{ openconnect_macos_checksum }}" }
+  - { url: "{{ openconnect_macos_url }}", checksum: "{{ openconnect_macos_checksum }}" }

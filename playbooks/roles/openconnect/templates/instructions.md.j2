@@ -1,3 +1,5 @@
+{% include "languages.md.j2" %}
+
 OpenConnect / Cisco AnyConnect
 ------------------------------
 
@@ -8,6 +10,8 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
   * [Certificates](#clientcerts)
   * [Windows](#windows)
   * [macOS](#macos)
+    * [OpenConnect GUI](#macos-openconnect-gui)
+    * [OpenConnect CLI](#macos-openconnect-cli)
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
@@ -51,10 +55,28 @@ Client certificates are a mechanism by which clients can authenticate themselves
 {% endfor %}
    1. Click *OK*.
    1. Click *OK* to close the connection properties.
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="macos"></a>
 ### macOS ###
+
+<a name="macos-openconnect-gui"></a>
+#### OpenConnect GUI
+
+1. Download the [OpenConnect GUI installer](/mirror/#openconnect).
+1. Run the OpenConnect GUI installer.
+1. Launch the OpenConnect application.
+1. Click the *Edit* icon (gear) and select 'New profile advanced'.
+1. Enter `{{ streisand_server_name }}` for the *Name*.
+1. Enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}` for the *Gateway*.
+1. Enter `streisand` for the *Username* and click *Save*.
+1. Click *Connect*.
+1. A prompt will appear during the initial connection asking you to trust the server's certificate. Click *The information is accurate* and the server will be automatically verified for all future connections.
+1. Enter `{{ ocserv_password.stdout }}` for the *Password* and click *OK*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+<a name="macos-openconnect-cli"></a>
+#### OpenConnect CLI
 
 1. Install [Homebrew](https://brew.sh/), if you haven't already.
 1. Install OpenConnect using Homebrew:
@@ -67,7 +89,7 @@ Client certificates are a mechanism by which clients can authenticate themselves
 1. Run OpenConnect:
 
   `sudo openconnect --cafile ca.crt --certificate your-client-certificate.p12 --key-password 'your-client-certificate-password' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 
 <a name="linux"></a>
@@ -90,7 +112,7 @@ Client certificates are a mechanism by which clients can authenticate themselves
 1. Select the VPN in the left-hand menu, and flip the switch to *ON*. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to *VPN Connections*, and clicking on its name.
 1. Enter `streisand` for the *Username* and click *Login*.
 1. Enter `{{ ocserv_password.stdout }}` for the *Password*, check *Save passwords*, and click *Login*.
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="android"></a>
 ### Android ###
@@ -119,7 +141,7 @@ Client certificates are a mechanism by which clients can authenticate themselves
 1. Tap *Import and Continue* when the Certificate Summary is displayed.
 1. Tap *Connect* on the group selection screen. The correct default has already been chosen.
 1. If this is your first time using AnyConnect, you will need to accept the Connection Request dialog that Android displays.
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 #### Prompted for username? ####
 
@@ -156,4 +178,4 @@ If you're affected, you can use this workaround:
 1. Tap *Details* when the Security Warning is displayed.
 1. Tap *Import* in the top-right corner.
 1. Tap *Connect* on the group selection screen. The correct default has already been chosen.
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.

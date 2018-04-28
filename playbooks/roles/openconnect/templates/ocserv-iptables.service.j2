@@ -1,0 +1,12 @@
+[Unit]
+Description=Set the firewall rules required for ocserv
+After=network.target
+Before=ocserv.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/sbin/{{ ocserv_firewall_rule }}
+
+[Install]
+WantedBy=multi-user.target

@@ -1,3 +1,5 @@
+{% include "languages.md.j2" %}
+
 OpenVPN (wrapped in stunnel)
 ----------------------------
 
@@ -9,7 +11,7 @@ Following these steps will wrap your OpenVPN traffic in an encrypted tunnel so i
 For security reasons, OpenVPN clients typically have their own unique certificate and private key. The server you will be connecting to has been configured to allow clients to share the same certificate and private key, but you may still wish to give your phone and laptop different keys, for example.
 
 ---
-* Plateforms
+* Platforms
   * [Windows](#windows)
   * [macOS](#macos)
   * [Linux](#linux)
@@ -47,7 +49,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. Drag and drop the downloaded `{{ openvpn_stunnel_profile_filename }}` file to this location alongside the README.
 1. Right-click on the OpenVPN icon in your taskbar and choose *Connect*.
 1. You will see a log scroll by as the connection is established, followed by a taskbar notification indicating your assigned IP.
-1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="macos"></a>
 ### macOS ###
@@ -81,7 +83,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. Double-click the OpenVPN profile.
 1. You will be asked to choose whether the profile should be available for all users or only the current user. After making your selection, you will be asked to enter your password.
 1. Look for the Tunnelblick icon in your menu bar. Click on it, and choose *Connect*.
-1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
 ### Linux ###
@@ -123,7 +125,7 @@ Now you are ready to install OpenVPN and configure it to route its traffic throu
 1. Execute OpenVPN, and pass it the .ovpn profile as an option:
 
    `sudo openvpn {{ openvpn_stunnel_profile_filename }}`
-1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 The OpenVPN plugin for NetworkManager appears to become very confused as to how it should route traffic when you connect to an OpenVPN server through a wrapped stunnel connection. Manually adding route information does not seem to help. Therefore, unlike in the [non-stunnel instructions](/openvpn), the steps above are the recommended connection method for Ubuntu as well.
 
@@ -158,7 +160,7 @@ Now you are ready to install OpenVPN for Android and configure it to route its t
 1. Tap the save icon (floppy disk) in the lower-right of the screen after the import is complete.
 1. Tap the profile.
 1. Accept the Android VPN connection warning.
-1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
 iOS

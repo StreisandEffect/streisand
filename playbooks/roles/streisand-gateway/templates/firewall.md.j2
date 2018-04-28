@@ -1,8 +1,4 @@
-- - -
-{% for key, value in streisand_languages.items() %}
-  [{{ value.language_name }}]({{ streisand_server_name }}-firewall-information{{ value.file_suffix }}.html)&nbsp;
-{% endfor %}
-- - -
+{% include "languages.md.j2" %}
 
 Firewall Information
 --------------------
@@ -12,12 +8,6 @@ These ports are open by default when Streisand creates a new server from scratch
 If you are installing Streisand on an existing server or alternate provider then you need to make sure the firewall allows traffic to the new server on the following ports:
 
 ---
-{% if streisand_l2tp_enabled %}
-* L2TP/IPsec
-  * UDP - 500
-  * UDP - 1701
-  * UDP - 4500
-{% endif %}
 * Nginx (Streisand Gateway)
   * TCP - {{ nginx_port }}
 {% if streisand_le_enabled %}

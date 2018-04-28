@@ -1,3 +1,5 @@
+{% include "languages.md.j2" %}
+
 Shadowsocks
 -----------
 
@@ -25,7 +27,7 @@ Shadowsocks
    1. The *SOCKS 5 Proxy Port* should be `{{ shadowsocks_local_port }}` and the *Encryption Method* should be `{{ shadowsocks_encryption_method }}`.
    1. Click *Save*.
 1. Click on the Shadowsocks menu tray icon and select *Enable*.
-1. That's it! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. That's it! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="macos"></a>
 ### macOS ###
@@ -43,7 +45,7 @@ Shadowsocks
    1. Click *OK*.
 1. Click on the Shadowsocks icon in the menu bar again, and choose *Global Mode*.
 1. You can use the Shadowsocks icon to enable/disable the VPN. The color of the icon will change based on whether or not it is active.
-1. That's it! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. That's it! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
 ### Linux ###
@@ -87,7 +89,7 @@ This should return a 301 Found response **not** a connection refused error.
 1. Select *Remote DNS*. This configures Firefox to send all DNS requests through the SOCKS proxy. This will protect you against DNS poisoning and ensure that false DNS entries cannot be used to censor your access.
 1. Click *OK*.
 1. Click *OK* again to close the Firefox preferences window.
-1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 
 <a name="android"></a>
@@ -101,7 +103,7 @@ This should return a 301 Found response **not** a connection refused error.
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
 1. Tap the round paper plane icon along the bottom-left bar.
 1. Accept the Android VPN connection warning.
-1. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
 ### iOS ###
@@ -113,7 +115,7 @@ This should return a 301 Found response **not** a connection refused error.
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
 1. Toggle the connection switch located to the right of the *Not Connected* text on the *Home* tab.
    * If this is your first time running Shadowrocket, iOS will ask you to verify that the application should have permission to add VPN configurations. Tap *Allow* and follow the instructions.
-1. You can verify that your traffic is being routed properly by [looking up your IP address on Google](https://encrypted.google.com/search?hl=en&q=ip%20address). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="simple-obfs"></a>
 ### simple-obfs for unreliable/hostile networks ###

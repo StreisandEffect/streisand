@@ -16,10 +16,11 @@
       vars:
         project_name: "stunnel"
         project_signer: "Michal Trojnara"
-        project_signing_key: "{{ stunnel_michal_trojnara_key_id }}"
-        project_expected_fingerprint: "{{ stunnel_michal_trojnara_expected_fingerprint }}"
+        project_download_baseurl: "{{ stunnel_base_download_url }}"
+        project_download_files: "{{ stunnel_download_files }}"
         project_download_location: "{{ stunnel_mirror_location }}"
-        project_download_urls: "{{ stunnel_download_urls }}"
+        project_signer_keyid: "{{ stunnel_gpg_keyid }}"
+
   rescue:
     - name: "{{ streisand_mirror_warning }}"
       pause:
@@ -36,12 +37,9 @@
   set_fact:
     stunnel_version: "{{ stunnel_latest_check.stdout }}"
 
-- name: Generate the stunnel Markdown mirror page
-  template:
-    src: mirror{{ item.value.file_suffix }}.md.j2
-    dest: "{{ stunnel_mirror_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the stunnel Markdown mirror page into HTML
-  shell: markdown {{ stunnel_mirror_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ stunnel_mirror_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "stunnel mirror"
+    i18n_location: "{{ stunnel_mirror_location }}"
+    input_template_name: "mirror"

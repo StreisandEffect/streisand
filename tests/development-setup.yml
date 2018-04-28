@@ -36,12 +36,6 @@
   remote_user: root
   become: yes
   tasks:
-    # If l2tp is enabled we need to build & prepare the Libreswan kernel module
-    # on the localhost in order for it to be usable by the container
-    - name: Install Libreswan to support L2TP in container
-      include_tasks: libreswan-setup.yml
-      when: streisand_l2tp_enabled
-
     - name: Ensure consistent & clean apt state
       shell: "{{ item }}"
       with_items:
@@ -61,6 +55,12 @@
 
     - name: "Install LXD snap"
       command: "snap install lxd"
+
+    - name: "Connect LXD plug to slots"
+      command: "{{ item }}"
+      with_items:
+        - "snap connect lxd:lxd-support"
+        - "snap connect lxd:network"
 
     - name: "Start lxd"
       command: "snap start lxd"

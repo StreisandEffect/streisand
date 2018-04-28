@@ -1,0 +1,3 @@
+---
+sslh_pid_file: "/var/run/sslh/sslh.pid"
+sslh_systemd_service_path: "/etc/systemd/system/sslh.service.d"

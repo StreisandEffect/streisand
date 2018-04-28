@@ -25,12 +25,6 @@
     group: root
     mode: 0600
 
-- name: Configure stunnel to start at boot
-  lineinfile:
-    dest: /etc/default/stunnel4
-    regexp: "^ENABLED"
-    line: "ENABLED=1"
-
 - name: Generate remote stunnel configuration file (for the server)
   template:
     src: stunnel-remote.conf.j2
@@ -41,6 +35,29 @@
   template:
     src: stunnel-local.conf.j2
     dest: "{{ openvpn_gateway_location }}/stunnel.conf"
+
+- name: Stop (init.d's) stunnel4
+  systemd:
+    name: stunnel4.service
+    state: stopped
+
+- name: Remove the stunnel init.d script
+  file:
+    state: absent
+    path: "/etc/init.d/stunnel4"
+
+- name: Copy the stunnel system unit file
+  template:
+    src: stunnel.service.j2
+    dest: /etc/systemd/system/stunnel.service
+    mode: "0644"
+
+- name: Enable the stunnel service
+  systemd:
+    daemon_reload: yes
+    name: stunnel.service
+    enabled: yes
+    state: restarted
 
 # Set up the stunnel firewall rules
 - import_tasks: firewall.yml

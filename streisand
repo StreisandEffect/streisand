@@ -36,8 +36,8 @@ function check_python() {
 
   if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 2\..* ]]; then
     local INVENTORY_DIR="$SCRIPT_DIR/inventories/"
-    for INV_FILE in $INVENTORY_DIR/*; do
-      sed 's/=python$/=python2/' "$INV_FILE" > "$INV_FILE.new"
+    for INV_FILE in "$INVENTORY_DIR"/*; do
+      sed 's/=python$/=python2.7/' "$INV_FILE" > "$INV_FILE.new"
       mv "$INV_FILE.new" "$INV_FILE"
       git -C "$INVENTORY_DIR" update-index --assume-unchanged "$INV_FILE" 2>/dev/null || true
     done
@@ -61,18 +61,18 @@ function validate() {
 function customize() {
   read -r -p "
 Do you wish to customize which services Streisand will install?
-By default Streisand will use the settings configured in $SITE_VARS
+By saying 'no' Streisand will use the settings configured in $SITE_VARS
 
-Please enter the word 'yes' to customize or hit enter to continue: " confirm
+Press enter to customize your installation: " confirm
   case "$confirm" in
-    yes) echo; echo "Confirmed. Customizing Streisand services.";
+    no) echo; echo "Installing Streisand services specified in $SITE_VARS";;
+     *) echo; echo "Confirmed. Customizing Streisand services.";
          # NOTE(@cpu): We don't pass the other `--extra-vars` here because the
          # customize `vars_prompt` will only happen if the vars aren't already
          # set. If you pass the site/defaults in no prompting will happen.
          echo; echo; ansible-playbook \
            --extra-vars="@$GLOBAL_VARS" \
            playbooks/customize.yml;;
-    *) echo; echo "Installing Streisand services specified in $SITE_VARS";;
   esac
 }
 

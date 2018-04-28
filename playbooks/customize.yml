@@ -9,12 +9,8 @@
       default: "~/.ssh/id_rsa"
       private: no
     - name: vpn_clients
-      prompt: "How many VPN client profiles should be generated per-service? Press enter for default "
+      prompt: "How many VPN client profiles should be generated per-service (min: 1 max: 20)? Press enter for default "
       default: 5
-      private: no
-    - name: streisand_l2tp_enabled
-      prompt: "Enable L2TP/IPSec? Press enter for default "
-      default: "yes"
       private: no
     - name: streisand_openconnect_enabled
       prompt: "Enable OpenConnect? Press enter for default "
@@ -62,10 +58,6 @@
         path: "{{ streisand_site_vars }}"
         regexp: "^vpn_clients: [\\d]+$"
         line: "vpn_clients: {{ vpn_clients }}"
-    - lineinfile:
-        path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_l2tp_enabled: (?:yes|no)$"
-        line: "streisand_l2tp_enabled: {{ streisand_l2tp_enabled }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_openconnect_enabled: (?:yes|no)$"

@@ -64,21 +64,6 @@
     - { src: "header.html", dest: "{{ streisand_header_template }}" }
     - { src: "footer.html", dest: "{{ streisand_footer_template }}" }
 
-- name: Generate the language selection markdown file
-  template:
-    src: "languages.md.j2"
-    dest: "/tmp/languages.md"
-
-- name: Convert the language selection markdown file
-  shell: markdown /tmp/languages.md > {{ streisand_language_selector }}
-  args:
-    creates: "{{ streisand_language_selector }}"
-
-- name: Generate an internationalized header file
-  shell: cat {{ streisand_header_template }} {{ streisand_language_selector }} > {{ streisand_i18n_header_template }}
-  args:
-    creates: "{{ streisand_i18n_header_template }}"
-
 - name: Generate the unattended-upgrades templates to enable automatic security updates
   template:
     src: "{{ item.src }}"

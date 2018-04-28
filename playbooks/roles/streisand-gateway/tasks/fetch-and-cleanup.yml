@@ -1,0 +1,22 @@
+---
+- name: Find the files to fetch from the Streisand temporary gateway directory
+  find:
+    paths: "{{ streisand_temp_gateway_path }}"
+    recurse: no
+    pattern: "*.html"
+  register: gateway_local_files
+
+- name: Fetch the local Gateway files
+  fetch:
+    dest: ../{{ streisand_local_directory }}/
+    src: "{{ file.path }}"
+    flat: yes
+  with_items: "{{ gateway_local_files.files }}"
+  loop_control:
+    loop_var: file
+    label: "{{ file.path }}"
+
+- name: Delete the Streisand temporary gateway directory
+  file:
+    path: "{{ streisand_temp_gateway_path }}"
+    state: "absent"

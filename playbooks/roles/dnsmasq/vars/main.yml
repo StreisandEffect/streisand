@@ -1,0 +1,2 @@
+---
+dnsmasq_systemd_service_path: "/etc/systemd/system/dnsmasq.service.d"

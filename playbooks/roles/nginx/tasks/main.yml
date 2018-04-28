@@ -34,3 +34,21 @@
   with_items:
     - sites-available
     - sites-enabled
+
+- name: Create the nginx systemd configuration directory
+  file:
+    path: "{{ nginx_systemd_service_path }}"
+    state: directory
+
+- name: Generate the nginx systemd service file
+  template:
+    src: nginx.service.j2
+    dest: "{{ nginx_systemd_service_path }}/10-restart-failure.conf"
+    mode: 0644
+
+- name: Enable the nginx service
+  systemd:
+    daemon_reload: yes
+    name: nginx.service
+    enabled: yes
+    state: restarted

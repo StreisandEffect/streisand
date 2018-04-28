@@ -1,0 +1,19 @@
+# source https://github.com/liuliang/centos-stunnel-systemd/blob/master/stunnel.service
+[Unit]
+Description=SSL tunnel for network daemons
+After=openvpn@server.target
+
+[Install]
+WantedBy=multi-user.target
+Alias=stunnel.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/stunnel {{ stunnel_path }}/stunnel.conf
+ExecStop=/usr/bin/killall -9 stunnel
+
+# Give up if ping doesn't get an answer within the timeout
+TimeoutSec=600
+
+Restart=always
+PrivateTmp=true

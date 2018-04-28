@@ -23,7 +23,7 @@
     creates: "{{ tls_ca }}.crt"
 
 - name: Generate a random server common name
-  shell: "{{ streisand_word_gen.long_identifier }} > {{ tls_server_common_name_file }}"
+  shell: "{{ streisand_word_gen.long_identifier | trim }} > {{ tls_server_common_name_file }}"
   args:
     creates: "{{ tls_server_common_name_file }}"
 
