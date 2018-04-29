@@ -23,6 +23,15 @@
 
 - name: "Verify the {{ project_name }} download signatures with the Streisand GPG keyring"
   command: "gpgv2 --keyring {{ streisand_gpg_keyring }} {{ project_download_location }}/{{ item.sig }} {{ project_download_location }}/{{ item.file }}"
+  environment:
+    # We need to explicitly override the configured LANG, LC_MESSAGES and LC_ALL
+    # env vars to ensure that we can match on English output even on systems
+    # that have a non-english locale configured. It's _probably_ enough to
+    # override just LANG but it sounds like there are some cases where LC_ALL
+    # takes precedence and setting env vars is cheap!
+    LANG: "en_US.UTF-8"
+    LC_MESSAGES: "en_US.UTF-8"
+    LC_ALL: "en_US.UTF-8"
   register: gpg_verification_results
   with_items: "{{ project_download_files }}"
 
