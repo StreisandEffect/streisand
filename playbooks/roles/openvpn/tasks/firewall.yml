@@ -29,15 +29,15 @@
     proto: "udp"
     rule: "allow"
 
-- name: Install the OpenVPN iptables service file
-  template:
-    src: openvpn-iptables.service.j2
-    dest: /etc/systemd/system/openvpn-iptables.service
-    mode: 0644
+#- name: Install the OpenVPN iptables service file
+#  template:
+#    src: openvpn-iptables.service.j2
+#    dest: /etc/systemd/system/openvpn-iptables.service
+#    mode: 0644
 
-- name: Enable the openvpn-iptables service
-  systemd:
-    daemon_reload: yes
-    name: openvpn-iptables.service
-    enabled: yes
-    state: started
+#- name: Enable the openvpn-iptables service
+#  systemd:
+#    daemon_reload: yes
+#    name: openvpn-iptables.service
+#    enabled: yes
+#    state: started

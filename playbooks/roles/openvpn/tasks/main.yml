@@ -2,11 +2,11 @@
 # Add the apt key and install OpenVPN
 - import_tasks: install.yml
 
-- name: "Configure DNSMasq to listen on {{ dnsmasq_openvpn_tcp_ip }}:53 and {{ dnsmasq_openvpn_udp_ip }}:53"
-  template:
-    src: openvpn_dnsmasq.conf.j2
-    dest: /etc/dnsmasq.d/openvpn.conf
-  notify: Restart dnsmasq
+#- name: "Configure DNSMasq to listen on {{ dnsmasq_openvpn_tcp_ip }}:53 and {{ dnsmasq_openvpn_udp_ip }}:53"
+#  template:
+#    src: openvpn_dnsmasq.conf.j2
+#    dest: /etc/dnsmasq.d/openvpn.conf
+#  notify: Restart dnsmasq
 
 - include_role:
     name: certificates

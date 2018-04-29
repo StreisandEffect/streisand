@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - { role: dnsmasq }
+  #- { role: dnsmasq }
   - { role: ip-forwarding }
