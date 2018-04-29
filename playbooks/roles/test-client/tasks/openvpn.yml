@@ -3,9 +3,8 @@
 # Import the Streisand OpenVPN playbook vars
 - include_vars: "../../openvpn/vars/main.yml"
 
-- name: "Install OpenVPN"
-  apt:
-    name: "openvpn"
+# Install OpenVPN from PPA
+- import_tasks: "../../openvpn/tasks/install.yml"
 
 - name: "Remove stale test state if required"
   file:
