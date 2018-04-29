@@ -24,7 +24,6 @@ server {
 
   ssl_protocols TLSv1.2;
   ssl_prefer_server_ciphers on;
-  ssl_dhparam {{ dhparams_location }};
   ssl_ciphers '{{ streisand_tls_ciphers }}';
   ssl_ecdh_curve auto;
   ssl_session_timeout  10m;
