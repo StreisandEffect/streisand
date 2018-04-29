@@ -9,7 +9,7 @@
 
 - name: "Create the GPG directory"
   file:
-    path: "/root/.gnupg/"
+    path: "{{ root_gpg_dir }}"
     state: directory
     owner: root
     group: root
@@ -34,10 +34,26 @@
 - name: "Write the Streisand GPG dirnmgr config"
   template:
     src: "dirmngr.conf.j2"
-    dest: "/root/.gnupg/dirmngr.conf"
+    dest: "{{ root_gpg_dir }}/dirmngr.conf"
     owner: root
     group: root
     mode: 0750
+
+- name: "Start the GPG agent"
+  command: "gpg-agent --homedir {{ root_gpg_dir }} --use-standard-socket --daemon"
+
+- name: "Start the dirmngr"
+  command: "dirmngr --homedir {{ root_gpg_dir }} --daemon"
+
+- name: "Wait for the GPG agent and dirmngr control sockets"
+  wait_for:
+    path: "{{ root_gpg_dir }}/{{ item }}"
+    state: present
+    sleep: 5
+    timeout: 60
+  with_items:
+    - "S.dirmngr"
+    - "S.gpg-agent"
 
 - name: "Create the Streisand GPG keyring"
   command: "gpg2 {{ streisand_default_gpg_flags }} --fingerprint"
