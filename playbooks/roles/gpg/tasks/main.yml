@@ -50,6 +50,16 @@
     dest: "{{ streisand_gpg_dir }}/keys/{{ item }}"
   with_items: "{{ streisand_bootstrap_gpg_keys }}"
 
+- name: "Wait for the GPG agent and dirmngr control sockets"
+  wait_for:
+    path: "{{ streisand_gpg_dir }}/{{ item }}"
+    state: present
+    sleep: 5
+    timeout: 60
+  with_items:
+    "S.dirmngr"
+    "S.gpg-agent"
+
 - name: "Import the bootstrap GPG public keys to the Streisand GPG keyring"
   command: "gpg2 {{ streisand_default_gpg_flags }} --import {{ streisand_gpg_dir }}/keys/{{ item }}"
   with_items: "{{ streisand_bootstrap_gpg_keys }}"
