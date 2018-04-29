@@ -63,7 +63,6 @@
     - certificates
     - common
     - diagnostics
-    - diffie-hellman-group
     - dnsmasq
     - download-and-verify
     - ec2-security-group
