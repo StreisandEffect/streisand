@@ -7,7 +7,7 @@ streisand_common_packages:
   # Used to perform a system upgrade
   - aptitude
   # Used to compile Libreswan and OpenConnect Server (ocserv)
-  - build-essential
+  #- build-essential
   # Used to perform API requests, including the version check for
   # the Tor Browser Bundle
   - curl

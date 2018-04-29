@@ -13,9 +13,9 @@
 
 [Resolve]
 DNS={{ upstream_dns_servers | join(' ') }}
-#FallbackDNS=
+FallbackDNS=1.1.1.1 1.0.0.1
 #Domains=
-#LLMNR=no
+LLMNR=yes
 #MulticastDNS=no
 DNSSEC=no
 Cache=yes
