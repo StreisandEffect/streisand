@@ -100,7 +100,7 @@ function run_genesis() {
   # Ensure that the customization hasn't resulted in something inconsistent
   # NEW_SERVER_PROVISIONING can be False or True (0 or 1), tests if we need 
   # to check existence of SSH public key
-  if [ "$GENESIS_PLAYBOOK" != "existing-server.yml" -a "$GENESIS_PLAYBOOK" != "localhost.yml" ]; then
+  if [ "$GENESIS_PLAYBOOK" != "existing-server.yml" ] && [ "$GENESIS_PLAYBOOK" != "localhost.yml" ]; then
     validate true
   else
     validate false
