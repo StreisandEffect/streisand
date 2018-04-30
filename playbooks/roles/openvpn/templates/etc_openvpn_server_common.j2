@@ -2,7 +2,7 @@ dev tun
 ca ca.crt
 cert server.crt
 key server.key  # This file should be kept secret
-dh {{ dhparams_location }}
+dh none
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1"
 

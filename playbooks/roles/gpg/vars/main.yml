@@ -1,7 +1,9 @@
 ---
 
+root_gpg_dir: "/root/.gnupg"
+
 # Keep Streisand's GPG cruft out of the way
-streisand_gpg_dir: "/root/.gnupg/streisand"
+streisand_gpg_dir: "{{ root_gpg_dir }}/streisand"
 
 # Where is the Streisand specific GPG keyring kept?
 streisand_gpg_keyring: "{{ streisand_gpg_dir }}/pubring.gpg"

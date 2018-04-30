@@ -8,8 +8,8 @@
   args:
     creates: "{{ stunnel_key }}"
 
-- name: Generate the stunnel certificate and combine it with a unique Diffie-Hellman group
-  shell: openssl req -new -nodes -x509 -key {{ stunnel_key}} -days {{ stunnel_days_valid }} -subj "{{ stunnel_request_subject }}/CN=stunnel" | cat - {{ dhparams_location }} > {{ stunnel_cert }}
+- name: Generate the stunnel certificate.
+  shell: openssl req -new -nodes -x509 -key {{ stunnel_key}} -days {{ stunnel_days_valid }} -subj "{{ stunnel_request_subject }}/CN=stunnel" > {{ stunnel_cert }}
   args:
     creates: "{{ stunnel_cert }}"
 
