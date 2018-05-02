@@ -1,4 +1,6 @@
-![Streisand Logo](https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg "Автоматизируйте эффект Стрейзанд!")
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg" alt="Automate the effect"/> 
+</p>
 
 - - -
 [English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Зеркало](https://gitlab.com/alimakki/streisand)
