@@ -59,7 +59,7 @@
                 * Copy the long string that is generated and paste it below.
           If this field is left blank, the environment variable DO_API_KEY will be used.
 
-          What is your DigitalOcean Personal Access Token? 
+          What is your DigitalOcean Personal Access Token?
       private: no
 
     - name: "do_ssh_name"
