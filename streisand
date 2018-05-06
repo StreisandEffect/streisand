@@ -106,13 +106,25 @@ function run_genesis() {
     validate false
   fi
   
-  # Run the specified genesis playbook with the specified Ansible inventory
-  echo; echo; ansible-playbook \
-    -i $GENESIS_INVENTORY \
-    --extra-vars="@$GLOBAL_VARS" \
-    --extra-vars="@$DEFAULT_SITE_VARS" \
-    --extra-vars="@$SITE_VARS" \
-    "playbooks/$GENESIS_PLAYBOOK"
+  if [ -z "${SSH_USER}" ] || [ "$SSH_USER" = "root" ]; then
+      
+    # Run the specified genesis playbook with the specified Ansible inventory
+    echo; echo; ansible-playbook \
+      -i $GENESIS_INVENTORY \
+      --extra-vars="@$GLOBAL_VARS" \
+      --extra-vars="@$DEFAULT_SITE_VARS" \
+      --extra-vars="@$SITE_VARS" \
+      "playbooks/$GENESIS_PLAYBOOK"
+  else
+    # Run the specified genesis playbook with the specified Ansible inventory
+    echo; echo; ansible-playbook \
+      -i $GENESIS_INVENTORY \
+      --extra-vars="@$GLOBAL_VARS" \
+      --extra-vars="@$DEFAULT_SITE_VARS" \
+      --extra-vars="@$SITE_VARS" \
+      --ask-become-pass \
+      "playbooks/$GENESIS_PLAYBOOK"
+  fi
 }
 
 # be_careful_friend asks you to pay attention because you're about to do
