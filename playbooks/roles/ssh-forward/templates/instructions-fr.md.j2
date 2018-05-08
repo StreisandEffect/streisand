@@ -114,7 +114,7 @@ Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transpor
 
 1. `SSH`ez dans le serveur et transférer un port SOCKS dynamique:
 
-   `ssh -D {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
+   `ssh -vND {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
 1. Vérifiez que les empreintes numériques correspondent à l'un des éléments ci-dessous:
 
    `{{ ssh_server_fingerprints.results[0].stdout }}`

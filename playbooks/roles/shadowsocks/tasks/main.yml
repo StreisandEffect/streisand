@@ -65,11 +65,23 @@
     group: nogroup
     mode: 0640
 
+- name: Create the shadowsocks systemd configuration directory
+  file:
+    path: "{{ shadowsocks_systemd_service_path }}"
+    state: directory
+
+- name: Generate the nginx systemd service file
+  template:
+    src: shadowsocks-libev.service.j2
+    dest: "{{ shadowsocks_systemd_service_path }}/10-restart-failure.conf"
+    mode: 0644
+
 - name: Enable the Shadowsocks service so it starts at boot, and bring it up
   systemd:
-    name: shadowsocks-libev
+    name: shadowsocks-libev.service
+    daemon_reload: yes
     enabled: yes
-    state: started
+    state: restarted
 
 # For some providers (e.g. GCE/AWS) the streisand_ipv4_address != the
 # ansible_default_ipv4.address, and the Shadowsocks service is bound to the
