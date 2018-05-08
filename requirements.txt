@@ -9,7 +9,7 @@
 # Quick fix: Ansible 2.5.1 is broken; use 2.5.0 until at least version
 # 2.5.2 is released.
 #
-ansible[azure]==2.5.0
+ansible[azure]==2.5.2
 
 # Multiple packages depend on SecretStorage, and versions >= 3 require
 # Python 3. Until we're ready for Python 3, specify the earlier rev.
