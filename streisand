@@ -193,7 +193,7 @@ read -r -p "Which provider are you using?
   4. Google
   5. Linode
   6. Rackspace
-  7. Localhost (Advanced)
+  7. localhost (Advanced)
   8. Existing Server (Advanced)
 : " reply
 
