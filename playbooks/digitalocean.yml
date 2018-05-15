@@ -46,7 +46,20 @@
       private: no
 
     - name: "do_access_token_entry"
-      prompt: "\n\nNew API access tokens can be generated in the DigitalOcean control panel.\nhttps://cloud.digitalocean.com/settings/applications\n  * When generating a new token, please note that the Write Scope is necessary\n    in order to create Droplets.\n\nIf this field is left blank, the environment variable DO_API_KEY\nwill be used.\n\nWhat is your DigitalOcean Access Token?\n"
+      prompt: |
+
+          Personal Access Tokens allow Streisand to create a droplet for you.
+          New Personal Access Tokens can be generated in the DigitalOcean control panel.
+          To generate a new token please do the following:
+                * Go to https://cloud.digitalocean.com/settings/applications
+                * Click 'Generate New Token'
+                * Give the token a name (it is arbitrary)
+                * Be sure to select the 'Write' scope as well (this is not optional)
+                * Click 'Generate Token'
+                * Copy the long string that is generated and paste it below.
+          If this field is left blank, the environment variable DO_API_KEY will be used.
+
+          What is your DigitalOcean Personal Access Token?
       private: no
 
     - name: "do_ssh_name"

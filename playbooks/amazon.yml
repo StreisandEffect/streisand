@@ -7,20 +7,22 @@
 
   vars:
     regions:
-      "1": "ap-south-1"
-      "2": "ap-northeast-2"
-      "3": "ap-southeast-1"
-      "4": "ap-southeast-2"
-      "5": "ap-northeast-1"
-      "6": "ca-central-1"
-      "7": "eu-central-1"
-      "8": "eu-west-1"
-      "9": "eu-west-2"
-      "10": "sa-east-1"
-      "11": "us-east-1"
-      "12": "us-east-2"
-      "13": "us-west-1"
-      "14": "us-west-2"
+      "1": "us-east-1"
+      "2": "us-east-2"
+      "3": "us-west-1"
+      "4": "us-west-2"
+      "5": "ca-central-1"
+      "6": "eu-central-1"
+      "7": "eu-west-1"
+      "8": "eu-west-2"
+      "9": "eu-west-3"
+      "10": "ap-northeast-1"
+      "11": "ap-northeast-2"
+      "12": "ap-northeast-3"
+      "13": "ap-southeast-1"
+      "14": "ap-southeast-2"
+      "15": "ap-south-1"
+      "16": "sa-east-1"
 
   # These variable files are included so the ec2-security-group role
   # knows which ports to open
@@ -39,22 +41,24 @@
     - name: "aws_region_var"
       prompt: |
         In what region should the server be located?
-          1. Asia Pacific   (Mumbai)
-          2. Asia Pacific   (Seoul)
-          3. Asia Pacific   (Singapore)
-          4. Asia Pacific   (Sydney)
-          5. Asia Pacific   (Tokyo)
-          6. Canada         (Central)
-          7. EU             (Frankfurt)
-          8. EU             (Ireland)
-          9. EU             (London)
-          10. South America (Sao Paulo)
-          11. US East       (Northern Virginia)
-          12. US East       (Ohio)
-          13. US West       (Northern California)
-          14. US West       (Oregon)
-        Please choose the number of your region. Press enter for default (#3) region.
-      default: "3"
+          1. US East        (N. Virginia)
+          2. US East        (Ohio)
+          3. US West        (N. California)
+          4. US West        (Oregon)
+          5. Canada         (Central)
+          6. EU             (Frankfurt)
+          7. EU             (Ireland)
+          8. EU             (London)
+          9. EU             (Paris)
+          10. Asia Pacific  (Tokyo)
+          11. Asia Pacific  (Seoul)
+          12. Asia Pacific  (Osaka-Local)
+          13. Asia Pacific  (Singapore)
+          14. Asia Pacific  (Sydney)
+          15. Asia Pacific  (Mumbai)
+          16. South America (São Paulo)
+        Please choose the number of your region. Press enter for default (#13) region.
+      default: "13"
       private: no
 
     - name: "aws_vpc_id_var"
