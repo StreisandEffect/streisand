@@ -88,6 +88,7 @@ Press enter to customize your installation: " confirm
 # is provided.
 function run_genesis() {
   local GENESIS_PLAYBOOK=$1
+  local ASK_BECOME=""
   if [ -z "${GENESIS_PLAYBOOK}" ]; then
     GENESIS_PLAYBOOK=streisand.yml
   fi
@@ -106,12 +107,17 @@ function run_genesis() {
     validate false
   fi
   
+  if [ -n "${SSH_USER}" ] && [ "$SSH_USER" != "root" ]; then
+    ASK_BECOME="--ask-become-pass"
+  fi
+  
   # Run the specified genesis playbook with the specified Ansible inventory
   echo; echo; ansible-playbook \
     -i $GENESIS_INVENTORY \
     --extra-vars="@$GLOBAL_VARS" \
     --extra-vars="@$DEFAULT_SITE_VARS" \
     --extra-vars="@$SITE_VARS" \
+    $ASK_BECOME \
     "playbooks/$GENESIS_PLAYBOOK"
 }
 
@@ -187,7 +193,7 @@ read -r -p "Which provider are you using?
   4. Google
   5. Linode
   6. Rackspace
-  7. Localhost (Advanced)
+  7. localhost (Advanced)
   8. Existing Server (Advanced)
 : " reply
 
