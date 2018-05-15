@@ -88,6 +88,7 @@ Press enter to customize your installation: " confirm
 # is provided.
 function run_genesis() {
   local GENESIS_PLAYBOOK=$1
+  local ASK_BECOME=""
   if [ -z "${GENESIS_PLAYBOOK}" ]; then
     GENESIS_PLAYBOOK=streisand.yml
   fi
@@ -106,25 +107,18 @@ function run_genesis() {
     validate false
   fi
   
-  if [ -z "${SSH_USER}" ] || [ "$SSH_USER" = "root" ]; then
-      
-    # Run the specified genesis playbook with the specified Ansible inventory
-    echo; echo; ansible-playbook \
-      -i $GENESIS_INVENTORY \
-      --extra-vars="@$GLOBAL_VARS" \
-      --extra-vars="@$DEFAULT_SITE_VARS" \
-      --extra-vars="@$SITE_VARS" \
-      "playbooks/$GENESIS_PLAYBOOK"
-  else
-    # Run the specified genesis playbook with the specified Ansible inventory
-    echo; echo; ansible-playbook \
-      -i $GENESIS_INVENTORY \
-      --extra-vars="@$GLOBAL_VARS" \
-      --extra-vars="@$DEFAULT_SITE_VARS" \
-      --extra-vars="@$SITE_VARS" \
-      --ask-become-pass \
-      "playbooks/$GENESIS_PLAYBOOK"
+  if [ -n "${SSH_USER}" ] && [ "$SSH_USER" != "root" ]; then
+    ASK_BECOME="--ask-become-pass"
   fi
+  
+  # Run the specified genesis playbook with the specified Ansible inventory
+  echo; echo; ansible-playbook \
+    -i $GENESIS_INVENTORY \
+    --extra-vars="@$GLOBAL_VARS" \
+    --extra-vars="@$DEFAULT_SITE_VARS" \
+    --extra-vars="@$SITE_VARS" \
+    $ASK_BECOME \
+    "playbooks/$GENESIS_PLAYBOOK"
 }
 
 # be_careful_friend asks you to pay attention because you're about to do
