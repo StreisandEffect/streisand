@@ -39,6 +39,9 @@
     group: root
     mode: 0750
 
+- name: "Ensure GPG agent is dead"
+  command: "gpgconf --kil gpg-agent"
+
 - name: "Start the GPG agent"
   command: "gpg-agent --homedir {{ root_gpg_dir }} --use-standard-socket --daemon"
 
