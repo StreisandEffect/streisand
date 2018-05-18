@@ -39,7 +39,7 @@
     group: root
     mode: 0750
 
-- name: "Start the GPG agent if it's not already started"
+- name: "Ensure gpg-agent is started and running the latest config"
   command: "pgrep gpg-agent || gpg-agent --homedir {{ root_gpg_dir }} --use-standard-socket --daemon && gpgconf --reload gpg-agent"
 
 - name: "Start the dirmngr"
