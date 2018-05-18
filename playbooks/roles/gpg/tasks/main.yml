@@ -39,11 +39,8 @@
     group: root
     mode: 0750
 
-- name: "Ensure GPG agent is dead"
-  command: "gpgconf --kil gpg-agent"
-
-- name: "Start the GPG agent"
-  command: "gpg-agent --homedir {{ root_gpg_dir }} --use-standard-socket --daemon"
+- name: "Start the GPG agent if it's not already started"
+  command: "pgrep gpg-agent || gpg-agent --homedir {{ root_gpg_dir }} --use-standard-socket --daemon && gpgconf --reload gpg-agent"
 
 - name: "Start the dirmngr"
   command: "dirmngr --homedir {{ root_gpg_dir }} --daemon"
