@@ -14,29 +14,24 @@ WireGuard is currently only available for Linux, but [cross-platform](https://ww
 1. [Install WireGuard](https://www.wireguard.com/install/)
 1. Download one of the client configuration files. **Only one computer can use a profile at a time**. For this example we'll assume you downloaded {{ vpn_client_names.results[0].stdout }}:
 {% for client in vpn_client_names.results %}
-   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.client.conf)
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.conf)
 {% endfor %}
-1. Rename the downloaded client configuration:
-
-  `mv ~/Downloads/{{ vpn_client_names.results[0].stdout }}.client.conf ~/Downloads/wg0-client.conf`
-1. Set permissions on the client configuration file:
-
-   `sudo chown -v root:root ~/Downloads/wg0-client.conf; sudo chmod -v 600 ~/Downloads/wg0-client.conf`
 1. Move the client configuration file into the correct directory:
 
-   `sudo mv -i -v ~/Downloads/wg0-client.conf /etc/wireguard/`
+   `sudo sh -c 'umask 077; mkdir -p /etc/wireguard; cat > /etc/wireguard/{{ vpn_client_names.results[0].stdout }}.conf' < ~/Downloads/{{ vpn_client_names.results[0].stdout }}.conf`
+
 1. Use the `wg-quick` utility to bring up the WireGuard interface:
 
-   `sudo wg-quick up wg0-client`
+   `sudo wg-quick up {{ vpn_client_names.results[0].stdout }}`
 
 1. For Linux systems using systemd you can also enable Wireguard at boot:
 
-   'sudo systemctl enable wg-quick@wg0-client.service'
+   'sudo systemctl enable wg-quick@{{ vpn_client_names.results[0].stdout }}.service'
 
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 1. To stop routing your traffic through WireGuard, simply bring the interface back down:
 
-   `sudo wg-quick down wg0-client`
+   `sudo wg-quick down {{ vpn_client_names.results[0].stdout }}`
 
 #### A note on DNS configuration ####
 Each client configuration profile includes a `DNS` command that uses resolvconf to direct DNS traffic to the dnsmasq server that is available via the WireGuard encrypted interface at `{{ dnsmasq_wireguard_ip }}`. Although resolvconf is a common utility, you may need to use `PostUp`/`PostDown` with a different command for your distribution or particular network configuration.

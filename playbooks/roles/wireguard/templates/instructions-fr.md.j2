@@ -14,25 +14,21 @@ WireGuard n'est actuellement disponible que pour Linux, mais support [multi-plat
 1. [Installer WireGuard](https://www.wireguard.com/install/)
 1. Téléchargez un fichier de configuration client. **Un seul ordinateur peut utiliser un profil à la fois**. Pour cet exemple, nous supposerons que vous avez téléchargé le fichier {{ vpn_client_names.results[0].stdout }}:
 {% for client in vpn_client_names.results %}
-   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.client.conf)
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.conf)
 {% endfor %}
-1. Renommez le fichier:
-
-  `mv ~/Downloads/{{ vpn_client_names.results[0].stdout }}.client.conf ~/Downloads/wg0-client.conf`
-1. Définir les autorisations sur le fichier de configuration du client:
-
-   `sudo chown -v root:root ~/Downloads/wg0-client.conf; sudo chmod -v 600 ~/Downloads/wg0-client.conf`
 1. Déplacez le fichier de configuration du client dans le répertoire correct:
 
-   `sudo mv -i -v ~/Downloads/wg0-client.conf /etc/wireguard/`
+   `sudo sh -c 'umask 077; mkdir -p /etc/wireguard; cat > /etc/wireguard/{{ vpn_client_names.results[0].stdout }}.conf' < ~/Downloads/{{ vpn_client_names.results[0].stdout }}.conf`
+
 1. Utilisez l'utilitaire `wg-quick` pour démarrer l'interface WireGuard:
 
-   `sudo wg-quick up wg0-client`
+   `sudo wg-quick up {{ vpn_client_names.results[0].stdout }}`
+
 1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 1. Pour arrêter de routé votre trafic via Wire Guard, simplement arrêtez l'interface:
 
-   `sudo wg-quick down wg0-client`
+   `sudo wg-quick down {{ vpn_client_names.results[0].stdout }}`
 
 #### Une note sur la configuration DNS ####
 Chaque fichier inclure la commande `DNS` qui utilise `resolvconf` afin de diriger le trafic DNS vers le serveur dnsmasq qui est disponible via l'interface cryptée WireGuard à `{{ dnsmasq_wireguard_ip }}`. Bien que `resolvconf` soit un utilitaire commun, vous devrez peut-être remplacer cette ligne avec `PostUp`/`PostDown` pour votre distribution ou votre configuration réseau particulière.
