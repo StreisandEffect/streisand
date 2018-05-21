@@ -26,7 +26,7 @@ WireGuard n'est actuellement disponible que pour Linux, mais support [multi-plat
 
 1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
-1. Pour arrêter de routé votre trafic via Wire Guard, simplement arrêtez l'interface:
+1. Pour arrêter de routé votre trafic via WireGuard, simplement arrêtez l'interface:
 
    `sudo wg-quick down {{ vpn_client_names.results[0].stdout }}`
 
