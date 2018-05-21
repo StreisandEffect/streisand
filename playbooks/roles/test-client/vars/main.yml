@@ -54,7 +54,7 @@ shadowsocks_client: "/root/shadowsocks2-linux-x64"
 shadowsocks_client_zip: "{{ shadowsocks_client }}.gz"
 
 # The gateway URL for clients to download the WireGuard config file
-gateway_wireguard_config: "{{ gateway_test_url }}/wireguard/wg0-client.conf"
+gateway_wireguard_config: "{{ gateway_test_url }}/wireguard/wg0.conf"
 
 wireguard_profile_dir: "/root/wireguard-profiles"
 

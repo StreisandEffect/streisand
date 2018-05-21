@@ -86,7 +86,7 @@
 - name: Generate the server configuration
   template:
     src: "server.conf.j2"
-    dest: "{{ wireguard_path }}/wg0-server.conf"
+    dest: "{{ wireguard_path }}/wg0.conf"
     owner: root
     group: root
     mode: 0600
@@ -96,7 +96,7 @@
 
 - name: Enable the WireGuard service so it starts at boot, and bring up the WireGuard network interface
   systemd:
-    name: wg-quick@wg0-server.service
+    name: wg-quick@wg0.service
     enabled: yes
     state: started
   # Temporary workaround for issue #500
