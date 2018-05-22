@@ -72,7 +72,7 @@
     group: root
     mode: 0644
   with_items:
-    - { src: "20auto-upgrades.j2",       dest: "/etc/apt/apt.conf.d/20autoupgrades" }
+    - { src: "20auto-upgrades.j2",       dest: "/etc/apt/apt.conf.d/20auto-upgrades" }
     - { src: "50unattended-upgrades.j2", dest: "/etc/apt/apt.conf.d/50unattended-upgrades" }
 
 - name: Apply the custom sysctl values
