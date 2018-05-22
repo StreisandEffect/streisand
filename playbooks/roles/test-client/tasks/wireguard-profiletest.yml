@@ -1,17 +1,17 @@
 ---
 - block:
-    - name: "Replace wg0-client with the {{ profile_name }} configuration"
+    - name: "Replace wg0 with the {{ profile_name }} configuration"
       copy:
-        src: "{{ wireguard_profile_dir }}/{{ profile_name }}.client.conf"
+        src: "{{ wireguard_profile_dir }}/{{ profile_name }}.conf"
         remote_src: yes
-        dest: "/etc/wireguard/wg0-client.conf"
+        dest: "/etc/wireguard/wg0.conf"
         mode: 0600
         owner: root
         group: root
         force: yes
 
     - name: "Bring up the WireGuard interface for the {{ profile_name }} config"
-      shell: "wg-quick up wg0-client"
+      shell: "wg-quick up wg0"
 
     - name: "Register the updated /etc/resolv.conf contents"
       shell: "cat /etc/resolv.conf"
@@ -40,7 +40,7 @@
           - "'latest handshake' in wgclient_wg_output.stdout"
 
     - name: "Bring down the WireGuard interface"
-      command: "wg-quick down wg0-client"
+      command: "wg-quick down wg0"
 
     - name: "Register the updated /etc/resolv.conf contents"
       shell: "cat /etc/resolv.conf"
@@ -52,6 +52,6 @@
         that:
           - "'nameserver {{ dnsmasq_wireguard_ip }}' not in wgclient_resolv_conf.stdout"
   rescue:
-    - name: "Remove the wg0-client interface if present"
-      command: "wg-quick down wg0-client"
+    - name: "Remove the wg0 interface if present"
+      command: "wg-quick down wg0"
       ignore_errors: "yes"
