@@ -8,9 +8,9 @@
     state: directory
 
 - name: Copy the client configuration files to the WireGuard Gateway directory
-  command: "cp {{ wireguard_client_path }}/{{ client_name.stdout }}/client.conf {{ wireguard_gateway_location }}/{{ client_name.stdout }}.client.conf"
+  command: "cp {{ wireguard_client_path }}/{{ client_name.stdout }}/client.conf {{ wireguard_gateway_location }}/{{ client_name.stdout }}.conf"
   args:
-    creates: "{{ wireguard_gateway_location }}/{{ client_name.stdout }}.client.conf"
+    creates: "{{ wireguard_gateway_location }}/{{ client_name.stdout }}.conf"
   with_items: "{{ vpn_client_names.results }}"
   loop_control:
     loop_var: "client_name"
