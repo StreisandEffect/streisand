@@ -44,6 +44,10 @@ emailAddress = optional
 [ alt_names ]
 IP.0 = {{ streisand_ipv4_address }}
 DNS.0 = {{ streisand_ipv4_address }}
+{% if ansible_default_ipv6.address is defined %}
+IP.1 = {{ ansible_default_ipv6.address }}
+DNS.1 = {{ ansible_default_ipv6.address }}
+{% endif %}
 
 [ req_distinguished_name ]
 countryName = Country Name (2 letter code)

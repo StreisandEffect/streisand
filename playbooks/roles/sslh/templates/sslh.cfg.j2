@@ -6,6 +6,9 @@ pidfile: "{{ sslh_pid_file }}";
 
 listen:
 (
+{% if ansible_default_ipv6.address is defined %}
+    { host: "{{ ansible_default_ipv6.address }}"; port: "443"; },
+{% endif %}
     { host: "{{ ansible_default_ipv4.address }}"; port: "443"; }
 );
 
