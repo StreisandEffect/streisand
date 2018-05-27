@@ -1,5 +1,10 @@
 {
-    "server":"{{ ansible_default_ipv4.address }}",
+    "server":
+{% if ansible_default_ipv6.address is defined %}
+  ["{{ ansible_default_ipv4.address }}", "{{ ansible_default_ipv6.address }}"],
+{% else %}
+  "{{ ansible_default_ipv4.address }}",
+{% endif %}
     "server_port":{{ shadowsocks_server_port }},
     "local_port":{{ shadowsocks_local_port }},
     "password":"{{ shadowsocks_password.stdout }}",
