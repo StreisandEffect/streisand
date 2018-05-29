@@ -6,7 +6,13 @@ WireGuard
 If you are a Linux user, [WireGuard](https://www.wireguard.com/) is almost certainly the best connection option that Streisand provides. This is due to its [incredible performance](https://www.wireguard.com/performance/), [class-leading cryptography](https://www.wireguard.com/protocol/), and many, many other benefits.
 
 WireGuard is currently only available for Linux, but [cross-platform](https://www.wireguard.com/xplatform/) and portable implementations are under active development.
+macOS client is also available, but it is still experimental. You can use it, but be aware that it may not be as stable as the linux version.
 
+---
+* Platforms
+  * [Linux](#linux)
+  * [macOS](#macos)
+  
 ---
 
 <a name="linux"></a>
@@ -35,3 +41,34 @@ WireGuard is currently only available for Linux, but [cross-platform](https://ww
 
 #### A note on DNS configuration ####
 Each client configuration profile includes a `DNS` command that uses resolvconf to direct DNS traffic to the dnsmasq server that is available via the WireGuard encrypted interface at `{{ dnsmasq_wireguard_ip }}`. Although resolvconf is a common utility, you may need to use `PostUp`/`PostDown` with a different command for your distribution or particular network configuration.
+
+
+<a name="macos"></a>
+### macOS ###
+**WARNING**: Wireguard macOS client is in early stages of development and still considered experimental. It may be unstable or buggy.
+
+
+1. Install [Homebrew](https://brew.sh/), if you haven't already.
+1. Install Wireguard Tools using Homebrew:
+
+   `brew install wireguard-tools`
+1. Download one of the client configuration files. **Only one computer can use a profile at a time**. For this example we'll assume you downloaded {{ vpn_client_names.results[0].stdout }}:
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.conf)
+{% endfor %}
+1. Move the client configuration file into the correct directory (this command assumes that you downloaded the configuration file in your Downloads folder. If that's not the case, modify it accordingly):
+
+   `sudo sh -c 'umask 077; mkdir -p /etc/wireguard; cat > /etc/wireguard/{{ vpn_client_names.results[0].stdout }}.conf' < ~/Downloads/{{ vpn_client_names.results[0].stdout }}.conf`
+
+1. Use the `wg-quick` utility to bring up the WireGuard interface:
+
+   `sudo wg-quick up {{ vpn_client_names.results[0].stdout }}`
+
+
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+1. You can check the vpn status at any time using `wg`:
+   `sudo wg show`
+
+1. To stop routing your traffic through WireGuard, simply bring the interface back down:
+
+   `sudo wg-quick down {{ vpn_client_names.results[0].stdout }}`
