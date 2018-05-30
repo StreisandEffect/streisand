@@ -6,7 +6,7 @@ OpenVPN
 If OpenVPN connections are being blocked in your country, please refer to the [OpenVPN (stunnel)](/openvpn/stunnel.html) instructions instead which will help you wrap your OpenVPN traffic in an encrypted tunnel so it looks like standard TLS traffic.
 {% endif %}
 #### A note on client files ####
-For security reasons, OpenVPN clients typically have their own unique certificate and private key. The server you will be connecting to has been configured to allow clients to share the same certificate and private key, but you may still wish to give your phone and laptop different keys, for example.
+For security reasons, OpenVPN clients have been configured to only allow one client connection per certificate pair. Attempting to re-use client certificates will cause an existing client session to disconnect.
 
 ---
 * Platforms
