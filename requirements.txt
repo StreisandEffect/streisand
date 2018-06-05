@@ -6,10 +6,7 @@
 
 # Core with Azure dependencies
 #
-# Quick fix: Ansible 2.5.1 is broken; use 2.5.0 until at least version
-# 2.5.2 is released.
-#
-ansible[azure]==2.5.2
+ansible[azure]==2.5.4
 
 # Multiple packages depend on SecretStorage, and versions >= 3 require
 # Python 3. Until we're ready for Python 3, specify the earlier rev.
@@ -32,8 +29,11 @@ apache-libcloud>=1.17.0
 pycrypto
 
 # Linode
-pycurl
-linode-python
+#
+# Temporarily disabled while the pycurl mess is cleaned up.
+#
+# pycurl
+# linode-python
 
 # Rackspace
 pyrax
