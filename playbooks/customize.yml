@@ -20,6 +20,10 @@
       prompt: "Enable OpenVPN? Press enter for default "
       default: "yes"
       private: no
+    - name: streisand_stunnel_enabled
+      prompt: "Enable stunnel service (only allowed for OpenVPN)? Press enter for default "
+      default: "yes"
+      private: no
     - name: streisand_shadowsocks_enabled
       prompt: "Enable Shadowsocks? Press enter for default "
       default: "yes"
@@ -31,10 +35,6 @@
     - name: streisand_sshuttle_enabled
       prompt: "Enable sshuttle? (Note: A full shell access user will be added) Press enter for default "
       default: "no"
-      private: no
-    - name: streisand_stunnel_enabled
-      prompt: "Enable stunnel? Press enter for default "
-      default: "yes"
       private: no
     - name: streisand_tinyproxy_enabled
       prompt: "Enable tinyproxy? Press enter for default "
