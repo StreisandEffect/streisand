@@ -7,6 +7,8 @@ If you are a Linux user, [WireGuard](https://www.wireguard.com/) is almost certa
 
 WireGuard is currently only available for Linux, but [cross-platform](https://www.wireguard.com/xplatform/) and portable implementations are under active development.
 
+An [experimental configuration for OpenWrt/LEDE](#openwrt) 17.01.4 or later is available.
+
 ---
 
 <a name="linux"></a>
@@ -35,3 +37,51 @@ WireGuard is currently only available for Linux, but [cross-platform](https://ww
 
 #### A note on DNS configuration ####
 Each client configuration profile includes a `DNS` command that uses resolvconf to direct DNS traffic to the dnsmasq server that is available via the WireGuard encrypted interface at `{{ dnsmasq_wireguard_ip }}`. Although resolvconf is a common utility, you may need to use `PostUp`/`PostDown` with a different command for your distribution or particular network configuration.
+
+---
+
+<a name="openwrt"></a>
+### EXPERIMENTAL: OpenWrt (LEDE) ###
+
+As an **unsupported** experiment, these profiles are available for routers running [OpenWrt](https://openwrt.org/). Support requires OpenWrt/LEDE 17.01.4 or later; OpenWrt Chaos Calmer is too old.
+
+OpenWrt devices run Linux, but they're managed through a centralized configuration system called [UCI](https://openwrt.org/docs/guide-user/base-system/uci). Most OpenWrt devices have a web admin interface called LuCI, which hides the complexity of UCI. These WireGuard profiles can be installed through a shell, or through the LuCI web interface.
+
+These profiles will replace the existing Internet connection. As a result, you should only install them when you're connected to the router's WiFi or LAN network interface. If you're logged in remotely, you may be locked out.
+
+#### Installing WireGuard software ####
+
+Make sure these software packages are installed: `luci-app-wireguard` and `luci-proto-wireguard`. To install those packages from the web UI:
+
+1. Go to the LuCI *System:Software* page, and click the *Update lists* button.
+2. Type `wireguard` into the *Find package* box.
+3. Click on the *Available packages (wireguard)* tab.
+4. Click *Install* next to `luci-app-wireguard`; go back to step 2 to install `luci-proto-wireguard` as well.
+
+(If you're managing your router without the LuCI user interface, you can instead `opkg update; opkg install kmod-wireguard wireguard-tools` .)
+
+#### Installing the profile ####
+
+Experienced users can install these profiles from the router's SSH command line; place one in a file, and run it as a shell script.
+
+There's also a simple way to install via the web interface. The LuCI *System:Startup* web page contains a *Local Startup* text box. It's a shell script which is run each time the router boots up. These WireGuard profiles are designed to be pasted into the *Local Startup* box, replacing the existing contents. (Make sure to delete any `exit 0` lines.)
+
+The next time the router reboots, the script will be run. It removes itself automatically. Check the *Local Startup* box for the status result.
+
+#### Changes made by the profile ####
+
+* A new interface named like `poem_walk` will be created
+* The interface is added to the *WAN* network zone
+* The default route to the Internet is set to the interface. (This will break WAN connectivity, so be sure to install only from WiFi/LAN.)
+* The WireGuard keepalive is set to 25 seconds
+* System-wide DNS is forced to point at the Streisand server
+
+If you don't like the DNS default, you can change DNS behavior on the *Network:DHCP and DNS* LuCI page. Put the DNS server address in *DNS forwardings*. On the *Resolv and Hosts Files* tab, leave *Ignore resolve file* checked, unless you want to use your upstream DNS. (You probably don't.)
+
+If you know you aren't behind a NAT device, edit the WireGuard interface to set the keepalive to 0.
+
+#### OpenWrt Profiles ####
+
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}-openwrt.txt)
+{% endfor %}
