@@ -6,7 +6,7 @@ OpenVPN
 Si les connexions OpenVPN sont bloquées dans votre pays, reportez-vous aux instructions [OpenVPN (stunnel)](/openvpn/stunnel-fr.html) qui vous aideront à envelopper votre trafic OpenVPN dans un tunnel crypté afin qu'il ressemble à du trafic TLS standard.
 {% endif %}
 #### Une note sur les fichiers clients ####
-Pour des raisons de sécurité, les clients OpenVPN ont généralement leurs propres certificats et clés privées. Le serveur auquel vous vous connectez a été configuré pour permettre aux clients de partager le même certificat et la même clé privée, mais votre téléphone et votre ordinateur portable peuvent par exemple avoir des clés différentes.
+Pour des raisons de sécurité, ce serveur OpenVPN a été configuré pour n'autoriser qu'une seule connexion client par paire de certificats. Toute tentative de ré-utiliser les certificats clients entraînera une session client existante de se déconnecter.
 
 ---
 * Plateformes
