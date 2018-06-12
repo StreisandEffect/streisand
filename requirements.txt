@@ -29,11 +29,8 @@ apache-libcloud>=1.17.0
 pycrypto
 
 # Linode
-#
-# Temporarily disabled while the pycurl mess is cleaned up.
-#
-# pycurl
-# linode-python
+pycurl==7.43.0.1
+linode-python
 
 # Rackspace
 pyrax
