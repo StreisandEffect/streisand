@@ -11,7 +11,7 @@ set -e
 
 # Ensure yamllint is present
 if ! command -v yamllint > /dev/null 2>&1; then
-    echo "The 'yamllint' comand was not found in your PATH."
+    echo "The 'yamllint' command was not found in your PATH."
     echo "Please run 'pip install yamllint' to install."
     exit 1
 fi
