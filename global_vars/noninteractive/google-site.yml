@@ -68,7 +68,11 @@ streisand_wireguard_enabled: yes
 # 39. Southeast Australia  "australia-southeast1-c"
 #
 
-gce_zone_var: "do not remove this var if you have defined gce_zone"
+# Named zones are more robust if you use non-interactive deployments. You can still use
+# the numbered index, however the number can change, whereas the name will stay the same.
+# Keep the idx variable non-empty if you use named zones.
+
+gce_zone_idx: "do not remove this var if you have defined gce_zone"
 gce_zone: us-central1-c
 
 gce_server_name: streisand

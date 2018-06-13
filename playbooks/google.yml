@@ -64,7 +64,7 @@
     - roles/wireguard/defaults/main.yml
 
   vars_prompt:
-    - name: "gce_zone_var"
+    - name: "gce_zone_idx"
       prompt: >
         What zone should the server be located in?
           1. Central US            (Iowa A)
@@ -130,7 +130,7 @@
   pre_tasks:
     - name: Set the Google Compute Engine Zone interactive
       set_fact:
-        gce_zone: "{{ zones[gce_zone_var] }}"
+        gce_zone: "{{ zones[gce_zone_idx] }}"
       when: gce_zone is not defined
 
     - name: Set the Google Compute Engine Zone noninteractive
