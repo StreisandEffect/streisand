@@ -95,7 +95,7 @@
   file:
     path: "{{ wireguard_path }}/.reload-module-on-update"
     state: touch
-    
+
 # Set up the WireGuard firewall rules
 - import_tasks: firewall.yml
 
