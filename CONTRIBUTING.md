@@ -52,7 +52,7 @@ of required questions without having to do any work besides copy & pasting!
 
 #### What Other Information to Include in Your Issue
 
-Please try your best to answer all of the questions in [the Streisand Issue template](https://github.com/StreisandEffect/streisand/blob/master/.github/ISSUE_TEMPLATE.md]. Answering these questions help us skip a lot of "Github telephone tag" that takes up time that could be used fixing the bug.
+Please try your best to answer all of the questions in [the Streisand Issue template](https://github.com/StreisandEffect/streisand/blob/master/.github/ISSUE_TEMPLATE.md). Answering these questions help us skip a lot of "Github telephone tag" that takes up time that could be used fixing the bug.
 
 When describing your issue focus on:
 
@@ -72,7 +72,7 @@ Issues are generally closed for one of three reasons:
 1. There wasn't enough information or nobody has been replying to questions
    asked.
 2. The issue was created on the wrong repository and should have been created as
-   a [streisand-discussions](https://github.com/StreisandEffect/streisand-discussions]
+   a [streisand-discussions](https://github.com/StreisandEffect/streisand-discussions)
    issue or vice-versa.
 3. After discussion and evaluation it was determined the problem was fixed or
    wasn't appropriate for Streisand
