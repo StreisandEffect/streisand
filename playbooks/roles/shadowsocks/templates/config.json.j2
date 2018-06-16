@@ -1,6 +1,6 @@
 {
     "server":
-{% if ansible_default_ipv6.address is defined %}
+{% if streisand_ipv6_address is defined %}
   ["{{ ansible_default_ipv4.address }}", "{{ ansible_default_ipv6.address }}"],
 {% else %}
   "{{ ansible_default_ipv4.address }}",
