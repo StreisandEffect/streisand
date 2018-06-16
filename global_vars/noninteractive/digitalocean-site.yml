@@ -18,6 +18,8 @@ streisand_ssh_private_key: "~/.ssh/id_rsa"
 
 vpn_clients: 5
 
+streisand_ipv6_enabled: yes
+
 streisand_openconnect_enabled: yes
 streisand_openvpn_enabled: yes
 streisand_shadowsocks_enabled: yes

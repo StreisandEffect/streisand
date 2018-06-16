@@ -190,6 +190,10 @@ Connexion à votre passerelle Streisand
 [{{ streisand_domain }}](https://{{ streisand_domain }}/index-fr.html)
 {% else %}
 [{{ streisand_gateway_url }}]({{ streisand_gateway_url }}/index-fr.html)
+{% if streisand_gateway_url_ipv6 is defined %}
+
+IPv6: [{{ streisand_gateway_url_ipv6 }}]({{ streisand_gateway_url_ipv6 }})
+{% endif %}
 {% endif %}
 
 username: `{{ streisand_gateway_username }}`
