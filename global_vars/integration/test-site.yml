@@ -10,6 +10,8 @@ streisand_admin_email_var: ""
 # Take a few extra steps during server provisioning to make the client tests work
 streisand_client_test: true
 
+streisand_ipv6_enabled: yes
+
 # Only services with corresponding tests are enabled.
 streisand_shadowsocks_enabled: yes
 streisand_ssh_forward_enabled: yes
