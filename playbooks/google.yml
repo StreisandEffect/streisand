@@ -29,23 +29,26 @@
       "20": "europe-west3-a"
       "21": "europe-west3-b"
       "22": "europe-west3-c"
-      "23": "asia-east1-a"
-      "24": "asia-east1-b"
-      "25": "asia-east1-c"
-      "26": "asia-northeast1-a"
-      "27": "asia-northeast1-b"
-      "28": "asia-northeast1-c"
-      "29": "asia-south1-a"
-      "30": "asia-south1-b"
-      "31": "asia-south1-c"
-      "32": "asia-southeast1-a"
-      "33": "asia-southeast1-b"
-      "34": "australia-southeast1-a"
-      "35": "australia-southeast1-b"
-      "36": "australia-southeast1-c"
-      "37": "southamerica-east1-a"
-      "38": "southamerica-east1-b"
-      "39": "southamerica-east1-c"
+      "23": "europe-west4-a"
+      "24": "europe-west4-b"
+      "25": "europe-west4-c"
+      "26": "asia-east1-a"
+      "27": "asia-east1-b"
+      "28": "asia-east1-c"
+      "29": "asia-northeast1-a"
+      "30": "asia-northeast1-b"
+      "31": "asia-northeast1-c"
+      "32": "asia-south1-a"
+      "33": "asia-south1-b"
+      "34": "asia-south1-c"
+      "35": "asia-southeast1-a"
+      "36": "asia-southeast1-b"
+      "37": "australia-southeast1-a"
+      "38": "australia-southeast1-b"
+      "39": "australia-southeast1-c"
+      "40": "southamerica-east1-a"
+      "41": "southamerica-east1-b"
+      "42": "southamerica-east1-c"
 
   # These variable files are included so the gce-network role
   # knows which ports to open
@@ -61,7 +64,7 @@
     - roles/wireguard/defaults/main.yml
 
   vars_prompt:
-    - name: "gce_zone_var"
+    - name: "gce_zone_idx"
       prompt: >
         What zone should the server be located in?
           1. Central US            (Iowa A)
@@ -86,25 +89,29 @@
           20. Western Europe       (Frankfurt A)
           21. Western Europe       (Frankfurt B)
           22. Western Europe       (Frankfurt C)
-          23. East Asia            (Taiwan A)
-          24. East Asia            (Taiwan B)
-          25. East Asia            (Taiwan C)
-          26. Northeast Asia       (Tokyo A)
-          27. Northeast Asia       (Tokyo B)
-          28. Northeast Asia       (Tokyo C)
-          29. South Asia           (Mumbai A)
-          30. South Asia           (Mumbai B)
-          31. South Asia           (Mumbai C)
-          32. Southeast Asia       (Singapore A)
-          33. Southeast Asia       (Singapore B)
-          34. Southeast Australia  (Sydney A)
-          35. Southeast Australia  (Sydney B)
-          36. Southeast Australia  (Sydney C)
-          37. South America        (São Paulo A)
-          38. South America        (São Paulo B)
-          39. South America        (São Paulo C)
+          23. Western Europe       (Netherlands A)
+          24. Western Europe       (Netherlands B)
+          25. Western Europe       (Netherlands C)
+          26. East Asia            (Taiwan A)
+          27. East Asia            (Taiwan B)
+          28. East Asia            (Taiwan C)
+          29. Northeast Asia       (Tokyo A)
+          30. Northeast Asia       (Tokyo B)
+          31. Northeast Asia       (Tokyo C)
+          32. South Asia           (Mumbai A)
+          33. South Asia           (Mumbai B)
+          34. South Asia           (Mumbai C)
+          35. Southeast Asia       (Singapore A)
+          36. Southeast Asia       (Singapore B)
+          37. Southeast Australia  (Sydney A)
+          38. Southeast Australia  (Sydney B)
+          39. Southeast Australia  (Sydney C)
+          40. South America        (São Paulo A)
+          41. South America        (São Paulo B)
+          42. South America        (São Paulo C)
         Please choose the number of your zone. Press enter for default (#3) zone.
       default: "3"
+      when: gce_zone is not defined
       private: no
 
     - name: "gce_server_name"
@@ -121,9 +128,10 @@
       prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 
   pre_tasks:
-    - name: Set the Google Compute Engine Zone fact
+    - name: Set the Google Compute Engine Zone interactive
       set_fact:
-        gce_zone: "{{ zones[gce_zone_var] }}"
+        gce_zone: "{{ zones[gce_zone_idx] }}"
+      when: gce_zone is not defined
 
     - name: Register JSON file contents
       command: cat {{ gce_json_file_location }}
