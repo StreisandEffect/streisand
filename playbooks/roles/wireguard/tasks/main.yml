@@ -83,6 +83,16 @@
   loop_control:
     label: "{{ item[0].item }}"
 
+- name: Generate OpenWrt configuration fragments
+  template:
+    src: client-openwrt.txt.j2
+    dest: "{{ wireguard_client_path }}/{{ item[0].stdout }}/client-openwrt.txt"
+  with_together:
+    - "{{ vpn_client_names.results }}"
+    - "{{ wireguard_client_privkeys.results }}"
+  loop_control:
+    label: "{{ item[0].item }}"
+
 - name: Generate the server configuration
   template:
     src: "server.conf.j2"
