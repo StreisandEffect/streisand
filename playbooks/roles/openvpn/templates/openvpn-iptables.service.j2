@@ -10,5 +10,11 @@ RemainAfterExit=true
 ExecStart=/sbin/{{ rule }}
 {% endfor %}
 
+{% if streisand_ipv6_enabled %}
+{% for rule in openvpn_ipv6_firewall_rules %}
+ExecStart=/sbin/{{ rule }}
+{% endfor %}
+{% endif %}
+
 [Install]
 WantedBy=multi-user.target

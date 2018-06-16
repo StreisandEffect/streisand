@@ -3,6 +3,7 @@
 vpn_clients: 5
 streisand_ad_blocking_enabled: no
 streisand_cloudflared_enabled: no
+streisand_ipv6_enabled: yes
 streisand_openconnect_enabled: yes
 streisand_openvpn_enabled: no
 streisand_shadowsocks_enabled: no

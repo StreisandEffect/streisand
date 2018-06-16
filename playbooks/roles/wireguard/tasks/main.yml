@@ -122,6 +122,12 @@
     src: wireguard_dnsmasq.conf.j2
     dest: /etc/dnsmasq.d/wireguard.conf
 
+- name: "Configure DNSMasq to listen on {{ dnsmasq_wireguard_ipv6 }}:53"
+  template:
+    src: wireguard_dnsmasqv6.conf.j2
+    dest: /etc/dnsmasq.d/wireguardv6.conf
+  when: streisand_ipv6_enabled
+
 # NOTE(@cpu): We don't use a `notify` to "Restart dnsmasq" here because it seems
 # that in some conditions Ansible mistakenly believes the dnsmasq restart can be
 # skipped. We also don't use "reloaded" instead of "restarted" here because

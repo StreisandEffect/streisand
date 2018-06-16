@@ -52,6 +52,10 @@ subjectAltName = @alt_names
 {% for item in tls_sans %}
 IP.{{ loop.index }} = {{ item }}
 {% endfor %}
+{% if streisand_ipv6_address is defined %}
+IP.1 = {{ streisand_ipv6_address }}
+{% endif %}
+
 
 [ req_distinguished_name ]
 countryName = Country Name (2 letter code)

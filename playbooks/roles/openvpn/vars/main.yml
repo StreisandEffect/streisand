@@ -16,12 +16,28 @@ openvpn_combined_profile_filename:   "{{ openvpn_server }}-combined.ovpn"
 dnsmasq_openvpn_tcp_ip: "10.8.0.1"
 dnsmasq_openvpn_udp_ip: "10.9.0.1"
 
+openvpn_server_tcp_ipv4_address: "10.9.0.0/24"
+openvpn_server_udp_ipv4_address: "10.8.0.0/24"
+
+dnsmasq_openvpn_tcp_ipv6: "2001:db8:0:124::1001"
+dnsmasq_openvpn_udp_ipv6: "2001:db8:0:123::1001"
+
+openvpn_server_tcp_ipv6_address: "2001:db8:0:124::/64"
+openvpn_server_udp_ipv6_address: "2001:db8:0:123::/64"
+
 openvpn_firewall_rules:
   - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT"
-  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -s 10.8.0.0/24 -j ACCEPT"
-  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -s 10.9.0.0/24 -j ACCEPT"
-  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 10.8.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
-  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 10.9.0.0/24 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -s {{ openvpn_server_udp_ipv4_address }} -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -s {{ openvpn_server_tcp_ipv4_address }} -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s {{ openvpn_server_udp_ipv4_address }} -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s {{ openvpn_server_tcp_ipv4_address }} -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
+
+openvpn_ipv6_firewall_rules:
+  - "ip6tables --wait {{ streisand_iptables_wait }} -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT"
+  - "ip6tables --wait {{ streisand_iptables_wait }} -A FORWARD -s {{ openvpn_server_tcp_ipv6_address }} -j ACCEPT"
+  - "ip6tables --wait {{ streisand_iptables_wait }} -A FORWARD -s {{ openvpn_server_udp_ipv6_address }} -j ACCEPT"
+  - "ip6tables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s {{ openvpn_server_tcp_ipv6_address }} -o {{ ansible_default_ipv4.interface }} -j MASQUERADE"
+  - "ip6tables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s {{ openvpn_server_udp_ipv6_address }} -o {{ ansible_default_ipv6.interface }} -j MASQUERADE"
 
 openvpn_gateway_location: "{{ streisand_gateway_location }}/openvpn"
 
