@@ -133,11 +133,6 @@
         gce_zone: "{{ zones[gce_zone_idx] }}"
       when: gce_zone is not defined
 
-    - name: Set the Google Compute Engine Zone noninteractive
-      set_fact:
-        gce_zone: "{{ gce_zone }}"
-      when: gce_zone is defined
-
     - name: Register JSON file contents
       command: cat {{ gce_json_file_location }}
       register: gce_json_file_contents
