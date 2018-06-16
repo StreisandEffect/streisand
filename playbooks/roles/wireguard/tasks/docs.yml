@@ -16,6 +16,16 @@
     loop_var: "client_name"
     label: "{{ client_name.item }}"
 
+- name: Copy the client OpenWrt configuration fragments to the WireGuard Gateway directory
+  command: "cp {{ wireguard_client_path }}/{{ client_name.stdout }}/client-openwrt.txt {{ wireguard_gateway_location }}/{{ client_name.stdout }}-openwrt.txt"
+  args:
+    creates: "{{ wireguard_gateway_location }}/{{ client_name.stdout }}-openwrt.txt"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+
 - include_role:
     name: i18n-docs
   vars:
