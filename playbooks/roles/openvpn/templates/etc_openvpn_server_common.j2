@@ -6,6 +6,10 @@ dh none
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1"
 
+{% if streisand_ipv6_address is defined %}
+push "route-ipv6 ::/0"
+{% endif %}
+
 # Fix for the Windows 10 DNS leak described here:
 # https://community.openvpn.net/openvpn/ticket/605
 push block-outside-dns

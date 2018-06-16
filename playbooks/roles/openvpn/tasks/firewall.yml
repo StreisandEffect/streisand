@@ -3,19 +3,32 @@
   command: "{{ item }}"
   with_items: "{{ openvpn_firewall_rules }}"
 
-- name: Ensure UFW allows DNS requests from OpenVPN clients
+- name: Allow OpenVPN over IPv6 through the firewall
+  command: "{{ item }}"
+  with_items: "{{ openvpn_ipv6_firewall_rules }}"
+  when: streisand_ipv6_address is defined
+
+- name: Ensure UFW allows DNS requests from OpenVPN TCP clients
   ufw:
     to_port: "53"
     proto: "udp"
     rule: "allow"
-    from_ip: "10.8.0.0/24"
+    from_ip: "{{ item.addr }}"
+  with_items:
+    - { addr: "{{ openvpn_server_tcp_ipv4_address }}" }
+    - { addr: "{{ openvpn_server_tcp_ipv6_address }}", create: "{{ streisand_ipv6_enabled }}" }
+  when: item.create | default(True) | bool
 
 - name: Ensure UFW allows DNS requests from OpenVPN UDP clients
   ufw:
     to_port: "53"
     proto: "udp"
     rule: "allow"
-    from_ip: "10.9.0.0/24"
+    from_ip: "{{ item.addr }}"
+  with_items:
+    - { addr: "{{ openvpn_server_udp_ipv4_address }}" }
+    - { addr: "{{ openvpn_server_udp_ipv6_address }}", create: "{{ streisand_ipv6_enabled }}" }
+  when: item.create | default(True) | bool
 
 - name: Ensure UFW allows OpenVPN
   ufw:

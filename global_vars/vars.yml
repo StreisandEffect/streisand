@@ -3,6 +3,10 @@ upstream_dns_servers:
   - 8.8.8.8
   - 8.8.4.4
 
+upstream_dns_servers_v6:
+  - "2001:4860:4860::8888"
+  - "2001:4860:4860::8844"
+
 streisand_client_test: no
 
 streisand_site_vars: "{{ lookup('env','HOME') }}/.streisand/site.yml"
