@@ -44,9 +44,9 @@ emailAddress = optional
 [ alt_names ]
 IP.0 = {{ streisand_ipv4_address }}
 DNS.0 = {{ streisand_ipv4_address }}
-{% if ansible_default_ipv6.address is defined %}
-IP.1 = {{ ansible_default_ipv6.address }}
-DNS.1 = {{ ansible_default_ipv6.address }}
+{% if streisand_ipv6_address is defined %}
+IP.1 = {{ streisand_ipv6_address }}
+DNS.1 = {{ streisand_ipv6_address }}
 {% endif %}
 
 [ req_distinguished_name ]

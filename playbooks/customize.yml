@@ -16,6 +16,10 @@
       prompt: "Enable DNS-based ad-blocking? Press enter for default "
       default: "no"
       private: no
+    - name: streisand_ipv6_enabled
+      prompt: "Enable IPv6, if available? Press enter for default "
+      default: "yes"
+      private: no
     - name: streisand_openconnect_enabled
       prompt: "Enable OpenConnect? Press enter for default "
       default: "yes"
@@ -74,6 +78,9 @@
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_ad_blocking_enabled: (?:yes|no)$"
         line: "streisand_ad_blocking_enabled: {{ streisand_ad_blocking_enabled }}"
+    - lineinfile:
+        regexp: "^streisand_ipv6_enabled: (?:yes|no)$"
+        line: "streisand_ipv6_enabled: {{ streisand_ipv6_enabled }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_openconnect_enabled: (?:yes|no)$"
