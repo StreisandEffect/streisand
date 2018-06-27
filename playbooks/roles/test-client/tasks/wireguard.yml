@@ -18,8 +18,8 @@
 
 - name: "Download each of the WireGuard client profiles"
   get_url:
-    url: "{{ gateway_test_url }}/wireguard/{{ profile_name }}.client.conf"
-    dest: "{{ wireguard_profile_dir }}/{{ profile_name }}.client.conf"
+    url: "{{ gateway_test_url }}/wireguard/{{ profile_name }}.conf"
+    dest: "{{ wireguard_profile_dir }}/{{ profile_name }}.conf"
     force_basic_auth: yes
     url_username: "{{ gateway_test_user }}"
     url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
