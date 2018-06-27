@@ -14,31 +14,36 @@
     state: directory
     owner: nobody
     group: nogroup
-    mode: 0644
-
-- name: Copy the tinyproxy statup script
-  copy:
-    src: tinyproxy.sh
-    dest: "{{ tinyproxy_startup_script }}"
-    owner: root
-    group: root
-    mode: 0700
+    mode: 0755
 
 - name: Generate the tinyproxy configuration file
   template:
     src: tinyproxy.conf.j2
     dest: "{{ tinyproxy_conf_file }}"
-    owner: nobody
-    group: nogroup
+    owner: root
+    group: root
     mode: 0644
 
 - name: Generate the tinyproxy system unit file
   template:
     src: tinyproxy.service.j2
     dest: /etc/systemd/system/tinyproxy.service
-    owner: nobody
-    group: nogroup
+    owner: root
+    group: root
     mode: 0644
+
+- name: Generate the systemd tmpfile for tinyproxy
+  template:
+    src: tinyproxytmp.conf.j2
+    dest: /etc/tmpfiles.d/tinyproxy.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Clean up the installed-by-default tinyproxy configuration file
+  file:
+    path: /etc/tinyproxy.conf
+    state: absent
 
 - name: Enable and restart the tinyproxy service
   systemd:

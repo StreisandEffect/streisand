@@ -10,4 +10,3 @@ tinyproxy_pid_file: "{{ tinyproxy_pid_dir }}/tinyproxy.pid"
 
 tinyproxy_conf_dir: "/etc/tinyproxy"
 tinyproxy_conf_file: "{{ tinyproxy_conf_dir }}/tinyproxy.conf"
-tinyproxy_startup_script: "{{ tinyproxy_conf_dir }}/tinyproxy.sh"
