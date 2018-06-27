@@ -85,7 +85,7 @@ PidFile "{{ tinyproxy_pid_file }}"
 # be created. In other words, only MaxClients number of clients can be
 # connected at the same time.
 #
-MaxClients {{ vpn_clients }}
+MaxClients {{ [vpn_clients * 4,50]|min() }}
 
 #
 # MinSpareServers/MaxSpareServers: These settings set the upper and
