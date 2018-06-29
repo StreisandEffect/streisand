@@ -1,0 +1,4 @@
+# Allow systemd to create a directory for
+# tinyproxy to write its PID file
+# https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html
+d {{ tinyproxy_pid_dir }} 0755 nobody nogroup -
