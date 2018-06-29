@@ -50,6 +50,9 @@
 - name: "Start a new dirmngr with our config changes"
   command: "gpgconf --launch dirmngr"
 
+- name: "Start the gpg-agent"
+  command: "gpg-agent --daemon --write-env-file {{ root_gpg_dir }}"
+
 - name: "Wait for the GPG agent and dirmngr control sockets"
   wait_for:
     path: "{{ root_gpg_dir }}/{{ item }}"
