@@ -14,9 +14,8 @@
 [Resolve]
 DNS={{ upstream_dns_servers | join(' ') }}
 FallbackDNS=1.1.1.1 1.0.0.1
-#Domains=
+DNSOverTLS="opportunistic"
 LLMNR=yes
-#MulticastDNS=no
 DNSSEC=no
 Cache=yes
-DNSStubListener=no
+DNSStubListener=yes

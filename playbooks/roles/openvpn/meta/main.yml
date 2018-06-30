@@ -2,5 +2,5 @@
 dependencies:
   # OpenVPN needs to be added to the firewall
   - { role: ufw }
-  - { role: dnsmasq }
+  # - { role: dnsmasq }
   - { role: ip-forwarding }
