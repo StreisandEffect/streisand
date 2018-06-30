@@ -40,10 +40,10 @@
     group: root
     mode: 0644
 
-- name: Clean up the installed-by-default tinyproxy configuration file
-  file:
-    path: /etc/tinyproxy.conf
-    state: absent
+#- name: Clean up the installed-by-default tinyproxy configuration file
+#  file:
+#    path: /etc/tinyproxy.conf
+#    state: absent
 
 - name: Enable and restart the tinyproxy service
   systemd:
