@@ -1,0 +1,142 @@
+##
+## tinyproxy.conf -- tinyproxy daemon configuration file
+##
+## This example tinyproxy.conf file contains example settings
+## with explanations in comments. For decriptions of all
+## parameters, see the tinproxy.conf(5) manual page.
+##
+
+#
+# User/Group: This allows you to set the user and group that will be
+# used for tinyproxy after the initial binding to the port has been done
+# as the root user. Either the user or group name or the UID or GID
+# number may be used.
+#
+User nobody
+Group nogroup
+
+#
+# Port: Specify the port which tinyproxy will listen on.  Please note
+# that should you choose to run on a port lower than 1024 you will need
+# to start tinyproxy using root.
+#
+Port {{ tinyproxy_port }}
+
+#
+# Listen: If you have multiple interfaces this allows you to bind to
+# only one. If this is commented out, tinyproxy will bind to all
+# interfaces present.
+#
+Listen {{ tinyproxy_listen_address }}
+
+#
+# Timeout: The maximum number of seconds of inactivity a connection is
+# allowed to have before it is closed by tinyproxy.
+#
+Timeout {{ tinyproxy_timeout_seconds }}
+
+#
+# DefaultErrorFile: The HTML file that gets sent if there is no
+# HTML file defined with an ErrorFile keyword for the HTTP error
+# that has occured.
+#
+DefaultErrorFile "/usr/share/tinyproxy/default.html"
+
+#
+# StatFile: The HTML file that gets sent when a request is made
+# for the stathost.  If this file doesn't exist a basic page is
+# hardcoded in tinyproxy.
+#
+StatFile "/usr/share/tinyproxy/stats.html"
+
+#
+# Logfile: Allows you to specify the location where information should
+# be logged to.  If you would prefer to log to syslog, then disable this
+# and enable the Syslog directive.  These directives are mutually
+# exclusive.
+#
+Logfile "/var/log/tinyproxy/tinyproxy.log"
+
+#
+# LogLevel:
+#
+# Set the logging level. Allowed settings are:
+#       Critical        (least verbose)
+#       Error
+#       Warning
+#       Notice
+#       Connect         (to log connections without Info's noise)
+#       Info            (most verbose)
+#
+# The LogLevel logs from the set level and above. For example, if the
+# LogLevel was set to Warning, then all log messages from Warning to
+# Critical would be output, but Notice and below would be suppressed.
+#
+LogLevel {{ tinyproxy_log_level }}
+
+#
+# PidFile: Write the PID of the main tinyproxy thread to this file so it
+# can be used for signalling purposes.
+#
+PidFile "{{ tinyproxy_pid_file }}"
+
+#
+# MaxClients: This is the absolute highest number of threads which will
+# be created. In other words, only MaxClients number of clients can be
+# connected at the same time.
+#
+MaxClients {{ [vpn_clients * 4,50]|min() }}
+
+#
+# MinSpareServers/MaxSpareServers: These settings set the upper and
+# lower limit for the number of spare servers which should be available.
+#
+# If the number of spare servers falls below MinSpareServers then new
+# server processes will be spawned.  If the number of servers exceeds
+# MaxSpareServers then the extras will be killed off.
+#
+MinSpareServers 5
+MaxSpareServers 20
+
+#
+# StartServers: The number of servers to start initially.
+#
+StartServers 10
+
+#
+# MaxRequestsPerChild: The number of connections a thread will handle
+# before it is killed. In practise this should be set to 0, which
+# disables thread reaping. If you do notice problems with memory
+# leakage, then set this to something like 10000.
+#
+MaxRequestsPerChild 0
+
+#
+# Allow: Customization of authorization controls. If there are any
+# access control keywords then the default action is to DENY. Otherwise,
+# the default action is ALLOW.
+#
+# The order of the controls are important. All incoming connections are
+# tested against the controls based on order.
+#
+Allow {{ tinyproxy_listen_address }}
+Allow {{ streisand_ipv4_address }}
+
+#
+# ViaProxyName: The "Via" header is required by the HTTP RFC, but using
+# the real host name is a security concern.  If the following directive
+# is enabled, the string supplied will be used as the host name in the
+# Via header; otherwise, the server's host name will be used.
+#
+ViaProxyName "tinyproxy"
+
+#
+# ConnectPort: This is a list of ports allowed by tinyproxy when the
+# CONNECT method is used.  To disable the CONNECT method altogether, set
+# the value to 0.  If no ConnectPort line is found, all ports are
+# allowed (which is not very secure.)
+#
+# The following two ports are used by SSL.
+#
+ConnectPort 443
+ConnectPort 563
