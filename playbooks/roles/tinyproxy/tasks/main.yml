@@ -3,11 +3,6 @@
   apt:
     package: tinyproxy
 
-- name: Stop (init.d's) tinyproxy
-  systemd:
-    name: tinyproxy.service
-    state: stopped
-
 - name: Create the tinyproxy config directory
   file:
     path: "{{ tinyproxy_conf_dir }}"
@@ -39,11 +34,6 @@
     owner: root
     group: root
     mode: 0644
-
-#- name: Clean up the installed-by-default tinyproxy configuration file
-#  file:
-#    path: /etc/tinyproxy.conf
-#    state: absent
 
 - name: Enable and restart the tinyproxy service
   systemd:
