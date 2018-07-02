@@ -126,7 +126,7 @@ Complete all of these tasks on your local home machine.
 2. Run the installer for Ansible and its dependencies.
 
         ./util/venv-dependencies.sh ./venv
-  * On Debian and Ubuntu, it may be necessary to install some additional packages. The installer will detect this, and print the command to run to install the packages.
+  * The installer will detect missing packages, and print the commands needed to install them.
 
 3. Activate the Ansible packages that were installed.
 
