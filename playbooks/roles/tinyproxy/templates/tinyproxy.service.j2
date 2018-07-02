@@ -6,8 +6,8 @@ Documentation=https://www.banu.com/tinyproxy/
 
 [Service]
 Type=forking
-PIDFile=/var/run/tinyproxy/tinyproxy.pid
-ExecStart=/usr/sbin/tinyproxy -c /etc/tinyproxy.conf
+PIDFile={{ tinyproxy_pid_file }}
+ExecStart=/usr/sbin/tinyproxy -c {{ tinyproxy_conf_file }}
 ExecStop=/usr/bin/killall -9 tinyproxy
 ExecReload=/bin/kill -HUP $MAINPID
 PrivateTmp=true
