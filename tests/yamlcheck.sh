@@ -3,7 +3,7 @@
 # Streisand yamllint wrapper
 #
 # This test script finds all of the *.yml files in the project tree and
-# runs yamllint against them.
+# runs yamllint against them. Ignore any `venv` directory.
 #
 
 # Fail on errors
