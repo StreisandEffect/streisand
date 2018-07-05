@@ -39,8 +39,18 @@
     group: root
     mode: 0750
 
-- name: "Start the GPG agent"
-  command: "gpg-agent --homedir {{ root_gpg_dir }} --use-standard-socket --daemon"
+- name: check if gpg-agent is running
+  command: gpg-agent
+  register: gpg_result
+  ignore_errors: True
+
+- name: reload gpg-agent
+  command: gpgconf --reload gpg-agent
+  when: gpg_result is succeeded
+
+- name: start gpg-agent
+  command: gpg-agent --homedir {{ root_gpg_dir }} --use-standard-socket --daemon
+  when: gpg_result is failed
 
 - name: "Start the dirmngr"
   command: "dirmngr --homedir {{ root_gpg_dir }} --daemon"
