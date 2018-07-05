@@ -1,0 +1,12 @@
+---
+tinyproxy_timeout_seconds: 600
+tinyproxy_port: 8888
+
+tinyproxy_listen_address: "127.0.0.1"
+tinyproxy_log_level: "Critical"
+
+tinyproxy_pid_dir: "/var/run/tinyproxy"
+tinyproxy_pid_file: "{{ tinyproxy_pid_dir }}/tinyproxy.pid"
+
+tinyproxy_conf_dir: "/etc/tinyproxy"
+tinyproxy_conf_file: "{{ tinyproxy_conf_dir }}/tinyproxy.conf"
