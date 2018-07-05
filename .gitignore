@@ -4,6 +4,7 @@ generated-docs
 *~
 *.swp
 *.tmp
+*.temp
 .DS_Store
 .vagrant/
 ubuntu-xenial-16.04-cloudimg-console.log
@@ -13,3 +14,7 @@ inventories/inventory-existing
 
 # Ignore the Streisand diagnostics file we generate each run
 streisand-diagnostics.md
+
+# We recommend people use a Python virtualenv, and document this as
+# the location.
+venv/
