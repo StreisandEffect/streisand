@@ -18,7 +18,7 @@
 
   roles:
     - common
-    - gpg
+    #- gpg
     - ssh
     - role: openconnect
       when: streisand_openconnect_enabled
