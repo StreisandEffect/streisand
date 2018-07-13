@@ -65,11 +65,10 @@
 - name: Validate that the maximum number of clients is set to a reasonable amount
   when: (vpn_clients > 20) or (vpn_clients < 1)
   fail:
-    msg: |
+    msg: |-
       Too many VPN clients specified. vpn_clients must be between 1 and 20.
 
-         See playbooks/roles/validation/tasks/main.yml.   
-
+         See playbooks/roles/validation/tasks/main.yml.
 - name: Validate that at least one VPN is specified
   fail:
     msg: "At least one Streisand VPN service must be enabled."
