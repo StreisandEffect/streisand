@@ -1,95 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-  <dict>
-    <key>PayloadContent</key>
-    <array>
-      <dict>
-        <key>Password</key>
-        <string>{{ client_content[2].stdout }}</string>
-        <key>PayloadCertificateFileName</key>
-        <string>{{ client_content[0].stdout }}.p12</string>
-        <key>PayloadContent</key>
-        <data>
-		    {{ client_content[1].stdout }}
-		    </data>
-        <key>PayloadDescription</key>
-        <string>Client PKCS12 certificate</string>
-        <key>PayloadDisplayName</key>
-        <string>{{ client_content[0].stdout }}.p12</string>
-        <key>PayloadIdentifier</key>
-        <string>com.apple.security.pkcs12.{{ ocserv_client_mobileconfig_uuid.stdout }}</string>
-        <key>PayloadType</key>
-        <string>com.apple.security.pkcs12</string>
-        <key>PayloadUUID</key>
-        <string>{{ ocserv_client_mobileconfig_uuid.stdout }}</string>
-        <key>PayloadVersion</key>
-        <integer>1</integer>
-      </dict>
-      <dict>
-        <key>IPv4</key>
-        <dict>
-          <key>OverridePrimary</key>
-          <integer>0</integer>
-        </dict>
-        <key>PayloadDescription</key>
-        <string>Configures VPN settings</string>
-        <key>PayloadDisplayName</key>
-        <string>VPN</string>
-        <key>PayloadIdentifier</key>
-        <string>com.apple.vpn.managed.{{ ocserv_payload_mobileconfig_uuid.stdout }}</string>
-        <key>PayloadType</key>
-        <string>com.apple.vpn.managed</string>
-        <key>PayloadUUID</key>
-        <string>{{ ocserv_payload_mobileconfig_uuid.stdout }}</string>
-        <key>PayloadVersion</key>
-        <integer>1</integer>
-        <key>ProviderType</key>
-        <string>packet-tunnel</string>
-        <key>Proxies</key>
-        <dict>
-          <key>HTTPEnable</key>
-          <integer>0</integer>
-          <key>HTTPSEnable</key>
-          <integer>0</integer>
-        </dict>
-        <key>UserDefinedName</key>
-        <string>{{ client_content[0].stdout }}</string>
-        <key>VPN</key>
-        <dict>
-          <key>AuthenticationMethod</key>
-          <string>Certificate</string>
-          <key>AuthName</key>
-          <string>{{ client_content[0].stdout }}</string>
-          <key>PayloadCertificateUUID</key>
-          <string>{{ ocserv_client_mobileconfig_uuid.stdout }}</string>
-          <key>RemoteAddress</key>
-          <string>{{ streisand_ipv4_address }}:{{ ocserv_port }}</string>
-        </dict>
-        <key>VPNSubType</key>
-        <string>com.cisco.anyconnect</string>
-        <key>VPNType</key>
-        <string>VPN</string>
-        <key>VendorConfig</key>
-        <dict>
-          <key>DeviceUniqueIdentifier</key>
-          <string>{DeviceUid}</string>
-          <key>Group</key>
-          <string>nogroup</string>
-        </dict>
-      </dict>
-    </array>
-    <key>PayloadDisplayName</key>
-    <string>openconnect-{{ client_content[0].stdout }}</string>
-    <key>PayloadIdentifier</key>
-    <string>streisand.{{ ocserv_config_mobileconfig_uuid.stdout }}</string>
-    <key>PayloadRemovalDisallowed</key>
-    <false/>
-    <key>PayloadType</key>
-    <string>Configuration</string>
-    <key>PayloadUUID</key>
-    <string>{{ ocserv_global_mobileconfig_uuid.stdout }}</string>
-    <key>PayloadVersion</key>
-    <integer>1</integer>
-  </dict>
+   <dict>
+      <key>PayloadContent</key>
+      <array>
+         <dict>
+            <key>Password</key>
+            <string>{{ client_content[2].stdout }}</string>
+            <key>PayloadCertificateFileName</key>
+            <string>{{ client_content[0].stdout }}.p12</string>
+            <key>PayloadContent</key>
+            <data>{{ client_content[1].stdout }}</data>
+            <key>PayloadDescription</key>
+            <string>Client PKCS12 certificate</string>
+            <key>PayloadDisplayName</key>
+            <string>{{ client_content[0].stdout }}.p12</string>
+            <key>PayloadIdentifier</key>
+            <string>com.apple.security.pkcs12.{{ ocserv_client_mobileconfig_uuid.stdout | upper }}</string>
+            <key>PayloadType</key>
+            <string>com.apple.security.pkcs12</string>
+            <key>PayloadUUID</key>
+            <string>{{ ocserv_client_mobileconfig_uuid.stdout | upper }}</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+         </dict>
+         <dict>
+            <key>IPv4</key>
+            <dict>
+               <key>OverridePrimary</key>
+               <integer>0</integer>
+            </dict>
+            <key>PayloadDescription</key>
+            <string>Configures VPN settings</string>
+            <key>PayloadDisplayName</key>
+            <string>VPN</string>
+            <key>PayloadIdentifier</key>
+            <string>com.apple.vpn.managed.{{ ocserv_payload_mobileconfig_uuid.stdout | upper }}</string>
+            <key>PayloadType</key>
+            <string>com.apple.vpn.managed</string>
+            <key>PayloadUUID</key>
+            <string>{{ ocserv_payload_mobileconfig_uuid.stdout | upper }}</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>Proxies</key>
+            <dict>
+               <key>HTTPEnable</key>
+               <integer>0</integer>
+               <key>HTTPSEnable</key>
+               <integer>0</integer>
+            </dict>
+            <key>UserDefinedName</key>
+            <string>{{ client_content[0].stdout }}</string>
+            <key>VPN</key>
+            <dict>
+               <key>AuthName</key>
+               <string>{{ client_content[0].stdout }}</string>
+               <key>AuthenticationMethod</key>
+               <string>Certificate</string>
+               <key>PayloadCertificateUUID</key>
+               <string>{{ ocserv_client_mobileconfig_uuid.stdout | upper }}</string>
+               <key>RemoteAddress</key>
+               <string>{{ streisand_ipv4_address }}:{{ ocserv_port }}</string>
+            </dict>
+            <key>VPNSubType</key>
+            <string>com.cisco.anyconnect</string>
+            <key>VPNType</key>
+            <string>VPN</string>
+            <key>VendorConfig</key>
+			<dict>
+				<key>Group</key>
+				<string>{{ ocserv_key_ou }}</string>
+			</dict>
+         </dict>
+      </array>
+      <key>PayloadDisplayName</key>
+      <string>{{ client_content[0].stdout }}</string>
+      <key>PayloadIdentifier</key>
+      <string>streisand.{{ ocserv_config_mobileconfig_uuid.stdout | upper }}</string>
+      <key>PayloadRemovalDisallowed</key>
+      <false/>
+      <key>PayloadType</key>
+      <string>Configuration</string>
+      <key>PayloadUUID</key>
+      <string>{{ ocserv_global_mobileconfig_uuid.stdout | upper }}</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+   </dict>
 </plist>
