@@ -13,7 +13,8 @@ For security reasons, this OpenVPN has been configured to only allow one client 
   * [Windows](#windows)
   * [macOS](#macos)
   * [Linux](#linux)
-  * [Linux (Ubuntu)](#linux-ubuntu)
+  * [Linux (Ubuntu 17.10)](#linux-ubuntu-17.10)
+  * [Linux (Ubuntu 18.04)](#linux-ubuntu-18.04)
   * [Android](#android)
   * [iOS](#ios)
 
@@ -86,8 +87,8 @@ For security reasons, this OpenVPN has been configured to only allow one client 
    `sudo openvpn {{ openvpn_direct_profile_filename }}`
 1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
-<a name="linux-ubuntu"></a>
-### Linux (Ubuntu) ###
+<a name="linux-ubuntu-17.10"></a>
+### Linux (Ubuntu 17.10) ###
 It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager. This gives you a nice little interface for connecting, and it properly handles the necessary DNS changes when you connect/disconnect. Unfortunately, the plugin does not support .ovpn profiles, so the list of steps is a little more involved.
 
 1. First, download the OpenVPN CA certificate, the certificate `.crt` file, private key `.key` file, and TLS authentication key `ta.key` file for one of the client profiles below:
@@ -102,11 +103,10 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 
    `sudo apt-get install network-manager-openvpn-gnome`
 1. Open your *System Settings*.
-1. Click the *Network* icon.
-1. Click the *+* button in the lower-left of the window.
-1. Select *VPN* from the Interface drop-down and click *Create*.
-1. Select *OpenVPN* and click *Create*.
-1. Enter `{{ streisand_server_name }}` for the *Connection name*.
+1. Click the *Network* tab on the left side.
+1. Click the *+* button under *VPN*.
+1. Select *OpenVPN*.
+1. Enter `{{ streisand_server_name }}` for the *Name*.
 1. Enter `{{ openvpn_server }}` for the *Gateway*.
 1. Make sure *Certificates (TLS)* is selected for the *Type*.
 1. Select the `client.crt` file you downloaded for the *User Certificate*.
@@ -132,6 +132,53 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
    * Click *OK*.
 1. Click *Add*
 1. Select the VPN in the left-hand menu, and flip the switch to *ON*. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to *VPN Connections*, and clicking on its name.
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+<a name="linux-ubuntu-18.04"></a>
+### Linux (Ubuntu 18.04) ###
+It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager. This gives you a nice little interface for connecting, and it properly handles the necessary DNS changes when you connect/disconnect. Unfortunately, the plugin does not support .ovpn profiles, so the list of steps is a little more involved.
+
+1. First, download the OpenVPN CA certificate, the certificate `.crt` file, private key `.key` file, and TLS authentication key `ta.key` file for one of the client profiles below:
+{% for client in vpn_client_names.results %}
+   * {{ client.stdout }}
+      * CA Cert: [ca.crt](/openvpn/{{ client.stdout }}/ca.crt)
+      * Client Cert: [{{ client.stdout }}.crt](/openvpn/{{ client.stdout }}/client.crt)
+      * Client Key: [{{ client.stdout }}.key](/openvpn/{{ client.stdout }}/client.key)
+      * TA key: [ta.key](/openvpn/{{ client.stdout }}/ta.key)
+{% endfor %}
+1. Install the OpenVPN plugin for NetworkManager.
+
+   `sudo apt-get install network-manager-openvpn-gnome`
+1. Open your *System Settings*.
+1. Click the *Network* tab on the left side.
+1. Click the *+* button under *VPN*.
+1. Select *OpenVPN*.
+1. Enter `{{ streisand_server_name }}` for the *Connection name*.
+1. Enter `{{ openvpn_server }}` for the *Gateway*.
+1. Make sure *Certificates (TLS)* is selected for the *Type*.
+1. Select the `ca.crt` file you downloaded for the *CA Certificate*.
+1. Select the `client.crt` file you downloaded for the *User Certificate*.
+1. Select the `client.key` file you downloaded for the *User Private Key*.
+1. Click the *Advanced* button.
+1. Go to the *General* tab.
+   * Check *Use custom gateway port* and enter `{{ openvpn_port }}` as its value.
+     * Port `443` is available as an alternative if you are on a network that only allows access to the standard HTTPS port.
+     * You can also use port `{{ openvpn_port_udp }}` for a UDP connection.
+     * A combined profile which cycles through UDP port `{{ openvpn_port_udp }}`, TCP port `{{ openvpn_port }}` and `{{ openvpn_port_sslh }}` is also available.
+   * Check *Use LZO data compression*.
+   * Check *Use a TCP connection* unless you have chosen to use the UDP port or the combined profile.
+1. Go to the *Security* tab.
+   * Select `{{ openvpn_cipher }}` as the *Cipher*.
+   * Select `{{ openvpn_auth_digest }}` as the *HMAC Authentication*.
+1. Go to the *TLS Authentication* tab.
+   * Under *Server Certificate Check* choose `verify name exactly` and enter `{{ openvpn_server_common_name.stdout }}` as its value.
+   * Check *Verify peer (server) certificate usage signature*.
+   * Go to *Additional TLS authentication or encryption*.
+     * Select `TLS-Crypt` as the *Mode*.
+     * Select the `ta.key` file you downloaded from the client-files directory for the *Key File*.
+   * Click *OK*.
+1. Click *Add*
+1. Find the VPN and flip the switch to *ON*. You can also enable/disable the VPN by clicking on the WiFi/Network icon in the menu bar, scrolling to *VPN Connections*, and clicking on its name.
 1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="android"></a>
