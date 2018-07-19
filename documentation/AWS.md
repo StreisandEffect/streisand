@@ -30,7 +30,6 @@ IAM Policy Setup
                 "ec2:CreateSecurityGroup",
                 "ec2:DescribeSecurityGroups",
                 "ec2:DescribeAddresses",
-                "ec2:DescribeAlarms",
                 "ec2:DescribeImages",
                 "ec2:DescribeInstances",
                 "ec2:DescribeKeyPairs",
