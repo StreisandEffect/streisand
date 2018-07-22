@@ -13,6 +13,7 @@ For security reasons, this OpenVPN has been configured to only allow one client 
   * [Windows](#windows)
   * [macOS](#macos)
   * [Linux](#linux)
+  * [Linux (Ubuntu 16.04)](#linux-ubuntu-16.04)
   * [Linux (Ubuntu 17.10)](#linux-ubuntu-17.10)
   * [Linux (Ubuntu 18.04)](#linux-ubuntu-18.04)
   * [Android](#android)
@@ -76,6 +77,39 @@ For security reasons, this OpenVPN has been configured to only allow one client 
    * *[UDP profiles](#udp-profiles) available.*
    * *[Combined profiles](#combined-profiles) are now available.*
 1. Copy the downloaded `{{ openvpn_direct_profile_filename }}` file to the location of your choice. */etc/openvpn/* is a decent option.
+1. On some distributions, the pushed DHCP DNS option from the OpenVPN server will be ignored. This means that your DNS queries will still be routed through your ISP's servers which makes them vulnerable to what is known as a DNS leak.
+   * You can test whether or not your DNS is leaking [here](https://dnsleaktest.com/).
+   * You can ensure that the correct DNS servers are used by adding the following lines to the top of the `{{ openvpn_direct_profile_filename }}` file:
+     * `script-security 2`
+     * `up /etc/openvpn/update-resolv-conf`
+     * `down /etc/openvpn/update-resolv-conf`
+1. Execute OpenVPN, and pass it the .ovpn profile as an option.
+
+   `sudo openvpn {{ openvpn_direct_profile_filename }}`
+1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+<a name="linux-ubuntu-16.04"></a>
+### Linux (Ubuntu 16.04) ###
+Due to an issue related to Ubuntu 16.04's NetworkManager you cannot use the OpenVPN plugin. Additionally, you cannot use the version of OpenVPN which is in the default repositories. To fix this issue we must download OpenVPN directly from the projects repository.
+
+1. Download one of these unified OpenVPN profiles:
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
+{% endfor %}
+   * *[Alternate profiles](#sslh-profiles) are available if you are on a network that only allows access to port `443`.*
+   * *[UDP profiles](#udp-profiles) available.*
+   * *[Combined profiles](#combined-profiles) are now available.*
+1. Copy the downloaded `{{ openvpn_direct_profile_filename }}` file to the location of your choice. */etc/openvpn/* is a decent option.
+1. Add the OpenVPN APT repository to your sources by running the following commands:
+
+   `curl -s https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add`
+   `echo "deb http://build.openvpn.net/debian/openvpn/stable xenial main" > /etc/apt/sources.list.d/openvpn-aptrepo.list`
+1. Update and install OpenVPN with the following command:
+
+   `sudo apt update && sudo apt install openvpn`
+1. After the install is complete, ensure you have OpenVPN version 2.4+ with the following command:
+
+   `openvpn --version`
 1. On some distributions, the pushed DHCP DNS option from the OpenVPN server will be ignored. This means that your DNS queries will still be routed through your ISP's servers which makes them vulnerable to what is known as a DNS leak.
    * You can test whether or not your DNS is leaking [here](https://dnsleaktest.com/).
    * You can ensure that the correct DNS servers are used by adding the following lines to the top of the `{{ openvpn_direct_profile_filename }}` file:
