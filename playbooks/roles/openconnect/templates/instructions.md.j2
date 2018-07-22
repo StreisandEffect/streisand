@@ -67,13 +67,6 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 <a name="macos-openconnect-cli"></a>
 #### OpenConnect CLI
 
-1. Install [Homebrew](https://brew.sh/), if you haven't already.
-1. Install OpenConnect using Homebrew:
-
-   `brew install openconnect`
-
-   * If installing Homebrew is not an option, you can also download and compile the [OpenConnect source code](/mirror/openconnect).
-
 <select id="macos-cli-select" onchange="showInstructions(this)">
   <option value="macos-cli-none" selected></option>
 {% for client in vpn_client_pkcs12_password_list.results %}
@@ -90,6 +83,13 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 <div markdown="1" id="macos-cli-{{ client.client_name.stdout }}" style="display:none">
 
 ##### Instructions for {{ client.client_name.stdout }}
+1. Install [Homebrew](https://brew.sh/), if you haven't already.
+1. Install OpenConnect using Homebrew:
+
+   `brew install openconnect`
+
+   * If installing Homebrew is not an option, you can also download and compile the [OpenConnect source code](/mirror/openconnect).
+
 1. Download the [server certificate](/openconnect/ca.crt) file
 1. Download the client [pkcs12 file](/openconnect/{{ client.client_name.stdout }}.p12)
 1. Place the downloaded server certificate and a selected client certificate into a separate folder (e.g. `{{ streisand_server_name }}-openconnect`), open your Terminal, and `cd` to that directory.
@@ -99,7 +99,6 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 
 You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 </div>
-
 {% endfor %}
 
 <a name="linux"></a>
