@@ -78,7 +78,7 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
   <option value="macos-cli-none" selected></option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="macos-cli-{{ client.client_name.stdout }}">
-  {{ client.client_name.stdout }}
+  {{ loop.index }} - {{ client.client_name.stdout }}
   </option>
 {% endfor %}
 </select> 
@@ -140,7 +140,9 @@ You should be good to go! You can verify that your traffic is being routed prope
 <select id="linux-cli-select" onchange="showInstructions(this)">
   <option value="linux-cli-none"></option>
 {% for client in vpn_client_pkcs12_password_list.results %}
-  <option value="linux-cli-{{ client.client_name.stdout }}">{{ client.client_name.stdout }}</option>
+  <option value="linux-cli-{{ client.client_name.stdout }}">
+  {{ loop.index }} - {{ client.client_name.stdout }}
+  </option>
 {% endfor %}
 </select> 
 
@@ -169,7 +171,7 @@ You should be good to go! You can verify that your traffic is being routed prope
   <option value="android-select-none"></option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="android-select-{{ client.client_name.stdout }}">
-  {{ client.client_name.stdout }}
+  {{ loop.index }} - {{ client.client_name.stdout }}
   </option>
 {% endfor %}
 </select> 
@@ -206,7 +208,6 @@ You should be good to go! You can verify that your traffic is being routed prope
 1. Tap *Connect* on the group selection screen. The correct default has already been chosen.
 1. If this is your first time using AnyConnect, you will need to accept the Connection Request dialog that Android displays.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
-</div>
 
 #### Prompted for username? ####
 
@@ -216,21 +217,17 @@ If you're affected, you can use this workaround:
 
 1. When prompted for a user, enter `streisand`
 1. When prompted for a password, use `{{ ocserv_password.stdout }}`
-
+</div>
 {% endfor %}
 
 <a name="ios"></a>
 ### iOS ###
 
-#### Note: When using AnyConnect for the first time, you may be prompted for a password prior to being connected. Enter `streisand` for the username, `{{ ocserv_password.stdout }}` for the password and continue. Subsequent connections will not prompt you again.
-
-#### Note: Only one AnyConnect profile can be configured at any give time. To remove an existing profile, go to *Settings* -> *General* -> *Profile*, tap on the profile you wish to remove, then tap on *Remove Profile*.
-
 <select id="ios-select" onchange="showInstructions(this)">
   <option value="ios-select-none"></option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="ios-select-{{ client.client_name.stdout }}">
-  {{ client.client_name.stdout }}
+  {{ loop.index }} - {{ client.client_name.stdout }}
   </option>
 {% endfor %}
 </select> 
@@ -261,5 +258,9 @@ If you're affected, you can use this workaround:
 1. Tap *import* in the top-right corner.
 1. Tap *Connect* on the group selection screen. The correct default has already been chosen.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+#### Note: When using AnyConnect for the first time, you may be prompted for a password prior to being connected. Enter `streisand` for the username, `{{ ocserv_password.stdout }}` for the password and continue. Subsequent connections will not prompt you again.
+
+#### Note: Only one AnyConnect profile can be configured at any give time. To remove an existing profile, go to *Settings* -> *General* -> *Profile*, tap on the profile you wish to remove, then tap on *Remove Profile*.
 </div>
 {% endfor %}

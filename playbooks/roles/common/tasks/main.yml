@@ -29,9 +29,9 @@
     autoremove: yes
   with_items: "{{ streisand_unneeded_packages }}"
 
-#- name: Perform a full system upgrade
-#  apt:
-#    upgrade: "safe"
+- name: Perform a full system upgrade
+  apt:
+    upgrade: "safe"
 
 - name: Copy the English BIP-0039 wordlist
   copy:
