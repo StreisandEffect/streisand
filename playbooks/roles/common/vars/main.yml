@@ -86,6 +86,10 @@ streisand_word_gen:
   identifier: >
     {{ streisand_shuf }} -n 2 /usr/share/dict/english.txt |
     paste -s -d '-' -
+  identifier_max_len_15: >
+    egrep '^.{1,7}$' /usr/share/dict/english.txt |
+    {{ streisand_shuf }} -n 2 |
+    paste -s -d '-' -
   # Tor only likes [A-Za-z0-9] for nicknames.
   #
   # The BIP words are maximum 8 characters, so we get two safely.
