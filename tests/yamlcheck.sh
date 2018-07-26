@@ -3,7 +3,7 @@
 # Streisand yamllint wrapper
 #
 # This test script finds all of the *.yml files in the project tree and
-# runs yamllint against them.
+# runs yamllint against them. Ignore any `venv` directory.
 #
 
 # Fail on errors
@@ -31,5 +31,5 @@ pushd "$PROJECT_DIR"
   # NOTE(@cpu): While tempting to -exec shellcheck directly from find this will
   # eat-up any non-zero exit codes :-( Instead we find the files first and then
   # xargs yamllint on the found files.
-  find ./ -name '*.yml' -print0 | xargs -0 -n1 yamllint "${YAMLLINT_ARGS[@]}"
+  find . -path "./venv" -prune -or -name '*.yml' -print0 | xargs -0 -n1 yamllint "${YAMLLINT_ARGS[@]}"
 popd

@@ -25,12 +25,12 @@ PROJECT_DIR="$SCRIPT_DIR/.."
 
 pushd "$PROJECT_DIR"
   # Run shellcheck against all of the `.sh` script files in the Streisand
-  # project directory.
+  # project directory. Ignore any `venv` directory.
   #
   # NOTE(@cpu): While tempting to -exec shellcheck directly from find this will
   # eat-up any non-zero exit codes :-( Instead we find the files first and then
   # xargs shellcheck on the found files.
-  find ./ -name '*.sh' -print0 | xargs -0 -n1 shellcheck "${SHELLCHECK_ARGS[@]}"
+  find . -path "./venv" -prune -or -name '*.sh' -print0 | xargs -0 -n1 shellcheck "${SHELLCHECK_ARGS[@]}"
 
   # Also explicitly run `shellcheck` against the streisand wrapper script since
   # it doesn't end in .sh
