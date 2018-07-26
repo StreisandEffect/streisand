@@ -38,7 +38,7 @@
     mode: 0644
 
 - name: Generate random VPN client names
-  shell: "{{ streisand_word_gen.identifier }}"
+  shell: "{{ streisand_word_gen.identifier_max_len_15 }}"
   register: "vpn_client_names"
   with_sequence: count={{ vpn_clients }}
 
