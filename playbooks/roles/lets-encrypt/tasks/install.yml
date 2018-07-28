@@ -1,4 +1,4 @@
-- name: Add the APT key for acmetool
+- name: "Add the APT key for acmetool; hiding 25 lines of log..."
   apt_key:
     id: 9862409EF124EC763B84972FF5AC9651EDB58DFA
     data: "{{ item }}"

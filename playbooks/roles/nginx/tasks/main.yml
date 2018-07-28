@@ -5,7 +5,7 @@
     state: absent
   with_items: "{{ apache_packages_to_remove }}"
 
-- name: Add the official Nginx APT key
+- name: "Add the official Nginx APT key; hiding 25 lines of log..."
   apt_key:
     id: 7BD9BF62
     data: "{{ item }}"
