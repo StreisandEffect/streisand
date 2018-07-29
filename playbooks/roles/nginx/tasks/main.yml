@@ -10,6 +10,7 @@
     id: 7BD9BF62
     data: "{{ item }}"
   with_file: nginx_signing.key
+  no_log: True
 
 - name: Add the official Nginx repository
   apt_repository:
