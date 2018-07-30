@@ -1,9 +1,10 @@
 ---
-- name: Add the official OpenVPN APT key
+- name: "Add the official OpenVPN APT key; hiding 25 lines of log..."
   apt_key:
     id: E158C569
     data: "{{ item }}"
   with_file: openvpn_signing.key
+  no_log: True
 
 - name: Add the official OpenVPN repository
   apt_repository:
