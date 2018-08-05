@@ -69,7 +69,7 @@ OpenConnect est un serveur VPN extrêmement performant et léger qui offre une c
 #### OpenConnect CLI
 
 <select id="macos-cli-select" onchange="showInstructions(this)">
-  <option value="macos-cli-none" selected></option>
+  <option value="macos-cli-none" selected>- Profile clients...</option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="macos-cli-{{ client.client_name.stdout }}">
   {{ loop.index }} - {{ client.client_name.stdout }}
@@ -133,7 +133,7 @@ Vous devriez être prêt à partir ! Vous pouvez vérifier que votre trafic est 
 #### OpenConnect CLI
 
 <select id="linux-cli-select" onchange="showInstructions(this)">
-  <option value="linux-cli-none"></option>
+  <option value="linux-cli-none">- Profile clients...</option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="linux-cli-{{ client.client_name.stdout }}">
   {{ loop.index }} - {{ client.client_name.stdout }}
@@ -170,7 +170,7 @@ Vous devriez être prêt à partir ! Vous pouvez vérifier que votre trafic est 
 ### Android ###
 
 <select id="android-select" onchange="showInstructions(this)">
-  <option value="android-select-none"></option>
+  <option value="android-select-none">- Profile clients...</option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="android-select-{{ client.client_name.stdout }}">
   {{ loop.index }} - {{ client.client_name.stdout }}
@@ -227,7 +227,7 @@ Si vous êtes affecté, vous pouvez utiliser cette solution alternatif:
 ### iOS ###
 
 <select id="ios-select" onchange="showInstructions(this)">
-  <option value="ios-select-none"></option>
+  <option value="ios-select-none">- Profile clients...</option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="ios-select-{{ client.client_name.stdout }}">
   {{ loop.index }} - {{ client.client_name.stdout }}

@@ -68,7 +68,7 @@ OpenConnect is an extremely high-performance and lightweight VPN server that als
 #### OpenConnect CLI
 
 <select id="macos-cli-select" onchange="showInstructions(this)">
-  <option value="macos-cli-none" selected></option>
+  <option value="macos-cli-none" selected>- Client profiles...</option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="macos-cli-{{ client.client_name.stdout }}">
   {{ loop.index }} - {{ client.client_name.stdout }}
@@ -131,7 +131,7 @@ You should be good to go! You can verify that your traffic is being routed prope
 #### OpenConnect CLI
 
 <select id="linux-cli-select" onchange="showInstructions(this)">
-  <option value="linux-cli-none"></option>
+  <option value="linux-cli-none">- Client profiles...</option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="linux-cli-{{ client.client_name.stdout }}">
   {{ loop.index }} - {{ client.client_name.stdout }}
@@ -166,7 +166,7 @@ You should be good to go! You can verify that your traffic is being routed prope
 ### Android ###
 
 <select id="android-select" onchange="showInstructions(this)">
-  <option value="android-select-none"></option>
+  <option value="android-select-none">- Client profiles...</option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="android-select-{{ client.client_name.stdout }}">
   {{ loop.index }} - {{ client.client_name.stdout }}
@@ -222,7 +222,7 @@ If you're affected, you can use this workaround:
 ### iOS ###
 
 <select id="ios-select" onchange="showInstructions(this)">
-  <option value="ios-select-none"></option>
+  <option value="ios-select-none">- Client profiles...</option>
 {% for client in vpn_client_pkcs12_password_list.results %}
   <option value="ios-select-{{ client.client_name.stdout }}">
   {{ loop.index }} - {{ client.client_name.stdout }}
