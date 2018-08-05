@@ -3,15 +3,37 @@
 WireGuard
 ---------
 
-Si vous êtes un utilisateur Linux, [WireGuard](https://www.wireguard.com/) est presque certainement la meilleure option de connexion que Streisand fournit. Ceci est dû à sa [performance incroyable](https://www.wireguard.com/performance/), [cryptographie de pointe](https://www.wireguard.com/protocol/), et beaucoup, beaucoup d'autres avantages.
+[WireGuard](https://www.wireguard.com/) est certainement la meilleure option de connexion fournie par Streisand. Cela est dû à ses [performances incroyables](https://www.wireguard.com/performance/), [cryptographie de pointe](https://www.wireguard.com/protocol/), et des nombreuses autres avantages.
 
-WireGuard n'est actuellement disponible que pour Linux, mais support [multi-plateforme](https://www.wireguard.com/xplatform/) et les implémentations portables sont en cours de développement.
+WireGuard est disponible sur Linux et [d'autre plateformes](https://www.wireguard.com/xplatform/) ainsi que des implémentations portables d'espace utilisateur qui peuvent être téléchargées pour Android et macOS.
+
+Une [configuration expérimentale pour OpenWrt/LEDE](#openwrt) 17.01.4 (ou version ultérieure) est également disponible.
 
 ---
+* Plateformes
+  * [Android](#android)
+  * [Linux](#linux)
+  * [macOS](#macos)
+  * [OpenWrt](#openwrt)
+
+<a name="android"></a>
+### Android ###
+
+1. [Installez WireGuard](https://play.google.com/store/apps/details?id=com.wireguard.android).
+1. Lancez l'application et appuyez sur le bouton bleu pour ajouter un nouveau tunnel.
+1. Appuyez *Create from QR code* (Créer à partir du code QR) et autoriser l'application à accéder à la caméra. Un viewfinder (viseur) apparaîtra.
+1. Utilisez l'appareil photo pour numériser l'un de ces codes QR de configuration client. **Un seul appareil peut utiliser un profil à la fois**:
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.png)
+{% endfor %}
+1. Saisissez un nom pour le tunnel et appuyez sur *Create Tunnel* (Créer tunnel) pour sauvgarder la configuration.
+1. Appuyez sur le bouton situé à côté du nom du tunnel pour activer le VPN. Si c'est la première fois que vous utilisez WireGuard sur votre appareil Android, vous serez invité à accepter la demande de connexion VPN.
+1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="linux"></a>
 ### Linux ###
-1. [Installer WireGuard](https://www.wireguard.com/install/)
+
+1. [Installez WireGuard](https://www.wireguard.com/install/)
 1. Téléchargez un fichier de configuration client. **Un seul ordinateur peut utiliser un profil à la fois**. Pour cet exemple, nous supposerons que vous avez téléchargé le fichier {{ vpn_client_names.results[0].stdout }}:
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.conf)
@@ -32,3 +54,81 @@ WireGuard n'est actuellement disponible que pour Linux, mais support [multi-plat
 
 #### Une note sur la configuration DNS ####
 Chaque fichier inclure la commande `DNS` qui utilise `resolvconf` afin de diriger le trafic DNS vers le serveur dnsmasq qui est disponible via l'interface cryptée WireGuard à `{{ dnsmasq_wireguard_ip }}`. Bien que `resolvconf` soit un utilitaire commun, vous devrez peut-être remplacer cette ligne avec `PostUp`/`PostDown` pour votre distribution ou votre configuration réseau particulière.
+
+<a name="macos"></a>
+### macOS ###
+
+**ATTENTION**: Le client macOS WireGuard en est aux premiers stades de développement et est toujours considéré comme expérimental.
+
+1. Installez [Homebrew](https://brew.sh/), si vous ne l'avez pas.
+1. Installez << WireGuard tools >> en utilisant Homebrew:
+
+   `brew install wireguard-tools`
+1. Téléchargez l'un des fichiers de configuration client. **Un seul appareil peut utiliser un profil à la fois**. Pour cet exemple, nous supposerons que vous avez téléchargé {{ vpn_client_names.results[0].stdout }}:
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.conf)
+{% endfor %}
+1. Déplacez le fichier de configuration du client dans le répertoire de configuration WireGuard. La commande suivante suppose que vous avez téléchargé le fichier de configuration dans votre dossier `Téléchargements` (ou `Downloads`). (Si ce n'est pas le cas, modifiez-le en conséquence):
+
+`sudo sh -c 'umask 077 && mkdir -p /etc/wireguard/ && cat ~/Downloads/{{ vpn_client_names.results[0].stdout }}.conf > /etc/wireguard/{{ vpn_client_names.results[0].stdout }}.conf'`
+
+1. Utilisez l'utilitaire `wg-quick` pour lancer l'interface WireGuard:
+
+   `sudo wg-quick up {{ vpn_client_names.results[0].stdout }}`
+
+
+1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous pouvez vérifier le statut du VPN à tout moment en utilisant `wg`:
+   `sudo wg show`
+
+1. Pour arrêter le routage de votre trafic via WireGuard, déconnectez l'interface avec:
+
+   `sudo wg-quick down {{ vpn_client_names.results[0].stdout }}`
+
+---
+
+<a name="openwrt"></a>
+### EXPÉRIMENTAL: OpenWrt (LEDE) ###
+
+En tant qu'expérience **non prise en charge**, ces profils sont disponibles pour les routeurs exécutant [OpenWrt](https://openwrt.org/). Le support nécessite OpenWrt/LEDE 17.01.4 ou ultérieur.
+
+Les périphériques OpenWrt exécutent Linux, mais ils sont gérés via un système de configuration centralisé appelé [UCI](https://openwrt.org/docs/guide-user/base-system/uci). La plupart des appareils OpenWrt ont une interface d'administration Web appelée LuCI, qui cache la complexité de UCI. Ces profils WireGuard peuvent être installés via un shell ou via l'interface Web LuCI.
+
+Ces profils remplaceront la connexion Internet existante. Par conséquence, vous ne devez les installer que lorsque vous êtes connecté à l'interface réseau WiFi ou le LAN du routeur. Si vous êtes connecté à distance, vous risquez de vous enfermé de votre réseau.
+
+#### Installation du logiciel WireGuard ####
+
+Assurez-vous que ces progiciels sont installés: `luci-app-wireguard` et `luci-proto-wireguard`. Pour installer ces packages à partir de l'interface utilisateur Web:
+
+1. Naviguer vers la page LuCI *System:Software*, et cliquez sur le bouton *Update lists* (Mettre à jour les listes).
+2. Saisissez `wireguard` dans la boîte *Find package* (Rechercher un package).
+3. Cliquez sur l'onglet *Available packages (wireguard)* (progiciels disponibles).
+4. Cliquez sur *Install* à côté de `luci-app-wireguard`; Revenez à l'étape 2 pour installer `luci-proto-wireguard`.
+
+(Si vous gérez votre routeur sans l’interface utilisateur LuCI, vous pouvez utiliser à la place `opkg update; opkg install kmod-wireguard wireguard-tools` .)
+
+#### Installation du profil ####
+
+Les utilisateurs expérimentés peuvent installer ces profils à partir de la ligne de commande SSH du routeur. Placez-en un dans un fichier et exécutez-le en tant que un script shell.
+
+Un moyen simple existe pour simplifier l'installation à partir de l’interface Web. La page web LuCI *System:Startup* contient une zone de texte *Local Startup*. C'est un script shell qui est exécuté à chaque démarrage du routeur. Ces profils WireGuard sont conçus pour être collés dans la boîte *Local Startup*, remplaçant le contenu existant. (Assurez-vous de supprimer toutes les lignes `exit 0`.)
+
+Au prochain redémarrage du routeur, le script sera exécuté. Le script se supprimera automatiquement. Cochez la case *Local Startup* pour le résultat du statut.
+
+#### Modifications apportées par le profil ####
+
+* Une nouvelle interface nommée comme `poem_walk` sera créée
+* L'interface est ajoutée à la zone réseau *WAN*
+* La route par défaut vers Internet est définie sur l'interface. (Cela brisera la connectivité WAN, alors assurez-vous de ne l'installer qu'à partir du WiFi/LAN.)
+* Le keepalive WireGuard est réglé pour 25 secondes
+* DNS à l'échelle du système est obligé de pointer sur le serveur Streisand
+
+Si vous n'aimez pas le DNS configuré par défaut, vous pouvez modifier le comportement DNS sur la page LuCI: *Network: DHCP and DNS*. Mettez l'adresse du serveur DNS dans *Transfer DNS*. Sur l'onglet *Resolv and Hosts Files*, laissez *Ignore resolve file* coché, sauf si vous souhaitez utiliser votre DNS existant (non recommandé).
+
+Si vous savez que vous n'êtes pas derrière un périphérique NAT, modifiez l'interface WireGuard pour définir le paramètre keepalive sur 0.
+
+#### Profils OpenWrt ####
+
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}-openwrt.txt)
+{% endfor %}
