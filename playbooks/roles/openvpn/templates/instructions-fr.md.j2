@@ -13,12 +13,15 @@ Pour des raisons de sécurité, ce serveur OpenVPN a été configuré pour n'aut
   * [Windows](#windows)
   * [macOS](#macos)
   * [Linux](#linux)
-  * [Linux (Ubuntu)](#linux-ubuntu)
+  * [Linux (Ubuntu 16.04)](#linux-ubuntu-16.04)
+  * [Linux (Ubuntu 17.10)](#linux-ubuntu-17.10)
+  * [Linux (Ubuntu 18.04)](#linux-ubuntu-18.04)
   * [Android](#android)
   * [iOS](#ios)
 
 <a name="windows"></a>
 ### Windows ###
+
 1. Téléchargez et exécutez [l'installateur Windows](/mirror/index-fr.html#openvpn) OpenVPN.
 1. Cliquez sur *Suivant* et acceptez le contrat de licence en sélectionnant *J'accepte*.
 1. Cliquez *Suivant* sur l'écran *Choose Components* (Choisir les composants). Laissez toutes les options par défaut cochées.
@@ -40,10 +43,11 @@ Pour des raisons de sécurité, ce serveur OpenVPN a été configuré pour n'aut
 1. Faites glisser et déposez le `{{ openvpn_direct_profile_filename }}` téléchargé a ci-dessus, et placez-le dans le même répertoire que le fichier README.
 1. Faites un clic droit sur l'icône OpenVPN dans la barre des tâches et choisissez *Connecter*.
 1. Vous verrez des journaux se déplacent à mesure que la connexion est établie, suivie d'une notification de la barre des tâches indiquant votre adresse IP attribuée.
-1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
 <a name="macos"></a>
 ### macOS ###
+
 1. Téléchargez et lancez [Tunnelblick](/mirror/index-fr.html#openvpn).
 1. Saisissez votre mot de passe pour permettre le processus d'installation de finir, et cliquez ensuite sur *OK*.
 1. Cliquez *Lancer* une fois l'installation terminée.
@@ -58,7 +62,7 @@ Pour des raisons de sécurité, ce serveur OpenVPN a été configuré pour n'aut
 1. Double-cliquez le profil OpenVPN.
 1. Vous devrez choisir si le profil doit être disponible pour tous les utilisateurs ou seulement pour l'utilisateur actuel. Après avoir effectué votre sélection, vous devrez entrer votre mot de passe.
 1. Recherchez l'icône Tunnelblick dans votre barre de menus. Cliquez dessus et choisissez *Connecter*.
-1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
 <a name="linux"></a>
 ### Linux ###
@@ -84,9 +88,42 @@ Pour des raisons de sécurité, ce serveur OpenVPN a été configuré pour n'aut
 1. Exécutez OpenVPN et passez le profil .ovpn en option.
 
    `sudo openvpn {{ openvpn_direct_profile_filename }}`
-1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
-<a name="linux-ubuntu"></a>
+<a name="linux-ubuntu-16.04"></a>
+### Linux (Ubuntu 16.04) ###
+En raison d'un problème lié à NetworkManager d'Ubuntu 16.04, vous ne pouvez pas utiliser le plug-in OpenVPN. De plus, vous ne pouvez pas utiliser la version de OpenVPN qui est dans les dépôts par défaut. Pour résoudre ce problème, nous devons télécharger OpenVPN directement depuis le dépôt de projets.
+
+1. Téléchargez l'un de ces profils OpenVPN unifiés :
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_profile_filename }})
+{% endfor %}
+   * [Profils alternatifs](#sslh-profiles) sont disponibles si vous êtes sur un réseau qui permet uniquement l'accès au port `443`.*
+   * [Profils UDP](#udp-profiles) sont disponibles.*
+   * [Profils combinés](#combined-profiles) sont maintenant disponibles.*
+1. Copiez le fichier téléchargé {{ openvpn_direct_profile_filename }} `à l'emplacement de votre choix. */etc/openvpn/* est une bonne option.
+1. Ajouter le dépôt APT OpenVPN à vos sources en exécutant les commandes suivantes :
+
+   `curl -s https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add`
+   `echo "deb http://build.openvpn.net/debian/openvpn/stable xenial main" > /etc/apt/sources.list.d/openvpn-aptrepo.list`
+1. Mettre à jour et installez OpenVPN avec la commande suivante :
+
+   `sudo apt update && sudo apt install openvpn`
+1. Une fois l'installation terminée, vérifiez que vous disposez de la version OpenVPN 2.4+ avec la commande suivante :
+
+   `openvpn --version`
+1. Dans certaines distributions, l'option DNS DHCP poussée du serveur OpenVPN sera ignorée. Cela signifie que vos requêtes DNS seront toujours acheminés par les serveurs de votre fournisseur de services Internet qui les rend vulnérables à ce qu'on appelle une fuite DNS.
+   * Vous pouvez tester si votre DNS fuit ou non [ici](https://dnsleaktest.com/).
+   * Vous pouvez vous assurer que les serveurs DNS corrects sont utilisés en ajoutant les lignes suivantes au début du fichier `{{ openvpn_direct_profile_filename }}` :
+     * `script-security 2`
+     * `up /etc/openvpn/update-resolv-conf`
+     * `down /etc/openvpn/update-resolv-conf`
+1. Exécutez OpenVPN et transmettez-lui le profil .ovpn en option.
+
+   `sudo openvpn {{ openvpn_direct_profile_filename }}`
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+
+<a name="linux-ubuntu-17.10"></a>
 ### Linux (Ubuntu) ###
 Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour NetworkManager. Cela vous donne une jolie petite interface pour la connexion, et il gère correctement les modifications DNS nécessaires lors de la connexion / déconnexion. Malheureusement, le plugin ne prend pas en charge les profils .ovpn, les étapes sont donc un peu plus compliquée.
 
@@ -114,11 +151,11 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 1. Sélectionnez le ficher `client.key` pour le *Private Key*.
 1. Cliquez le bouton *Advanced*.
 1. Accédez à l'onglet *General*.
-   * Vérifier *Use custom gateway port* et entrer `{{openvpn_port}}` comme sa valeur.
+   * Vérifier *Use custom gateway port* et entrer `{{ openvpn_port }}` comme sa valeur.
      * Port `443` est disponible en alternative si vous êtes sur un réseau qui ne permet l'accès au le port HTTPS standard.
      * Vous pouvez également utiliser le port `{{ openvpn_port_udp }}` pour une connexion UDP.
      * Le profil combiné qui parcourt le port UDP `{{ openvpn_port_udp }}`, le port TCP `{{ openvpn_port }}`et `{{ openvpn_port_sslh }}` est également disponible.
-   * Cocher *Use LZO data compression*.
+   * Cocher *Use LZ4 data compression*.
    * Cocher *Use a TCP connection* sauf si vous avez choisi d'utiliser le port UDP ou le profil combiné.
 1. Accédez à l'onglet *Security*.
    * Sélectionnez `{{ openvpn_cipher }}` pour le *Cipher*.
@@ -129,14 +166,62 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
    * Cocher *Additional TLS authentication or encryption*.
      * Sélectionnez `TLS-Crypt` pour *Mode*.
      * Sélectionnez le fichier `ta.key` que vous avez téléchargé depuis le répertoire client-files pour le *Key File*.
-     * Sélectionnez `1` pour la *Key Direction*.
    * Cliquez *Valider*.
 1. Cliquez *Enregistrer*
 1. Sélectionnez le VPN dans le menu à gauche, et faites glisser l'interrupteur sur *ON*. Vous pouvez également activer/désactiver le VPN en cliquant sur l'icône WiFi/Réseau dans la barre de menu, défiler vers *Connexions VPN* et en cliquant sur son nom.
-1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+
+<a name="linux-ubuntu-18.04"></a>
+### Linux (Ubuntu) ###
+Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour NetworkManager. Cela vous donne une jolie petite interface pour la connexion, et il gère correctement les modifications DNS nécessaires lors de la connexion / déconnexion. Malheureusement, le plugin ne prend pas en charge les profils .ovpn, les étapes sont donc un peu plus compliquée.
+
+1. Premièrement, téléchargez le certificat CA d'OpenVPN, le certificat client `.crt`, la clé privée du client `.key`, et finalement la clé d'authentification TLS `ta.key` pour l'un ces profils en dessous:
+{% for client in vpn_client_names.results %}
+   * {{ client.stdout }}
+      * CA Cert: [ca.crt](/openvpn/{{ client.stdout }}/ca.crt)
+      * Client Cert: [{{ client.stdout }}.crt](/openvpn/{{ client.stdout }}/client.crt)
+      * Client Clé: [{{ client.stdout }}.key](/openvpn/{{ client.stdout }}/client.key)
+      * TA Clé: [ta.key](/openvpn/{{ client.stdout }}/ta.key)
+{% endfor %}
+1. Installez le plugin OpenVPN pour NetworkManager.
+
+   `sudo apt-get install network-manager-openvpn-gnome`
+1. Ouvrez votre *Paramètres système*.
+1. Cliquez sur l'icône *Réseau*.
+1. Cliquez sur le bouton *+* en bas à gauche de la fenêtre.
+1. Sélectionnez *VPN* dans la liste déroulante Interface et cliquez sur *Créer*.
+1. Sélectionnez *OpenVPN* et cliquez *Créer*.
+1. Saisissez `{{ streisand_server_name }}` pour la *Nom de la connexion*.
+1. Saisissez `{{ openvpn_server }}` pour le *Gateway*.
+1. Assurez-vous que *Certificates (TLS)* est sélectionné pour le *Type*.
+1. Sélectionnez le fichier `client.crt` de votre choix pour le *User Certificate*.
+1. Sélectionnez le fichier `ca.crt` pour le *CA Certificate*.
+1. Sélectionnez le ficher `client.key` pour le *Private Key*.
+1. Cliquez le bouton *Advanced*.
+1. Accédez à l'onglet *General*.
+   * Vérifier *Use custom gateway port* et entrer `{{ openvpn_port }}` comme sa valeur.
+     * Port `443` est disponible en alternative si vous êtes sur un réseau qui ne permet l'accès au le port HTTPS standard.
+     * Vous pouvez également utiliser le port `{{ openvpn_port_udp }}` pour une connexion UDP.
+     * Le profil combiné qui parcourt le port UDP `{{ openvpn_port_udp }}`, le port TCP `{{ openvpn_port }}`et `{{ openvpn_port_sslh }}` est également disponible.
+   * Cocher *Use LZ4 data compression*.
+   * Cocher *Use a TCP connection* sauf si vous avez choisi d'utiliser le port UDP ou le profil combiné.
+1. Accédez à l'onglet *Security*.
+   * Sélectionnez `{{ openvpn_cipher }}` pour le *Cipher*.
+   * Sélectionnez `{{ openvpn_auth_digest }}` pour le *HMAC Authentication*.
+1. Accédez à l'onglet *TLS Authentication*.
+   * Dans le menu déroulant *Server Certificate Check* selectionnez `verify name exactly` et saisissez `{{ openvpn_server_common_name.stdout }}` pour sa valeur.
+   * Cocher *Verify peer (server) certificate usage signature*.
+   * Cocher *Additional TLS authentication or encryption*.
+     * Sélectionnez `TLS-Crypt` pour *Mode*.
+     * Sélectionnez le fichier `ta.key` que vous avez téléchargé depuis le répertoire client-files pour le *Key File*.
+   * Cliquez *Valider*.
+1. Cliquez *Enregistrer*
+1. Sélectionnez le VPN dans le menu à gauche, et faites glisser l'interrupteur sur *ON*. Vous pouvez également activer/désactiver le VPN en cliquant sur l'icône WiFi/Réseau dans la barre de menu, défiler vers *Connexions VPN* et en cliquant sur son nom.
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
 <a name="android"></a>
 ### Android ###
+
 1. Installez [OpenVPN pour Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=fr).
 1. Téléchargez l'un de ces profils OpenVPN unifiés :
 {% for client in vpn_client_names.results %}
@@ -152,10 +237,11 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 1. Tapez sur l'icône de sauvegarde (disquette) en bas à droite de l'écran une fois l'importation est terminée.
 1. Tapez le profil.
 1. Acceptez l'avertissement de connexion VPN Android.
-1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Succès ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
 <a name="ios"></a>
 ### iOS ###
+
 1. Téléchargez [OpenVPN Connect](https://itunes.apple.com/fr/app/openvpn-connect/id590379981) et lancez-le.
 1. Téléchargez l'un de ces profils OpenVPN unifiés:
 {% for client in vpn_client_names.results %}
@@ -170,22 +256,25 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
 1. OpenVPN sur votre téléphone va vous dire *1 new OpenVPN profile is available for import*.
 1. Appuyez sur le bouton vert *+* pour importer le profil.
 1. Tapez sur le l'interrupteur pour vous connecter au serveur OpenVPN.
-1. Succès! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Succès! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
 
 <a name="sslh-profiles"></a>
 ### Profils alternatifs unifiés pour l'accès via le port 443 ###
+
 {% for client in vpn_client_names.results %}
 * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_sslh_profile_filename }})
 {% endfor %}
 
 <a name="udp-profiles"></a>
 ### Profils alternatifs unifiés pour accéder via le port UDP {{ openvpn_port_udp }} ###
+
 {% for client in vpn_client_names.results %}
 * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_direct_udp_profile_filename }})
 {% endfor %}
 
 <a name="combined-profiles"></a>
 ### Profil alternatif qui parcourra le port UDP {{ openvpn_port_udp }}, le port TCP {{ openvpn_port }}, et le port TCP {{ openvpn_port_sslh }} ###
+
 {% for client in vpn_client_names.results %}
 * [{{ client.stdout }}](/openvpn/{{ client.stdout }}/{{ openvpn_combined_profile_filename }})
 {% endfor %}
