@@ -3,7 +3,7 @@
 # IP address is different from what is visible on the host and, if 
 # successfully detected, ask to update the address for documentation and 
 # configuration profiles
-- name: "Install dns module for python"
+- name: "Install dns module"
   apt:
     name: dnsutils
 
