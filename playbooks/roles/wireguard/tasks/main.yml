@@ -101,7 +101,7 @@
     group: root
     mode: 0600
 
-- name: Enable reload-module-on-update to upgrade Wireguard without user confirmation
+- name: Enable reload-module-on-update to upgrade WireGuard without user confirmation
   file:
     path: "{{ wireguard_path }}/.reload-module-on-update"
     state: touch
