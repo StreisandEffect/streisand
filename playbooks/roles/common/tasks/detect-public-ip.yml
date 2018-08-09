@@ -1,7 +1,7 @@
 ---
-# detect-public-ip.yml will attempt to identify whether the server's public 
-# IP address is different from what is visible on the host and, if 
-# successfully detected, ask to update the address for documentation and 
+# detect-public-ip.yml will attempt to identify whether the server's public
+# IP address is different from what is visible on the host and, if
+# successfully detected, ask to update the address for documentation and
 # configuration profiles
 - name: "Install dns module"
   apt:
@@ -20,8 +20,9 @@
     external_ipv4_address: "{{ dig_output.stdout | regex_replace('\"', '') }}"
     when: (dig_output.rc == 0)
 
-- name: "Only when the IPs are different"
-  block:
+# Enter this block only when when the IPs are different and query user for updating
+# to public ip
+- block:
   - name: "Initialize the prompt"
     set_fact:
       prompt_external_ip: |
