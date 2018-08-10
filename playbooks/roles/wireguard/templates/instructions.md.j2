@@ -3,23 +3,37 @@
 WireGuard
 ---------
 
-If you are a Linux user, [WireGuard](https://www.wireguard.com/) is almost certainly the best connection option that Streisand provides. This is due to its [incredible performance](https://www.wireguard.com/performance/), [class-leading cryptography](https://www.wireguard.com/protocol/), and many, many other benefits.
+[WireGuard](https://www.wireguard.com/) is almost certainly the best connection option that Streisand provides. This is due to its [incredible performance](https://www.wireguard.com/performance/), [class-leading cryptography](https://www.wireguard.com/protocol/), and many, many other benefits.
 
-WireGuard is currently only available for Linux, but [cross-platform](https://www.wireguard.com/xplatform/) and portable implementations are under active development.
-A macOS client is also available, but it is still experimental. You can use it, but be aware that it may not be as stable as the Linux version.
+WireGuard is available on Linux, and [cross-platform](https://www.wireguard.com/xplatform/) and portable userspace implementations can be downloaded for Android and macOS.
 
-An [experimental configuration for OpenWrt/LEDE](#openwrt) 17.01.4 or later is available.
+An [experimental configuration for OpenWrt/LEDE](#openwrt) 17.01.4 (or later) is also available.
 
 ---
 * Platforms
+  * [Android](#android)
   * [Linux](#linux)
   * [macOS](#macos)
   * [OpenWrt](#openwrt)
+
+<a name="android"></a>
+### Android ###
+1. [Install WireGuard](https://play.google.com/store/apps/details?id=com.wireguard.android).
+1. Launch the app and tap the blue button to add a new tunnel.
+1. Tap *Create from QR code* and grant the app permission to access the camera. A viewfinder will appear.
+1. Use the camera to scan one of these client configuration QR codes. **Only one device can use a profile at a time**:
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.png)
+{% endfor %}
+1. Enter a name for the tunnel and tap *Create Tunnel* to save the configuration.
+1. Tap the switch next to the tunnel's name to enable the VPN. If this is your first time using WireGuard on your Android device, you will be prompted to accept the VPN connection request.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
 ---
 
 <a name="linux"></a>
 ### Linux ###
-1. [Install WireGuard](https://www.wireguard.com/install/)
+1. [Install WireGuard](https://www.wireguard.com/install/).
 1. Download one of the client configuration files. **Only one computer can use a profile at a time**. For this example we'll assume you downloaded {{ vpn_client_names.results[0].stdout }}:
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.conf)

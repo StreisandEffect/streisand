@@ -26,7 +26,7 @@ streisand_common_packages:
   # Required for the apt_repository module
   - python-software-properties
   # Used to generate convenient QR codes for mobile clients in the
-  # Shadowsocks and Tor roles
+  # Shadowsocks, Tor, and WireGuard roles
   - qrencode
   # Used for automatically installing security updates
   - unattended-upgrades
