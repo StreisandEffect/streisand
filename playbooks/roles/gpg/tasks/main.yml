@@ -31,7 +31,7 @@
     group: root
     mode: 0750
 
-- name: "Write the Streisand GPG dirnmgr config"
+- name: "Write the Streisand GPG dirmngr config"
   template:
     src: "dirmngr.conf.j2"
     dest: "{{ root_gpg_dir }}/dirmngr.conf"
@@ -39,11 +39,17 @@
     group: root
     mode: 0750
 
-- name: "Start the GPG agent"
-  command: "gpg-agent --homedir {{ root_gpg_dir }} --use-standard-socket --daemon"
+- name: "Ensure a GPG agent is running"
+  command: "gpgconf --launch gpg-agent"
 
-- name: "Start the dirmngr"
-  command: "dirmngr --homedir {{ root_gpg_dir }} --daemon"
+- name: "Reload gpg-agent to pick up configuration changes"
+  command: "gpgconf --reload gpg-agent"
+
+# It turns out that "--reload" doesn't work on dirmngr.
+- name: "Kill any existing dirmngr"
+  command: "gpgconf --kill dirmngr"
+- name: "Start a new dirmngr with our config changes"
+  command: "gpgconf --launch dirmngr"
 
 - name: "Wait for the GPG agent and dirmngr control sockets"
   wait_for:
