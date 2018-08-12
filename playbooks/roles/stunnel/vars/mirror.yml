@@ -6,13 +6,13 @@ stunnel_mirror_href_base: "/mirror/stunnel"
 
 stunnel_base_download_url: "https://www.stunnel.org"
 
-stunnel_installer_filename: "stunnel-{{ stunnel_version }}-win32-installer.exe"
+stunnel_installer_url: "stunnel-latest-installer.exe"
+stunnel_installer_sig_url: "stunnel-latest-installer.exe.asc"
+
+stunnel_installer_filename: "{{ stunnel_installer_url }}"
 stunnel_installer_sig_filename: "{{ stunnel_installer_filename }}.asc"
 stunnel_installer_href: "{{ stunnel_mirror_href_base }}/{{ stunnel_installer_filename }}"
 stunnel_installer_sig_href: "{{ stunnel_mirror_href_base }}/{{ stunnel_installer_sig_filename }}"
-
-stunnel_installer_url: "stunnel-latest-installer.exe"
-stunnel_installer_sig_url: "stunnel-latest-installer.exe.asc"
 
 stunnel_source_filename: "stunnel-{{ stunnel_version }}.tar.gz"
 stunnel_source_sig_filename: "{{ stunnel_source_filename }}.asc"
