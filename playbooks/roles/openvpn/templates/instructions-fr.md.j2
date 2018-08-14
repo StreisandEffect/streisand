@@ -155,15 +155,14 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
      * Port `443` est disponible en alternative si vous êtes sur un réseau qui ne permet l'accès au le port HTTPS standard.
      * Vous pouvez également utiliser le port `{{ openvpn_port_udp }}` pour une connexion UDP.
      * Le profil combiné qui parcourt le port UDP `{{ openvpn_port_udp }}`, le port TCP `{{ openvpn_port }}`et `{{ openvpn_port_sslh }}` est également disponible.
-   * Cocher *Use LZ4 data compression*.
-   * Cocher *Use a TCP connection* sauf si vous avez choisi d'utiliser le port UDP ou le profil combiné.
+   * Cochez *Use a TCP connection* sauf si vous avez choisi d'utiliser le port UDP ou le profil combiné.
 1. Accédez à l'onglet *Security*.
    * Sélectionnez `{{ openvpn_cipher }}` pour le *Cipher*.
    * Sélectionnez `{{ openvpn_auth_digest }}` pour le *HMAC Authentication*.
 1. Accédez à l'onglet *TLS Authentication*.
    * Dans le menu déroulant *Server Certificate Check* selectionnez `verify name exactly` et saisissez `{{ openvpn_server_common_name.stdout }}` pour sa valeur.
-   * Cocher *Verify peer (server) certificate usage signature*.
-   * Cocher *Additional TLS authentication or encryption*.
+   * Cochez *Verify peer (server) certificate usage signature*.
+   * Cochez *Additional TLS authentication or encryption*.
      * Sélectionnez `TLS-Crypt` pour *Mode*.
      * Sélectionnez le fichier `ta.key` que vous avez téléchargé depuis le répertoire client-files pour le *Key File*.
    * Cliquez *Valider*.
@@ -203,15 +202,14 @@ Il est préférable de configurer Ubuntu en utilisant le plugin OpenVPN pour Net
      * Port `443` est disponible en alternative si vous êtes sur un réseau qui ne permet l'accès au le port HTTPS standard.
      * Vous pouvez également utiliser le port `{{ openvpn_port_udp }}` pour une connexion UDP.
      * Le profil combiné qui parcourt le port UDP `{{ openvpn_port_udp }}`, le port TCP `{{ openvpn_port }}`et `{{ openvpn_port_sslh }}` est également disponible.
-   * Cocher *Use LZ4 data compression*.
-   * Cocher *Use a TCP connection* sauf si vous avez choisi d'utiliser le port UDP ou le profil combiné.
+   * Cochez *Use a TCP connection* sauf si vous avez choisi d'utiliser le port UDP ou le profil combiné.
 1. Accédez à l'onglet *Security*.
    * Sélectionnez `{{ openvpn_cipher }}` pour le *Cipher*.
    * Sélectionnez `{{ openvpn_auth_digest }}` pour le *HMAC Authentication*.
 1. Accédez à l'onglet *TLS Authentication*.
    * Dans le menu déroulant *Server Certificate Check* selectionnez `verify name exactly` et saisissez `{{ openvpn_server_common_name.stdout }}` pour sa valeur.
-   * Cocher *Verify peer (server) certificate usage signature*.
-   * Cocher *Additional TLS authentication or encryption*.
+   * Cochez *Verify peer (server) certificate usage signature*.
+   * Cochez *Additional TLS authentication or encryption*.
      * Sélectionnez `TLS-Crypt` pour *Mode*.
      * Sélectionnez le fichier `ta.key` que vous avez téléchargé depuis le répertoire client-files pour le *Key File*.
    * Cliquez *Valider*.
