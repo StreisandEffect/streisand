@@ -152,7 +152,6 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
      * Port `443` is available as an alternative if you are on a network that only allows access to the standard HTTPS port.
      * You can also use port `{{ openvpn_port_udp }}` for a UDP connection.
      * A combined profile which cycles through UDP port `{{ openvpn_port_udp }}`, TCP port `{{ openvpn_port }}` and `{{ openvpn_port_sslh }}` is also available.
-   * Check *Use LZ4 data compression*.
    * Check *Use a TCP connection* unless you have chosen to use the UDP port or the combined profile.
 1. Go to the *Security* tab.
    * Select `{{ openvpn_cipher }}` as the *Cipher*.
@@ -199,7 +198,6 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
      * Port `443` is available as an alternative if you are on a network that only allows access to the standard HTTPS port.
      * You can also use port `{{ openvpn_port_udp }}` for a UDP connection.
      * A combined profile which cycles through UDP port `{{ openvpn_port_udp }}`, TCP port `{{ openvpn_port }}` and `{{ openvpn_port_sslh }}` is also available.
-   * Check *Use LZ4 data compression*.
    * Check *Use a TCP connection* unless you have chosen to use the UDP port or the combined profile.
 1. Go to the *Security* tab.
    * Select `{{ openvpn_cipher }}` as the *Cipher*.
