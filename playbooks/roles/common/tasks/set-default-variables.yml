@@ -37,6 +37,9 @@
     streisand_server_name: "{{ ansible_hostname }}"
   when: streisand_server_name is not defined
 
+- import_tasks: detect-public-ip.yml
+  when: (hostvars['127.0.0.1']['streisand_genesis_role'] is defined and ((hostvars['127.0.0.1']['streisand_genesis_role'] == "localhost") or (hostvars['127.0.0.1']['streisand_genesis_role'] == "existing-server")))
+
 - name: If streisand_ipv6_address is undefined and IPv6 is enabled, change it to Ansible's default IPv6 address
   set_fact:
     streisand_ipv6_address: "{{ ansible_default_ipv6.address }}"
