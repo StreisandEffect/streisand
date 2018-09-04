@@ -117,17 +117,16 @@ Client certificates are a mechanism by which clients can authenticate themselves
 <a name="android"></a>
 ### Android ###
 
-1. Download the [server certificate](/openconnect/ca.crt) file.
-1. You will be prompted to enter your phone's PIN. Enter that.
-1. You will be prompted to *Name the certificate*. Tap the line under *Certificate name* and enter `{{ streisand_server_name }}`.
-1. Tap *OK*.
 1. Download a [client certificate file](#clientcerts) from the list above.
 1. Download [OpenConnect](https://play.google.com/store/apps/details?id=app.openconnect) from Google Play.
 1. Launch the application.
 1. Tap the *+* icon to add a new VPN.
 1. Enter `{{ streisand_ipv4_address }}:{{ ocserv_port }}`.
+1. Tap *CA certificate*.
+1. Find the server certificate file you downloaded (ca.crt) and tap it. Most likely it is in the Download folder if you downloaded it using the browser on your phone.
+1. Tap the *Select* button at the bottom of the screen.
 1. Tap *User certificate*.
-1. Find the client certificate file you downloaded and tap it. Most likely it is in the Download folder if you downloaded it using the browser on your phone.
+1. Find the client certificate file you downloaded and tap it.
 1. Tap the *Select* button at the bottom of the screen.
 1. Tap *Private key*.
 1. Tap the same client certificate file you selected for *User certificate*.
@@ -137,7 +136,7 @@ Client certificates are a mechanism by which clients can authenticate themselves
 1. Tap that entry.
 1. First time only:
   1. Accept the Connection Request dialog that Android displays.
-  1. Tou will be prompted *Enter PKCS#12 pass phrase:*. Enter the password from the client certificate that you downloaded.
+  1. You will be prompted *Enter PKCS#12 pass phrase:*. Enter the password for the client certificate that you downloaded. Note: You may receive an error during this phase. If so, try again a couple of times.
   1. You will be prompted *Certificate warning*. Tap *Always connect.*
 1. Each time you connect:
   1. You will be prompted *Please select your group.* The correct default has already been chosen. Tap *OK*.
