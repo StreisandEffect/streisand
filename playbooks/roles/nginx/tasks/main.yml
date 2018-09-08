@@ -15,6 +15,11 @@
 - name: Add the official Nginx repository
   apt_repository:
     repo: "deb https://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_lsb.codename }} nginx"
+  register: nginx_add_apt_repository
+  until: not nginx_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
+
 
 - name: Install Nginx
   apt:
