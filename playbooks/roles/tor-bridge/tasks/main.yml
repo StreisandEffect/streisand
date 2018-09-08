@@ -9,6 +9,10 @@
 - name: Add the Tor repository
   apt_repository:
     repo: 'deb https://deb.torproject.org/torproject.org {{ ansible_lsb.codename }} main'
+  register: tor_add_apt_repository
+  until: not tor_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
 
 - name: Install the package to keep the Tor signing key current
   apt:
