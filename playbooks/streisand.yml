@@ -23,8 +23,8 @@
     - service-net
     - role: openconnect
       when: streisand_openconnect_enabled
-    #- role: openvpn
-    #  when: streisand_openvpn_enabled
+    - role: openvpn
+      when: streisand_openvpn_enabled
     #- role: shadowsocks
     #  when: streisand_shadowsocks_enabled
     - role: ssh-forward
