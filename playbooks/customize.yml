@@ -45,8 +45,8 @@
       default: "yes"
       private: no
     - name: streisand_tor_enabled
-      prompt: "Enable Tor? Press enter for default "
-      default: "yes"
+      prompt: "Enable Tor? (UPSTREAM IS BROKEN) Press enter for default "
+      default: "no"
       private: no
     - name: streisand_wireguard_enabled
       prompt: "Enable WireGuard? Press enter for default "
