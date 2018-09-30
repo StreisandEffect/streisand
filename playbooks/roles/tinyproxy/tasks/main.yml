@@ -3,37 +3,42 @@
   apt:
     package: tinyproxy
 
-- name: Create the tinyproxy config directory
-  file:
-    path: "{{ tinyproxy_conf_dir }}"
-    state: directory
-    owner: nobody
-    group: nogroup
-    mode: 0755
+#- name: Create the tinyproxy config directory
+#  file:
+#    path: "{{ tinyproxy_conf_dir }}"
+#    state: directory
+#    owner: nobody
+#    group: nogroup
+#    mode: 0755
 
-- name: Generate the tinyproxy configuration file
-  template:
-    src: tinyproxy.conf.j2
-    dest: "{{ tinyproxy_conf_file }}"
-    owner: root
-    group: root
-    mode: 0644
+#- name: Generate the tinyproxy configuration file
+#  template:
+#    src: tinyproxy.conf.j2
+#    dest: "{{ tinyproxy_conf_file }}"
+#    owner: root
+#    group: root
+#    mode: 0644
 
-- name: Generate the tinyproxy system unit file
-  template:
-    src: tinyproxy.service.j2
-    dest: /etc/systemd/system/tinyproxy.service
-    owner: root
-    group: root
-    mode: 0644
+#- name: Create the tinyproxy systemd drop-in configuration directory
+#  file:
+#    path: "{{ tinyproxy_systemd_service_path }}"
+#    state: directory
 
-- name: Generate the systemd tmpfile for tinyproxy
-  template:
-    src: tinyproxytmp.conf.j2
-    dest: /etc/tmpfiles.d/tinyproxy.conf
-    owner: root
-    group: root
-    mode: 0644
+#- name: Generate the tinyproxy systemd drop-in service file
+#  template:
+#    src: tinyproxy.service.j2
+#    dest: "{{ tinyproxy_systemd_service_path }}/10-restart-failure.service"
+#    owner: root
+#    group: root
+#    mode: 0644
+
+#- name: Generate the systemd tmpfile for tinyproxy
+#  template:
+#    src: tinyproxytmp.conf.j2
+#    dest: /etc/tmpfiles.d/tinyproxy.conf
+#    owner: root
+#    group: root
+#    mode: 0644
 
 - name: Enable and restart the tinyproxy service
   systemd:

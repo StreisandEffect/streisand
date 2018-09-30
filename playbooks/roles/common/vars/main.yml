@@ -6,8 +6,6 @@ streisand_common_packages:
   - apt-transport-https
   # Used to perform a system upgrade
   - aptitude
-  # Used to compile Libreswan and OpenConnect Server (ocserv)
-  #- build-essential
   # Used to perform API requests, including the version check for
   # the Tor Browser Bundle
   - curl
