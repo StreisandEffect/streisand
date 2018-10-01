@@ -106,6 +106,11 @@ Complete all of these tasks on your local home machine.
   * If you'd like to use an SSH key with a different name or in a non-standard location, please enter 'yes' when asked if you'd like to customize your instance during installation.
   * **Please note**: You will need these keys to access your Streisand instance over SSH. Please keep them for the lifetime of the Streisand server.
 ### Bootstrap ###
+
+This will guide you through a fresh installation of Ansible into the `streisand` directory. Past experience has shown that using existing Ansible installs may have problems. (Streisand clears the `ANSIBLE_LIBRARY` environment variable as well.)
+
+To install Ansible, you'll need some prerequisites.
+
 * Install the bootstrap packages: Git, and `pip` for Python 2.7.
 
   * On Debian and Ubuntu
@@ -130,7 +135,8 @@ Complete all of these tasks on your local home machine.
 2. Run the installer for Ansible and its dependencies.
 
         ./util/venv-dependencies.sh ./venv
-  * The installer will detect missing packages, and print the commands needed to install them.
+  * The installer will detect missing system packages, and print the commands needed to install them.
+  * Expect warnings about `pbr` and `azure-cli-core`.
 
 3. Activate the Ansible packages that were installed.
 
