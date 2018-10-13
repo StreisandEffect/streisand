@@ -1,7 +1,7 @@
 ---
 - name: Install Tinyproxy
   apt:
-    name: tinyproxy
+    package: tinyproxy
 
 - name: Stop (init.d's) tinyproxy
   systemd:

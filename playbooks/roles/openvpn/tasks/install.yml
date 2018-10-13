@@ -17,7 +17,6 @@
 
 - name: Install OpenVPN and its dependencies from APT
   apt:
-    name: "{{ item }}"
-  with_items:
-    - openvpn
-    - udev
+    package:
+      - openvpn
+      - udev
