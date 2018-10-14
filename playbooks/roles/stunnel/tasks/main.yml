@@ -40,6 +40,7 @@
   systemd:
     name: stunnel4.service
     state: stopped
+    enabled: no
 
 - name: Copy the stunnel system unit file
   template:
