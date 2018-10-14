@@ -18,7 +18,7 @@
 
 - name: Install the required package for the htpasswd command
   apt:
-    name: apache2-utils
+    package: apache2-utils
 
 - name: Generate the htpasswd file
   command: htpasswd -b -c {{ streisand_gateway_htpasswd_file }} {{ streisand_gateway_username }} {{ streisand_gateway_password.stdout }}
@@ -58,6 +58,10 @@
   # TODO:
   #   Add to CI testing https://github.com/StreisandEffect/streisand/issues/643
 - block:
+    - name: Keep a copy of our diagnostics on the server
+      copy:
+        src: ../../../../streisand-diagnostics.md
+        dest: "{{ streisand_gateway_location }}/streisand-diagnostics.md"
 
     # generate the streisand server instructions and documentation
     - include_tasks: docs.yml

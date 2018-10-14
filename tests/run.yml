@@ -30,7 +30,7 @@
 
     - name: Ensure openssh is installed
       apt:
-        name: openssh-server
+        package: openssh-server
 
     - name: Add authorized key
       authorized_key:

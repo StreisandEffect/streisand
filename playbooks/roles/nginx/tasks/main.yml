@@ -1,9 +1,8 @@
 ---
 - name: Ensure that the Apache web server is not installed in order to avoid conflicts with Nginx
   apt:
-    name: "{{ item }}"
+    package: "{{ apache_packages_to_remove }}"
     state: absent
-  with_items: "{{ apache_packages_to_remove }}"
 
 - name: "Add the official Nginx APT key; hiding 25 lines of log..."
   apt_key:
@@ -15,10 +14,15 @@
 - name: Add the official Nginx repository
   apt_repository:
     repo: "deb https://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_lsb.codename }} nginx"
+  register: nginx_add_apt_repository
+  until: not nginx_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
+
 
 - name: Install Nginx
   apt:
-    name: nginx
+    package: nginx
 
 - name: Update Nginx configuration
   copy:
