@@ -14,16 +14,14 @@
 
 - name: Install Streisand common packages
   apt:
-    name: "{{ item }}"
-  with_items: "{{ streisand_common_packages }}"
+    package: "{{ streisand_common_packages }}"
 
 - name: Purge unneeded services
   apt:
-    name: "{{ item }}"
+    package: "{{ streisand_unneeded_packages }}"
     state: "absent"
     purge: yes
     autoremove: yes
-  with_items: "{{ streisand_unneeded_packages }}"
 
 - name: Perform a full system upgrade
   apt:
