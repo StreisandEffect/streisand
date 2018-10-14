@@ -16,14 +16,13 @@
 
 - name: Install the package to keep the Tor signing key current
   apt:
-    name: deb.torproject.org-keyring
+    package: deb.torproject.org-keyring
 
 - name: Install obfs4 and Tor
   apt:
-    name: "{{ item }}"
-  with_items:
-    - obfs4proxy
-    - tor
+    package:
+      - obfs4proxy
+      - tor
 
 # Update the firewall to allow Tor and obfs4proxy
 # NOTE(@cpu): we do this early in the role because the Tor daemon will check if

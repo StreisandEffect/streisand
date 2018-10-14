@@ -41,7 +41,7 @@
 
 - name: "Install zbar-tools"
   apt:
-    name: zbar-tools
+    package: zbar-tools
     force: yes
 
 - name: "Copy Shadowsocks QR code parser tool to client machine"

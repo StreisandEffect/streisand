@@ -46,12 +46,12 @@
 
     - name: "Remove old LXD from distro"
       apt:
-        name: "lxd"
+        package: "lxd"
         state: "absent"
 
     - name: "Install snapd"
       apt:
-        name: "snapd"
+        package: "snapd"
 
     - name: "Install LXD snap"
       command: "snap install lxd"

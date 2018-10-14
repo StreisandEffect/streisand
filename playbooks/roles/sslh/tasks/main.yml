@@ -1,7 +1,8 @@
 ---
 - name: Install sslh
   apt:
-    name: sslh
+    package: sslh
+    install_recommends: false
 
 - name: Generate the sslh port multiplexer systemd defaults file
   template:

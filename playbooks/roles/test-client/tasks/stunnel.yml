@@ -5,10 +5,9 @@
 
 - name: "Install stunnel and openvpn"
   apt:
-    name: "{{ item }}"
-  with_items:
-    - "stunnel"
-    - "openvpn"
+    package:
+      - "stunnel"
+      - "openvpn"
 
 - name: "Ensure the stunnel service is stopped and disabled"
   # We need to stop the stunnel service & disable it. By default the Ubuntu 16.04
