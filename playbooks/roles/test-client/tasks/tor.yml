@@ -2,10 +2,9 @@
 
 - name: "Install tor and obs4proxy"
   apt:
-    name: "{{ item }}"
-  with_items:
-    - "tor"
-    - "obfs4proxy"
+    package:
+      - "tor"
+      - "obfs4proxy"
 
 - name: "Remove stale test state if required"
   file:

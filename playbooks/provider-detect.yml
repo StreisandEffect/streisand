@@ -13,7 +13,7 @@
   tasks:
     - name: "Install dmidecode to use for BIOS version detection"
       apt:
-        name: dmidecode
+        package: dmidecode
 
     - name: "Try to determine localhost Cloud provider name from BIOS version"
       # Looking into ways to detect EC2/GCE instances without relying on

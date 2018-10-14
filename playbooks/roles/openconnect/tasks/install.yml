@@ -16,7 +16,7 @@
 
 - name: Install ocserv
   apt:
-    name: ocserv
+    package: ocserv
 
 - name: Create the OpenConnect rsyslog configuration directory
   file:

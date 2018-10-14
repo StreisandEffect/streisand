@@ -1,11 +1,10 @@
 ---
 - name: "Install GnuPG 2, dirmngr and gpgv2"
   apt:
-    name: "{{ item }}"
-  with_items:
-    - gnupg2
-    - dirmngr
-    - gpgv2
+    package:
+      - gnupg2
+      - dirmngr
+      - gpgv2
 
 - name: "Create the GPG directory"
   file:

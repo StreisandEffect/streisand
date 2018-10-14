@@ -1,12 +1,12 @@
 ---
 - name: Ensure that BIND is not installed in order to avoid conflicts with dnsmasq
   apt:
-    name: bind9
+    package: bind9
     state: absent
 
 - name: Install dnsmasq
   apt:
-    name: dnsmasq
+    package: dnsmasq
 
 - name: Generate the dnsmasq configuration file
   template:
