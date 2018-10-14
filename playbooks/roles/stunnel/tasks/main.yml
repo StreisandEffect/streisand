@@ -41,11 +41,6 @@
     name: stunnel4.service
     state: stopped
 
-- name: Remove the stunnel init.d script
-  file:
-    state: absent
-    path: "/etc/init.d/stunnel4"
-
 - name: Copy the stunnel system unit file
   template:
     src: stunnel.service.j2
