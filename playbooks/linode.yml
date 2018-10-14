@@ -40,7 +40,7 @@
       private: no
 
     - name: "linode_api_key"
-      prompt: "\n\nThe following information can be found in the Linode Manager.\nhttps://manager.linode.com/profile/api\n\nWhat is your Linode API key?\n"
+      prompt: "\n\nThe following information can be found in the Linode Manager.\nhttps://manager.linode.com/profile/api\n\nNote: API keys originating from https://cloud.linode.com/profile/tokens are not yet compatible.\n\nWhat is your Linode API key?\n"
       private: no
 
     - name: "confirmation"
