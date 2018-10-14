@@ -8,6 +8,10 @@
 - name: Add the official acmetool repository
   apt_repository:
     repo: "deb http://ppa.launchpad.net/hlandau/rhea/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} main"
+  register: le_add_apt_repository
+  until: not le_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
 
 - name: Install acmetool
   apt:

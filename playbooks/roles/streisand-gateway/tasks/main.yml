@@ -58,6 +58,10 @@
   # TODO:
   #   Add to CI testing https://github.com/StreisandEffect/streisand/issues/643
 - block:
+    - name: Keep a copy of our diagnostics on the server
+      copy:
+        src: ../../../../streisand-diagnostics.md
+        dest: "{{ streisand_gateway_location }}/streisand-diagnostics.md"
 
     # generate the streisand server instructions and documentation
     - include_tasks: docs.yml
