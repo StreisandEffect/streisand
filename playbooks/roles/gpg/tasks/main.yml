@@ -59,6 +59,7 @@
   with_items:
     - "S.dirmngr"
     - "S.gpg-agent"
+  when: not streisand_ci
 
 - name: "Create the Streisand GPG keyring"
   command: "gpg2 {{ streisand_default_gpg_flags }} --fingerprint"
