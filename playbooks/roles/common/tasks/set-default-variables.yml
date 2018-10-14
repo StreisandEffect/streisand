@@ -36,3 +36,6 @@
   set_fact:
     streisand_server_name: "{{ ansible_hostname }}"
   when: streisand_server_name is not defined
+
+- import_tasks: detect-public-ip.yml
+  when: (hostvars['127.0.0.1']['streisand_genesis_role'] is defined and ((hostvars['127.0.0.1']['streisand_genesis_role'] == "localhost") or (hostvars['127.0.0.1']['streisand_genesis_role'] == "existing-server")))

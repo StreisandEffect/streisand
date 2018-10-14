@@ -9,16 +9,19 @@
 - name: Add the Shadowsocks PPA
   apt_repository:
     repo: 'ppa:max-c-lv/shadowsocks-libev'
+  register: shadowsocks_add_apt_repository
+  until: not shadowsocks_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
 
 - name: Install shadowsocks-libev
   apt:
-    name: "shadowsocks-libev"
+    package: "shadowsocks-libev"
 
 - name: Install the simple-obfs dependencies
   apt:
-    name: "{{ item }}"
+    package: "{{ shadowsocks_dependencies }}"
     install_recommends: no
-  with_items: "{{ shadowsocks_dependencies }}"
 
 - name: Create the shadowsocks-libev config directory
   file:
