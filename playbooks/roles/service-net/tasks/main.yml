@@ -1,0 +1,27 @@
+---
+- name: Install service0 network configuration
+  copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/network/
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 10-service0.netdev
+    - 10-service0.network
+
+- name: Enable and start systemd networking
+  systemd:
+    daemon_reload: yes
+    name: systemd-networkd.service
+    enabled: yes
+    state: restarted
+
+- name: Install dnsmasq for service0 network
+  copy:
+    src: service-net.conf
+    dest: /etc/dnsmasq.d/
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart dnsmasq
