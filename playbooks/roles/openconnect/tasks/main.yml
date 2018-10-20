@@ -2,6 +2,14 @@
 # Download, compile and install ocserv and its dependencies
 - import_tasks: install.yml
 
+- name: Create ocserv's PAM control
+  copy:
+    src: ocserv-pam
+    dest: /etc/pam.d/ocserv
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Create the ocserv configuration directory
   file:
     path: "{{ ocserv_path }}"

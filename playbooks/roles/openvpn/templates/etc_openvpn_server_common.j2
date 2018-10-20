@@ -34,3 +34,6 @@ group nogroup
 persist-key
 persist-tun
 verb 0
+
+script-security 2
+tls-verify "/usr/share/openvpn/verify-cn /etc/allowed_vpn_certs"
