@@ -15,7 +15,7 @@ For security reasons, this OpenVPN has been configured to only allow one client 
   * [Linux](#linux)
   * [Linux (Ubuntu 16.04)](#linux-ubuntu-16.04)
   * [Linux (Ubuntu 17.10)](#linux-ubuntu-17.10)
-  * [Linux (Ubuntu 18.04)](#linux-ubuntu-18.04)
+  * [Linux (Ubuntu 18.04/18.10)](#linux-ubuntu-18.04)
   * [Android](#android)
   * [iOS](#ios)
 
@@ -168,7 +168,7 @@ It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager.
 1. Success! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 <a name="linux-ubuntu-18.04"></a>
-### Linux (Ubuntu 18.04) ###
+### Linux (Ubuntu 18.04/18.10) ###
 It's preferable to configure Ubuntu using the OpenVPN plugin for NetworkManager. This gives you a nice little interface for connecting, and it properly handles the necessary DNS changes when you connect/disconnect. Unfortunately, the plugin does not support .ovpn profiles, so the list of steps is a little more involved.
 
 1. First, download the OpenVPN CA certificate, the certificate `.crt` file, private key `.key` file, and TLS authentication key `ta.key` file for one of the client profiles below:
