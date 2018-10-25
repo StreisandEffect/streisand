@@ -42,6 +42,10 @@ An [experimental configuration for OpenWrt/LEDE](#openwrt) 17.01.4 (or later) is
 
    `sudo sh -c 'umask 077; mkdir -p /etc/wireguard; cat > /etc/wireguard/{{ vpn_client_names.results[0].stdout }}.conf' < ~/Downloads/{{ vpn_client_names.results[0].stdout }}.conf`
 
+1. (Ubuntu/Debian) For Ubuntu and Debian users you will need to install the `openresolv` package:
+
+   `sudo apt-get install openresolv`
+
 1. Use the `wg-quick` utility to bring up the WireGuard interface:
 
    `sudo wg-quick up {{ vpn_client_names.results[0].stdout }}`
