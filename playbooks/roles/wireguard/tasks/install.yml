@@ -14,9 +14,8 @@
 
 - name: Install the WireGuard packages
   apt:
-    name: "{{ item }}"
-  with_items:
-    - linux-headers-{{ kernel_release.stdout }}
-    - linux-headers-generic
-    - wireguard-dkms
-    - wireguard-tools
+    package:
+      - linux-headers-{{ kernel_release.stdout }}
+      - linux-headers-generic
+      - wireguard-dkms
+      - wireguard-tools

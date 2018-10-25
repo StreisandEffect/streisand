@@ -1,9 +1,8 @@
 ---
 - name: Ensure that the Apache web server is not installed in order to avoid conflicts with Nginx
   apt:
-    name: "{{ item }}"
+    package: "{{ apache_packages_to_remove }}"
     state: absent
-  with_items: "{{ apache_packages_to_remove }}"
 
 - name: "Add the official Nginx APT key; hiding 25 lines of log..."
   apt_key:
@@ -23,7 +22,7 @@
 
 - name: Install Nginx
   apt:
-    name: nginx
+    package: nginx
 
 - name: Update Nginx configuration
   copy:

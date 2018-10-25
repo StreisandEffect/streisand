@@ -1,7 +1,7 @@
 ---
 - name: Install stunnel
   apt:
-    name: stunnel4
+    package: stunnel4
 
 - name: Generate the stunnel private key
   command: openssl genrsa -out {{ stunnel_key }} {{ stunnel_key_size }}
@@ -40,11 +40,7 @@
   systemd:
     name: stunnel4.service
     state: stopped
-
-- name: Remove the stunnel init.d script
-  file:
-    state: absent
-    path: "/etc/init.d/stunnel4"
+    masked: yes
 
 - name: Copy the stunnel system unit file
   template:
