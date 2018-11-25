@@ -1,5 +1,5 @@
 ---
-azure_instance_type: "Basic_A0"
+azure_instance_type: "Standard_B1s"
 
 azure_image_publisher: "Canonical"
 azure_image_offer:     "UbuntuServer"
