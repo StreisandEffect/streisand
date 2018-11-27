@@ -42,7 +42,7 @@
       private: no
     - name: streisand_tor_enabled
       prompt: "Enable Tor? Press enter for default "
-      default: "yes"
+      default: "no"
       private: no
     - name: streisand_wireguard_enabled
       prompt: "Enable WireGuard? Press enter for default "
