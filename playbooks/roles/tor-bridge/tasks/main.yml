@@ -1,10 +1,8 @@
 ---
-- name: "Add the Tor APT key; hiding 200 lines of log..."
+- name: "Add the Tor APT key"
   apt_key:
-    id: 886DDD89
-    data: "{{ item }}"
-  with_file: tor-signing.key
-  no_log: True
+    id: A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89
+    keyserver: keyserver.ubuntu.com
 
 - name: Add the Tor repository
   apt_repository:
