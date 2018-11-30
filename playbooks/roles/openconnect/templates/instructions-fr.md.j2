@@ -3,35 +3,25 @@
 OpenConnect / Cisco AnyConnect
 ------------------------------
 
-OpenConnect est un serveur VPN extrêmement performant et léger qui offre une compatibilité totale avec les clients officiels Cisco AnyConnect. Le [protocole] (http://www.infradead.org/ocserv/technical.html) repose sur des normes telles que HTTP, TLS et DTLS, et c'est l'une des technologies VPN les plus populaires et largement utilisées parmi les grands multi-nationales. En raison de son utilisation dans les grandes multinationales, cela signifie souvent qu'au niveau du protocole, il est peu probable d'être ciblé pour la censure.
+OpenConnect est un serveur VPN extrêmement performant et léger qui offre une compatibilité totale avec les clients officiels Cisco AnyConnect. Le [protocole](http://www.infradead.org/ocserv/technical.html) repose sur des normes telles que HTTP, TLS et DTLS, et c'est l'une des technologies VPN les plus populaires et largement utilisées parmi les grands multi-nationales. En raison de son utilisation dans les grandes multinationales, cela signifie souvent qu'au niveau du protocole, il est peu probable d'être ciblé pour la censure.
 
 ---
 * Plateformes
-  * [Certificats](#clientcerts)
   * [Windows](#windows)
   * [macOS](#macos)
     * [OpenConnect GUI](#macos-openconnect-gui)
     * [OpenConnect CLI](#macos-openconnect-cli)
   * [Linux](#linux)
+    * [NetworkManager](#linux-openconnect-gui)
+    * [OpenConnect CLI](#linux-openconnect-cli)
+  * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
-
-<a name="clientcerts"></a>
-### Certificats du serveur et des clients (macOS, Android) ###
-
-Les certificats clients sont un mécanisme par lequel les clients peuvent s'authentifier de manière sécurisée avec un serveur.
-
-1. Votre serveur OpenConnect émet son propre __certificat serveur__. Ceci est utilisé par le logiciel du client de votre appareil (tel que AnyConnect pour iOS) afin de  s'identifier de manière sécurisée avec le serveur VPN. Téléchargez le certificat de ce serveur.
-   * [ca.crt](/openconnect/ca.crt)
-1. Chaque appareil que vous souhaitez configurer nécessite un __certificat client__ en plus du certificat serveur ci-dessus. Un certificat client est utilisé pour identifier et authentifier de manière sécurisée votre appareil sur le serveur VPN. Deux appareils ne peuvent pas utiliser le même certificat de client et être connectés simultanément (un certificat de client pour chaque appareil). Chaque certificat client est protégé par une mot de passe, qui sera nécessaire pour le déverrouiller une fois que vous l'importez dans votre appareil.
-{% for client in vpn_client_pkcs12_password_list.results %}
-   * [{{ client.client_name.stdout }}.p12](/openconnect/{{ client.client_name.stdout }}.p12), mot de passe: `{{ client.stdout }}` 
-{% endfor %}
 
 <a name="windows"></a>
 ### Windows ###
 
-1. Téléchargez [l'installateur OpenConnect GUI](/mirror/index-fr.html#openconnect).
+1. Téléchargez [l'installateur OpenConnect GUI](/mirror/openconnect/index-fr.html).
 1. Lancez le programme d'installation OpenConnect GUI.
 1. Compléter l'assistant de configuration TAP-Windows.
    * Choisissez les options par défaut et permettez au pilote TAP du projet OpenVPN d'être installé.
@@ -55,16 +45,15 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 {% endfor %}
    1. Cliquez *OK*.
    1. Cliquez *OK* pour fermer les propriétés de connexion.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="macos"></a>
 ### macOS ###
 
-
 <a name="macos-openconnect-gui"></a>
 #### OpenConnect GUI
 
-1. Téléchargez [l'installateur OpenConnect GUI](/mirror/index-fr.html#openconnect).
+1. Téléchargez [l'installateur OpenConnect GUI](/mirror/openconnect/index-fr.html).
 1. Lancez le programme d'installation OpenConnect GUI.
 1. Lancez l'application OpenConnect.
 1. Cliquez sur l'icône *Edit* (Engrenage).
@@ -74,28 +63,56 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Cliquez *Connect* (Connexion).
 1. Une invite apparaîtra pendant la connexion initiale en vous demandant de faire confiance au certificat du serveur. Cliquez *The information is accurate* (l'information est précise) et le serveur sera automatiquement vérifié pour toutes les connexions suivantes.
 1. Saisissez `{{ ocserv_password.stdout }}` pour le *Password* (mot de passe) et cliquez *OK*.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 <a name="macos-openconnect-cli"></a>
 #### OpenConnect CLI
-1. Installer [Homebrew](https://brew.sh/), si vous ne l'avez pas.
-1. Installer OpenConnect en utilisant Homebrew:
+
+<select id="macos-cli-select" onchange="showInstructions(this)">
+  <option value="macos-cli-none" selected>- Profile clients...</option>
+{% for client in vpn_client_pkcs12_password_list.results %}
+  <option value="macos-cli-{{ client.client_name.stdout }}">
+  {{ loop.index }} - {{ client.client_name.stdout }}
+  </option>
+{% endfor %}
+</select>
+
+<div markdown="1" id="macos-cli-none">
+  *Sélectionnez un profil client depuis le menu déroulant*
+</div>
+{% for client in vpn_client_pkcs12_password_list.results %}
+<div markdown="1" id="macos-cli-{{ client.client_name.stdout }}" style="display:none">
+
+##### Instructions pour {{ client.client_name.stdout }}
+1. Installez [Homebrew](https://brew.sh/), si vous ne l'avez pas.
+1. Installez OpenConnect en utilisant Homebrew:
 
    `brew install openconnect`
 
-   * Si l'installation de Homebrew n'est pas une option, vous pouvez également télécharger et compiler le [code source OpenConnect](/mirror/index-fr.html#openconnect).
-1. Téléchargez le fichier [ca.crt](/openconnect/ca.crt) et un [fichier de certificat client](#clientcerts) dans la liste ci-dessus.
-1. Placez les fichiers téléchargés dans un dossier distinct (par exemple `{{ streisand_server_name }}-openconnect`), ouvrez votre terminal, et `cd` dans la directoire.
+   * Si l'installation de Homebrew n'est pas une option, vous pouvez également télécharger et compiler le [code source OpenConnect](/mirror/openconnect/index-fr.html).
+
+1. Téléchargez le fichier [certificat server](/openconnect/ca.crt)
+1. Téléchargez le [fichier pcsk12](/openconnect/{{ client.client_name.stdout }}.p12)
+1. Placez le certificat de serveur téléchargé et un certificat client sélectionné dans un dossier séparé (par exemple `{{streisand_server_name}}-openconnect`), ouvrez votre terminal et `cd` dans ce répertoire.
 1. Lancez OpenConnect:
 
-   `sudo openconnect --cafile ca.crt --certificate votre-certificat-client.p12 --key-password 'mot-de-passe-du-certificat' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+  `sudo openconnect --cafile ca.crt --certificate {{ client.client_name.stdout }}.p12 --key-password '{{ client.stdout }}' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
+
+Vous devriez être prêt à partir ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+</div>
+
+{% endfor %}
 
 <a name="linux"></a>
 ### Linux ###
-1. Installer le plugin OpenConnect pour NetworkManager.
+
+<a name="linux-openconnect-gui"></a>
+#### NetworkManager
+
+1. Installez le plugin OpenConnect pour NetworkManager.
 
    `sudo apt-get install network-manager-openconnect-gnome`
+
 1. Téléchargez le certificat serveur:
    * [ca.crt](/openconnect/ca.crt)
 1. Ouvrez votre *Paramètres du système*.
@@ -110,10 +127,63 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Sélectionnez le VPN dans le menu à gauche, et faites glisser l'interrupteur vers la position *ON*. Vous pouvez également activer/désactiver le VPN en cliquant sur l'icône WiFi/Réseau dans la barre de menu, défiler vers *Connexions VPN* et en cliquant sur son nom.
 1. Saisissez `streisand` pour le champ *Nom d'utilisateur* puis cliquez *Connexion*.
 1. Saisissez `{{ ocserv_password.stdout }}` pour le champ *Mot de passe*, cocher *Enregistrer mots de passe*, et cliquez *Connexion*.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+<a name="linux-openconnect-cli"></a>
+#### OpenConnect CLI
+
+<select id="linux-cli-select" onchange="showInstructions(this)">
+  <option value="linux-cli-none">- Profile clients...</option>
+{% for client in vpn_client_pkcs12_password_list.results %}
+  <option value="linux-cli-{{ client.client_name.stdout }}">
+  {{ loop.index }} - {{ client.client_name.stdout }}
+  </option>
+{% endfor %}
+</select> 
+
+<div markdown="1" id="linux-cli-none">
+  *Sélectionnez un profil client depuis le menu déroulant*
+</div>
+{% for client in vpn_client_pkcs12_password_list.results %}
+<div markdown="1" id="linux-cli-{{ client.client_name.stdout }}" style="display:none">
+##### Instructions for {{ client.client_name.stdout }}
+
+1. Installez OpenConnect
+    
+    `sudo apt install openconnect`
+
+    * Si l'installation avec apt n'est pas une option, vous pouvez également télécharger et compiler le [code source OpenConnect](/mirror/openconnect/index-fr.html).
+
+1. Téléchargez le fichier [ca.crt](/openconnect/ca.crt).
+1. Téléchargez le [fichier pkcs12](/openconnect/{{ client.client_name.stdout }}.p12)
+1. Placez les fichiers téléchargés dans un dossier distinct (par exemple `{{ streisand_server_name }}-openconnect`), ouvrez votre terminal, et `cd` dans la directoire.
+1. Lancez OpenConnect:
+
+  `sudo openconnect --cafile ca.crt --certificate {{ client.client_name.stdout }}.p12 --key-password '{{ client.stdout }}' --pfs {{ streisand_ipv4_address }}:{{ ocserv_port }}`
+
+Vous devriez être prêt à partir ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+</div>
+
+{% endfor %}
 
 <a name="android"></a>
 ### Android ###
+
+<select id="android-select" onchange="showInstructions(this)">
+  <option value="android-select-none">- Profile clients...</option>
+{% for client in vpn_client_pkcs12_password_list.results %}
+  <option value="android-select-{{ client.client_name.stdout }}">
+  {{ loop.index }} - {{ client.client_name.stdout }}
+  </option>
+{% endfor %}
+</select> 
+
+<div markdown="1" id="android-select-none">
+  *Sélectionnez un profil client depuis le menu déroulant*
+</div>
+{% for client in vpn_client_pkcs12_password_list.results %}
+<div markdown="1" id="android-select-{{ client.client_name.stdout }}" style="display:none">
+##### Instructions pour {{ client.client_name.stdout }}
 
 1. Téléchargez [Cisco AnyConnect](https://play.google.com/store/apps/details?id=com.cisco.anyconnect.vpn.android.avf&hl=fr) depuis Google Play.
 1. Lancez l'application.
@@ -127,10 +197,10 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Tapez *Adresse du server* et saisissez `{{ streisand_ipv4_address }}:{{ ocserv_port }}`.
 1. Tapez *Préférences avancées*.
 1. Tapez *Certificat*.
-   * Chaque profil peut être téléchargé sur l'appareil lui-même à l'aide des [liens ci-dessus](#clientcerts), ou copié depuis votre ordinateur via USB.
-1. Tapez *Import*, tapez *Système de fichiers*, et sélectionnez un [fichier certificat client](#clientcerts)
-1. Vérifiez le dossier `Téléchargements` si vous avez téléchargé le fichier directement sur l'appareil. C'est là que Chrome place ses fichiers, par exemple.
-1. Saisissez votre mot de passe de certificat client lorsque l'invite *Mot de passe* s'affiche, en suite tapez *Se Connecter*.
+   1. Téléchargez le [fichier pkcs12](/openconnect/{{ client.client_name.stdout }}.p12)
+   1. Vérifiez le dossier `Download` si vous avez téléchargé le fichier directement sur l'appareil. C'est ici que Chrome place ses fichiers, par exemple.
+1. Tapez *Import*, tapez *Système de fichiers*, et sélectionnez le [fichier pkcs12](/openconnect/{{ client.client_name.stdout }}.p12)
+1. Saisissez le mot de passe `{{ client.stdout }}` de certificat client lorsque l'invite *Mot de passe* s'affiche, en suite tapez *Se Connecter*.
 1. Vous verrez une coche à côté du certificat nouvellement importé. Tapez sur le bouton de retour.
 1. Tapez *Terminer* deux fois pour sauvegarder la connexion.
 1. Tapez sur le bouton retour pour revenir à l'écran principal. Vous devriez voir `{{ streisand_server_name }}` dans la section *Connexion*.
@@ -139,7 +209,7 @@ Les certificats clients sont un mécanisme par lequel les clients peuvent s'auth
 1. Tapez *Import and Continue* sommaire du certificat est achhife when the Certificate Summary is displayed.
 1. Tapez *Se Connecter* dans l'écran de selection de groupe. Le défaut correct a déjà été choisi.
 1. Si c'est la première fois que vous utilisez AnyConnect, vous devrez accepter la boîte de dialogue de la demande de connexion affichée par Android.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
 
 #### Avez-vous été demandé pour le nom d'utilisateur? ####
 
@@ -150,17 +220,31 @@ Si vous êtes affecté, vous pouvez utiliser cette solution alternatif:
 1. Lorsque vous êtes invité à entrer un utilisateur, entrez `streisand`
 1. Lorsque vous êtes invité à entrer un mot de passe, utilisez `{{ ocserv_password.stdout }}`
 
+</div>
+{% endfor %}
+
 <a name="ios"></a>
 ### iOS ###
 
-#### Note: Lorsque vous utilisez AnyConnect pour la première fois, vous pouvez être invité à entrer un mot de passe avant d'être connecté. Saisissez `streisand` comme nom de l'utilisateur et `{{ocserv_password.stdout}}` pour le mot de pass et continuez. Les tentatives de connexion suivantes ne vous demanderont plus.
-
-#### Note: Un seul profil AnyConnect peut être configuré à tout moment. Pour supprimer un profil existant, naviguez vers *Règlages* -> *Général* -> *Profil*, tapez sur le profil que vous souhaitez supprimer, puis tapez sur *Supprimer le profil*.
-
-1. Transférer un fichier .mobileconfig à chaque appareil que vous souhaitez configurer:
+<select id="ios-select" onchange="showInstructions(this)">
+  <option value="ios-select-none">- Profile clients...</option>
 {% for client in vpn_client_pkcs12_password_list.results %}
-   * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
+  <option value="ios-select-{{ client.client_name.stdout }}">
+  {{ loop.index }} - {{ client.client_name.stdout }}
+  </option>
 {% endfor %}
+</select> 
+
+<div markdown="1" id="ios-select-none">
+  *Sélectionnez un profil client depuis le menu déroulant*
+</div>
+{% for client in vpn_client_pkcs12_password_list.results %}
+<div markdown="1" id="ios-select-{{ client.client_name.stdout }}" style="display:none">
+##### Instructions pour {{ client.client_name.stdout }}
+
+1. Transférer le fichier .mobileconfig à l'appareil que vous souhaitez configurer:
+
+   * [{{ client.client_name.stdout }}.mobileconfig](/openconnect/{{ client.client_name.stdout }}.mobileconfig)
    * Le profil peut être envoyé par courrier électronique sur votre appareil (simplement appuyez sur la pièce jointe), transféré via l'utilitaire [Apple Configurator](https://itunes.apple.com/us/app/apple-configurator/id434433123?mt=12), ou téléchargé directement en regardant ces instructions sur l'appareil lui-même.
 1. Suivez les instructions à l'écran.
 1. Vous serez invité à entrer le mot de passe ou le code NIP de votre appareil.
@@ -175,4 +259,10 @@ Si vous êtes affecté, vous pouvez utiliser cette solution alternatif:
 1. Tapez *Détails* lorsque l'avertissement de sécurité s'affiche.
 1. Tapez *Importer* dans le coin supérieur droit.
 1. Tapez *Se Connecter* dans l'écran de selection de groupe. Le défaut correct a déjà été choisi.
-1. Vous devriez être prêt à partir! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+1. Vous devriez être prêt à partir ! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{streisand_ipv4_address}}*.
+
+#### Note: Lorsque vous utilisez AnyConnect pour la première fois, vous pouvez être invité à entrer un mot de passe avant d'être connecté. Saisissez `streisand` comme nom de l'utilisateur et `{{ocserv_password.stdout}}` pour le mot de pass et continuez. Les tentatives de connexion suivantes ne vous demanderont plus.
+
+#### Note: Un seul profil AnyConnect peut être configuré à tout moment. Pour supprimer un profil existant, naviguez vers *Règlages* -> *Général* -> *Profil*, tapez sur le profil que vous souhaitez supprimer, puis tapez sur *Supprimer le profil*.
+</div>
+{% endfor %}

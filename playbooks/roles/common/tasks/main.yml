@@ -16,6 +16,10 @@
   apt:
     package: "{{ streisand_common_packages }}"
 
+- name: Install python markdown
+  pip:
+    name: markdown
+
 - name: Purge unneeded services
   apt:
     package: "{{ streisand_unneeded_packages }}"

@@ -17,8 +17,8 @@ streisand_common_packages:
   - gnupg
   # Used to configure firewall rules
   - iptables
-  # Used for documentation generation
-  - markdown
+  # Used for pip packaging
+  - python-pip
   # Ensures the server's clock is set properly
   - ntp
   # Required to use the Ansible `expect` module

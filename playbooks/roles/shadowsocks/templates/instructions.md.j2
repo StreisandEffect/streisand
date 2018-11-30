@@ -20,6 +20,7 @@ Shadowsocks
 1. Make sure the QR code below is centered and completely visible, right-click on the Shadowsocks system tray icon, and go to *Servers* > *Scan QRCode from Screen...*
 
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+
 1. You may also go to *Servers* > *New server* and manually complete the following steps:
    1. Enter `{{ streisand_ipv4_address }}` as the *Server IP*.
    1. Enter `{{ shadowsocks_server_port }}` as the *Server Port*.
@@ -38,6 +39,7 @@ Shadowsocks
 1. Make sure the QR code below is centered and completely visible, and choose *Scan QR Code from Screen...*
 
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+
 1. You may also configure the connection by going to *Servers*, selecting *Open Server Preferences...*, and clicking the *+* button on the sidebar:
    1. Enter `{{ streisand_ipv4_address }}` and `{{ shadowsocks_server_port }}` in the *Address* fields.
    1. Make sure `{{ shadowsocks_encryption_method }}` is selected for the *Encryption* value.
@@ -101,6 +103,7 @@ This should return a 301 Found response **not** a connection refused error.
 1. Use your phone to scan this image, or if you are using your phone _right now_ you can choose the *Manual Settings* option and copy and paste the information from the Linux section above:
 
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+
 1. Tap the round paper plane icon along the bottom-left bar.
 1. Accept the Android VPN connection warning.
 1. You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
@@ -113,6 +116,7 @@ This should return a 301 Found response **not** a connection refused error.
 1. Use your phone to scan this image, or if you are using your phone _right now_ you can manually add a new proxy by tapping *Add Server* and using the information from the Linux section above:
 
    ![Shadowsocks QR code](/shadowsocks/shadowsocks-qr-code.png)
+
 1. Toggle the connection switch located to the right of the *Not Connected* text on the *Home* tab.
    * If this is your first time running Shadowrocket, iOS will ask you to verify that the application should have permission to add VPN configurations. Tap *Allow* and follow the instructions.
 1. You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
