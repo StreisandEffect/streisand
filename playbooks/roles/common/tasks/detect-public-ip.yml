@@ -12,7 +12,7 @@
     external_ipv4_address: "presumed_failed"
 
 - name: "Check external IP Address through Google"
-  command: dig +short myip.opendns.com @resolver1.opendns.com A
+  command: dig -4 +short myip.opendns.com @resolver1.opendns.com A
   register: dig_output
 
 - name: "Set the variable to the value"
