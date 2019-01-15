@@ -11,4 +11,4 @@
 - name: Install the WireGuard packages
   apt:
     package:
-       - wireguard
+      - wireguard
