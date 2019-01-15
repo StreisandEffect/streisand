@@ -21,6 +21,8 @@ env:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install python-pip python-dev ca-certificates shellcheck -qq
+  # workaround for https://travis-ci.community/t/then-sudo-apt-get-update-failed-public-key-is-not-available-no-pubkey-6b05f25d762e3157-in-ubuntu-xenial/1728
+  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 762E3157
 
 install:
   - pip install ansible==2.6.5
