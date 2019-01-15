@@ -113,7 +113,7 @@ Complete all of these tasks on your local home machine.
         sudo apt-get install git python-pip
   * On Fedora 27, some additional packages are needed later.
 
-		sudo yum install git python2-pip gcc python2-devel python2-crypto python2-pycurl libcurl-devel
+		sudo dnf install git python2-pip gcc python2-devel python2-crypto python2-pycurl libcurl-devel
   * On CentOS 7, `pip` is available from the EPEL repository; some additional packages are needed later.
 
 		sudo yum -y update && sudo yum install -y epel-release

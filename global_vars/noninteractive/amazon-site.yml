@@ -27,20 +27,22 @@ streisand_tor_enabled: no
 streisand_wireguard_enabled: yes
 
 # The AWS region number.
-# 1. Asia Pacific   (Mumbai)
-# 2. Asia Pacific   (Seoul)
-# 3. Asia Pacific   (Singapore)
-# 4. Asia Pacific   (Sydney)
-# 5. Asia Pacific   (Tokyo)
-# 6. Canada         (Central)
-# 7. EU             (Frankfurt)
-# 8. EU             (Ireland)
-# 9. EU             (London)
-# 10. South America (Sao Paulo)
-# 11. US East       (Northern Virginia)
-# 12. US East       (Ohio)
-# 13. US West       (Northern California)
-# 14. US West       (Oregon)
+# 1. US East        (N. Virginia)
+# 2. US East        (Ohio)
+# 3. US West        (N. California)
+# 4. US West        (Oregon)
+# 5. Canada         (Central)
+# 6. EU             (Frankfurt)
+# 7. EU             (Ireland)
+# 8. EU             (London)
+# 9. EU             (Paris)
+# 10. Asia Pacific  (Tokyo)
+# 11. Asia Pacific  (Seoul)
+# 12. Asia Pacific  (Osaka-Local)
+# 13. Asia Pacific  (Singapore)
+# 14. Asia Pacific  (Sydney)
+# 15. Asia Pacific  (Mumbai)
+# 16. South America (São Paulo)
 #
 # Note: aws_region_var must be a number in quotes, e.g. "3" not 3.
 aws_region_var: "3"
