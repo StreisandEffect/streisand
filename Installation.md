@@ -83,11 +83,9 @@ sudo python2.7 -m ensurepip
 
         git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 
-1. Run the installer for Ansible and its dependencies.
+1. Run the installer for Ansible and its dependencies. The installer will detect missing packages, and print the commands needed to install them.
 
         ./util/venv-dependencies.sh ./venv
-The installer will detect missing packages, and print the commands needed to install them.
-
 1. Activate the Ansible packages that were installed.
 
         source ./venv/bin/activate
