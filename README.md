@@ -27,9 +27,9 @@ There's a [list of supported cloud providers](#cloud-providers); experts may be 
 
 ## VPN services
 
-People usually refer to tools to avoid network censorship as Virtual Private Networks (VPNs). 
+One type of tool that people use to avoid network censorship is a Virtual Private Network (VPN). There are many kinds of VPNs.
 
-Not all network censorship is alike; in some places, it changes from day to day. Streisand provides many VPN services to try. (You don't have to install them all, though.)
+Not all network censorship is alike; in some places, it changes from day to day. Streisand provides many different VPN services to try. (You don't have to install them all, though.)
 
 Some Streisand services include add-ons for further censorship and throttling resistance:
 
@@ -60,14 +60,7 @@ See also:
 
 
 #### Other providers
-If you are an expert and can set up a *fresh Ubuntu 16.04 server* elsewhere, Streisand includes code for:
-
-* Using `ssh` to connect to your remote server from your local machine
-* After connecting to your remote server, you can run Streisand *in place*, called "localhost deployment". This converts the server to a Streisand node.
-
-"Localhost deployment" often works better than `ssh` deployment. 
-
-For more information, see [the advanced installation instructions](Advanced%20installation.md).
+We recommend using one of the above providers. If you are an expert and can set up a *fresh Ubuntu 16.04 server* elsewhere, there are "localhost" and "existing remote server" installation methods. For more information, see [the advanced installation instructions](Advanced%20installation.md).
 
 ## Installation
 
@@ -76,14 +69,16 @@ You need command-line access to a Unix system. You can use Linux, BSD, or macOS;
 Once you're ready, see the [full installation instructions](Installation.md).
 
 
-Upcoming Features
------------------
+## Things we want to do better
+
+Aside from a good deal of cleanup, we could really use:
+
 * Easier setup.
 * Faster adoption of new censorship-avoidance tools
 
 We're looking for help with both.
 
-If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/StreisandEffect/streisand/issues). We appreciate 
+If there is something that you think Streisand should do, or if you find a bug in its documentation or execution, please file a report on the [Issue Tracker](https://github.com/StreisandEffect/streisand/issues).
 
 Core Contributors
 ----------------
