@@ -24,7 +24,7 @@ streisand_gpg_timeout: "120"
 streisand_default_key_import_flags: "--keyserver-options timeout={{ streisand_gpg_timeout }}"
 
 # Which keys from files/ do we add to the keyring in first setup? These keys are
-# trusted ultimately to verify software signatures during Streisand provsioning.
+# trusted ultimately to verify software signatures during Streisand provisioning.
 streisand_bootstrap_gpg_keys:
   # OpenVPN release signing key
   - 2F2B01E7.security@openvpn.net.asc
