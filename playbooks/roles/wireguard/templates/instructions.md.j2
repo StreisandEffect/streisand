@@ -12,6 +12,7 @@ An [experimental configuration for OpenWrt/LEDE](#openwrt) 17.01.4 (or later) is
 ---
 * Platforms
   * [Android](#android)
+  * [iOS](#ios)
   * [Linux](#linux)
   * [macOS](#macos)
   * [OpenWrt](#openwrt)
@@ -27,6 +28,21 @@ An [experimental configuration for OpenWrt/LEDE](#openwrt) 17.01.4 (or later) is
 {% endfor %}
 1. Enter a name for the tunnel and tap *Create Tunnel* to save the configuration.
 1. Tap the switch next to the tunnel's name to enable the VPN. If this is your first time using WireGuard on your Android device, you will be prompted to accept the VPN connection request.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+---
+
+<a name="ios"></a>
+### iOS ###
+1. Install WireGuard (by WireGuard Development Team) from the App Store.
+1. Launch the app and tap the blue button to add a new tunnel.
+1. Tap *Create from QR code* and grant the app permission to access the camera. A viewfinder will appear.
+1. Use the camera to scan one of these client configuration QR codes. **Only one device can use a profile at a time**:
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.png)
+{% endfor %}
+1. Enter a name for the tunnel and tap *Create Tunnel* to save the configuration.
+1. Tap the switch next to the tunnel's name to enable the VPN. If this is your first time using WireGuard on your iOS device, you will be prompted to accept the VPN connection request.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
 ---
