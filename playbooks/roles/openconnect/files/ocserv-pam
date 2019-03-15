@@ -1,0 +1,10 @@
+account required pam_listfile.so \
+	sense=allow item=user file=/etc/allowed_vpn_certs
+
+auth required pam_listfile.so \
+	sense=allow item=user file=/etc/allowed_vpn_certs
+
+password required pam_deny.so
+session required pam_deny.so
+
+other required pam_deny.so
