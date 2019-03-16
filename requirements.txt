@@ -26,7 +26,7 @@ dopy==0.3.5
 
 # Google Compute Engine
 apache-libcloud>=1.17.0
-pycrypto
+pycryptodome
 
 # Linode
 pycurl==7.43.0.1
