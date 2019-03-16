@@ -17,8 +17,8 @@
       default: "no"
       private: no
     - name: streisand_ipv6_enabled
-      prompt: "Enable IPv6, if available? Press enter for default "
-      default: "yes"
+      prompt: "Enable IPv6, if available? Press enter for default (no)"
+      default: "no"
       private: no
     - name: streisand_openconnect_enabled
       prompt: "Enable OpenConnect? Press enter for default "
