@@ -30,7 +30,7 @@
         address before proceeding.
 
         If Streisand has created a new server for you, its IP address is
-        {{ ansible_play_hosts }}
+        {{ ansible_play_hosts[0] }}
 
         Please type your fully qualified domain below. Press enter to skip.
       private: no
