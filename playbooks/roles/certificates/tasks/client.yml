@@ -46,3 +46,11 @@
   loop_control:
     loop_var: "client_name"
     label: "{{ client_name.item }}"
+
+- name: Authorize certificates via /etc/allowed_vpn_certs
+  template:
+    src: allowed_vpn_certs.j2
+    dest: /etc/allowed_vpn_certs
+    owner: root
+    group: root
+    mode: 0644
