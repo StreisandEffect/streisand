@@ -1,0 +1,6 @@
+# This file lists all the enabled VPN certificate names. Note that
+# it does not affect WireGuard.
+
+{% for client in vpn_client_names.results -%}
+{{ client.stdout }}
+{% endfor %}

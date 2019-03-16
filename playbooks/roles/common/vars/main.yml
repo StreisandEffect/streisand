@@ -24,7 +24,7 @@ streisand_common_packages:
   # Required to use the Ansible `expect` module
   - python-pexpect
   # Required for the apt_repository module
-  - python-software-properties
+  - software-properties-common
   # Used to generate convenient QR codes for mobile clients in the
   # Shadowsocks, Tor, and WireGuard roles
   - qrencode

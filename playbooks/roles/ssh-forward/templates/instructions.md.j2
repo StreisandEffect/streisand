@@ -17,8 +17,8 @@ SSH Tunnel
 1. Download [PuTTY](/mirror/ssh/) and run it.
 1. Go to the *Session* section.
 1. Enter `{{ streisand_ipv4_address }}` in the Host Name field.
-1. Enter `{{ ssh_port }}` in the Port field.
-   * Port `443` is available as a fallback option if you are on a network that restricts access to the default SSH port.
+1. Enter `443` in the Port field.
+   * Port {{ ssh_port }} is available as an option if your network does not block it.
 1. Go to Connection --> Data.
 1. Enter `forward` in the *Auto-login username* field.
 1. Go to Connection --> SSH.
@@ -67,11 +67,11 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. Copy the `streisand_rsa` file to the directory of your choice.
 1. Set the correct permissions on the RSA key file:
    * `chmod 600 streisand_rsa`
-1. Add a new entry to your `.ssh/config` file. It should look like this. Port `443` is available as a fallback option if you are on a network that restricts access to the default SSH port. Be sure to adjust the location of the IdentityFile:
+1. Add a new entry to your `.ssh/config` file. It should look like this. Port {{ ssh_port }} is available if your network does not block it. Be sure to adjust the location of the IdentityFile:
 
          Host {{ streisand_server_name }}
            User           forward
-           Port           {{ ssh_port }}
+           Port           443
            HostName       {{ streisand_ipv4_address }}
            IdentitiesOnly yes
            IdentityFile   ~/.ssh/streisand_rsa
@@ -87,7 +87,7 @@ You are now connected and have a SOCKS proxy up and running that is ready to for
 1. You are now connected and have a SOCKS proxy up and running that is ready to forward encrypted traffic through SSH. The next step is to configure your web browser to use it. You can follow the same instructions contained in the Windows section above to configure Firefox to route its traffic through the SOCKS proxy.
 
 {% if streisand_sshuttle_enabled %}
-#### sshuttle 
+#### sshuttle
 
 Sshuttle is a simple VPN tunnelling solution that operates over the SSH transport. It's fast, easy to set up, and offers great performance.
 
@@ -96,11 +96,11 @@ Sshuttle is a simple VPN tunnelling solution that operates over the SSH transpor
 1. Copy the `streisand_rsa` file to the directory of your choice.
 1. Set the correct permissions on the RSA key file:
    * `chmod 600 streisand_rsa`
-1. Add a new entry to your `.ssh/config` file. It should look like this. Port `443` is available as a fallback option if you are on a network that restricts access to the default SSH port. Be sure to adjust the location of the IdentityFile:
+1. Add a new entry to your `.ssh/config` file. It should look like this. Port {{ ssh_port }} is available if your network does not block it. Be sure to adjust the location of the IdentityFile:
 
          Host {{ streisand_server_name }}
            User           sshuttle
-           Port           {{ ssh_port }}
+           Port           443
            HostName       {{ streisand_ipv4_address }}
            IdentitiesOnly yes
            IdentityFile   ~/.ssh/streisand_rsa
@@ -139,8 +139,8 @@ Sshuttle is a simple VPN tunnelling solution that operates over the SSH transpor
 1. Tap *Settings*.
 1. Tap *Host name* and enter `{{ streisand_ipv4_address }}`.
 1. Tap *User Name* and enter `forward`.
-1. Tap *Port* and enter `{{ ssh_port }}`.
-   * Port `443` is available as a fallback option if you are on a network that restricts access to the default SSH port.
+1. Tap *Port* and enter `443`.
+   * Port {{ ssh_port }} is available if your network does not block it.
 1. Tap *Private Key File* and select the `streisand_rsa` file that you copied to your phone.
 1. Tap *Dynamic Forward Port* and enter `1080`.
 1. Tap *Forwards* and enter `L8888=localhost:8888`.
