@@ -1,0 +1,8 @@
+[Match]
+Name=service0
+
+[Link]
+RequiredForOnline=yes
+
+[Network]
+Address=10.10.10.10/24
