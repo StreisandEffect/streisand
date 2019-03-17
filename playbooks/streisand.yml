@@ -20,6 +20,7 @@
     - common
     - gpg
     - ssh
+    - service-net
     - role: openconnect
       when: streisand_openconnect_enabled
     - role: openvpn
