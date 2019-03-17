@@ -1,0 +1,37 @@
+---
+- name: Install service0 network configuration
+  copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/network/
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 10-service0.netdev
+    - 10-service0.network
+
+- name: Enable and start systemd networking
+  systemd:
+    daemon_reload: yes
+    name: systemd-networkd.service
+    enabled: yes
+    state: restarted
+
+- name: Install dnsmasq for service0 network
+  copy:
+    src: service-net.conf
+    dest: /etc/dnsmasq.d/
+    owner: root
+    group: root
+    mode: 0644
+
+# NOTE(@nop): From wireguard/tasks/main.yml:
+# NOTE(@cpu): We don't use a `notify` to "Restart dnsmasq" here because it seems
+# that in some conditions Ansible mistakenly believes the dnsmasq restart can be
+# skipped. We also don't use "reloaded" instead of "restarted" here because
+# dnsmasq doesn't seem to reload _new_ config files in that case, just existing
+# ones. A full restart is required in practice (sigh)
+- name: "Restart DNSMasq to pick up the new configuration"
+  service:
+    name: dnsmasq
+    state: restarted
