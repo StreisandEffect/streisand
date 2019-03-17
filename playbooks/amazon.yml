@@ -114,5 +114,7 @@
 
 - import_playbook: ssh-setup.yml
 - import_playbook: cloud-status.yml
+- import_playbook: python.yml
+- import_playbook: ec2-metadata-instance.yml
 - import_playbook: streisand.yml
 ...
