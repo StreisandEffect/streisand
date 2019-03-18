@@ -1,0 +1,24 @@
+---
+- name: Drop packets to the Amazon EC2 metadata instance
+  hosts: streisand-host
+  gather_facts: no
+
+  remote_user: "root"
+  become: true
+
+  tasks:
+
+    - name: Copy the EC2 metadata instance oneshot unit file
+      copy:
+        src: "./roles/genesis-amazon/files/aws-metadata-instance.service"
+        dest: "/etc/systemd/system/aws-metadata-instance.service"
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Enable and reload the EC2 metadata instance
+      systemd:
+        name: aws-metadata-instance.service
+        daemon_reload: yes
+        enabled: yes
+        state: restarted
