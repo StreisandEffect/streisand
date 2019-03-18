@@ -1,0 +1,11 @@
+[Unit]
+Description=Drop packets to the EC2 metadata instance
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/sbin/route add -host 169.254.169.254 reject
+
+[Install]
+WantedBy=multi-user.target
