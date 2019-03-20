@@ -83,9 +83,10 @@ sudo python2.7 -m ensurepip
 
         git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 
-1. Run the installer for Ansible and its dependencies. The installer will detect missing packages, and print the commands needed to install them.
-
-        ./util/venv-dependencies.sh ./venv
+1. Run the installer for Ansible and its dependencies. The installer will detect missing packages, and print the commands needed to install them. (Ignore the Python 2.7 `DEPRECATION` warning; ignore the warning from python-novaclient that pbr 5.1.3 is incompatible.)
+   ```
+./util/venv-dependencies.sh ./venv
+   ```
 1. Activate the Ansible packages that were installed.
 
         source ./venv/bin/activate
