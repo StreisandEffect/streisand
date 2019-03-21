@@ -84,9 +84,9 @@ sudo python2.7 -m ensurepip
         git clone https://github.com/StreisandEffect/streisand.git && cd streisand
 
 1. Run the installer for Ansible and its dependencies. The installer will detect missing packages, and print the commands needed to install them. (Ignore the Python 2.7 `DEPRECATION` warning; ignore the warning from python-novaclient that pbr 5.1.3 is incompatible.)
-   ```
-./util/venv-dependencies.sh ./venv
-   ```
+
+       ./util/venv-dependencies.sh ./venv
+
 1. Activate the Ansible packages that were installed.
 
         source ./venv/bin/activate
@@ -94,6 +94,7 @@ sudo python2.7 -m ensurepip
 1. Execute the Streisand script.
 
         ./streisand
+
 1. Follow the prompts to choose your provider, the physical region for the server, and its name. You will also be asked to enter API information.
 1. Once login information and API keys are entered, Streisand will begin spinning up a new remote server.
 1. Wait for the setup to complete (this usually takes around ten minutes) and look for the corresponding files in the `generated-docs` folder in the Streisand repository directory. The HTML file will explain how to connect to the Gateway over SSL, or via the Tor hidden service. All instructions, files, mirrored clients, and keys for the new server can then be found on the Gateway. You are all done!
