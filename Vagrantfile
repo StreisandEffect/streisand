@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
         }
       }
       ansible.raw_arguments  = [
-        "--extra-vars=@global_vars/vars.yml",
+        "--extra-vars=@global_vars/globals.yml",
         "--extra-vars=@global_vars/default-site.yml",
         "--extra-vars=@global_vars/integration/test-site.yml"
       ]
