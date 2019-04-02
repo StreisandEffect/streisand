@@ -13,6 +13,7 @@
     state: absent
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     region: "{{ aws_region }}"
     wait: yes
 
@@ -22,6 +23,7 @@
     key_material: "{{ ssh_key.stdout }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     region: "{{ aws_region }}"
     wait: yes
 
@@ -29,6 +31,7 @@
   ec2_ami_facts:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     owners: "{{ aws_ami_owner }}"
     region: "{{ aws_region }}"
     filters:
@@ -39,6 +42,7 @@
   ec2:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     instance_type: "{{ aws_instance_type }}"
     image: "{{ ami.images|sort(reverse=True,attribute='name')|map(attribute='image_id')|first }}"
     region: "{{ aws_region }}"
@@ -58,6 +62,7 @@
     state: present
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     region: "{{ aws_region }}"
     namespace: "AWS/EC2"
     metric: StatusCheckFailed_System
@@ -83,6 +88,7 @@
   ec2_eip:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     region: "{{ aws_region }}"
     device_id: "{{ streisand_server.instances[0].id }}"
     in_vpc: "{{ aws_vpc_id is defined and aws_vpc_id != '' }}"

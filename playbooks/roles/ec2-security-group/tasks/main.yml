@@ -7,6 +7,7 @@
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
 
 - name: Pause for fifteen seconds to ensure the EC2 security group has been created
   pause:
@@ -20,6 +21,7 @@
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     rules:
       # Nginx
       # ---
@@ -55,6 +57,7 @@
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -82,6 +85,7 @@
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -109,6 +113,7 @@
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -130,6 +135,7 @@
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -157,6 +163,7 @@
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -184,6 +191,7 @@
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
+    security_token: "{{ aws_session_token }}"
     purge_rules: no
     purge_rules_egress: no
     rules:

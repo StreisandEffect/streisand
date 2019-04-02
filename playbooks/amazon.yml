@@ -98,6 +98,11 @@
       prompt: "\nWhat is your AWS Secret Access Key?\n"
       private: no
 
+    - name: "aws_session_token"
+      prompt: "\nIf you use AWS Roles, what is your AWS Token? Press enter for none.\n"
+      default: ""
+      private: no
+
     - name: "confirmation"
       prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 
