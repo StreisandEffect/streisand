@@ -48,4 +48,11 @@ server {
     autoindex off; 
   }
 
+  # Simple healthcheck path with no auth
+  location /healthz {
+    auth_basic off;
+    default_type text/plain;
+    return 200 "ok";
+  }
+
 }
