@@ -199,6 +199,7 @@ read -r -p "Which provider are you using?
   6. Rackspace
   7. localhost (Advanced)
   8. Existing Server (Advanced)
+  9. Scaleway
 : " reply
 
 case "$reply" in
@@ -210,5 +211,6 @@ case "$reply" in
   6) run_genesis rackspace.yml;;
   7) local_provision;;
   8) existing_server;;
+  9) run_genesis scaleway.yml;;
   *) echo; echo "Invalid provider selected."; exit 1;;
 esac

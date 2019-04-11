@@ -57,6 +57,7 @@ See also:
 * Google Compute Engine (GCE)
 * Linode
 * Rackspace
+* Scaleway
 
 
 #### Other providers
