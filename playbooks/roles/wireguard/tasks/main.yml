@@ -73,6 +73,27 @@
   register: wireguard_client_privkeys
   changed_when: False
 
+- name: Generate preshared key for each client
+  shell: "umask 077; wg genpsk > client.psk"
+  args:
+    chdir: "{{ wireguard_client_path }}/{{ client_name.stdout }}"
+    creates: client.psk
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Register client preshared keys
+  command: cat client.psk
+  args:
+    chdir: "{{ wireguard_client_path }}/{{ client_name.stdout }}"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+  register: wireguard_client_preshared_keys
+  changed_when: False
+
 - name: Generate the client configuration profiles
   template:
     src: client.conf.j2
@@ -80,6 +101,7 @@
   with_together:
     - "{{ vpn_client_names.results }}"
     - "{{ wireguard_client_privkeys.results }}"
+    - "{{ wireguard_client_preshared_keys.results }}"
   loop_control:
     label: "{{ item[0].item }}"
 
@@ -90,6 +112,7 @@
   with_together:
     - "{{ vpn_client_names.results }}"
     - "{{ wireguard_client_privkeys.results }}"
+    - "{{ wireguard_client_preshared_keys.results }}"
   loop_control:
     label: "{{ item[0].item }}"
 

@@ -77,6 +77,7 @@ set network.$ifname=interface
 
 set network.$ifname.proto='wireguard'
 set network.$ifname.private_key='{{ item[1].stdout }}'
+set network.$ifname.preshared_key='{{ item[2].stdout }}'
 set network.$ifname.addresses='10.192.122.{{ (item[0].item|int) + 1 }}/32'
 set network.$ifname.listen_port='51820'
 

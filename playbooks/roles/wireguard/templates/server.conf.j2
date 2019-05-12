@@ -8,6 +8,7 @@ PrivateKey = {{ wireguard_server_private_key }}
 # "{{ client.stdout }}" Client Peer
 [Peer]
 PublicKey = {{ wireguard_client_pubkeys.results[(client.item|int)-1].stdout }}
+PresharedKey = {{ wireguard_client_preshared_keys.results[(client.item|int)-1].stdout }}
 AllowedIPs = 10.192.122.{{ (client.item|int)+1 }}/32
 
 {% endfor %}
