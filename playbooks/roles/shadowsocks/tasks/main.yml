@@ -18,11 +18,6 @@
   apt:
     package: "shadowsocks-libev"
 
-- name: Install the simple-obfs dependencies
-  apt:
-    package: "{{ shadowsocks_dependencies }}"
-    install_recommends: no
-
 - name: Create the shadowsocks-libev config directory
   file:
     path: "{{ shadowsocks_location }}"
@@ -57,8 +52,8 @@
   register: shadowsocks_password
   changed_when: False
 
-# Add simple-obfs task file
-- import_tasks: simple-obfs.yml
+# Add V2ray support
+- import_tasks: v2ray.yml
 
 - name: Generate Shadowsocks config file
   template:

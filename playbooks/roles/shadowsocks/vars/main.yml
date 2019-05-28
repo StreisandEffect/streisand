@@ -1,35 +1,12 @@
 ---
-# Note: these dependencies are only sufficient to build from source with the
-#       --disable-documentation flag to configure. It is *not* sufficient to
-#       build a .deb
-shadowsocks_dependencies:
-  - git
-  - gcc
-  - make
-  - autoconf
-  - automake
-  - shtool
-  - libtool
-  - libev-dev
-  - libmbedtls-dev
-  - libpcre3-dev
-  - libsodium-dev
-  - libc-ares-dev
-  # Shadowsocks may complain about lack of entropy without rng-tools installed
-  - rng-tools
-  - libssl-dev
-
-# Configuring the build without documentation means we save close to 900mb of deps
-# with the tradeoff of not creating man pages
-shadowsocks_configure_flags: "--disable-documentation --prefix=/usr"
-
 shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
 
-# simple-obfs vars
-simple_obfs_version: "0.0.5"
-simple_obfs_compilation_directory: "/usr/local/src/shadowsocks-simple-obfs-{{ simple_obfs_version }}"
-simple_obfs_configure_flags: "--disable-documentation"
+# V2ray-plugin
+go_path: "GOPATH=$HOME/go"
+v2ray_github: "github.com/shadowsocks/v2ray-plugin"
+v2ray_location: "/root/go/bin"
+v2ray_options: "server;host={{ shadowsocks_v2ray_cover_domain }}"
 
 # Add -v for verbose mode to help with debugging
 shadowsocks_daemon_args: "-u"
