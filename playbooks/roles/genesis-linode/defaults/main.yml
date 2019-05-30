@@ -1,9 +1,8 @@
 ---
-# Setting to most minimal linode plan size. 
+# Setting to most minimal linode plan size.
 # For a most recent list of types: curl https://api.linode.com/v4/linode/types
 linode_plan_id: "g6-nanode-1"
 linode_distribution_id: "linode/ubuntu16.04lts"
-
 
 ### Preserving these varsfor when we can set these with the ansible linode apiv4 module:
 # linode_kernel_id: 210 # GRUB2 to utilize the distribution's kernel for compatibility
