@@ -9,7 +9,7 @@
 
 - name: "Create the server"
   linode_v4:
-    access_token: "{{ linode_api_key }}"
+    access_token: "{{ linode_api_token }}"
     label: "{{ linode_server_name }}"
     type: "{{ linode_plan_id }}"
     region: "{{ regions[linode_datacenter] }}"
