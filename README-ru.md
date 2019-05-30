@@ -149,7 +149,7 @@
 
   * Linode
 
-        sudo pip install linode-python
+        sudo pip install linode_api4
   * Rackspace Cloud
 
         sudo pip install pyrax

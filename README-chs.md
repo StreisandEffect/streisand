@@ -141,7 +141,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
         sudo pip install "apache-libcloud>=1.17.0"
   * Linode
 
-        sudo pip install linode-python
+        sudo pip install linode_api4
   * Rackspace 云
 
         sudo pip install pyrax
