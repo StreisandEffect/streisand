@@ -54,8 +54,19 @@
 
 # Add V2ray support
 - import_tasks: v2ray.yml
+  when: streisand_shadowsocks_v2ray_enabled|bool
 
 - name: Generate Shadowsocks config file
+  when: streisand_shadowsocks_v2ray_enabled|bool
+  template:
+    src: config_v2ray.json.j2
+    dest: "{{ shadowsocks_location }}/config.json"
+    # The nobody user in nogroup needs to be able to read the config file
+    group: nogroup
+    mode: 0640
+
+- name: Generate Shadowsocks config file
+  when: not streisand_shadowsocks_v2ray_enabled|bool
   template:
     src: config.json.j2
     dest: "{{ shadowsocks_location }}/config.json"

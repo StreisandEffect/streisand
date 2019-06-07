@@ -5,5 +5,7 @@
     "password":"{{ shadowsocks_password.stdout }}",
     "timeout":{{ shadowsocks_timeout }},
     "method":"{{ shadowsocks_encryption_method }}",
-    "fast_open":{{ shadowsocks_tcp_fast_open }}
+    "fast_open":{{ shadowsocks_tcp_fast_open }},
+    "plugin":"{{ shadowsocks_location }}/v2ray-plugin",
+    "plugin_opts":"{{ v2ray_options }}"
 }

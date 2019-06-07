@@ -52,7 +52,7 @@
   template:
     src: "test-client-inventory.j2"
     dest: "{{ streisand_gateway_location }}/test-client-inventory"
-  when: streisand_client_test
+  when: streisand_client_test|bool
 
 - name: Copy the HTML header and footer templates that are used during documentation generation
   copy:
