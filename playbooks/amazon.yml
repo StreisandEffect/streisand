@@ -24,6 +24,7 @@
       "15": "ap-south-1"
       "16": "sa-east-1"
       "17": "eu-north-1"
+      "18": "ap-east-1"
 
   # These variable files are included so the ec2-security-group role
   # knows which ports to open
@@ -59,6 +60,7 @@
           15. Asia Pacific  (Mumbai)
           16. South America (São Paulo)
           17. EU            (Stockholm)
+          18. Asia Pacific  (Hong Kong)
         Please choose the number of your region. Press enter for default (#13) region.
       default: "13"
       private: no
