@@ -12,12 +12,12 @@
       stat:
         path: "{{ streisand_ssh_private_key }}.pub"
       register: streisand_ssh_key_status
-      when: streisand_new_server_provisioning|bool
+      when: streisand_new_server_provisioning
     - name: "Fail if the Streisand SSH public key file doesn't exist"
       fail:
         msg: "The Streisand SSH public key \"{{ streisand_ssh_private_key }}.pub\" does not exist."
       when:
-        - streisand_new_server_provisioning|bool
+        - streisand_new_server_provisioning
         - not streisand_ssh_key_status.stat.exists
   rescue:
     - fail:

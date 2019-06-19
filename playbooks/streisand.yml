@@ -22,27 +22,27 @@
     - ssh
     - service-net
     - role: openconnect
-      when: streisand_openconnect_enabled|bool
+      when: streisand_openconnect_enabled
     - role: openvpn
-      when: streisand_openvpn_enabled|bool
+      when: streisand_openvpn_enabled
     - role: shadowsocks
-      when: streisand_shadowsocks_enabled|bool
+      when: streisand_shadowsocks_enabled
     - role: ssh-forward
-      when: streisand_ssh_forward_enabled|bool
+      when: streisand_ssh_forward_enabled
     - role: tinyproxy
-      when: streisand_tinyproxy_enabled|bool
+      when: streisand_tinyproxy_enabled
     # tor-bridge is skipped in our full Ansible run on Travis CI due to
     # connectivity issues.
     - role: tor-bridge
-      when: not streisand_ci|bool and streisand_tor_enabled|bool
+      when: not streisand_ci and streisand_tor_enabled
     - sslh
     - ufw
     - role: wireguard
-      when: streisand_wireguard_enabled|bool
+      when: streisand_wireguard_enabled
     # streisand_le_enabled is set in lets-encrypt.yml based on user input.
     # lets-encrypt roles sets le_ok, which is used by streisand-gateway.
     - role: lets-encrypt
-      when: streisand_le_enabled|bool
+      when: streisand_le_enabled
     - streisand-mirror
     - streisand-gateway
 ...

@@ -38,7 +38,7 @@
     dest: "{{ streisand_gateway_password_localpath }}"
     fail_on_missing: yes
     flat: yes
-  when: streisand_client_test|bool
+  when: streisand_client_test
 
 - name: Generate the virtual host and restart Nginx if it is updated
   template:
