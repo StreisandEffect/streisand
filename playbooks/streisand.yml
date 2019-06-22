@@ -45,4 +45,6 @@
       when: streisand_le_enabled
     - streisand-mirror
     - streisand-gateway
+    - role: cloudflared 
+      when: streisand_cloudflared_enabled
 ...

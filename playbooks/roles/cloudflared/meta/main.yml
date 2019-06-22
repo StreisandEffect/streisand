@@ -1,0 +1,32 @@
+---
+galaxy_info:
+  author: Ben Dews
+  description: Install cloudflared and systemd service for DNS-Over-HTTPS
+  company: https://bendews.com
+  license: MIT
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: EL
+      versions:
+      - 6
+      - 7
+    - name: Debian
+      versions:
+      - all
+    - name: Ubuntu
+      versions:
+      - all
+
+  galaxy_tags:
+    - "cloudflare"
+    - "cloudflared"
+    - "https"
+    - "dns"
+    - "DoH"
+    - "DNS-Over-HTTPS"
+    - "systemd"
+    - "init"
+
+dependencies: []

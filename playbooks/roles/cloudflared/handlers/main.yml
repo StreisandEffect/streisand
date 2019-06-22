@@ -1,0 +1,6 @@
+---
+- name: restart cloudflared service
+  service: 
+    name: cloudflared 
+    enabled: "{{ cloudflared_enable_service }}"
+    state: restarted
