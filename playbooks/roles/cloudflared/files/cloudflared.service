@@ -4,7 +4,7 @@ After=syslog.target network-online.target
 
 [Service]
 Type=simple
-User=nobody
+User=cloudflared
 EnvironmentFile=/etc/default/cloudflared
 ExecStart=/usr/local/bin/cloudflared $CLOUDFLARED_OPTS
 Restart=on-failure

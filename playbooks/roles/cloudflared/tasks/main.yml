@@ -29,6 +29,21 @@
   register: update_command
   changed_when: update_command.rc == '64'
 
+- name: create cloudflared nologin user
+  become: yes
+  user:
+    name: cloudflared
+    shell: /usr/sbin/nologin
+    system: True
+    create_home: False
+
+- name: set ownership of /usr/local/bin/cloudflared 
+  file:
+    path: /usr/local/bin/cloudflared
+    state: file
+    owner: cloudflared
+    group: cloudflared
+
 - name: template config file
   template:
     src: cloudflared.j2

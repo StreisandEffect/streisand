@@ -48,7 +48,7 @@
       prompt: "Enable WireGuard? Press enter for default "
       default: "yes"
       private: no
-    - name: streisand_cloudflaredd_enabled
+    - name: streisand_cloudflared_enabled
       prompt: "Enable DNS-over-HTTPS (cloudflared)? Press enter for default "
       default: "yes"
       private: no
