@@ -6,7 +6,7 @@
 - set_fact:
     cloudflared_installed: "{{ cloudflared_binary.stat.exists | default(false) }}"
 
-- name: set device architecture and package manager vars 
+- name: set device architecture and package manager vars
   set_fact:
     device_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm' }}"
 
@@ -37,7 +37,7 @@
     system: True
     create_home: False
 
-- name: set ownership of /usr/local/bin/cloudflared 
+- name: set ownership of /usr/local/bin/cloudflared
   file:
     path: /usr/local/bin/cloudflared
     state: file
