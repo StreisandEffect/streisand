@@ -29,4 +29,6 @@ galaxy_info:
     - "systemd"
     - "init"
 
-dependencies: []
+dependencies: 
+  - { role: dnsmasq }
+  - { role: ip-forwarding }

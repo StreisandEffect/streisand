@@ -77,3 +77,10 @@
     port: "{{ cloudflared_port }}"
     comment: "allow cloudflared"
   when: cloudflared_allow_firewall
+
+# DNSMASQ
+- name: Generate the dnsmasq configuration file
+  template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+  notify: Restart dnsmasq
