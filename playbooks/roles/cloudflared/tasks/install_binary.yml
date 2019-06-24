@@ -2,7 +2,6 @@
 - name: build filename of file to be downloaded
   set_fact:
     cloudflared_file: "{{ vars['cloudflared_'+device_arch+'_binary'] }}"
-    cloudflared_file_checksum: "{{ vars['cloudflared_'+device_arch+'_binary_checksum'] }}"
 
 - name: download correct file for device
   get_url:
