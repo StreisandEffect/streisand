@@ -8,7 +8,7 @@
   get_url:
     url: "{{ cloudflared_base_url }}{{ cloudflared_file }}"
     dest: "/tmp/{{ cloudflared_file }}"
-    checksum: "{{ cloudflared_file_checksum }}"
+    #checksum: "{{ cloudflared_file_checksum }}"
 
 - name: extract cloudflared into /usr/local/bin
   unarchive:
