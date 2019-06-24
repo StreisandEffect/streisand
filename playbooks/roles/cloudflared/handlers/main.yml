@@ -4,7 +4,3 @@
     name: cloudflared.service
     state: restarted
 
-- name: Restart dnsmasq
-  systemd:
-    name: dnsmasq.service
-    state: restarted
