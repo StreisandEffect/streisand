@@ -3,4 +3,3 @@
   systemd:
     name: cloudflared.service
     state: restarted
-

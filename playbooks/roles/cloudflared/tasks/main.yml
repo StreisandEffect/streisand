@@ -90,4 +90,3 @@
     state: present
     line: "server=127.0.0.1#{{ cloudflared_port }}"
   notify: Restart dnsmasq
-
