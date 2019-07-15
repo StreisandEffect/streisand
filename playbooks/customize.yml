@@ -50,7 +50,7 @@
       private: no
     - name: streisand_cloudflared_enabled
       prompt: "Enable DNS-over-HTTPS (cloudflared)? Press enter for default "
-      default: "no"
+      default: "yes"
       private: no
 
   tasks:
