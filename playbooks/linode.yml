@@ -16,6 +16,7 @@
       "7": "ap-south"
       "8": "eu-central"
       "9": "ap-northeast"
+      "10": "ap-west"
 
   vars_prompt:
     - name: "linode_datacenter"
@@ -30,6 +31,7 @@
           7. Singapore
           8. Frankfurt
           9. Tokyo
+          10. Mumbai
         Please choose the number of your region. Press enter for default (#7) region.
       default: "7"
       private: no
