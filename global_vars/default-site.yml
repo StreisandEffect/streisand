@@ -22,3 +22,4 @@ streisand_stunnel_enabled: yes
 streisand_tinyproxy_enabled: yes
 streisand_tor_enabled: no
 streisand_wireguard_enabled: yes
+streisand_cloudflared_enabled: yes
