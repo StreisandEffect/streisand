@@ -48,6 +48,10 @@
       prompt: "Enable WireGuard? Press enter for default "
       default: "yes"
       private: no
+    - name: streisand_cloudflared_enabled
+      prompt: "Enable DNS-over-HTTPS (cloudflared)? Press enter for default "
+      default: "yes"
+      private: no
 
   tasks:
     - lineinfile:
@@ -94,3 +98,7 @@
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_wireguard_enabled: (?:yes|no)$"
         line: "streisand_wireguard_enabled: {{ streisand_wireguard_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_cloudflared_enabled: (?:yes|no)$"
+        line: "streisand_cloudflared_enabled: {{ streisand_cloudflared_enabled }}"

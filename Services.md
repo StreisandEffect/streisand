@@ -37,3 +37,5 @@ Services Provided
   * Your Streisand server is configured to automatically install new security updates.
 * [WireGuard](https://www.wireguard.com/)
   * Linux users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast and uses modern cryptographic principles that all other highspeed VPN solutions lack.
+* [Cloudflared DNS-over-HTTPS](https://developers.cloudflare.com/1.1.1.1/dns-over-https/)
+  * Even when you are visiting a site using HTTPS, by default your DNS query is sent over an unencrypted connection (between the Streisand server and upstream DNS servers). With Streisand's DNS-over-HTTPS service provided by the cloudflared client enabled, your DNS queries are blocked from view by the cloud provider hosting your Streisand server and everyone in between them and the upstream DNS server. The DNS reply from the upstream server is also protected from both view and tampering on its way back to your Streisand server.
