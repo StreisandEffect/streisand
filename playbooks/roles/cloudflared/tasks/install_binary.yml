@@ -1,0 +1,16 @@
+---
+- name: build filename of file to be downloaded
+  set_fact:
+    cloudflared_file: "{{ vars['cloudflared_'+device_arch+'_binary'] }}"
+
+- name: download correct file for device
+  get_url:
+    url: "{{ cloudflared_base_url }}{{ cloudflared_file }}"
+    dest: "/tmp/{{ cloudflared_file }}"
+    #checksum: "{{ cloudflared_file_checksum }}"
+
+- name: extract cloudflared into /usr/local/bin
+  unarchive:
+    src: "/tmp/{{ cloudflared_file }}"
+    dest: "{{ cloudflared_bin_location }}"
+    remote_src: yes
