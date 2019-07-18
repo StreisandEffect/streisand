@@ -20,7 +20,7 @@ Services Provided
   * When enabled, the high-performance [libev variant](https://github.com/shadowsocks/shadowsocks-libev) is installed. This version is capable of handling thousands of simultaneous connections.
   * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
   * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
-  * The [simple-obfs](https://github.com/shadowsocks/simple-obfs) plugin is installed to provide robust traffic evasion on hostile networks (especially those implementing quality of service (QOS) throttling).
+  * The [v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin) plugin is installed to provide robust traffic evasion on hostile networks (especially those implementing quality of service (QOS) throttling).
 * [sslh](https://www.rutschle.net/tech/sslh/README.html)
   * Sslh is a protocol demultiplexer that allows Nginx, OpenSSH, and OpenVPN to share port 443. This provides an alternative connection option and means that you can still route traffic via OpenSSH and OpenVPN even if you are on a restrictive network that blocks all access to non-HTTP ports.
 * [Stunnel](https://www.stunnel.org/index.html)

@@ -28,6 +28,10 @@
       prompt: "Enable Shadowsocks? Press enter for default "
       default: "yes"
       private: no
+    - name: streisand_shadowsocks_v2ray_enabled
+      prompt: "Enable v2ray-plugin for Shadowsocks? Press enter for default "
+      default: "no"
+      private: no
     - name: streisand_ssh_forward_enabled
       prompt: "Enable SSH Forward User? (Note: A SOCKS proxy only user will be added, no shell). Press enter for default "
       default: "yes"
@@ -74,6 +78,10 @@
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_shadowsocks_enabled: (?:yes|no)$"
         line: "streisand_shadowsocks_enabled: {{ streisand_shadowsocks_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_shadowsocks_v2ray_enabled: (?:yes|no)$"
+        line: "streisand_shadowsocks_v2ray_enabled: {{ streisand_shadowsocks_v2ray_enabled }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_ssh_forward_enabled: (?:yes|no)$"

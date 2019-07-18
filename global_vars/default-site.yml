@@ -14,6 +14,7 @@ vpn_clients: 5
 streisand_openconnect_enabled: yes
 streisand_openvpn_enabled: yes
 streisand_shadowsocks_enabled: yes
+streisand_shadowsocks_v2ray_enabled: no
 streisand_ssh_forward_enabled: yes
 # By default sshuttle is disabled because it creates a `sshuttle` user that has
 # full shell privileges on the Streisand host
