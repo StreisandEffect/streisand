@@ -40,7 +40,7 @@ Some Streisand services include add-ons for further censorship and throttling re
 * [OpenVPN](https://openvpn.net/index.php/open-source.html)
     * [Stunnel](https://www.stunnel.org/index.html) add-on available.
 * [Shadowsocks](https://shadowsocks.org/en/index.html), 
-    * [simple-obfs](https://github.com/shadowsocks/simple-obfs) add-on available.
+    * The [V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin) is installed to provide robust traffic evasion on hostile networks (especially those implementing quality of service (QOS) throttling).
 * A private [Tor](https://www.torproject.org/) bridge relay
     * [Obfsproxy](https://www.torproject.org/projects/obfsproxy.html.en) with obfs4 available as an add-on.
 * [WireGuard](https://www.wireguard.com/), a modern high-performance protocol.

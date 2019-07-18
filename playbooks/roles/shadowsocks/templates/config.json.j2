@@ -5,7 +5,10 @@
     "password":"{{ shadowsocks_password.stdout }}",
     "timeout":{{ shadowsocks_timeout }},
     "method":"{{ shadowsocks_encryption_method }}",
-    "fast_open":{{ shadowsocks_tcp_fast_open }},
-    "plugin":"{{ shadowsocks_obfs_plugin }}",
-    "plugin_opts":"{{ shadowsocks_obfs_plugin_opts }}"
+    "fast_open":{{ shadowsocks_tcp_fast_open }}
+{%- if streisand_shadowsocks_v2ray_enabled -%}
+,
+    "plugin":"{{ shadowsocks_location }}/v2ray-plugin",
+    "plugin_opts":"{{ v2ray_options }}"
+{% endif %}
 }

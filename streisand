@@ -13,7 +13,7 @@ export ANSIBLE_LIBRARY=
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 
 DEFAULT_SITE_VARS="$SCRIPT_DIR/global_vars/default-site.yml"
-GLOBAL_VARS="$SCRIPT_DIR/global_vars/vars.yml"
+GLOBAL_VARS="$SCRIPT_DIR/global_vars/globals.yml"
 HOME_DIR="$HOME/.streisand"
 SITE_VARS="$HOME_DIR/site.yml"
 

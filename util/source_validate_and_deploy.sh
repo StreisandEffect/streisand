@@ -4,7 +4,7 @@
 # codebase. It expects the following variables set:
 #
 # DEFAULT_SITE_VARS /path/to/default-site.yml
-# GLOBAL_VARS /path/to/vars.yml
+# GLOBAL_VARS /path/to/globals.yml
 # INVENTORY /path/to/inventory
 # PROJECT_DIR /path/to/streisand
 # SITE_VARS /path/to/site.yml
