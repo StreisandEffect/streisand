@@ -11,3 +11,4 @@ streisand_tor_enabled: no
 streisand_wireguard_enabled: no
 streisand_ssh_forward_enabled: no
 streisand_sshuttle_enabled: no
+streisand_cloudflared_enabled: no

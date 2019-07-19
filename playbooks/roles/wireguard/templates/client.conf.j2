@@ -13,5 +13,5 @@ PrivateKey = {{ item[1].stdout }}
 
 [Peer]
 PublicKey = {{ wireguard_server_public_key }}
-AllowedIPs = 0.0.0.0/0
+AllowedIPs = 0.0.0.0/0,::/0
 Endpoint = {{ streisand_ipv4_address }}:{{ wireguard_port }}
