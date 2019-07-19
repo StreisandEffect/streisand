@@ -54,6 +54,7 @@
 
 # Add V2ray support
 - import_tasks: v2ray.yml
+  when: streisand_shadowsocks_v2ray_enabled|bool
 
 - name: Generate Shadowsocks config file
   template:

@@ -16,6 +16,7 @@ env:
     - RUN="ci" SITE="tests/site_vars/openvpn.yml"
     - RUN="ci" SITE="tests/site_vars/shadowsocks.yml"
     - RUN="ci" SITE="tests/site_vars/ssh.yml"
+    - RUN="ci" SITE="tests/site_vars/cloudflared.yml"
     - RUN="ci" SITE="random"
 
 before_install:

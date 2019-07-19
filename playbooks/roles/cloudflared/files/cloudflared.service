@@ -1,0 +1,15 @@
+[Unit]
+Description=cloudflared service
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+User=cloudflared
+EnvironmentFile=/etc/default/cloudflared
+ExecStart=/usr/local/bin/cloudflared $CLOUDFLARED_OPTS
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
