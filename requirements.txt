@@ -21,12 +21,11 @@ boto
 boto3
 
 # Digital Ocean
-packaging
 dopy==0.3.5
 
 # Google Compute Engine
-apache-libcloud>=1.17.0
-pycryptodome
+requests
+google-auth
 
 # Linode
 pycurl==7.43.0.1
