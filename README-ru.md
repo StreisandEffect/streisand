@@ -79,7 +79,7 @@
 
 Установка
 ------------
-Пожалуйста **внимательно** прочитайте инструкции по установке перед тем, как продолжать.
+Пожалуйста, **внимательно** прочитайте инструкции по установке перед тем, как продолжать.
 
 ### Важное разъяснение ###
 Стрейзанд основан на [Ansible](https://www.ansible.com/), инструменте автоматизации, который обычно используется для установки и настройки файлов и пакетов на удалённых серверах. Стрейзанд автоматически создает **новый удалённый сервер** с пакетами и конфигурационными файлами VPN.
@@ -110,7 +110,7 @@
         sudo apt-get install git
   * На Fedora
 
-        sudo yum install git
+        sudo dnf install git
   * На macOS (с использованием [Homebrew](https://brew.sh/))
 
         brew install git
@@ -120,7 +120,7 @@
         sudo apt-get install python-paramiko python-pip python-pycurl python-dev build-essential
   * На Fedora
 
-        sudo yum install python-pip
+        sudo dnf install python-pip
   * На macOS
 
         sudo easy_install pip

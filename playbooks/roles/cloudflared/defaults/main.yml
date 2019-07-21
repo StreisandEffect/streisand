@@ -1,0 +1,19 @@
+---
+cloudflared_base_url: "https://bin.equinox.io/c/VdrWdbjqyF/"
+
+cloudflared_amd64_apt: "cloudflared-stable-linux-amd64.deb"
+cloudflared_amd64_yum: "cloudflared-stable-linux-amd64.rpm"
+cloudflared_amd64_binary: "cloudflared-stable-linux-amd64.tgz"
+cloudflared_arm_apt: "cloudflared-stable-linux-arm.deb"
+cloudflared_arm_yum: "cloudflared-stable-linux-arm.rpm"
+cloudflared_arm_binary: "cloudflared-stable-linux-arm.tgz"
+
+cloudflared_allow_firewall: false
+cloudflared_enable_service: true
+cloudflared_upstream1: "https://1.1.1.1/dns-query"
+cloudflared_upstream2: "https://1.0.0.1/dns-query"
+cloudflared_port: 5053
+
+cloudflared_options: "proxy-dns --port {{ cloudflared_port }} --upstream {{ cloudflared_upstream1 }} --upstream {{ cloudflared_upstream2 }}"
+
+cloudflared_bin_location: /usr/local/bin

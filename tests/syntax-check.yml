@@ -79,6 +79,7 @@
     - nginx
     - openconnect
     - openvpn
+    - service-net
     - shadowsocks
     - ssh
     - ssh-forward

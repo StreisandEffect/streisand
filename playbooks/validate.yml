@@ -6,7 +6,7 @@
   gather_facts: no
 
   vars_files:
-    - ../global_vars/vars.yml
+    - ../global_vars/globals.yml
 
   roles:
     - validation

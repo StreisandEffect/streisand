@@ -35,12 +35,16 @@
       "26": "southindia"
       "27": "australiaeast"
       "28": "australiasoutheast"
-      "29": "northeurope"
-      "30": "westeurope"
-      "31": "germanycentral"
-      "32": "germanynortheast"
-      "33": "ukwest"
-      "34": "uksouth"
+      "29": "australiacentral"
+      "30": "australiacentral2"
+      "31": "northeurope"
+      "32": "westeurope"
+      "33": "germanycentral"
+      "34": "germanynortheast"
+      "35": "ukwest"
+      "36": "uksouth"
+      "37": "francecentral"
+      "38": "francesouth"
 
   # These variable files are included so the azure-security-group role
   # knows which ports to open
@@ -94,15 +98,20 @@
 
           Australia:
             27: Australia East      (New South Wales)
-            28: Australia Southeast (Victoria)
+            28: Australia Southeast     (Victoria)
+            29: Austrailia Central       (Canberra)
+            30: Austrailia Central 2    (Canberra)
 
           Europe:
-            29: North Europe        (Ireland)
-            30: West Europe         (Netherlands)
-            31: Germany Central     (Frankfurt)
-            32: Germany Northeast   (Magdeburg)
-            33: UK West             (Cardiff)
-            34: UK South            (London)
+            31: North Europe        (Ireland)
+            32: West Europe         (Netherlands)
+            33: Germany Central     (Frankfurt)
+            34: Germany Northeast   (Magdeburg)
+            35: UK West             (Cardiff)
+            36: UK South            (London)
+            37: France Central    (Paris)
+            38: France South      (Marseille)
+
         Please choose the number of your region: Press enter for default (#1) region.
       default: "1"
       private: no

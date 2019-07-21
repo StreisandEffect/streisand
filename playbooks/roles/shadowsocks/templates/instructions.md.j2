@@ -10,8 +10,12 @@ Shadowsocks
   * [Linux](#linux)
   * [Android](#android)
   * [iOS](#ios)
+{%- if streisand_shadowsocks_v2ray_enabled -%}
+
 * Plugins
-  * [simple-obfs](#simple-obfs)
+  * [v2ray-plugin](#V2ray-plugin)
+
+{% endif %}
 
 <a name="windows"></a>
 ### Windows ###
@@ -117,15 +121,19 @@ This should return a 301 Found response **not** a connection refused error.
    * If this is your first time running Shadowrocket, iOS will ask you to verify that the application should have permission to add VPN configurations. Tap *Allow* and follow the instructions.
 1. You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 
-<a name="simple-obfs"></a>
-### simple-obfs for unreliable/hostile networks ###
-For users on unreliable or hostile networks (esp. experiencing quality-of-service (QOS) throttling) using the simple-obfs plugin may help alleviate these issues. Further configuration of the Shadowsocks client to use the simple-obfs plugin can be carried out via the following configuration:
+{%- if streisand_shadowsocks_v2ray_enabled -%}
+
+<a name="V2ray-plugin"></a>
+### v2ray-plugin for unreliable/hostile networks ###
+For users on unreliable or hostile networks (esp. experiencing quality-of-service (QOS) throttling) using the [v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin) may help alleviate these issues. Further configuration of the Shadowsocks client to use the v2ray-plugin can be carried out via the following configuration:
 
         Server: {{ streisand_ipv4_address }}
         Port: {{ shadowsocks_server_port }}
         Password: {{ shadowsocks_password.stdout }}
         Encryption Method: {{ shadowsocks_encryption_method }}
-        Plugin: {{ shadowsocks_client_obfs_plugin }}
-        Plugin_Options: {{ shadowsocks_obfs_client_plugin_opts }}
+        Plugin: {{ shadowsocks_v2ray_plugin }}
+        Plugin_Options: {{ shadowsocks_v2ray_plugin_options }}
 
-Android users will first need to download the [Simple Obfuscation](https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.obfs_local&hl=en) plugin app, and then modify the existing Streisand profile on your client to use this plugin. You can do this by hitting the edit button next to the profile, tapping the `Plugin` option at the bottom of the profile and selecting the "Simple obsfucation" plugin from the menu. Your Shadowsocks traffic will now be obfuscated as `{{ shadowsocks_obfs_cover_protocol }}` traffic to `{{ shadowsocks_obfs_cover_domain }}`.
+Android users will first need to download the [V2ray-plugin](https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray) plugin app, and then modify the existing Streisand profile on your client to use this plugin. You can do this by hitting the edit button next to the profile, tapping the `Plugin` option at the bottom of the profile and selecting the "V2ray-plugin" plugin from the menu. Your Shadowsocks traffic will now be obfuscated as `{{ shadowsocks_v2ray_plugin_protocol }}` traffic to `{{ shadowsocks_v2ray_cover_domain }}`.
+
+{% endif %}

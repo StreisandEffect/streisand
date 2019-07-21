@@ -1,0 +1,22 @@
+---
+- name: Add the repo for getting the latest version of Go
+  apt_repository:
+    repo: 'ppa:longsleep/golang-backports'
+  register: golang_add_apt_repository
+  until: not golang_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
+
+- name: Install golang-go
+  apt:
+    package: "golang-go"
+
+- name: Set GOPATH
+  shell: "export {{ go_path }}"
+
+- name: Get V2Ray-plugin
+  shell: "go get {{ v2ray_github }}"
+
+- name: Copying v2ray-plugin to shadowsocks-libev directory
+  shell: "cp -rf {{ v2ray_location }}/v2ray-plugin {{ shadowsocks_location }}"
+...
