@@ -20,7 +20,7 @@ Services Provided
   * When enabled, the high-performance [libev variant](https://github.com/shadowsocks/shadowsocks-libev) is installed. This version is capable of handling thousands of simultaneous connections.
   * A QR code is generated that can be used to automatically configure the Android and iOS clients by simply taking a picture. You can tag '8.8.8.8' on that concrete wall, or you can glue the Shadowsocks instructions and some QR codes to it instead!
   * [AEAD](https://shadowsocks.org/en/spec/AEAD-Ciphers.html) support is enabled using ChaCha20 and Poly1305 for enhanced security and improved GFW evasion.
-  * The [simple-obfs](https://github.com/shadowsocks/simple-obfs) plugin is installed to provide robust traffic evasion on hostile networks (especially those implementing quality of service (QOS) throttling).
+  * The [v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin) plugin is installed to provide robust traffic evasion on hostile networks (especially those implementing quality of service (QOS) throttling).
 * [sslh](https://www.rutschle.net/tech/sslh/README.html)
   * Sslh is a protocol demultiplexer that allows Nginx, OpenSSH, and OpenVPN to share port 443. This provides an alternative connection option and means that you can still route traffic via OpenSSH and OpenVPN even if you are on a restrictive network that blocks all access to non-HTTP ports.
 * [Stunnel](https://www.stunnel.org/index.html)
@@ -37,3 +37,5 @@ Services Provided
   * Your Streisand server is configured to automatically install new security updates.
 * [WireGuard](https://www.wireguard.com/)
   * Linux users can take advantage of this next-gen, simple, kernel-based, state-of-the-art VPN that also happens to be ridiculously fast and uses modern cryptographic principles that all other highspeed VPN solutions lack.
+* [Cloudflared DNS-over-HTTPS](https://developers.cloudflare.com/1.1.1.1/dns-over-https/)
+  * Even when you are visiting a site using HTTPS, by default your DNS query is sent over an unencrypted connection (between the Streisand server and upstream DNS servers). With Streisand's DNS-over-HTTPS service provided by the cloudflared client enabled, your DNS queries are blocked from view by the cloud provider hosting your Streisand server and everyone in between them and the upstream DNS server. The DNS reply from the upstream server is also protected from both view and tampering on its way back to your Streisand server.

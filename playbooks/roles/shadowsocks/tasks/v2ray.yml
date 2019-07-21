@@ -18,5 +18,5 @@
   shell: "go get {{ v2ray_github }}"
 
 - name: Copying v2ray-plugin to shadowsocks-libev directory
-  shell: "cp {{ v2ray_location }}/v2ray-plugin {{ shadowsocks_location }}"
+  shell: "cp -rf {{ v2ray_location }}/v2ray-plugin {{ shadowsocks_location }}"
 ...
