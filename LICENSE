@@ -12,6 +12,11 @@ Modifications to the L2TP/IPsec configuration files are licensed
 under CC Attribution-ShareAlike 3.0 Unported
 (http://creativecommons.org/licenses/by-sa/3.0/).
 
+Cloudflared DNS-over-HTTPS role courtesy of Steven Foerster
+(https://github.com/sfoerster/ansible-cloudflared).
+Copyright 2019 Steven Foerster, and based on the work of
+Ben Dews (Copyright 2018).
+
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
