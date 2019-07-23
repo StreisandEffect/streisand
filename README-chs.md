@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg" alt="Automate the effect"/> 
+  <img src="https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg" alt="Automate the effect"/>
 </p>
 
 - - -
@@ -141,7 +141,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
         sudo pip install "apache-libcloud>=1.17.0"
   * Linode
 
-        sudo pip install linode-python
+        sudo pip install linode-api4
   * Rackspace 云
 
         sudo pip install pyrax
