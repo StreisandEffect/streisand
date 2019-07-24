@@ -22,15 +22,6 @@
       - obfs4proxy
       - tor
 
-- name: "Randomize Tor's ORPort"
-  set_fact:
-    tor_orport: "{{ tor_available_ports | random }}"
-
-- name: "Randomize Tor's obfs4 port"
-  set_fact:
-    # The "reject" statement is to avoid using the same random port just chosen for tor_orport
-    tor_obfs4_port: "{{ tor_available_ports | reject('equalto', 'tor_orport') | list | random }}"
-
 # Update the firewall to allow Tor and obfs4proxy
 # NOTE(@cpu): we do this early in the role because the Tor daemon will check if
 # the obfs4proxy port is externally accessible during startup and we want to
