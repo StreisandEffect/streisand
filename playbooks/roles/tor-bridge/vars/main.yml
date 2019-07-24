@@ -18,4 +18,4 @@ tor_html_instructions: "{{ tor_gateway_location }}/index.html"
 
 tor_obfs4_qr_code: "{{ tor_gateway_location }}/tor-obfs4-qr-code.png"
 
-tor_internal_hidden_service_address: "127.0.0.1:8181"
+tor_internal_hidden_service_address: "127.0.0.1:{{ tor_internal_hidden_service_port }}"
