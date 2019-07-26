@@ -2,6 +2,10 @@
 # localhost.yml is an advanced provisioning option that doesn't use a genesis
 # role to create a new server and instead applies Streisand to the localhost.
 
+# Randomize Tor's ORPort and obfs4 port if Tor is enabled.
+# We do this early so gce-network knows Tor's port
+- import_playbook: tor-setup.yml
+
 # Ensure Python is installed on the system
 - import_playbook: python.yml
 

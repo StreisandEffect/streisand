@@ -1,0 +1,88 @@
+---
+# We randomize the Tor ORPort and obfs4 port fairly early
+# in the provisioning process to allow cloud firewalls/playbooks
+# to access the tor_orport and tor_obfs4_port variables
+# which are chosen randomly. Since we use ansible's "random" filter,
+# we run into issues of idempotence if we don't use set_fact to
+# make the call to "random". Even if we provide a seed, we
+# only get random-but-idempotent behavior within the ansible role.
+# Meaning the genesis-<cloud> roles would have a different number
+# for tor_orport and tor_obfs4_port than the number generated when
+# the tor-bridge role runs, even if we provide a fixed seed.
+
+# We randomize Tor's ORPort and obfs4 port to avoid being
+# easily fingerprinted as a Tor bridge (or a Streisand Tor bridge)
+# See https://lists.torproject.org/pipermail/tor-dev/2014-December/007957.html
+# and https://github.com/StreisandEffect/streisand/issues/101
+# for discussion/more data on the topic.
+- name: Randomize Tor's ORPort and obfs4 port
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - lineinfile:
+        path: "{{ lookup('env', 'HOME') }}/.streisand/tor-orport"
+        regexp: "^(.*)$"
+        state: absent
+
+    - lineinfile:
+        path: "{{ lookup('env', 'HOME') }}/.streisand/tor-obfs4-port"
+        regexp: "^(.*)$"
+        state: absent
+
+    - name: Randomize Tor's ORPort
+      run_once: true
+      lineinfile:
+        path: "{{ lookup('env', 'HOME') }}/.streisand/tor-orport"
+        regexp: "^[0-9]+$"
+        create: yes
+        # Pick a random port from list of available ports
+        line: "{{ tor_available_ports | random }}"
+
+    - name: Randomize Tor's obfs4 port
+      run_once: true
+      lineinfile:
+        path: "{{ lookup('env', 'HOME') }}/.streisand/tor-obfs4-port"
+        regexp: "^[0-9]+$"
+        create: yes
+        # The "reject" statement is to avoid using the same random port just chosen for tor_orport
+        line: "{{ tor_available_ports | reject('equalto', 'tor_orport') | list | random }}"
+
+
+  vars:
+    # Keep track of ports already being used by other services to avoid port conflicts
+    # "map" call is needed here because some of these vars are strings, others are integers
+    tor_unavailable_ports: "{{ [
+      nginx_port,
+      ssh_port,
+      le_port,
+      shadowsocks_server_port,
+      wireguard_port,
+      ocserv_port,
+      openvpn_port,
+      stunnel_remote_port,
+      cloudflared_port,
+      tor_internal_hidden_service_port
+    ] | map('int') | list }}"
+    # Choose a random port between 1024-32768--below 1024 would require elevated privileges,
+    # and any port above 32768 will be used as "Ephemeral Ports" by anything listening locally
+    # (see output of "cat /proc/sys/net/ipv4/ip_local_port_range" for the full range)
+    tor_random_port_range: "{{ range(1024, 32768) | list }}"
+    # Avoid the common ORPort and obfs4 ports
+    tor_common_ports: [9001, 8443, 9443]
+    # Calculate available ports by excluding common/used ports from our choices for randomization
+    tor_available_ports: "{{ tor_random_port_range | difference(tor_common_ports + tor_unavailable_ports) }}"
+
+  # These variable files are included so we can have a list of all
+  # used ports, this way we can avoid port conflicts when randomizing
+  # Tor's ORPort and obfs4 port.
+  vars_files:
+    - roles/openconnect/defaults/main.yml
+    - roles/openvpn/defaults/main.yml
+    - roles/shadowsocks/defaults/main.yml
+    - roles/ssh/defaults/main.yml
+    - roles/lets-encrypt/vars/main.yml
+    - roles/streisand-gateway/defaults/main.yml
+    - roles/stunnel/defaults/main.yml
+    - roles/cloudflared/defaults/main.yml
+    - roles/tor-bridge/defaults/main.yml
+    - roles/wireguard/defaults/main.yml

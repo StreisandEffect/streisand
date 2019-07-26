@@ -1,4 +1,8 @@
 ---
+# Randomize Tor's ORPort and obfs4 port if Tor is enabled.
+# We do this early so ec2-security-group knows Tor's port
+- import_playbook: tor-setup.yml
+
 - name: Provision the EC2 Server
 # ==============================
   hosts: localhost
@@ -37,9 +41,6 @@
     - roles/lets-encrypt/vars/main.yml
     - roles/streisand-gateway/defaults/main.yml
     - roles/stunnel/defaults/main.yml
-    # Cloudflared is included to ensure the Tor variable file is able
-    # to reference other ports when defining its own variables.
-    - roles/cloudflared/defaults/main.yml
     - roles/tor-bridge/defaults/main.yml
     - roles/wireguard/defaults/main.yml
 

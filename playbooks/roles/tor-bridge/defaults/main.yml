@@ -1,44 +1,7 @@
 ---
+tor_orport: "{{ lookup('file', lookup('env','HOME') + '/.streisand/tor-orport') or 0 }}"
+tor_obfs4_port: "{{ lookup('file', lookup('env','HOME') + '/.streisand/tor-obfs4-port') or 0 }}"
 tor_internal_hidden_service_port: 8181
-# Randomize Tor's ORPort and obfs4 port to avoid being
-# easily fingerprinted as a Tor bridge (or a Streisand Tor bridge)
-# See https://lists.torproject.org/pipermail/tor-dev/2014-December/007957.html
-# and https://github.com/StreisandEffect/streisand/issues/101
-# for discussion/more data on the topic.
-# Keep track of ports already being used by other services to avoid port conflicts
-# "map" call is needed here because some of these vars are strings, others are integers
-tor_unavailable_ports: "{{ [
-  nginx_port,
-  ssh_port,
-  le_port,
-  shadowsocks_server_port,
-  wireguard_port,
-  ocserv_port,
-  openvpn_port,
-  stunnel_remote_port,
-  cloudflared_port,
-  tor_internal_hidden_service_port
-] | map('int') | list }}"
-# Choose a random port between 1024-32768--below 1024 would require elevated privileges,
-# and any port above 32768 will be used as "Ephemeral Ports" by anything listening locally
-# (see output of "cat /proc/sys/net/ipv4/ip_local_port_range" for the full range)
-tor_random_port_range: "{{ range(1024, 32768) | list }}"
-# Avoid the common ORPort and obfs4 ports
-tor_common_ports: [9001, 8443, 9443]
-
-# Calculate available ports by excluding common/used ports from our choices for randomization
-tor_available_ports: "{{ tor_random_port_range | difference(tor_common_ports + tor_unavailable_ports) }}"
-
-# Pick a random port from list of available ports
-# N.B.: random with "seed" parameter is needed here to enable a random-but-idempotent
-# number, otherwise this number will be different every time the variable is referenced
-# in a separate playbook/task (e.g. an EC2 firewall task)
-# For the seed we use the hostname of the target VM along with a small identifier for the variable
-# this is to avoid getting the same value for both vars, while still maintaining a unique seed.
-tor_orport: "{{ tor_available_ports | random(seed=inventory_hostname+'_tor_orport') }}"
-# The "reject" statement is to avoid using the same random port just chosen for tor_orport
-tor_obfs4_port: "{{ tor_available_ports | reject('equalto', 'tor_orport') | list | random(seed=inventory_hostname+'_tor_obfs4_port') }}"
-
 # By default Streisand does *not* publish the Tor relay's service descriptor to
 # the tor network. Using a value of 0 ensures the relay is private to the
 # streisand operator and their users. See the Tor documentation[0] for more
