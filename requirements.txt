@@ -6,7 +6,7 @@
 
 # Core with Azure dependencies
 #
-ansible[azure]==2.6.5
+ansible[azure]==2.8.0
 
 SecretStorage
 
@@ -22,8 +22,7 @@ requests
 google-auth
 
 # Linode
-pycurl==7.43.0.1
-linode-python
+linode-api4
 
 # Rackspace
 pyrax

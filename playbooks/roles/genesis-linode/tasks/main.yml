@@ -7,39 +7,33 @@
   register: ssh_key
   changed_when: False
 
-- name: Create the server
-  linode:
-    api_key: "{{ linode_api_key }}"
-    name: "{{ linode_server_name }}"
-    plan: "{{ linode_plan_id }}"
-    datacenter: "{{ regions[linode_datacenter] }}"
-    distribution: "{{ linode_distribution_id }}"
-    kernel_id: "{{ linode_kernel_id }}"
-    ssh_pub_key: "{{ ssh_key.stdout }}"
-    alert_cpu_threshold: "{{ linode_alert_cpu_threshold }}"
-    alert_diskio_threshold: "{{ linode_alert_diskio_threshold }}"
-    alert_bwin_threshold : "{{ linode_alert_bwin_threshold }}"
-    alert_bwout_threshold: "{{ linode_alert_bwout_threshold }}"
-    alert_bwquota_threshold: "{{ linode_alert_bwquota_threshold }}"
-    wait: yes
+- name: "Create the server"
+  linode_v4:
+    access_token: "{{ linode_api_token }}"
+    label: "{{ linode_server_name }}"
+    type: "{{ linode_plan_id }}"
+    region: "{{ regions[linode_datacenter] }}"
+    image: "{{ linode_distribution_id }}"
+    authorized_keys: "{{ ssh_key.stdout }}"
+    state: present
   register: streisand_server
 
-- name: Wait until the server has finished booting and OpenSSH is accepting connections
+- name: "Wait until the server has finished booting and OpenSSH is accepting connections"
   wait_for:
-    host: "{{ streisand_server.instance.ipv4 }}"
+    host: "{{ streisand_server.instance.ipv4[0] }}"
     port: 22
     search_regex: OpenSSH
     timeout: 600
 
-- name: Create the in-memory inventory group
+- name: "Create the in-memory inventory group"
   add_host:
-    name: "{{ streisand_server.instance.ipv4 }}"
+    name: "{{ streisand_server.instance.ipv4[0] }}"
     groups: streisand-host
 
-- name: Set the streisand_ipv4_address variable
+- name: "Set the streisand_ipv4_address variable"
   set_fact:
-    streisand_ipv4_address: "{{ streisand_server.instance.ipv4 }}"
+    streisand_ipv4_address: "{{ streisand_server.instance.ipv4[0] }}"
 
-- name: Set the streisand_server_name variable
+- name: "Set the streisand_server_name variable"
   set_fact:
     streisand_server_name: "{{ linode_server_name | regex_replace('\\s', '_') }}"
