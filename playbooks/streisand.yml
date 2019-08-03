@@ -40,7 +40,7 @@
     - role: wireguard
       when: streisand_wireguard_enabled
     - role: cloudflared
-      when: streisand_cloudflared_enabled
+      when: streisand_cloudflared_enabled and not streisand_ci
     # streisand_le_enabled is set in lets-encrypt.yml based on user input.
     # lets-encrypt roles sets le_ok, which is used by streisand-gateway.
     - role: lets-encrypt
