@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg" alt="Automate the effect"/> 
+  <img src="https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg" alt="Automate the effect"/>
 </p>
 
 - - -
@@ -149,7 +149,7 @@
 
   * Linode
 
-        sudo pip install linode-python
+        sudo pip install linode-api4
   * Rackspace Cloud
 
         sudo pip install pyrax
