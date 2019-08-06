@@ -6,7 +6,7 @@
 
 # Core with Azure dependencies
 #
-ansible[azure]==2.6.5
+ansible[azure]==2.8.0
 
 # Multiple packages depend on SecretStorage, and versions >= 3 require
 # Python 3. Until we're ready for Python 3, specify the earlier rev.
@@ -28,8 +28,7 @@ requests
 google-auth
 
 # Linode
-pycurl==7.43.0.1
-linode-python
+linode-api4
 
 # Rackspace
 pyrax
