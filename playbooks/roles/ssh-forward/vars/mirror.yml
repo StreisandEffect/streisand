@@ -12,7 +12,7 @@ putty_href: "{{ ssh_mirror_href_base }}/{{ putty_filename }}"
 # download-and-verify.yml renames files with non-standard extensions
 putty_sig_href: "{{ ssh_mirror_href_base }}/{{ putty_filename }}.asc"
 
-putty_gpg_keyid: "B43434E4"
+putty_gpg_keyid: "4AE8DA82"
 putty_download_files:
   - { "file": "{{ putty_filename }}", "sig": "{{ putty_sig_filename }}" }
 

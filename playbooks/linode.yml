@@ -7,29 +7,31 @@
 
   vars:
     regions:
-      "1": 4
-      "2": 2
-      "3": 10
-      "4": 3
-      "5": 7
-      "6": 6
-      "7": 9
-      "8": 8
-      "9": 11
+      "1": "ca-central"
+      "2": "us-central"
+      "3": "us-west"
+      "4": "us-southeast"
+      "5": "us-east"
+      "6": "eu-west"
+      "7": "ap-south"
+      "8": "eu-central"
+      "9": "ap-northeast"
+      "10": "ap-west"
 
   vars_prompt:
     - name: "linode_datacenter"
       prompt: >
         What region should the server be located in?
-          1. Atlanta
+          1. Toronto
           2. Dallas
-          3. Frankfurt
-          4. Fremont
-          5. London
-          6. Newark
+          3. Fremont
+          4. Atlanta
+          5. Newark
+          6. London
           7. Singapore
-          8. Tokyo
-          9. Tokyo 2
+          8. Frankfurt
+          9. Tokyo
+          10. Mumbai
         Please choose the number of your region. Press enter for default (#7) region.
       default: "7"
       private: no
@@ -39,8 +41,8 @@
       default: "streisand"
       private: no
 
-    - name: "linode_api_key"
-      prompt: "\n\nThe following information can be found in the Linode Manager.\nhttps://manager.linode.com/profile/api\n\nNote: API keys originating from https://cloud.linode.com/profile/tokens are not yet compatible.\n\nWhat is your Linode API key?\n"
+    - name: "linode_api_token"
+      prompt: "\n\nThe following information can be found in the Linode Manager:\nhttps://cloud.linode.com/profile/tokens\n\nWhat is your Linode API Token?\n"
       private: no
 
     - name: "confirmation"

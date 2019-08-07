@@ -16,7 +16,7 @@ openvpn_windows_installer_sig_filename: "{{ openvpn_windows_installer_filename }
 openvpn_windows_installer_href:         "{{ openvpn_mirror_href_base }}/{{ openvpn_windows_installer_filename }}"
 openvpn_windows_installer_sig_href:     "{{ openvpn_mirror_href_base }}/{{ openvpn_windows_installer_sig_filename }}"
 
-openvpn_gpg_keyid: "AF131CAE"
+openvpn_gpg_keyid: "5ACFEAC6"
 openvpn_download_files:
   - { "file": "{{ openvpn_source_filename }}", "sig": "{{ openvpn_source_sig_filename }}" }
   - { "file": "{{ openvpn_windows_installer_filename }}", "sig": "{{ openvpn_windows_installer_sig_filename }}" }
