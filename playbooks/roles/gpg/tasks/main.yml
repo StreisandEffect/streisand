@@ -39,10 +39,14 @@
     mode: 0750
 
 - name: "Ensure a GPG agent is running"
-  command: "sudo gpgconf --launch gpg-agent"
+  become_user: root
+  become: true
+  command: "gpgconf --launch gpg-agent"
 
 - name: "Reload gpg-agent to pick up configuration changes"
-  command: "sudo gpgconf --reload gpg-agent"
+  become_user: root
+  become: true
+  command: "gpgconf --reload gpg-agent"
 
 # It turns out that "--reload" doesn't work on dirmngr.
 - name: "Kill any existing dirmngr"
