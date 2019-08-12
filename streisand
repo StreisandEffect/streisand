@@ -169,13 +169,21 @@ Please enter the word 'streisand' to continue: "
   else
     SSH_USER=${ANSIBLE_SSH_USER}
   fi
+  
+  # If ANSIBLE_SSH_PORT is empty, default to root
+  if [ -z "${ANSIBLE_SSH_PORT}" ]; then
+    SSH_PORT='22'
+  # Otherwise, use whatever ANSIBLE_SSH_PORT is set to as the SSH_PORT
+  else
+    SSH_PORT=${ANSIBLE_SSH_PORT}
+  fi
 
   # Create an inventory file string on the fly
   read -r -d '' TEMPL << EOF || true
 [localhost]
 localhost ansible_connection=local ansible_python_interpreter=python
 [streisand-host]
-$SERVER_IP ansible_user=$SSH_USER
+$SERVER_IP ansible_user=$SSH_USER ansible_port=$SSH_PORT
 EOF
 
   # Create the inventory file
