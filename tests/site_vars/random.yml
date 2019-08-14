@@ -5,6 +5,7 @@ vpn_clients: 1
 streisand_openconnect_enabled: no
 streisand_openvpn_enabled: no
 streisand_shadowsocks_enabled: no
+streisand_shadowsocks_v2ray_enabled: no
 streisand_stunnel_enabled: no
 streisand_tinyproxy_enabled: no
 streisand_tor_enabled: no
