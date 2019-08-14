@@ -170,12 +170,12 @@ Please enter the word 'streisand' to continue: "
     SSH_USER=${ANSIBLE_SSH_USER}
   fi
   
-  # If ANSIBLE_SSH_PORT is empty, default to root
-  if [ -z "${ANSIBLE_SSH_PORT}" ]; then
-    SSH_PORT='22'
-  # Otherwise, use whatever ANSIBLE_SSH_PORT is set to as the SSH_PORT
-  else
-    SSH_PORT=${ANSIBLE_SSH_PORT}
+  # Set default ssh port
+  SSH_PORT='22'
+  
+  # If ANSIBLE_PORT has set, we use it instead of default ssh port
+  if [ -n "${ANISIBLE_PORT}" ]; then
+      SSH_PORT=${ANISIBLE_PORT}
   fi
 
   # Create an inventory file string on the fly
