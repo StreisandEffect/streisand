@@ -26,6 +26,7 @@ dopy==0.3.5
 # Google Compute Engine
 requests
 google-auth
+apache-libcloud
 
 # Linode
 linode-api4
