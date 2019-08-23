@@ -2,6 +2,7 @@
 vpn_clients: 1
 
 # Streisand CI's task randomizes these "_enabled" vars at build-time
+streisand_ipv6_enabled: no
 streisand_openconnect_enabled: no
 streisand_openvpn_enabled: no
 streisand_shadowsocks_enabled: no

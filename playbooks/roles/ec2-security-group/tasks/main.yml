@@ -21,29 +21,19 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     rules:
-      # Nginx
-      # ---
       - proto: tcp
-        from_port: "{{ nginx_port }}"
-        to_port: "{{ nginx_port }}"
+        ports:
+          - "{{ nginx_port }}"
+          - "{{ ssh_port }}"
+          # HTTP, for Let's Encrypt
+          - "{{ le_port }}"
         cidr_ip: 0.0.0.0/0
-      # SSH
-      # ---
-      - proto: tcp
-        from_port: "{{ ssh_port }}"
-        to_port: "{{ ssh_port }}"
-        cidr_ip: 0.0.0.0/0
-      # HTTP (Let's Encrypt)
-      # ---
-      - proto: tcp
-        from_port: "{{ le_port }}"
-        to_port: "{{ le_port }}"
-        cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/0
     rules_egress:
       - proto: all
-        from_port: 1
-        to_port: 65535
+        ports: 1-65535
         cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/0
 
 # OpenConnect
 # ---
@@ -58,18 +48,14 @@
     purge_rules: no
     purge_rules_egress: no
     rules:
-      # OpenConnect TCP
-      # ---
       - proto: tcp
-        from_port: "{{ ocserv_port }}"
-        to_port: "{{ ocserv_port }}"
+        ports: "{{ ocserv_port }}"
         cidr_ip: 0.0.0.0/0
-      # OpenConnect UDP
-      # ---
+        cidr_ipv6: ::/0
       - proto: udp
-        from_port: "{{ ocserv_port }}"
-        to_port: "{{ ocserv_port }}"
+        ports: "{{ ocserv_port }}"
         cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/0
   when: streisand_openconnect_enabled
 
 # OpenVPN
@@ -85,18 +71,14 @@
     purge_rules: no
     purge_rules_egress: no
     rules:
-      # OpenVPN TCP
-      # ---
       - proto: tcp
-        from_port: "{{ openvpn_port }}"
-        to_port: "{{ openvpn_port }}"
+        ports: "{{ openvpn_port }}"
         cidr_ip: 0.0.0.0/0
-      # OpenVPN UDP
-      # ---
+        cidr_ipv6: ::/0
       - proto: udp
-        from_port: "{{ openvpn_port_udp }}"
-        to_port: "{{ openvpn_port_udp }}"
+        ports: "{{ openvpn_port_udp }}"
         cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/0
   when: streisand_openvpn_enabled
 
 # stunnel
@@ -112,12 +94,10 @@
     purge_rules: no
     purge_rules_egress: no
     rules:
-      # Stunnel
-      # ---
       - proto: tcp
-        from_port: "{{ stunnel_remote_port }}"
-        to_port: "{{ stunnel_remote_port }}"
+        ports: "{{ stunnel_remote_port }}"
         cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/0
   when: streisand_openvpn_enabled and streisand_stunnel_enabled
 
 # Shadowsocks
@@ -133,18 +113,14 @@
     purge_rules: no
     purge_rules_egress: no
     rules:
-      # Shadowsocks TCP
-      # ---
       - proto: tcp
-        from_port: "{{ shadowsocks_server_port }}"
-        to_port: "{{ shadowsocks_server_port }}"
+        ports: "{{ shadowsocks_server_port }}"
         cidr_ip: 0.0.0.0/0
-      # Shadowsocks UDP
-      # ---
+        cidr_ipv6: ::/0
       - proto: udp
-        from_port: "{{ shadowsocks_server_port }}"
-        to_port: "{{ shadowsocks_server_port }}"
+        ports: "{{ shadowsocks_server_port }}"
         cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/0
   when: streisand_shadowsocks_enabled
 
 # Tor
@@ -160,18 +136,14 @@
     purge_rules: no
     purge_rules_egress: no
     rules:
-      # Tor
-      # ---
       - proto: tcp
-        from_port: "{{ tor_orport }}"
-        to_port: "{{ tor_orport }}"
+        ports: "{{ tor_orport }}"
         cidr_ip: 0.0.0.0/0
-      # Tor obfs4
-      # ---
+        cidr_ipv6: ::/0
       - proto: tcp
-        from_port: "{{ tor_obfs4_port }}"
-        to_port: "{{ tor_obfs4_port }}"
+        ports: "{{ tor_obfs4_port }}"
         cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/0
   when: streisand_tor_enabled
 
 # WireGuard
@@ -188,7 +160,7 @@
     purge_rules_egress: no
     rules:
       - proto: udp
-        from_port: "{{ wireguard_port }}"
-        to_port: "{{ wireguard_port }}"
+        ports: "{{ wireguard_port }}"
         cidr_ip: 0.0.0.0/0
+        cidr_ipv6: ::/0
   when: streisand_wireguard_enabled

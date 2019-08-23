@@ -35,6 +35,7 @@
         unique_name: yes
         wait: yes
         api_token: "{{ do_access_token }}"
+        ipv6: "{{ streisand_ipv6_enabled }}"
       register: streisand_server
   rescue:
     - fail:

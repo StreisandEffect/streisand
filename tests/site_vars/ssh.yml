@@ -1,6 +1,7 @@
 ---
 # This site config only enables SSH forwarding and sshutle
 vpn_clients: 5
+streisand_ipv6_enabled: yes
 streisand_openconnect_enabled: no
 streisand_openvpn_enabled: no
 streisand_shadowsocks_enabled: no
