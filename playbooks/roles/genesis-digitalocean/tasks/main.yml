@@ -17,10 +17,11 @@
         name: "{{ do_ssh_name }}"
         ssh_pub_key: "{{ ssh_key.stdout }}"
         oauth_token: "{{ do_access_token }}"
+        state: present
       register: do_ssh_key
   rescue:
     - fail:
-        msg: "* The API Access Token might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the DigitalOcean Control Panel under a different name. OR * The dopy Python module might not be installed. Use `pip install dopy==0.3.5` to install this module. On the latest version of macOS, dopy > 0.3.5 is currently broken."
+        msg: "* The API Access Token might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the DigitalOcean Control Panel under a different name."
 
 - debug:
     var: do_ssh_key
@@ -37,6 +38,7 @@
         unique_name: yes
         wait: yes
         oauth_token: "{{ do_access_token }}"
+        state: present
       register: streisand_server
   rescue:
     - fail:
