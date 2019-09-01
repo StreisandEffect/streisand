@@ -23,9 +23,6 @@
     - fail:
         msg: "* The API Access Token might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the DigitalOcean Control Panel under a different name."
 
-- debug:
-    var: do_ssh_key
-
 - block:
     - name: Create the new Droplet
       digital_ocean_droplet:
