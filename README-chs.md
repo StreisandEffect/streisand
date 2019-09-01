@@ -133,9 +133,6 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
   * 微软云服务
 
         sudo pip install ansible[azure]
-  * DigitalOcean
-
-        sudo pip install dopy==0.3.5
   * Google
 
         sudo pip install "apache-libcloud>=1.17.0"

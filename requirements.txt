@@ -20,9 +20,6 @@ SecretStorage<3.0
 boto
 boto3
 
-# Digital Ocean
-dopy==0.3.5
-
 # Google Compute Engine
 requests
 google-auth
