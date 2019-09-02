@@ -35,10 +35,6 @@
       name: "{{ aws_ami_name }}"
   register: ami
 
-- name: debug
-  debug:
-    msg: "and {{ aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '' }}"
-
 - name: Create the EC2 instance
   ec2:
     aws_access_key: "{{ aws_access_key }}"
