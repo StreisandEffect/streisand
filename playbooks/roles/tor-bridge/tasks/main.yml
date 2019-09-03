@@ -46,6 +46,61 @@
     group: root
     mode: 0644
 
+- name: Generate the hidden service torrc config file
+  template:
+    src: torrc-hidden-service.j2
+    dest: /etc/tor/torrc-hidden-service
+    owner: root
+    group: root
+    mode: 0644
+
+# We have to setup an apparmor profile for the tor hidden service
+# since we're trying to use the non-default tor data directories,
+# control socket, PID file, etc.
+- name: Copy Tor Hidden Service AppArmor profile
+  copy:
+    src: system_tor_hs
+    dest: /etc/apparmor.d/system_tor_hs
+    owner: root
+    group: root
+    mode: 0644
+
+# Permissions are handled by the tor-hidden-service.service file
+# (systemd) each time the service is started/restarted.
+- name: Create hidden service data directory
+  file:
+    path: "{{ tor_hidden_service_state_directory }}"
+    state: directory
+
+- name: Generate the hidden service systemd file
+  template:
+    src: tor-hidden-service.service.j2
+    dest: /etc/systemd/system/tor-hidden-service.service
+    owner: root
+    group: root
+    mode: 0644
+
+# Run tor processes as separate users locally. By default,
+# tor runs as "debian-tor". Since we're running the hidden service
+# and bridge as separate tor processes, it makes sense to run
+# these under separate user accounts as well.
+- name: Create local hidden service user
+  user:
+    name: "{{ tor_hidden_service_user }}"
+    shell: /bin/false
+    system: yes
+    create_home: False
+    # the "home" folder for debian-tor by default is
+    # set to /var/lib/tor, since we aren't using that dir
+    # here we set debian-tor-hs home to the new HS data dir
+    home: "{{ tor_hidden_service_state_directory }}"
+
+- name: Start tor hidden service
+  service:
+    name: tor-hidden-service
+    enabled: true
+    state: started
+
 # TODO(@cpu) - This should be removed once it isn't required, maybe in the next
 # release after tor 0.3.0.9
 - name: Copy a local override for the Tor AppArmor profile in place

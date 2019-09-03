@@ -1,0 +1,37 @@
+[Unit]
+Description=Anonymizing overlay network for TCP
+After=network.target nss-lookup.target tor@default.service
+PartOf=tor-hidden-service.service
+ReloadPropagatedFrom=tor-hidden-service.service
+
+[Service]
+Type=notify
+NotifyAccess=all
+PIDFile={{ tor_hidden_service_run_directory }}/tor.pid
+PermissionsStartOnly=yes
+ExecStartPre=/usr/bin/install -Z -m 02755 -o {{ tor_hidden_service_user }} -g {{ tor_hidden_service_user }} -d {{ tor_hidden_service_run_directory }}
+ExecStartPre=/usr/bin/install -Z -m 02755 -o {{ tor_hidden_service_user }} -g {{ tor_hidden_service_user }} -d {{ tor_hidden_service_state_directory }}
+ExecStartPre=/usr/bin/tor --defaults-torrc /usr/share/tor/tor-service-defaults-torrc -f {{ tor_hidden_service_config }} --RunAsDaemon 0 --verify-config
+ExecStart=/usr/bin/tor --defaults-torrc /usr/share/tor/tor-service-defaults-torrc -f {{ tor_hidden_service_config }} --RunAsDaemon 0
+ExecReload=/bin/kill -HUP ${MAINPID}
+KillSignal=SIGINT
+TimeoutStartSec=300
+TimeoutStopSec=60
+Restart=on-failure
+LimitNOFILE=65536
+
+# Hardening
+# system_tor_hs is a hidden service apparmor profile so we can use
+# different tor data dir/control socket/PID file.
+AppArmorProfile=-system_tor_hs
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectHome=yes
+ProtectSystem=full
+ReadOnlyDirectories=/
+ReadWriteDirectories=-/proc
+ReadWriteDirectories=-{{ tor_hidden_service_state_directory }}
+ReadWriteDirectories=-{{ tor_hidden_service_log_directory }}
+ReadWriteDirectories=-/run
+CapabilityBoundingSet=CAP_SETUID CAP_SETGID CAP_NET_BIND_SERVICE CAP_DAC_READ_SEARCH
