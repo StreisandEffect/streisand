@@ -16,11 +16,13 @@
   apt:
     package: deb.torproject.org-keyring
 
-- name: Install obfs4 and Tor
+# stem is a vanguards add-on dependency (python lib for controlling Tor)
+- name: Install obfs4, Tor, and stem
   apt:
     package:
       - obfs4proxy
       - tor
+      - python-stem
 
 # Update the firewall to allow Tor and obfs4proxy
 # NOTE(@cpu): we do this early in the role because the Tor daemon will check if
@@ -54,6 +56,14 @@
     group: root
     mode: 0644
 
+- name: Generate the vanguards config file
+  template:
+    src: vanguards.conf.j2
+    dest: "{{ tor_vanguards_config }}"
+    owner: root
+    group: root
+    mode: 0644
+
 # We have to setup an apparmor profile for the tor hidden service
 # since we're trying to use the non-default tor data directories,
 # control socket, PID file, etc.
@@ -80,6 +90,14 @@
     group: root
     mode: 0644
 
+- name: Generate the vanguards service systemd file
+  template:
+    src: vanguards.service.j2
+    dest: /etc/systemd/system/vanguards.service
+    owner: root
+    group: root
+    mode: 0644
+
 # Run tor processes as separate users locally. By default,
 # tor runs as "debian-tor". Since we're running the hidden service
 # and bridge as separate tor processes, it makes sense to run
@@ -98,6 +116,62 @@
 - name: Start tor hidden service
   service:
     name: tor-hidden-service
+    enabled: true
+    state: started
+
+# Clone the vanguards repo for hardening the Tor hidden service
+# See https://blog.torproject.org/announcing-vanguards-add-onion-services
+# and https://github.com/mikeperry-tor/vanguards
+# Installation instructions recommend doing this via git, as deb/rpm packages
+# aren't as generally available yet (checking xenial proved fruitless for example,
+# it looks like vanguards is only in ubuntu's apt repos for newer releases).
+- name: Clone vanguards onion services add-on
+  git:
+    repo: "{{ tor_vanguards_repo_url }}"
+    dest: "{{ tor_vanguards_addon_directory }}"
+
+- name: Find latest vanguards add-on git tag
+  command: git describe --abbrev=0
+  args:
+    chdir: "{{ tor_vanguards_addon_directory }}"
+  register: tor_vanguard_git_tag
+
+- name: Checkout latest git tag in vanguard repo
+  git:
+    repo: "{{ tor_vanguards_repo_url }}"
+    dest: "{{ tor_vanguards_addon_directory }}"
+    clone: no
+    update: no
+    version: "{{ tor_vanguard_git_tag.stdout }}"
+
+# Tell git to use gpg2 when verifying tags/commits
+- shell: "git config --global gpg.program $(which gpg2)"
+  args:
+    chdir: "{{ tor_vanguards_addon_directory }}"
+
+# Grab the signing key.
+- name: Grab Vanguards add-on PGP signing key
+  command: "gpg2 {{ streisand_default_gpg_flags }} {{ streisand_default_key_import_flags}} --recv-keys {{ tor_vanguards_addon_gpg_key }}"
+
+# Now, finally, we can run the gpg verify
+# We tell git (or really, gpg) where Streisand's default keyring is located by using
+# the env variable $GNUPGHOME. This way, when git makes a call to gpg2 it uses the right
+# keyring and can find the public key associated with the tag/commit.
+- name: Verify vanguard add-on git signature
+  git:
+    repo: "{{ tor_vanguards_repo_url }}"
+    dest: "{{ tor_vanguards_addon_directory }}"
+    clone: no
+    update: no
+    version: "{{ tor_vanguard_git_tag.stdout }}"
+    verify_commit: yes
+  environment:
+    GNUPGHOME: "{{ streisand_gpg_dir }}"
+  register: tor_vanguard_git_verify_results
+
+- name: Start the vanguards service
+  service:
+    name: vanguards
     enabled: true
     state: started
 

@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+set -eux
+
+# Cronjob/utility script to fetch updates to the "vanguards" Tor add-on
+# https://github.com/mikeperry-tor/vanguards
+
+# This script uses the latest git tag of the repo and Mike Perry's PGP key ID
+# grabbed from https://2019.www.torproject.org/docs/signing-keys.html.en
+#
+# N.B. this script should be idempotent and will exit early if git reports no changes
+
+VANGUARD_REPO_DIR="{{ tor_vanguards_addon_directory }}"
+VANGUARD_REPO_URL="{{ tor_vanguards_repo_url }}"
+VANGUARD_SIGNING_KEY="{{ tor_vanguards_addon_gpg_key }}"
+
+cd $VANGUARD_REPO_DIR
+# Store currently checked out commit SHA in case anything fails.
+VANGUARD_CURRENT_COMMIT=$(git show --format="%H" --no-patch)
+
+# Failsafe function to ensure we're checked out into the last "known" good git tag/commit
+# This way, if a git pull/gpg verify/other command in this script fails, we can leave
+# the vanguards git repo in a known "good state" and hopefully not break anything.
+function git_checkout_known_tag() {
+	git checkout $VANGUARD_CURRENT_COMMIT
+}
+trap git_checkout_known_tag EXIT
+
+function check_for_git_updates() {
+	git fetch
+
+}
+
+# Fetch the detached signature from git internally by using cat-file
+# to view the actual contents of the tag object within git. This is needed
+# to verify the PGP commit since Streisand is using a non-default GPG keyring,
+# and it's not directly configurable to tell git to use a different GPG keyring
+# when verifying tags/commits. Awkward.
+# So if you were to just run git verify-tag normally, it would try to find
+# the public key in ~/.gnupg/pubring.gpg which doesn't exist on a Streisand install.
+# (instead, it exists in ~/.gnupg/streisand/pubring.gpg), but there's no easy
+# way to tell git that, so we just extract the detached signature, write it to a file,
+# and then verify that signature using the normal gpg2 command with Streisand's pubring
+# set via gpg2 option flags.
+#
+# First, we have to get the latest tag in the repo to verify.
+function get_latest_git_tag_ref() {
+	local latest_git_tag=$(git describe --abbrev=0)
+	local tag_commit_ref=$(git show-ref --tags $latest_git_tag -s)
+	echo $?
+}
+
+# Now we extract the detached GPG signature from the git object.
+function extract_git_commit_signature($commit) {
+	# We only want lines between GPG's ascii-armor markers.
+	git cat-file -p $commit \
+	| awk '/-----BEGIN PGP SIGNATURE-----/,/-----END PGP SIGNATURE-----/'
+	echo $?
+}
+
+# Now, extract the git object *without* the signature, which we use
+# as the "input data" for GPG
+function extract_git_commit_unsigned($commit) {
+	git cat-file -p $commit \
+	| grep -B 9999 -- '-----BEGIN PGP SIGNATURE-----' \
+	| head -n -1
+	echo $?
+}
+
+function verify_and_install() {
+	LATEST_TAGGED_COMMIT=$(get_latest_git_tag_ref)
+	COMMIT_OBJECT_SIGNATURE=$(extract_git_commit_signature "$LATEST_TAGGED_COMMIT")
+
+	COMMIT_OBJECT_UNSIGNED=$(extract_git_commit_unsigned "$LATEST_TAGGED_COMMIT")
+
+	# Write them to temp files for use with gpg2 --verify
+	echo "$COMMIT_OBJECT_SIGNATURE" > /tmp/vanguard_commit_signature.asc
+	echo "$COMMIT_OBJECT_UNSIGNED" > /tmp/vanguard_commit_unsigned
+
+	# So now, we can finally verify!
+	gpgv2 --keyring {{ streisand_gpg_keyring }} \
+	/tmp/vanguard_commit_signature.asc /tmp/vanguard_commit_unsigned
+	# Since we use gpgv2 that command will exit with 0/1 if the signature is valid/invalid.
+
+	# If we get this far, we can confirm the latest tag is signed and should be OK to use.
+	# Now we can do a checkout of that tag inside the git repo.
+	git checkout $LATEST_TAGGED_COMMIT
+
+	# Restart the systemd service to run the updated code
+	systemctl restart tor-vanguards.service
+}

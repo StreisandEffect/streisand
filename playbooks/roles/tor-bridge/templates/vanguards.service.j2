@@ -1,0 +1,13 @@
+[Unit]
+Description=Additional protections for Tor onion services
+After=network.target tor.service
+
+[Service]
+User={{ tor_hidden_service_user }}
+Group={{ tor_hidden_service_user }}
+Environment=VANGUARDS_CONFIG={{ tor_vanguards_config }}
+ExecStart=/usr/bin/python {{ tor_vanguards_addon_directory }}/src/vanguards.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

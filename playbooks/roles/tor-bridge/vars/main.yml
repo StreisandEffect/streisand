@@ -24,3 +24,10 @@ tor_html_instructions: "{{ tor_gateway_location }}/index.html"
 tor_obfs4_qr_code: "{{ tor_gateway_location }}/tor-obfs4-qr-code.png"
 
 tor_internal_hidden_service_address: "127.0.0.1:8181"
+# Vanguards add-on git tags are signed by Tor developer Mike Perry
+# see https://2019.www.torproject.org/docs/signing-keys.html.en
+# for source of key ID.
+tor_vanguards_addon_gpg_key: "0xC963C21D63564E2B10BB335B29846B3C683686CC"
+tor_vanguards_addon_directory: "/usr/lib/tor/vanguards"
+tor_vanguards_repo_url: "https://github.com/mikeperry-tor/vanguards.git"
+tor_vanguards_config: "/etc/tor/vanguards.conf"
