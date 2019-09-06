@@ -134,7 +134,9 @@
     separate_git_dir: "{{ tor_vanguards_addon_directory }}.git"
 
 - name: Find latest vanguards add-on git tag
-  command: git describe --abbrev=0
+  # Find latest available tag by sorting by "taggerdate" (date tag was created)
+  # We also want to avoid ever checking out an alpha/beta/dev tag and only use "stable" tags
+  shell: git tag -l --sort=-taggerdate | grep -v "alpha\|beta\|dev\|test" | head -n 1
   args:
     chdir: "{{ tor_vanguards_addon_directory }}.git"
   register: tor_vanguard_git_tag
