@@ -5,8 +5,10 @@ After=network.target tor.service
 [Service]
 User={{ tor_hidden_service_user }}
 Group={{ tor_hidden_service_user }}
+# Vanguards will check this env variable on startup and use the value as its config file
 Environment=VANGUARDS_CONFIG={{ tor_vanguards_config }}
-ExecStart=/usr/bin/python {{ tor_vanguards_addon_directory }}/src/vanguards.py
+# Use virtualenv binary installed by vanguards setup script
+ExecStart={{ tor_vanguards_addon_directory }}/vanguardenv/bin/vanguards
 Restart=always
 
 [Install]

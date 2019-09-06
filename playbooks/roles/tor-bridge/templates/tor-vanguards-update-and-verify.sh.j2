@@ -15,7 +15,10 @@ VANGUARD_SIGNING_KEY="{{ tor_vanguards_addon_gpg_key }}"
 
 cd $VANGUARD_REPO_DIR
 # Store currently checked out commit SHA in case anything fails.
+# If we can't verify a new tag, we can checkout the old one which we know has been
+# verified by Ansible during Streisand install.
 VANGUARD_CURRENT_COMMIT=$(git show --format="%H" --no-patch)
+VANGUARD_CURRENT_TAG=$(git describe --tags)
 
 # Failsafe function to ensure we're checked out into the last "known" good git tag/commit
 # This way, if a git pull/gpg verify/other command in this script fails, we can leave
@@ -23,68 +26,57 @@ VANGUARD_CURRENT_COMMIT=$(git show --format="%H" --no-patch)
 function git_checkout_known_tag() {
 	git checkout $VANGUARD_CURRENT_COMMIT
 }
-trap git_checkout_known_tag EXIT
+trap git_checkout_known_tag ERR SIGINT SIGTERM SIGQUIT SIGKILL
 
 function check_for_git_updates() {
+	# Since individual commits aren't verified in the repo (only tags),
+	# we compare the number of tags in the local repo vs the remote repo.
+	# git ls-remote in this case communicates on the fly with the remote repo
+	# for an up-to-date list of tags in the project. If we don't have any new
+	# tags to fetch, we can exit early. We can even avoid doing "git fetch" this way.
+	local local_tag_count=$(git tag -l | wc -l)
+	# The grep -v is to strip away "tag references" which will show up for each annotated tag.
+	# otherwise we get a bigger list of tags (e.g. "refs/tags/v0.0.1", "refs/tags/v0.0.1^{}" etc.)
+	local remote_tag_count=$(git ls-remote --tags origin | grep -v "\^{}" | wc -l)
+	if [ $local_tag_count == $remote_tag_count ]; then
+		echo "Local/remote tag count is the same, nothing to do."
+		exit 0
+	fi
+	# Repo has new tags, so we should do a fetch
 	git fetch
-
 }
 
-# Fetch the detached signature from git internally by using cat-file
-# to view the actual contents of the tag object within git. This is needed
-# to verify the PGP commit since Streisand is using a non-default GPG keyring,
-# and it's not directly configurable to tell git to use a different GPG keyring
-# when verifying tags/commits. Awkward.
-# So if you were to just run git verify-tag normally, it would try to find
-# the public key in ~/.gnupg/pubring.gpg which doesn't exist on a Streisand install.
-# (instead, it exists in ~/.gnupg/streisand/pubring.gpg), but there's no easy
-# way to tell git that, so we just extract the detached signature, write it to a file,
-# and then verify that signature using the normal gpg2 command with Streisand's pubring
-# set via gpg2 option flags.
-#
-# First, we have to get the latest tag in the repo to verify.
-function get_latest_git_tag_ref() {
-	local latest_git_tag=$(git describe --abbrev=0)
-	local tag_commit_ref=$(git show-ref --tags $latest_git_tag -s)
-	echo $?
-}
-
-# Now we extract the detached GPG signature from the git object.
-function extract_git_commit_signature($commit) {
-	# We only want lines between GPG's ascii-armor markers.
-	git cat-file -p $commit \
-	| awk '/-----BEGIN PGP SIGNATURE-----/,/-----END PGP SIGNATURE-----/'
-	echo $?
-}
-
-# Now, extract the git object *without* the signature, which we use
-# as the "input data" for GPG
-function extract_git_commit_unsigned($commit) {
-	git cat-file -p $commit \
-	| grep -B 9999 -- '-----BEGIN PGP SIGNATURE-----' \
-	| head -n -1
-	echo $?
-}
-
-function verify_and_install() {
-	LATEST_TAGGED_COMMIT=$(get_latest_git_tag_ref)
-	COMMIT_OBJECT_SIGNATURE=$(extract_git_commit_signature "$LATEST_TAGGED_COMMIT")
-
-	COMMIT_OBJECT_UNSIGNED=$(extract_git_commit_unsigned "$LATEST_TAGGED_COMMIT")
-
-	# Write them to temp files for use with gpg2 --verify
-	echo "$COMMIT_OBJECT_SIGNATURE" > /tmp/vanguard_commit_signature.asc
-	echo "$COMMIT_OBJECT_UNSIGNED" > /tmp/vanguard_commit_unsigned
+function verify_and_update() {
+	# Find latest available tag by sorting by "taggerdate" (date tag was created)
+	# We also want to avoid ever checking out an alpha/beta/dev tag and only use "stable" tags
+	LATEST_TAG=$(git tag -l --sort=-taggerdate | grep -v "alpha\|beta\|dev\|test" | head -n 1)
+	# If it's the same tag we're currently using we don't need to do anything
+	# (means we likely only fetched beta/dev tags)
+	if [ "$LATEST_TAG" == "$VANGUARD_CURRENT_TAG" ]; then
+		echo "Already on the latest stable tag. Nothing to do."
+		exit 0
+	fi
 
 	# So now, we can finally verify!
-	gpgv2 --keyring {{ streisand_gpg_keyring }} \
-	/tmp/vanguard_commit_signature.asc /tmp/vanguard_commit_unsigned
-	# Since we use gpgv2 that command will exit with 0/1 if the signature is valid/invalid.
+	# This should have been run during install, but just in case, we always configure
+	# git to use gpg2 instead of default /usr/bin/gpg
+	git config --global gpg.program $(which gpg2)
+	# Tell GPG which keyring to use (Streisand installs to a non-default location)
+	export GNUPGHOME="{{ streisand_gpg_dir }}"
+	# Make sure the verify-tag command is checking against the right signing key
+	# --raw redirects output to stderr and gives us full raw output from gpg
+	# if sig is valid we should find "VALIDSIG [...] KEY_ID_HERE" in the output
+	git verify-tag --raw "$LATEST_TAG" 2>&1 | grep -q "VALIDSIG.*${VANGUARD_SIGNING_KEY#0x}"
 
 	# If we get this far, we can confirm the latest tag is signed and should be OK to use.
+	# (git verify-tag will exit with an error status if it doesn't succeed)
 	# Now we can do a checkout of that tag inside the git repo.
-	git checkout $LATEST_TAGGED_COMMIT
+	git checkout $LATEST_TAG
 
 	# Restart the systemd service to run the updated code
-	systemctl restart tor-vanguards.service
+	systemctl restart vanguards.service
 }
+
+check_for_git_updates
+verify_and_update
+exit $?
