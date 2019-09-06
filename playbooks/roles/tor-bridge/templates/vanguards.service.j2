@@ -1,6 +1,6 @@
 [Unit]
 Description=Additional protections for Tor onion services
-After=network.target tor.service
+After=network.target tor-hidden-service.service
 
 [Service]
 User={{ tor_hidden_service_user }}
