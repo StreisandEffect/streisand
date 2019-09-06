@@ -1,0 +1,13 @@
+---
+# This site config enables openvpn, wireguard, and cloudflared (DNS-over-HTTPS)
+vpn_clients: 5
+streisand_openconnect_enabled: no
+streisand_openvpn_enabled: yes
+streisand_shadowsocks_enabled: no
+streisand_ssh_forward_enabled: no
+streisand_sshuttle_enabled: no
+streisand_stunnel_enabled: no
+streisand_tinyproxy_enabled: no
+streisand_tor_enabled: no
+streisand_wireguard_enabled: yes
+streisand_cloudflared_enabled: yes

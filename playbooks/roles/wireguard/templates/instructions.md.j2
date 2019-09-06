@@ -68,7 +68,7 @@ An [experimental configuration for OpenWrt/LEDE](#openwrt) 17.01.4 (or later) is
 
 1. For Linux systems using systemd you can also enable Wireguard at boot:
 
-   'sudo systemctl enable wg-quick@{{ vpn_client_names.results[0].stdout }}.service'
+   `sudo systemctl enable wg-quick@{{ vpn_client_names.results[0].stdout }}.service`
 
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
 1. To stop routing your traffic through WireGuard, simply bring the interface back down:

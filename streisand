@@ -6,10 +6,14 @@ set -e
 
 echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 
+# This is where Ansible looks for local modules. Disable it, in the
+# interests of consistency between installs.
+export ANSIBLE_LIBRARY=
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 
 DEFAULT_SITE_VARS="$SCRIPT_DIR/global_vars/default-site.yml"
-GLOBAL_VARS="$SCRIPT_DIR/global_vars/vars.yml"
+GLOBAL_VARS="$SCRIPT_DIR/global_vars/globals.yml"
 HOME_DIR="$HOME/.streisand"
 SITE_VARS="$HOME_DIR/site.yml"
 

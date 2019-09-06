@@ -20,6 +20,7 @@
     - common
     - gpg
     - ssh
+    - service-net
     - role: openconnect
       when: streisand_openconnect_enabled
     - role: openvpn
@@ -38,6 +39,8 @@
     - ufw
     - role: wireguard
       when: streisand_wireguard_enabled
+    - role: cloudflared
+      when: streisand_cloudflared_enabled
     # streisand_le_enabled is set in lets-encrypt.yml based on user input.
     # lets-encrypt roles sets le_ok, which is used by streisand-gateway.
     - role: lets-encrypt

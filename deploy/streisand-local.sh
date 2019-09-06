@@ -19,7 +19,7 @@ DIR="$( cd "$( dirname "$0" )" && pwd)"
 PROJECT_DIR="${DIR}/.."
 
 export DEFAULT_SITE_VARS="${PROJECT_DIR}/global_vars/default-site.yml"
-export GLOBAL_VARS="${PROJECT_DIR}/global_vars/vars.yml"
+export GLOBAL_VARS="${PROJECT_DIR}/global_vars/globals.yml"
 
 # Include the check_ansible function from ansible_check.sh.
 # shellcheck source=util/source_validate_and_deploy.sh

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg" alt="Automate the effect"/> 
+  <img src="https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg" alt="Automate the effect"/>
 </p>
 
 - - -
@@ -79,7 +79,7 @@
 
 Установка
 ------------
-Пожалуйста **внимательно** прочитайте инструкции по установке перед тем, как продолжать.
+Пожалуйста, **внимательно** прочитайте инструкции по установке перед тем, как продолжать.
 
 ### Важное разъяснение ###
 Стрейзанд основан на [Ansible](https://www.ansible.com/), инструменте автоматизации, который обычно используется для установки и настройки файлов и пакетов на удалённых серверах. Стрейзанд автоматически создает **новый удалённый сервер** с пакетами и конфигурационными файлами VPN.
@@ -149,7 +149,7 @@
 
   * Linode
 
-        sudo pip install linode-python
+        sudo pip install linode-api4
   * Rackspace Cloud
 
         sudo pip install pyrax

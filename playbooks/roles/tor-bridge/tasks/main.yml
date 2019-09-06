@@ -1,8 +1,8 @@
 ---
 - name: "Add the Tor APT key"
   apt_key:
-    id: A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89
-    keyserver: keyserver.ubuntu.com
+    url: "https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc"
+    state: present
 
 - name: Add the Tor repository
   apt_repository:

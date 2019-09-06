@@ -1,0 +1,92 @@
+---
+- stat:
+    path: "{{ cloudflared_bin_location }}/cloudflared"
+  register: cloudflared_binary
+
+- set_fact:
+    cloudflared_installed: "{{ cloudflared_binary.stat.exists | default(false) }}"
+
+- name: set device architecture and package manager vars
+  set_fact:
+    device_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm' }}"
+
+- name: install package
+  import_tasks: install_package.yml
+  when: (not cloudflared_installed) and (ansible_pkg_mgr == 'yum' or ansible_pkg_mgr == 'apt') and (ansible_architecture == 'x86_64' or ansible_architecture == 'arm')
+
+- name: install binary
+  import_tasks: install_binary.yml
+  when: (not cloudflared_installed) and ((pkg_mgr_output is undefined or pkg_mgr_output is failed) or ansible_architecture == 'armv7l')
+
+- name: Set network capabilities for cloudflared
+  capabilities:
+    path: "{{ cloudflared_bin_location }}/cloudflared"
+    capability: cap_net_bind_service+ep
+    state: present
+  when: cloudflared_port|int < 1024
+
+- command: cloudflared update
+  register: update_command
+  changed_when: update_command.rc == '64'
+
+- name: create cloudflared nologin user
+  become: yes
+  user:
+    name: cloudflared
+    shell: /usr/sbin/nologin
+    system: True
+    create_home: False
+
+- name: set ownership of /usr/local/bin/cloudflared
+  file:
+    path: /usr/local/bin/cloudflared
+    state: file
+    owner: cloudflared
+    group: cloudflared
+
+- name: template config file
+  template:
+    src: cloudflared.j2
+    dest: /etc/default/cloudflared
+    owner: cloudflared
+    group: cloudflared
+  notify: restart cloudflared service
+  tags: systemd
+
+- name: copy systemd service
+  copy:
+    src: cloudflared.service
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart cloudflared service
+  register: service
+  tags: systemd
+
+- name: enable systemd service
+  service:
+    name: cloudflared
+    enabled: "{{ cloudflared_enable_service }}"
+  when: service.changed
+  tags: systemd
+
+- name: Allow port in firewall
+  ufw:
+    rule: allow
+    port: "{{ cloudflared_port }}"
+    comment: "allow cloudflared"
+  when: cloudflared_allow_firewall
+
+# DNSMASQ
+- name: Remove existing upstream servers in dnsmasq
+  replace:
+    path: /etc/dnsmasq.conf
+    regexp: "^server=(.*)$"
+
+- name: Set upstream DNS server to cloudflared proxy
+  lineinfile:
+    path: /etc/dnsmasq.conf
+    state: present
+    line: "server=127.0.0.1#{{ cloudflared_port }}"
+  notify: Restart dnsmasq
