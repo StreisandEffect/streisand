@@ -140,9 +140,6 @@
   * Azure
 
         sudo pip install ansible[azure]
-  * DigitalOcean
-
-        sudo pip install dopy==0.3.5
   * Google
 
         sudo pip install "apache-libcloud>=1.17.0"
