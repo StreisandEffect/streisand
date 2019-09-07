@@ -6,7 +6,7 @@
 
 # Core with Azure dependencies
 #
-ansible[azure]==2.8.0
+ansible[azure]==2.8.3
 
 # Multiple packages depend on SecretStorage, and versions >= 3 require
 # Python 3. Until we're ready for Python 3, specify the earlier rev.

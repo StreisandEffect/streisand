@@ -85,7 +85,6 @@
     aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ aws_region }}"
     device_id: "{{ streisand_server.instances[0].id }}"
-    private_ip_address: "{{ streisand_server.instances[0].private_ip }}"
     in_vpc: "{{ aws_vpc_id is defined and aws_vpc_id != '' }}"
   register: instance_eip
 
