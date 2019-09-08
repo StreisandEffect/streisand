@@ -43,7 +43,7 @@
     image: "{{ ami.images|sort(reverse=True,attribute='name')|map(attribute='image_id')|first }}"
     region: "{{ aws_region }}"
     vpc_subnet_id: "{{ aws_vpc_subnet_id | default(omit) }}"
-    assign_public_ip: "{{ aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '' }}"
+    assign_public_ip: "{{ (aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '') or omit }}"
     key_name: streisand-ssh
     group: "{{ aws_security_group }}"
     instance_tags:
