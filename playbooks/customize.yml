@@ -14,7 +14,7 @@
       private: no
     - name: streisand_ad_blocking_enabled
       prompt: "Enable DNS-based ad-blocking? Press enter for default "
-      default: "yes"
+      default: "no"
       private: no
     - name: streisand_openconnect_enabled
       prompt: "Enable OpenConnect? Press enter for default "
