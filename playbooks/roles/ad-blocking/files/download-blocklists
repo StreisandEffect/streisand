@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+# Now, if there were only some convenient way of storing etags from
+# those fetches.
+
+download_if_newer () {
+    filename="$1"
+    url="$2"
+    if [ -e "$filename" ]; then
+	curl --time-cond "$filename" -o "$filename" "$url"
+    else
+	curl -o "$filename" "$url"
+    fi
+}
+
+
+mkdir -p /var/lib/blocklists
+
+download_if_newer /var/lib/blocklists/block-hostnames.txt 'https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt'
+
+download_if_newer /var/lib/blocklists/block-domains.txt 'https://raw.githubusercontent.com/notracking/hosts-blocklists/master/domains.txt'
+
+transform-domain-list </var/lib/blocklists/block-domains.txt >/etc/dnsmasq.d/block-domains.conf
+transform-host-list </var/lib/blocklists/block-hostnames.txt >/etc/dnsmasq-block-hosts
+
+echo "addn-hosts=/etc/dnsmasq-block-hosts" >/etc/dnsmasq.d/block-hosts.conf
+
+# Sadly, "reload" doesn't work"
+systemctl restart dnsmasq.service
