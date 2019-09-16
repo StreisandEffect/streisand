@@ -1,0 +1,31 @@
+- name: "Install blocklist tools"
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/bin/
+    mode: '0755'
+  loop:
+    - download-blocklists
+    - transform-domain-list
+    - transform-host-list
+
+- name: "Install blocklist systemd goo"
+  copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/
+    mode: '0644'
+  loop:
+    - download-blocklists.service
+    - download-blocklists.timer
+
+- name: "Enable the blocklist download service"
+  systemd:
+    name: download-blocklists.service
+    daemon_reload: true
+    enabled: true
+    state: started
+
+- name: "Enable and start the blocklist re-download timer"
+  systemd:
+    name: download-blocklists.timer
+    enabled: true
+    state: started
