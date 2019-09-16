@@ -11,6 +11,7 @@ streisand_admin_email_var: ""
 streisand_client_test: true
 
 # Only services with corresponding tests are enabled.
+streisand_ad_blocking_enabled: yes
 streisand_shadowsocks_enabled: yes
 streisand_ssh_forward_enabled: yes
 streisand_openvpn_enabled: yes

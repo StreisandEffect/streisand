@@ -27,7 +27,8 @@
     - name: Create the new Droplet
       digital_ocean_droplet:
         name: "{{ do_server_name }}"
-        ssh_keys: "{{ do_ssh_key.data.ssh_key.id }}"
+        ssh_keys:
+          - "{{ do_ssh_key.data.ssh_key.id }}"
         size: "{{ do_small_droplet_size_id }}"
         region: "{{ regions[do_region] }}"
         image: "{{ do_ubuntu_x64_image_id }}"

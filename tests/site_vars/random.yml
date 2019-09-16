@@ -2,14 +2,15 @@
 vpn_clients: 1
 
 # Streisand CI's task randomizes these "_enabled" vars at build-time
+streisand_ad_blocking_enabled: no
+streisand_cloudflared_enabled: no
 streisand_openconnect_enabled: no
 streisand_openvpn_enabled: no
 streisand_shadowsocks_enabled: no
 streisand_shadowsocks_v2ray_enabled: no
+streisand_ssh_forward_enabled: no
+streisand_sshuttle_enabled: no
 streisand_stunnel_enabled: no
 streisand_tinyproxy_enabled: no
 streisand_tor_enabled: no
 streisand_wireguard_enabled: no
-streisand_ssh_forward_enabled: no
-streisand_sshuttle_enabled: no
-streisand_cloudflared_enabled: no

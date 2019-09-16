@@ -12,8 +12,9 @@ confirmation: true
 # This will be added to the AWS console and given the name streisand-ssh.
 streisand_ssh_private_key: "~/.ssh/id_rsa"
 
-vpn_clients: 5
+vpn_clients: 10
 
+streisand_ad_blocking_enabled: no
 streisand_openconnect_enabled: yes
 streisand_openvpn_enabled: yes
 streisand_shadowsocks_enabled: yes

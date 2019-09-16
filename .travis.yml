@@ -16,7 +16,6 @@ env:
     - RUN="ci" SITE="tests/site_vars/openvpn.yml"
     - RUN="ci" SITE="tests/site_vars/shadowsocks.yml"
     - RUN="ci" SITE="tests/site_vars/ssh.yml"
-    - RUN="ci" SITE="tests/site_vars/cloudflared.yml"
     - RUN="ci" SITE="random"
 
 before_install:
@@ -26,7 +25,7 @@ before_install:
   - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 762E3157
 
 install:
-  - pip install ansible==2.8.0
+  - pip install ansible==2.8.4
   - pip install urllib3 yamllint
   - ansible --version
 

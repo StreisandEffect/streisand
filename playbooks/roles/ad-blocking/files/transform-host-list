@@ -1,0 +1,20 @@
+#!/bin/bash
+
+awk '
+BEGIN { print "# post-processed by transform-host-list"; }
+
+/^#/ { print $0; next; }
+
+/^0\.0\.0\.0 / { next; }
+
+/^:: / {
+    if ($2 !~ /\./) {
+       print "### no dot found in hostname, skipping: " $0;
+       next;
+    }
+    print "0.0.0.0 " $2 "\n:: " $2;
+    next;
+}
+
+{ print "### ERROR unprocessed line: " $0; }
+'
