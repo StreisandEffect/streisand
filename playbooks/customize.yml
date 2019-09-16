@@ -10,7 +10,11 @@
       private: no
     - name: vpn_clients
       prompt: "How many VPN client profiles should be generated per-service (min: 1 max: 20)? Press enter for default "
-      default: 5
+      default: 10
+      private: no
+    - name: streisand_ad_blocking_enabled
+      prompt: "Enable DNS-based ad-blocking? Press enter for default "
+      default: "no"
       private: no
     - name: streisand_openconnect_enabled
       prompt: "Enable OpenConnect? Press enter for default "
@@ -29,7 +33,7 @@
       default: "yes"
       private: no
     - name: streisand_shadowsocks_v2ray_enabled
-      prompt: "Enable v2ray-plugin for Shadowsocks? Press enter for default "
+      prompt: "Enable v2ray-plugin for Shadowsocks (currently broken)? Press enter for default "
       default: "no"
       private: no
     - name: streisand_ssh_forward_enabled
@@ -66,6 +70,10 @@
         path: "{{ streisand_site_vars }}"
         regexp: "^vpn_clients: [\\d]+$"
         line: "vpn_clients: {{ vpn_clients }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_ad_blocking_enabled: (?:yes|no)$"
+        line: "streisand_ad_blocking_enabled: {{ streisand_ad_blocking_enabled }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_openconnect_enabled: (?:yes|no)$"

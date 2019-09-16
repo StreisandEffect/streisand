@@ -1,0 +1,8 @@
+[Timer]
+OnActiveSec=0
+OnBootSec=60
+OnUnitActiveSec=1d
+RandomizedDelaySec=1h
+
+[Install]
+WantedBy=network.target
