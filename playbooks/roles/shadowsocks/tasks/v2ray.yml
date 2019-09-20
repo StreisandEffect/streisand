@@ -14,6 +14,19 @@
 - name: Set GOPATH
   shell: "export {{ go_path }}"
 
+# Temporary workaround for insecure v2ray.com redirection
+# see https://github.com/StreisandEffect/streisand/issues/1642
+# for more info. We clone the v2ray-core repository to avoid
+# the "go get" command failing with an "insecure redirect" error.
+- file:
+    path: "{{ ansible_env.HOME }}/go/src/v2ray.com"
+    state: directory
+
+- name: "[Temporary] Clone v2ray-core repository manually to GOPATH"
+  git:
+    repo: "https://github.com/v2ray/v2ray-core"
+    dest: "{{ ansible_env.HOME }}/go/src/v2ray.com/core"
+
 - name: Get V2Ray-plugin
   shell: "go get {{ v2ray_github }}"
 
