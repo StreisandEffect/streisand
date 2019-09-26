@@ -6,8 +6,7 @@ streisand_cloudflared_enabled: no
 streisand_openconnect_enabled: no
 streisand_openvpn_enabled: no
 streisand_shadowsocks_enabled: yes
-# This is temporary, until we have a working v2ray patch
-streisand_shadowsocks_v2ray_enabled: no
+streisand_shadowsocks_v2ray_enabled: yes
 streisand_ssh_forward_enabled: no
 streisand_sshuttle_enabled: no
 streisand_stunnel_enabled: no
