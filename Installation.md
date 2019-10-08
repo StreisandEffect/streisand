@@ -51,7 +51,7 @@ Here's how to set up these packages:
 * On Debian and Ubuntu:
 
 ```
-sudo apt-get install git python-pip
+sudo apt-get update && sudo apt-get install git python-pip -y
 ```
 
 * On Fedora 27, some additional packages are needed later:
