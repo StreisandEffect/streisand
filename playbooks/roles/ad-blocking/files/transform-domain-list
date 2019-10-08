@@ -1,0 +1,20 @@
+#!/bin/bash
+
+awk '
+BEGIN { FS="/"; print "# post-processed by transform-domain-list" }
+
+/^#/ { print $0; next; }
+
+/^address=\/.*\/0\.0\.0\.0$/ { next; }
+
+/^address=\/.*\/::$/ {
+    if ($2 !~ /\./) {
+       print "### no dot found in domain, skipping: " $0;
+       next;
+    }
+    print "address=/" $2 "/0.0.0.0\naddress=/" $2 "/::";
+    next;
+}
+
+{ print "### ERROR unprocessed line: " $0; }
+'
