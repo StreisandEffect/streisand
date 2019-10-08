@@ -54,6 +54,12 @@ Here's how to set up these packages:
 sudo apt-get update && sudo apt-get install git python-pip -y
 ```
 
+* On Ubuntu 16.04 need below additional packages:
+
+```
+sudo apt-get install python-cffi libffi-dev libssl-dev libcurl4-openssl-dev
+```
+
 * On Fedora 27, some additional packages are needed later:
 
 ```
