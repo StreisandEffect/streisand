@@ -49,7 +49,7 @@ streisand_bootstrap_gpg_keys:
   # Streisand maintainer - Github @nopdotcom
   - F67DA905.nop@nop.com.asc
   # Streisand maintainer - Github @CorbanR
-  - 3F7F585B.corban@raunco.co.asc
+  - A697A56F.corban@raunco.co.asc
   # Streisand maintainer - Github @alimakki (Commented out for now because it
   # breaks CI)
   #- AF16234E.alimakki@gmail.com.asc
