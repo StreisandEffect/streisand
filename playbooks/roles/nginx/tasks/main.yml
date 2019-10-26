@@ -51,6 +51,24 @@
     dest: "{{ nginx_systemd_service_path }}/10-restart-failure.conf"
     mode: 0644
 
+# This directory is used to create ACME challenge responses when using letsencrypt.
+# N.B.: this should be different from streisand's gateway path to avoid any
+# chance of leaking gateway files (VPN credentials, configs, etc.) over port 80.
+# The nginx rules do redirect http to https, with the only exception
+# being requests to /.well-known/acme-challenge for letsencrypt.
+# So there is probably a low risk of that ever happening,
+# but still, keeping them separate can't hurt.
+- name: Ensure the default nginx HTML directory is empty
+  file:
+    state: absent
+    path: "{{ nginx_default_html_path }}/"
+  when: streisand_le_enabled
+
+- file:
+    state: directory
+    path: "{{ nginx_default_html_path }}"
+  when: streisand_le_enabled
+
 - name: Enable the nginx service
   systemd:
     daemon_reload: yes
