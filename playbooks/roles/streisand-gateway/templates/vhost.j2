@@ -8,16 +8,16 @@ server {
   location /.well-known/acme-challenge/ {
     # This directory is intentionally set to be different
     # than the Streisand gateway directory. We want to avoid any
-	# chance of leaking gateway credentials/pages over port 80.
-	root {{ nginx_default_html_path }};
-	allow all;
+    # chance of leaking gateway credentials/pages over port 80.
+    root {{ nginx_default_html_path }};
+    allow all;
   }
   {% else %}
   server_name {{ streisand_ipv4_address }};
   {% endif %}
 
   location / {
-	return 301 https://$server_name$request_uri;
+    return 301 https://$server_name$request_uri;
   }
 
   # Disable all logging
