@@ -44,6 +44,14 @@
         option: webroot_path
         value: "{{ nginx_default_html_path }}"
 
+    - name: Setup deploy hook to reload nginx after successful auto renewal
+      copy:
+        src: 01-reload-nginx.sh
+        dest: "{{ le_base }}/renewal-hooks/deploy/01-reload-nginx.sh"
+        owner: root
+        group: root
+        mode: 0750
+
     - set_fact:
         le_ok: True
 
