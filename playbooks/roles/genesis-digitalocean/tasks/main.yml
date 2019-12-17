@@ -13,28 +13,29 @@
 
 - block:
     - name: Add the SSH key to DigitalOcean if it doesn't already exist
-      digital_ocean:
-        command: ssh
+      digital_ocean_sshkey:
         name: "{{ do_ssh_name }}"
         ssh_pub_key: "{{ ssh_key.stdout }}"
-        api_token: "{{ do_access_token }}"
+        oauth_token: "{{ do_access_token }}"
+        state: present
       register: do_ssh_key
   rescue:
     - fail:
-        msg: "* The API Access Token might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the DigitalOcean Control Panel under a different name. OR * The dopy Python module might not be installed. Use `pip install dopy==0.3.5` to install this module. On the latest version of macOS, dopy > 0.3.5 is currently broken."
+        msg: "* The API Access Token might be incorrect or missing the Write Scope. OR * The SSH key may already exist in the DigitalOcean Control Panel under a different name."
 
 - block:
     - name: Create the new Droplet
-      digital_ocean:
-        command: droplet
+      digital_ocean_droplet:
         name: "{{ do_server_name }}"
-        ssh_key_ids: "{{ do_ssh_key.ssh_key.id }}"
-        size_id: "{{ do_small_droplet_size_id }}"
-        region_id: "{{ regions[do_region] }}"
-        image_id: "{{ do_ubuntu_x64_image_id }}"
+        ssh_keys:
+          - "{{ do_ssh_key.data.ssh_key.id }}"
+        size: "{{ do_small_droplet_size_id }}"
+        region: "{{ regions[do_region] }}"
+        image: "{{ do_ubuntu_x64_image_id }}"
         unique_name: yes
         wait: yes
-        api_token: "{{ do_access_token }}"
+        oauth_token: "{{ do_access_token }}"
+        state: present
       register: streisand_server
   rescue:
     - fail:
@@ -42,19 +43,19 @@
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for:
-    host: "{{ streisand_server.droplet.ip_address }}"
+    host: "{{ streisand_server.data.ip_address }}"
     port: 22
     search_regex: OpenSSH
     timeout: 600
 
 - name: Create the in-memory inventory group
   add_host:
-    name: "{{ streisand_server.droplet.ip_address }}"
+    name: "{{ streisand_server.data.ip_address }}"
     groups: streisand-host
 
 - name: Set the streisand_ipv4_address variable
   set_fact:
-    streisand_ipv4_address: "{{ streisand_server.droplet.ip_address }}"
+    streisand_ipv4_address: "{{ streisand_server.data.ip_address }}"
 
 - name: Set the streisand_server_name variable
   set_fact:

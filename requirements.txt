@@ -6,7 +6,7 @@
 
 # Core with Azure dependencies
 #
-ansible[azure]==2.8.0
+ansible[azure]==2.8.4
 
 # Multiple packages depend on SecretStorage, and versions >= 3 require
 # Python 3. Until we're ready for Python 3, specify the earlier rev.
@@ -20,12 +20,10 @@ SecretStorage<3.0
 boto
 boto3
 
-# Digital Ocean
-dopy==0.3.5
-
 # Google Compute Engine
 requests
 google-auth
+apache-libcloud
 
 # Linode
 linode-api4
