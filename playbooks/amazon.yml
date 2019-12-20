@@ -90,12 +90,8 @@
       default: "streisand"
       private: no
 
-    - name: "aws_access_key"
-      prompt: "\n\nThe following information can be found in the IAM Management Console.\nhttps://console.aws.amazon.com/iam/home?#security_credential\n\nWhat is your AWS Access Key ID?\n"
-      private: no
-
-    - name: "aws_secret_key"
-      prompt: "\nWhat is your AWS Secret Access Key?\n"
+    - name: "aws_profile"
+      prompt: "\nWhat is your AWS named profile?\n"
       private: no
 
     - name: "confirmation"
