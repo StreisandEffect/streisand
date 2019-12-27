@@ -53,7 +53,8 @@ Replace the **xxxxx** pattern with the values obtained by following the below st
 * Get the **secret** ( [visual guide](https://docs.microsoft.com/en-in/azure/azure-resource-manager/resource-group-create-service-principal-portal#get-application-id-and-authentication-key) )<br />
 	Search for **App registrations** in the top search bar and select the first result.<br />
 	Select your application from the list: **StreisandAuth**.<br />
-	Select **Keys** from the newly opened menu on the right.<br />
+	Select **Certificates & secrets** from the newly opened menu on the left.<br />
+	Select **New client secret** under **Client secrets**.<br />
 	Create a new key:
 
 		Key description: streisand
