@@ -3,9 +3,10 @@ shadowsocks_location: "/etc/shadowsocks-libev"
 shadowsocks_password_file: "{{ shadowsocks_location }}/shadowsocks-password.txt"
 
 # V2ray-plugin
-go_path: "GOPATH=$HOME/go"
+go_path: "{{ ansible_env.HOME }}/go"
 v2ray_github: "github.com/shadowsocks/v2ray-plugin"
-v2ray_location: "/root/go/bin"
+v2ray_core_github: "https://github.com/v2ray/v2ray-core"
+v2ray_location: "{{ go_path }}/bin"
 v2ray_options: "server;host={{ shadowsocks_v2ray_cover_domain }}"
 
 # Add -v for verbose mode to help with debugging
