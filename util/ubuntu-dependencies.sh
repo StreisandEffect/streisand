@@ -50,17 +50,19 @@ if [ "$(id -u)" == "0" ]; then
 fi
 
 $sudo_command apt-get update
+# shellcheck disable=SC2086
 $sudo_command apt-get $quiet upgrade
 
 # Prefer binaries distributed by upstream OS over those in the pip
 # repository.
 
 # We explicitly want word splitting.
-# shellcheck disable=SC2046
+# shellcheck disable=SC2046,SC2086
 $sudo_command apt-get $quiet install $(cat ./util/dependencies.txt)
 
 # Debian doesn't have python-nacl. We'll have to accept the pip
 # version.
+# shellcheck disable=SC2086
 if ! $sudo_command apt-get $quiet install python-nacl libssl-dev; then
     our_pip_install pynacl
 fi
