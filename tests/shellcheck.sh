@@ -3,7 +3,7 @@
 # Streisand shellcheck wrapper
 #
 # This test script finds all of the *.sh shell files in the project tree and
-# runs shellcheck against them. 
+# runs shellcheck against them.
 #
 
 # Fail on errors
