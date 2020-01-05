@@ -9,3 +9,4 @@ apache_packages_to_remove:
   - apache2-mpm-worker
 
 nginx_systemd_service_path: /etc/systemd/system/nginx.service.d
+nginx_default_html_path: /usr/share/nginx/html

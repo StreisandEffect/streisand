@@ -1,3 +1,40 @@
+# Setup an http -> https redirect
+server {
+  listen 80;
+
+  {% if streisand_le_enabled %}
+  server_name {{ streisand_domain }};
+  # Allow ACME challenge requests by the ACME server (letsencrypt)
+  location /.well-known/acme-challenge/ {
+    # This directory is intentionally set to be different
+    # than the Streisand gateway directory. We want to avoid any
+    # chance of leaking gateway credentials/pages over port 80.
+    root {{ nginx_default_html_path }};
+    allow all;
+  }
+  {% else %}
+  server_name {{ streisand_ipv4_address }};
+  {% endif %}
+
+  location / {
+    return 301 https://$server_name$request_uri;
+  }
+
+  # Disable all logging
+  # Comment these lines out if you want to verify the letsencrypt
+  # ACME challenge/response process is working for debugging purposes.
+  access_log /dev/null;
+  error_log  /dev/null crit;
+}
+
+# Catch-all server to prevent requests that either change the HOST header
+# or request an invalid domain/subdomain.
+server {
+  listen 80 default_server;
+  server_name _;
+  return 444; # "Connection closed without response"
+}
+
 # SSL Gateway
 server {
   listen 127.0.0.1:{{ nginx_port }} default_server ssl http2;
