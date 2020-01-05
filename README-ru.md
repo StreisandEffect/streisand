@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg" alt="Automate the effect"/> 
+  <img src="https://raw.githubusercontent.com/jlund/streisand/master/logo.jpg" alt="Automate the effect"/>
 </p>
 
 - - -
 [English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Зеркало](https://gitlab.com/alimakki/streisand)
 - - -
 
-[![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
+[![Build Status](https://github.com/StreisandEffect/streisand/workflows/Streisand/badge.svg)](https://github.com/StreisandEffect/streisand/actions)
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/espadrine.svg?style=social&label=Follow%20%40StreisandVPN)](https://twitter.com/StreisandVPN)
 
 Стрейзанд
@@ -140,16 +140,13 @@
   * Azure
 
         sudo pip install ansible[azure]
-  * DigitalOcean
-
-        sudo pip install dopy==0.3.5
   * Google
 
         sudo pip install "apache-libcloud>=1.17.0"
 
   * Linode
 
-        sudo pip install linode-python
+        sudo pip install linode-api4
   * Rackspace Cloud
 
         sudo pip install pyrax
