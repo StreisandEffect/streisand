@@ -1,71 +1,54 @@
 ---
-- hosts: localhost
-  gather_facts: no
-  remote_user: root
-  become: yes
-  pre_tasks:
-
-    # NOTE(@cpu): CI builds are frequently failing with the error:
-    #   GPG error: http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4
-    #   Release: The following signatures were invalid: KEYEXPIRED 1515625755
-    #
-    # To work around this we fetch an updated key before doing an apt-get update
-    # See https://github.com/travis-ci/travis-ci/issues/9037 for more
-    # information
-    - name: Install an updated MongoDB Repo key
-      command: >
-        apt-key adv \
-        --keyserver hkp://keyserver.ubuntu.com:80 \
-        --recv 0C49F3730359A14518585931BC711F9BA15703C6
-
-    # NOTE(@alimakki): Due to key rotation, we pre-emptivley
-    # add the Google linux apt signing key required by some
-    # packages
-    - name: Install the Google linux apt signing key
-      shell: "{{ item }}"
-      with_items:
-        - "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -"
-        - "apt-get clean"
-        - "apt-get update"
-
-    - name:
-      raw:  sudo apt update && apt install python python-apt aptitude -y
+# NOTE(@craun): Removed the "install python" steps for local dev setup. In order to even run this playbook ansible
+# already needs to be installed, which, implies that python is also installed.
 
 - hosts: localhost
   gather_facts: yes
   remote_user: root
   become: yes
+  pre_tasks:
+    # NOTE(@alimakki): Due to key rotation, we pre-emptivley
+    # add the Google linux apt signing key required by some
+    # packages
+    - name: Add an Apt signing key, uses whichever key is at the URL
+      apt_key:
+        url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+        state: present
   tasks:
     - name: Ensure consistent & clean apt state
-      shell: "{{ item }}"
-      with_items:
-        - "apt-get clean"
-        - "apt-get update"
-      args:
-        warn: no
-
-    - name: "Remove old LXD from distro"
       apt:
-        package: "lxd"
-        state: "absent"
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+        purge: yes
 
-    - name: "Install snapd"
+    - name: Remove old LXD/LXC from distro
       apt:
-        package: "snapd"
+        name:
+          - lxd*
+          - lxc*
+        state: absent
+        autoremove: yes
+        purge: yes
 
-    - name: "Install LXD snap"
-      command: "snap install lxd"
+    - name: Install snapd
+      apt:
+        name: snapd
 
-    - name: "Connect LXD plug to slots"
+    - name: Install LXD snap
+      snap:
+        name: lxd
+
+    - name: Connect LXD plug to slots
       command: "{{ item }}"
       with_items:
         - "snap connect lxd:lxd-support"
         - "snap connect lxd:network"
 
-    - name: "Start lxd"
+    - name: Start lxd
       command: "snap start lxd"
 
-    - name: "Wait for the LXD socket"
+    - name: Wait for the LXD socket
       wait_for:
         path: "/var/snap/lxd/common/lxd/unix.socket"
         state: present
@@ -73,12 +56,13 @@
 
     - name: lxd init config
       command: lxd init --auto --storage-backend dir
+      args:
+        creates: /var/snap/lxd/common/lxd/storage-pools/default
 
-    # NOTE(@cpu): This could be improved - it will fail if the `testbr0` network
-    # already exists. This is fine for CI but a pain for local development using
-    # the container.
     - name: lxd create network
       command: lxc network create testbr0
+      args:
+        creates: /var/snap/lxd/common/lxd/networks/testbr0
 
     - name: Retrieve the Ubuntu Xenial AMD64 LXC image fingerprint
       uri:
@@ -112,15 +96,12 @@
     - name: Open the permissions on the LXD socket
       command: chmod 777 /var/snap/lxd/common/lxd/unix.socket
 
-    # Install Python in the container now to avoid needing to do it later
-    - name: Check if python is installed in container
+    - name: Install python in container
       delegate_to: streisand
-      raw: dpkg -s python
-      register: python_install_check
-      failed_when: python_install_check.rc not in [0, 1]
-      changed_when: false
+      raw: apt-get install -y python3 python3-apt python3-pip
 
-    - name: Install python in container if required
-      delegate_to: streisand
-      raw: apt-get install -y python
-      when: python_install_check.rc == 1
+    - name: Set python3 as the default
+      raw: update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+
+    - name: Set python3-pip as the default
+      raw: update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
