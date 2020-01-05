@@ -1,9 +1,9 @@
 # Streisand-CI Testing
-Streisand CI testing uses Travis CI to test Ansible syntax and kick off a full playbook run.
-The Full playbook run is executed against an LXC container.
+Streisand CI testing uses Github Actions to test Ansible syntax and kick off a full playbook run.
+The Full playbook run is executed against github runners
 
 ## Testing Limitations
-There were some connectivity issues with the `tor-bridge` playbook in the Travis CI testing environment. Due to this, the role is currently skipped.
+There were some connectivity issues with the `tor-bridge` playbook in the CI testing environment. Due to this, the role is currently skipped.
 Streisand doc generation is also skipped until some mock variables and tasks are added.
 
 ## Local Testing
@@ -29,3 +29,4 @@ This allows the ipsec role to complete successfully inside the LXC container.
 - Figure out a way to test the Tor role
 - Add some mock variables for the document generation task
 - Add some automated client testing (Example: Automatically test an openvpn client)
+- Check if the tor-bridge is still an issue on github actions

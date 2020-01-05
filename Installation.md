@@ -44,38 +44,34 @@ If you'd like to use an SSH key with a different name or from a non-standard loc
 
 ## Bootstrap ##
 
-Install the bootstrap packages: Git, and `pip` for Python 2.7. (Streisand still requires Python 2.7.) Some environments need additional packages.
+Install the bootstrap packages: Git, and Python 3.5 or later. Some environments need additional packages.
 
 Here's how to set up these packages:
 
 * On Debian and Ubuntu:
 
 ```
-sudo apt-get install git python-pip
+sudo apt-get install git python3 python3-venv
 ```
 
-* On Fedora 27, some additional packages are needed later:
+* On Fedora 30, some additional packages are needed later:
 
 ```
-sudo dnf install git python2-pip gcc python2-devel \
-     python2-crypto python2-pycurl libcurl-devel
+dnf install git python3 gcc python3-devel python3-crypto \
+     python3-pycurl libcurl-devel
+
 ```
 
-* On CentOS 7, `pip` is available from the EPEL repository; some additional packages are needed later:
+* On CentOS 7, `python36` is available from the EPEL repository; some additional packages are needed later:
 
 ```
 sudo yum -y update && sudo yum install -y epel-release
 sudo yum -y update && sudo yum install -y \
-    git gcc python-devel python-crypto python-pycurl \
-    python-pip libcurl-devel
+    git gcc python36-devel python36-crypto python36-pycurl \
+    libcurl-devel
 ```
 
-* On macOS, `git` is part of the Developer Tools, and it will be installed the first time you run it. If there isn't already a `pip` command installed, install it with:
-
-```
-sudo python2.7 -m ensurepip
-```
-
+* On macOS, `git` is part of the Developer Tools, and it will be installed the first time you run it. Python 3.5 or later is required. Either use [Homebrew](https://brew.sh/) and run `brew install python3`, or see [the Python.org Mac download site](https://www.python.org/downloads/mac-osx/); the package you want to download is the "macOS 64-bit installer".
 
 ## Execution ##
 
