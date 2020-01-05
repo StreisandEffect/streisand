@@ -1,0 +1,33 @@
+---
+- name: Include the OpenConnect mirror variables
+  include_vars: mirror.yml
+
+- name: Make the directory where the OpenConnect mirrored files will be stored
+  file:
+    path: "{{ openconnect_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0755
+    state: directory
+
+- block:
+    - name: Mirror the OpenConnect clients
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ openconnect_mirror_location }}"
+        checksum: "{{ item.checksum }}"
+        owner: www-data
+        group: www-data
+        mode: 0644
+      with_items: "{{ openconnect_download_urls }}"
+  rescue:
+    - name: "{{ streisand_mirror_warning }}"
+      pause:
+        seconds: "{{ streisand_mirror_warning_seconds }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "OpenConnect mirror"
+    i18n_location: "{{ openconnect_mirror_location }}"
+    input_template_name: "mirror"

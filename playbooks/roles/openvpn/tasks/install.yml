@@ -1,0 +1,22 @@
+---
+- name: "Add the official OpenVPN APT key; hiding 25 lines of log..."
+  apt_key:
+    id: E158C569
+    data: "{{ item }}"
+  with_file: openvpn_signing.key
+  no_log: True
+
+- name: Add the official OpenVPN repository
+  apt_repository:
+    repo: 'deb https://build.openvpn.net/debian/openvpn/stable {{ ansible_lsb.codename }} main'
+    state: present
+  register: openvpn_add_apt_repository
+  until: not openvpn_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
+
+- name: Install OpenVPN and its dependencies from APT
+  apt:
+    package:
+      - openvpn
+      - udev

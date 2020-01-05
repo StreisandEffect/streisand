@@ -1,0 +1,16 @@
+---
+- name: "Determine the git revision of the current Streisand clone"
+  command: git rev-parse HEAD
+  register: streisand_diagnostics_git_rev
+  changed_when: False
+
+# Credit to https://stackoverflow.com/a/3879077 for this approach
+- name: "Determine if there are untracked changes in the Streisand clone"
+  shell: git diff-index --quiet HEAD -- && echo "no" || echo "yes";
+  register: streisand_diagnostics_git_untracked
+  changed_when: False
+
+- name: "Produce the diagnostics markdown file to share if there is an error"
+  template:
+    src: streisand-diagnostics.md.j2
+    dest: ../streisand-diagnostics.md

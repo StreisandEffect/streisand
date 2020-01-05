@@ -1,0 +1,30 @@
+---
+- name: "Remove existing {{ openvpn_profile_type }} OpenVPN profiles if they exist"
+  file:
+    path: "{{ openvpn_profile_dir}}/{{ profile_name }}-{{ openvpn_profile_type}}*.ovpn"
+    state: absent
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"
+
+- name: "Download each of the {{ openvpn_profile_type }} OpenVPN profiles"
+  get_url:
+    url: "{{ gateway_test_url }}/openvpn/{{ profile_name }}/{{ streisand_ip }}-{{ openvpn_profile_type }}.ovpn"
+    dest: "{{ openvpn_profile_dir }}/{{ profile_name }}-{{ openvpn_profile_type }}.ovpn"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"
+
+# NOTE(cpu): This is a little bit messy but there aren't really any good options
+# to add a few lines to the Streisand OVPN that we need - mainly the DHCP
+# up/down settings described in the Streisand docs for Linux clients without
+# NetworkManager and the PID tracking command we use to kill OpenVPN later
+- name: "Concatinate the profile customization commands to each OpenVPN {{ openvpn_profile_type }} client profile if required"
+  shell: "cat {{ openvpn_profile_addons }} {{ openvpn_profile_dir }}/{{ profile_name }}-{{ openvpn_profile_type }}.ovpn > {{ openvpn_profile_dir }}/{{ profile_name }}-{{ openvpn_profile_type }}.client-test.ovpn"
+  with_items: "{{ test_client_profiles.stdout_lines }}"
+  loop_control:
+    loop_var: "profile_name"

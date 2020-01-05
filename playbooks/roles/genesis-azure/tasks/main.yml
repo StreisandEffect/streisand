@@ -1,7 +1,11 @@
 ---
-- name: Get the default SSH key
-  command: cat ~/.ssh/id_rsa.pub
+- set_fact:
+    streisand_genesis_role: "genesis-azure"
+
+- name: "Get the {{ streisand_ssh_private_key }}.pub contents"
+  command: "cat {{ streisand_ssh_private_key }}.pub"
   register: ssh_key
+  changed_when: False
 
 - name: Create the Azure instance
   local_action:

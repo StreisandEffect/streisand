@@ -1,3 +1,4 @@
+---
 - name: Prepare the new server for Ansible
 # =========================================
   hosts: streisand-host
@@ -11,4 +12,4 @@
       raw: apt update && apt install python -y
       args:
         executable: /bin/bash
-
+...

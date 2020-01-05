@@ -1,0 +1,15 @@
+{% include "languages.md.j2" %}
+
+<a name="ssh"></a>
+### SSH ###
+
+**Windows**
+
+* [{{ putty_filename }}]({{ putty_href }}) ([sig]({{ putty_sig_href }}))
+
+{% if streisand_sshuttle_enabled %}
+**Linux and OS X**
+
+* [{{ sshuttle_filename }}]({{ sshuttle_href }})
+  * Checksum: *{{ sshuttle_checksum }}*
+{% endif %}

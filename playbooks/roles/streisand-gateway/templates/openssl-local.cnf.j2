@@ -1,0 +1,80 @@
+# The examples in https://github.com/stanzgy/wiki/blob/master/network/openssl-self-signed-certs-cheatsheet.md
+# were very useful in the creation of this file.
+
+distinguished_name = req_distinguished_name
+
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+
+dir = {{ openssl_ca_base }}
+certs = $dir
+crl_dir = $dir
+database = $dir/index.txt
+new_certs_dir = {{ openssl_ca_newcerts_dir }}
+
+certificate = {{ openssl_ca_certificate }}
+serial = $dir/serial
+crl = $dir/crl.pem
+private_key = {{ openssl_ca_key }}
+RANDFILE = $dir/.rand
+
+copy_extensions = copy
+
+x509_extensions = v3_ca
+
+default_days = {{ nginx_days_valid }}
+default_crl_days= 30
+default_md = {{ openssl_ca_default_md }}
+preserve = no
+policy = policy_anything_including_no_cn
+
+[ policy_anything_including_no_cn ]
+countryName = optional
+stateOrProvinceName = optional
+localityName = optional
+organizationName = optional
+organizationalUnitName = optional
+# This differs from the certificates role:
+commonName = optional
+name = optional
+emailAddress = optional
+
+[ alt_names ]
+IP.0 = {{ streisand_ipv4_address }}
+DNS.0 = {{ streisand_ipv4_address }}
+
+[ req_distinguished_name ]
+countryName = Country Name (2 letter code)
+countryName_default = {{ nginx_key_country }}
+
+stateOrProvinceName = State or Province Name (full name)
+stateOrProvinceName_default = {{ nginx_key_province }}
+
+localityName = Locality Name (eg, city)
+localityName_default = {{ nginx_key_city }}
+
+0.organizationName = Organization Name (eg, company)
+0.organizationName_default = {{ nginx_key_org }}
+
+organizationalUnitName = Organizational Unit Name (eg, section)
+organizationalUnitName_default = {{ nginx_key_ou }}
+
+commonName = Common Name (eg, your name or your server\'s hostname)
+commonName_default = STREISAND
+
+[ v3_ca ]
+basicConstraints = CA:TRUE
+# Note: we need an EKU when we do OCSP, but don't open that can of worms yet.
+# extendedKeyUsage = OCSPSigning
+
+[ v3_ca_req ]
+basicConstraints = CA:FALSE
+keyUsage = digitalSignature, keyEncipherment, nonRepudiation
+
+[ v3_req ]
+basicConstraints = CA:false
+subjectAltName = @alt_names
+keyUsage = digitalSignature, keyEncipherment, nonRepudiation
+extendedKeyUsage=serverAuth,clientAuth

@@ -7,12 +7,15 @@
 - name: Add the WireGuard PPA
   apt_repository:
     repo: 'ppa:wireguard/wireguard'
+  register: wireguard_add_apt_repository
+  until: not wireguard_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
 
 - name: Install the WireGuard packages
   apt:
-    name: "{{ item }}"
-  with_items:
-    - linux-headers-{{ kernel_release.stdout }}
-    - linux-headers-generic
-    - wireguard-dkms
-    - wireguard-tools
+    package:
+      - linux-headers-{{ kernel_release.stdout }}
+      - linux-headers-generic
+      - wireguard-dkms
+      - wireguard-tools

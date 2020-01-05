@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Refresh the Streisand GPG keyring
+/usr/bin/gpg2 {{ streisand_default_gpg_flags }} {{ streisand_default_key_import_flags }} --refresh >/dev/null 2>&1

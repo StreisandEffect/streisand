@@ -2,10 +2,10 @@
 - name: Warn users if the server's Linux distribution is not Ubuntu 16.04
   pause:
     prompt: "Ubuntu 16.04 is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
-  when: ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04"
+  when: not streisand_noninteractive and (ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04")
 
 # Set default variables
-- include: set-default-variables.yml
+- import_tasks: set-default-variables.yml
 
 - name: Ensure the APT cache is up to date
   apt:
@@ -14,20 +14,45 @@
 
 - name: Install Streisand common packages
   apt:
-    name: "{{ item }}"
-  with_items: "{{ streisand_common_packages }}"
+    package: "{{ streisand_common_packages }}"
 
 - name: Purge unneeded services
   apt:
-    name: "{{ item }}"
+    package: "{{ streisand_unneeded_packages }}"
     state: "absent"
     purge: yes
     autoremove: yes
-  with_items: "{{ streisand_unneeded_packages }}"
 
 - name: Perform a full system upgrade
   apt:
     upgrade: "safe"
+
+- name: Copy the English BIP-0039 wordlist
+  copy:
+    src: english.txt
+    dest: /usr/share/dict
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Generate random VPN client names
+  shell: "{{ streisand_word_gen.identifier_max_len_15 }}"
+  register: "vpn_client_names"
+  with_sequence: count={{ vpn_clients }}
+
+- name: Ensure the Streisand gateway directory exists
+  file:
+    path: "{{ streisand_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- name: Output the random VPN client names to disk for integration tests
+  template:
+    src: "test-client-inventory.j2"
+    dest: "{{ streisand_gateway_location }}/test-client-inventory"
+  when: streisand_client_test
 
 - name: Copy the HTML header and footer templates that are used during documentation generation
   copy:
@@ -37,28 +62,17 @@
     - { src: "header.html", dest: "{{ streisand_header_template }}" }
     - { src: "footer.html", dest: "{{ streisand_footer_template }}" }
 
-- name: Generate the language selection markdown file
+- name: Generate the unattended-upgrades templates to enable automatic security updates
   template:
-    src: "languages.md.j2"
-    dest: "/tmp/languages.md"
-
-- name: Convert the language selection markdown file
-  shell: markdown /tmp/languages.md > {{ streisand_language_selector }}
-  args:
-    creates: "{{ streisand_language_selector }}"
-
-- name: Generate an internationalized header file
-  shell: cat {{ streisand_header_template }} {{ streisand_language_selector }} > {{ streisand_i18n_header_template }}
-  args:
-    creates: "{{ streisand_i18n_header_template }}"
-
-- name: Copy the unattended-upgrades templates to enable automatic security updates
-  copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: 0644
   with_items:
-    - { src: "20auto-upgrades",       dest: "/etc/apt/apt.conf.d" }
-    - { src: "50unattended-upgrades", dest: "/etc/apt/apt.conf.d" }
+    - { src: "20auto-upgrades.j2",       dest: "/etc/apt/apt.conf.d/20auto-upgrades" }
+    - { src: "50unattended-upgrades.j2", dest: "/etc/apt/apt.conf.d/50unattended-upgrades" }
+
+- name: Apply the custom sysctl values
+  include_role:
+    name: sysctl

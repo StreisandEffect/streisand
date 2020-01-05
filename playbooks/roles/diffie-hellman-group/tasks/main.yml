@@ -1,5 +1,0 @@
----
-- name: Generate a new and unique Diffie-Hellman group (this will take a while)
-  command: openssl dhparam -out {{ dhparams_location }} {{ dhparams_size }}
-  args:
-    creates: "{{ dhparams_location }}"

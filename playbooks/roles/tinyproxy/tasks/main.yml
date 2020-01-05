@@ -1,18 +1,53 @@
 ---
 - name: Install Tinyproxy
   apt:
-    name: tinyproxy
+    package: tinyproxy
 
-- name: Reconfigure Tinyproxy to bind to localhost
-  lineinfile:
-    dest: /etc/tinyproxy.conf
-    regexp: "^#?Listen"
-    line: "Listen 127.0.0.1"
-  notify: Restart Tinyproxy
+- name: Stop (init.d's) tinyproxy
+  systemd:
+    name: tinyproxy.service
+    state: stopped
 
-- name: Reconfigure Tinyproxy so it doesn't log incoming connections
-  lineinfile:
-    dest: /etc/tinyproxy.conf
-    regexp: "^#?LogLevel"
-    line: "LogLevel Critical"
-  notify: Restart Tinyproxy
+- name: Create the tinyproxy config directory
+  file:
+    path: "{{ tinyproxy_conf_dir }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0755
+
+- name: Generate the tinyproxy configuration file
+  template:
+    src: tinyproxy.conf.j2
+    dest: "{{ tinyproxy_conf_file }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Generate the tinyproxy system unit file
+  template:
+    src: tinyproxy.service.j2
+    dest: /etc/systemd/system/tinyproxy.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Generate the systemd tmpfile for tinyproxy
+  template:
+    src: tinyproxytmp.conf.j2
+    dest: /etc/tmpfiles.d/tinyproxy.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Clean up the installed-by-default tinyproxy configuration file
+  file:
+    path: /etc/tinyproxy.conf
+    state: absent
+
+- name: Enable and restart the tinyproxy service
+  systemd:
+    daemon_reload: yes
+    name: tinyproxy.service
+    enabled: yes
+    state: restarted

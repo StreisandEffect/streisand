@@ -1,0 +1,93 @@
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+
+dir = {{ ca_path }}
+certs = $dir
+crl_dir = $dir
+database = $dir/index.txt
+new_certs_dir = $dir
+
+certificate = {{ tls_ca }}.crt
+serial = $dir/serial
+crl = $dir/crl.pem
+private_key = {{ tls_ca }}.key
+RANDFILE = $dir/.rand
+
+copy_extensions = copy
+
+x509_extensions = server
+
+default_days = {{ tls_days_valid }}
+default_crl_days= 30
+default_md = {{ tls_default_md }}
+preserve = no
+
+policy = policy_anything
+
+keyUsage = cRLSign, keyCertSign
+
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer:always
+
+[ policy_anything ]
+countryName = optional
+stateOrProvinceName = optional
+localityName = optional
+organizationName = optional
+organizationalUnitName = optional
+commonName = supplied
+name = optional
+emailAddress = optional
+
+[ req ]
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+{% for item in tls_sans %}
+IP.{{ loop.index }} = {{ item }}
+{% endfor %}
+
+[ req_distinguished_name ]
+countryName = Country Name (2 letter code)
+countryName_default = {{ tls_key_country }}
+
+stateOrProvinceName = State or Province Name (full name)
+stateOrProvinceName_default = {{ tls_key_province }}
+
+localityName = Locality Name (eg, city)
+localityName_default = {{ tls_key_city }}
+
+0.organizationName = Organization Name (eg, company)
+0.organizationName_default = {{ tls_key_org }}
+
+organizationalUnitName = Organizational Unit Name (eg, section)
+organizationalUnitName_default = {{ tls_key_ou }}
+
+commonName = Common Name (eg, your name or your server\'s hostname)
+commonName_default = {{ tls_server_common_name.stdout }}
+
+[ v3_ca ]
+keyUsage = digitalSignature, keyEncipherment
+
+[ server ]
+basicConstraints=CA:FALSE
+nsComment = "Ansible Generated Server Certificate"
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer:always
+extendedKeyUsage=serverAuth
+keyUsage = digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+
+[ client ]
+basicConstraints=CA:FALSE
+nsComment = "Ansible Generated Client Certificate"
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer:always
+extendedKeyUsage=clientAuth
+keyUsage = digitalSignature

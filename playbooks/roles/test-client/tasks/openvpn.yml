@@ -1,0 +1,35 @@
+---
+#
+# Import the Streisand OpenVPN playbook vars
+- include_vars: "../../openvpn/vars/main.yml"
+
+# Install OpenVPN from PPA
+- import_tasks: "../../openvpn/tasks/install.yml"
+
+- name: "Remove stale test state if required"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ test_client_profiles_file }}"
+    - "{{ openvpn_profile_addons }}"
+    - "{{ openvpn_pid_file }}"
+
+- name: "Generate a file with OpenVPN commands required to customize the profile for the test-client"
+  template:
+    src: "openvpn-profile-addons.j2"
+    dest: "{{ openvpn_profile_addons }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: "Download and test each OpenVPN profile type"
+  include_tasks: openvpn-test.yml
+  vars:
+    openvpn_profile_type: "{{ item }}"
+  with_items:
+    - "direct"
+    - "sslh"
+    # TODO(@cpu) - debug direct-udp and combined profiles. They don't work r.n.
+    #- "direct-udp"
+    #- "combined"

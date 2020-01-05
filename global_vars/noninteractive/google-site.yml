@@ -1,0 +1,94 @@
+---
+# Example site specific configuration for a noninteractive Google Compute Engine
+# deployment.
+#
+# Copy this and edit it as needed before running streisand-new-cloud-server.
+#
+
+streisand_noninteractive: true
+confirmation: true
+
+# The SSH private key that Ansible will use to connect to the Streisand node.
+streisand_ssh_private_key: "~/.ssh/id_rsa"
+
+vpn_clients: 10
+
+streisand_ad_blocking_enabled: no
+streisand_openconnect_enabled: yes
+streisand_openvpn_enabled: yes
+streisand_shadowsocks_enabled: yes
+streisand_ssh_forward_enabled: yes
+# By default sshuttle is disabled because it creates a `sshuttle` user that has
+# full shell privileges on the Streisand host
+streisand_sshuttle_enabled: no
+streisand_stunnel_enabled: yes
+streisand_tinyproxy_enabled: yes
+streisand_tor_enabled: no
+streisand_wireguard_enabled: yes
+
+# Server location:
+#
+# 1. Central US            "us-central1-a"
+# 2. Central US            "us-central1-b"
+# 3. Central US            "us-central1-c"
+# 4. Central US            "us-central1-f"
+# 5. Eastern US            "us-east4-a"
+# 6. Eastern US            "us-east4-b"
+# 7. Eastern US            "us-east4-c"
+# 8. Eastern US            "us-east1-b"
+# 9. Eastern US            "us-east1-c"
+# 10. Eastern US           "us-east1-d"
+# 11. Western US           "us-west1-a"
+# 12. Western US           "us-west1-b"
+# 13. Western US           "us-west1-c"
+# 14. Western Europe       "europe-west1-b"
+# 15. Western Europe       "europe-west1-c"
+# 16. Western Europe       "europe-west1-d"
+# 17. Western Europe       "europe-west2-a"
+# 18. Western Europe       "europe-west2-b"
+# 19. Western Europe       "europe-west2-c"
+# 20. Western Europe       "europe-west3-a"
+# 21. Western Europe       "europe-west3-b"
+# 22. Western Europe       "europe-west3-c"
+# 23. Western Europe       "europe-west4-a"
+# 24. Western Europe       "europe-west4-b"
+# 25. Western Europe       "europe-west4-c"
+# 26. East Asia            "asia-east1-a"
+# 27. East Asia            "asia-east1-b"
+# 28. East Asia            "asia-east1-c"
+# 29. Northeast Asia       "asia-northeast1-a"
+# 30. Northeast Asia       "asia-northeast1-b"
+# 31. Northeast Asia       "asia-northeast1-c"
+# 32. South Asia           "asia-south1-a"
+# 33. South Asia           "asia-south1-b"
+# 34. South Asia           "asia-south1-c"
+# 35. Southeast Asia       "asia-southeast1-a"
+# 36. Southeast Asia       "asia-southeast1-b"
+# 37. Southeast Australia  "australia-southeast1-a"
+# 38. Southeast Australia  "australia-southeast1-b"
+# 39. Southeast Australia  "australia-southeast1-c"
+#
+
+# Named zones are more robust if you use non-interactive deployments. You can still use
+# the numbered index, however the number can change, whereas the name will stay the same.
+# Keep the idx variable non-empty if you use named zones.
+
+gce_zone_idx: "do not remove this var if you have defined gce_zone"
+gce_zone: us-central1-c
+
+gce_server_name: streisand
+
+# The full path of your unique service account credentials file. See:
+# https://docs.ansible.com/ansible/guide_gce.html#credentials
+# https://support.google.com/cloud/answer/6158849?hl=en&ref_topic=6262490#serviceaccounts
+gce_json_file_location: ""
+
+# Definitions needed for Let's Encrypt HTTPS (or TLS) certificate setup.
+#
+# If these are both left as empty strings, Let's Encrypt will not be set up and
+# a self-signed certificate will be used instead.
+#
+# The domain to use for Let's Encrypt certificate.
+streisand_domain_var: ""
+# The admin email address for Let's Encrypt certificate registration.
+streisand_admin_email_var: ""

@@ -1,0 +1,120 @@
+---
+- name: Customize enabled Streisand services
+  hosts: localhost
+  gather_facts: no
+
+  vars_prompt:
+    - name: streisand_ssh_private_key
+      prompt: "Enter the path to your SSH private key, or press enter for default "
+      default: "~/.ssh/id_rsa"
+      private: no
+    - name: vpn_clients
+      prompt: "How many VPN client profiles should be generated per-service (min: 1 max: 20)? Press enter for default "
+      default: 10
+      private: no
+    - name: streisand_ad_blocking_enabled
+      prompt: "Enable DNS-based ad-blocking? Press enter for default "
+      default: "no"
+      private: no
+    - name: streisand_openconnect_enabled
+      prompt: "Enable OpenConnect? Press enter for default "
+      default: "yes"
+      private: no
+    - name: streisand_openvpn_enabled
+      prompt: "Enable OpenVPN? Press enter for default "
+      default: "yes"
+      private: no
+    - name: streisand_stunnel_enabled
+      prompt: "Enable stunnel service (only allowed for OpenVPN)? Press enter for default "
+      default: "yes"
+      private: no
+    - name: streisand_shadowsocks_enabled
+      prompt: "Enable Shadowsocks? Press enter for default "
+      default: "yes"
+      private: no
+    - name: streisand_shadowsocks_v2ray_enabled
+      prompt: "Enable v2ray-plugin for Shadowsocks? Press enter for default "
+      default: "no"
+      private: no
+    - name: streisand_ssh_forward_enabled
+      prompt: "Enable SSH Forward User? (Note: A SOCKS proxy only user will be added, no shell). Press enter for default "
+      default: "yes"
+      private: no
+    - name: streisand_sshuttle_enabled
+      prompt: "Enable sshuttle? (Note: A full shell access user will be added) Press enter for default "
+      default: "no"
+      private: no
+    - name: streisand_tinyproxy_enabled
+      prompt: "Enable tinyproxy? Press enter for default "
+      default: "yes"
+      private: no
+    - name: streisand_tor_enabled
+      prompt: "Enable Tor? Press enter for default "
+      default: "no"
+      private: no
+    - name: streisand_wireguard_enabled
+      prompt: "Enable WireGuard? Press enter for default "
+      default: "yes"
+      private: no
+    - name: streisand_cloudflared_enabled
+      prompt: "Enable DNS-over-HTTPS (cloudflared)? Press enter for default "
+      default: "yes"
+      private: no
+
+  tasks:
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_ssh_private_key: .*$"
+        line: "streisand_ssh_private_key: {{ streisand_ssh_private_key }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^vpn_clients: [\\d]+$"
+        line: "vpn_clients: {{ vpn_clients }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_ad_blocking_enabled: (?:yes|no)$"
+        line: "streisand_ad_blocking_enabled: {{ streisand_ad_blocking_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_openconnect_enabled: (?:yes|no)$"
+        line: "streisand_openconnect_enabled: {{ streisand_openconnect_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_openvpn_enabled: (?:yes|no)$"
+        line: "streisand_openvpn_enabled: {{ streisand_openvpn_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_shadowsocks_enabled: (?:yes|no)$"
+        line: "streisand_shadowsocks_enabled: {{ streisand_shadowsocks_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_shadowsocks_v2ray_enabled: (?:yes|no)$"
+        line: "streisand_shadowsocks_v2ray_enabled: {{ streisand_shadowsocks_v2ray_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_ssh_forward_enabled: (?:yes|no)$"
+        line: "streisand_ssh_forward_enabled: {{ streisand_ssh_forward_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_sshuttle_enabled: (?:yes|no)$"
+        line: "streisand_sshuttle_enabled: {{ streisand_sshuttle_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_stunnel_enabled: (?:yes|no)$"
+        line: "streisand_stunnel_enabled: {{ streisand_stunnel_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_tinyproxy_enabled: (?:yes|no)$"
+        line: "streisand_tinyproxy_enabled: {{ streisand_tinyproxy_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_tor_enabled: (?:yes|no)$"
+        line: "streisand_tor_enabled: {{ streisand_tor_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_wireguard_enabled: (?:yes|no)$"
+        line: "streisand_wireguard_enabled: {{ streisand_wireguard_enabled }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_cloudflared_enabled: (?:yes|no)$"
+        line: "streisand_cloudflared_enabled: {{ streisand_cloudflared_enabled }}"

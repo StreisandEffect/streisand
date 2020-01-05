@@ -1,0 +1,22 @@
+verbose: false;
+foreground: true;
+timeout: 5;
+user: "sslh";
+pidfile: "{{ sslh_pid_file }}";
+
+listen:
+(
+    { host: "{{ ansible_default_ipv4.address }}"; port: "443"; }
+);
+
+protocols:
+(
+     { name: "ssh";     host: "127.0.0.1"; port: "{{ ssh_port }}";     probe: "builtin"; fork: true; },
+     { name: "tls";     host: "127.0.0.1"; port: "{{ nginx_port}}";    probe: "builtin"; },
+{% if streisand_openvpn_enabled %}
+     { name: "openvpn"; host: "127.0.0.1"; port: "{{ openvpn_port }}"; probe: "builtin"; },
+{% endif %}
+     { name: "anyprot"; host: "127.0.0.1"; port: "{{ nginx_port }}";   probe: "builtin"; }
+);
+
+on-timeout: "tls";

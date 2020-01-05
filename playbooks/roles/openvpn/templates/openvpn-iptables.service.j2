@@ -1,0 +1,14 @@
+[Unit]
+Description=Firewall rules required for OpenVPN
+After=network.target
+Before={{ openvpn_service_names | join(' ') }}
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+{% for rule in openvpn_firewall_rules %}
+ExecStart=/sbin/{{ rule }}
+{% endfor %}
+
+[Install]
+WantedBy=multi-user.target

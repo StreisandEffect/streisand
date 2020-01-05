@@ -1,4 +1,2 @@
 ---
-dnsmasq_openvpn_tcp_ip: "10.8.0.1"
-dnsmasq_openvpn_udp_ip: "10.9.0.1"
-dnsmasq_wireguard_ip: "10.192.122.1"
+dnsmasq_systemd_service_path: "/etc/systemd/system/dnsmasq.service.d"

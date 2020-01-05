@@ -1,0 +1,187 @@
+{% include "languages.md.j2" %}
+
+Tunnel SSH
+----------
+
+---
+* Plateformes
+  * [Windows](#windows)
+  * [Linux et macOS](#linux-and-macos)
+{% if streisand_tinyproxy_enabled %}
+  * [Android](#android)
+{% endif %}
+  * [Notes](#notes)
+
+<a name="windows"></a>
+### Windows ###
+1. Téléchargez [PuTTY](/mirror/ssh/index-fr.html) et lancez-le.
+1. Allez à la section *Session*.
+1. Saisissez `{{ streisand_ipv4_address }}` pour le champ *Host Name*.
+1. Saisissez `{{ ssh_port }}` pour le chaml *Port*.
+   * Le port `443` est disponible en option de recharge si vous êtes sur un réseau qui restreint l'accès au port SSH par défaut.
+1. Allez à Connection --> Data.
+1. Saisissez `forward` dans le champ *Auto-login username*.
+1. Allez à Connection --> SSH.
+1. Cochez `Don't start a shell or command at all`.
+1. Allez à Connection --> SSH --> Tunnels.
+1. Saisissez `{{ ssh_default_socks_port }}` dans le champ *Source port*.
+1. Assurez-vous que les boutons radio `Auto` et `Dynamic` sont sélectionnés.
+1. Cliquez sur *Add* pour ajouter le tunnel. Vous devriez voir `D {{ ssh_default_socks_port }}` dans la section *Forwarded ports*.
+1. Allez à Connection --> SSH --> Auth.
+1. Téléchargez la clé privée `streisand_rsa.ppk` utilisée pour authentifier la connexion SSH. Cliquez-droit; Enregistrer la cible sous...
+   * [streisand\_rsa.ppk](/ssh/streisand_rsa.ppk)
+1. Cliquez le bouton *Browse*.
+1. Cliquez le *PuTTY Private Key Files* menu déroulant à côté du champ *File name* et sélectionnez *All Files*.
+1. Sélectionnez le fichier `streisand_rsa.ppk` téléchargé et cliquez sur *Open*.
+1. Revenez à *Session* (le premier élément dans le menu de gauche).
+1. Saisissez `{{ streisand_server_name }}` dans la première boite *Saved Sessions* et cliques le bouton *Save*. La prochaine fois que vous lancez PuTTY, vous pouvez choisir la session et cliquer sur *Load* pour restaurer tous ces paramètres.
+1. Cliquez *Open* pour vous connecter! PuTTY vous demandera de confirmer l'empreinte digitale. Vérifiez que les empreintes numériques correspondent à l'un des éléments ci-dessous:
+
+   `{{ ssh_server_fingerprints.results[0].stdout }}`
+
+   `{{ ssh_server_fingerprints.results[1].stdout }}`
+
+
+Vous êtes maintenant connecté à un proxy SOCKS qui est prêt à transférer votre trafic chiffré via SSH. L'étape suivante consiste à configurer votre navigateur Web pour l'utiliser.
+
+#### Configuration de Firefox pour se connecter via un proxy SOCKS ####
+1. Cliquez sur le bouton *Menu* à côté de l'icône *Accueil* à droite de la barre d'adresse.
+1. Cliquez *Paramètres*.
+1. Cliquez l'icône *Avancé*.
+1. Allez à l'onglet *Réseau*.
+1. Cliquez le bouton *Paramètres* pour *Configurer la façon dont Firefox se connecte à Internet*.
+1. Choisissez *Configuration manuelle de proxy*.
+1. Saisissez `127.0.0.1` et port `{{ ssh_default_socks_port }}` pour la ligne *Hôte SOCKS*.
+1. Sélectionnez *Utiliser un DNS distant lorsque SOCKS v5 est actif*. Cela configure Firefox pour envoyer toutes les requêtes DNS via le proxy SOCKS. Cela vous protégera contre l'empoisonnement du DNS et vous garantira que les fausses entrées DNS ne peuvent pas être utilisées pour censurer votre accès.
+1. Cliquez *OK*.
+1. Cliquez *OK* encore pour fermer la fenêtre de paramètres de Firefox..
+1. C'est tout! Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+
+<a name="linux-and-macos"></a>
+### Linux et macOS ###
+
+#### sshuttle ####
+
+Sshuttle est une simple solution de tunneling VPN qui fonctionne sur le transport SSH. C'est rapide, facile à installer et offre de bonnes performances.
+
+1. Téléchargez la clé privée `streisand_rsa` qui sert à authentifier la connexion SSH:
+   * [streisand\_rsa](/ssh/streisand_rsa)
+1. Copiez le fichier `streisand_rsa` dans une répertoire de votre choix.
+1. Définissez les autorisations correctes sur le fichier clé RSA:
+   * `chmod 600 streisand_rsa`
+1. Ajoutez une nouvelle entrée à votre fichier `.ssh / config`. Il devrait ressembler à ceci.Le port `443` est disponible en option de recharge si vous êtes sur un réseau qui restreint l'accès au port SSH par défaut. Assurez-vous d'ajuster l'emplacement du IdentityFile:
+
+         Host {{ streisand_server_name }}
+           User           sshuttle
+           Port           {{ ssh_port }}
+           HostName       {{ streisand_ipv4_address }}
+           IdentitiesOnly yes
+           IdentityFile   ~/.ssh/streisand_rsa
+
+1. Téléchargez [sshuttle](https://github.com/sshuttle/sshuttle) en exécutant la commande suivante dans une répertoire de votre choix:
+
+  `git clone https://github.com/sshuttle/sshuttle.git`
+
+  * Si l'accès à GitHub a été bloqué, vous pouvez télécharger une copie en miroir [içi](/mirror/ssh/index-fr.html)!
+  * sshuttle est également disponible via [Homebrew](http://brew.sh/) pour les utilisateurs de OS X: `brew install sshuttle`
+
+1. Entrer dans la répertoire:
+
+   `cd sshuttle`
+1. Exécutez sshuttle et connectez-vous au serveur:
+
+   `./run --dns -r sshuttle@{{ streisand_server_name }} 0/0 -vv`
+1. Vérifiez que les empreintes numériques correspondent à l'un des éléments ci-dessous:
+
+   `{{ ssh_server_fingerprints.results[0].stdout }}`
+
+   `{{ ssh_server_fingerprints.results[1].stdout }}`
+1. Tout votre trafic, y compris DNS, est maintenant transmis de manière transparente via une connexion SSH cryptée. Vous pouvez vérifier que votre trafic est correctement routé par [recherche de votre adresse IP sur DuckDuckGo]({{ streisand_my_ip_url }}). Il devrait dire *Votre adresse IP publique est {{ streisand_ipv4_address }}*.
+
+#### SSH forward ####
+
+1. Téléchargez la clé privée `streisand_rsa` qui sert à authentifier la connexion SSH:
+   * [streisand\_rsa](/ssh/streisand_rsa)
+1. Copiez le fichier `streisand_rsa` dans une répertoire de votre choix.
+1. Ajoutez une nouvelle entrée à votre fichier `.ssh / config`. Il devrait ressembler à ceci.Le port `443` est disponible en option de recharge si vous êtes sur un réseau qui restreint l'accès au port SSH par défaut. Assurez-vous d'ajuster l'emplacement du IdentityFile:
+
+         Host {{ streisand_server_name }}
+           User           forward
+           Port           {{ ssh_port }}
+           HostName       {{ streisand_ipv4_address }}
+           IdentitiesOnly yes
+           IdentityFile   ~/.ssh/streisand_rsa
+
+1. `SSH`ez dans le serveur et transférer un port SOCKS dynamique:
+
+   `ssh -vND {{ ssh_default_socks_port }} forward@{{ streisand_server_name }}`
+1. Vérifiez que les empreintes numériques correspondent à l'un des éléments ci-dessous:
+
+   `{{ ssh_server_fingerprints.results[0].stdout }}`
+
+   `{{ ssh_server_fingerprints.results[1].stdout }}`
+1. Vous êtes maintenant connecté à un proxy SOCKS qui est prêt à transférer votre trafic chiffré via SSH. L'étape suivante consiste à configurer votre navigateur Web pour l'utiliser. Vous pouvez suivre les mêmes instructions contenues dans la section Windows ci-dessus pour configurer Firefox pour acheminer son trafic via le proxy SOCKS.
+
+{% if streisand_tinyproxy_enabled %}
+<a name="android"></a>
+### Android ###
+1. Installez [SSH persistent tunnels](https://play.google.com/store/apps/details?id=org.ayal.SPT&hl=fr) par Shai Ayal. Cette application permet de transférer facilement plusieurs ports via un tunnel SSH, et fonctionne assez bien pour s'assurer que les tunnels restent actifs même lorsque vous changez régulièrement entre LTE, 3G et WiFi. L'application est [open source](https://bitbucket.org/ayal_org/ssh-persistent-tunnel/) et peut être compilée gratuitement, mais la version Play Store coûte $1,50 (USD).
+1. Téléchargez la clé privée `streisand_rsa` qui sert à authentifier la connexion SSH:
+   * [streisand\_rsa](/ssh/streisand_rsa)
+1. Copiez le fichier `streisand_rsa` dans une répertoire de votre choix.
+1. Démarrez l'application. Il sera répertorié comme *SPT* dans votre lanceur, et son icône ressemble à un tunnel de train.
+1. Tapez sur l'icône du menu en bas à droite de votre écran.
+1. Tapez *Settings*.
+1. Tapez *Host name* et saisissez `{{ streisand_ipv4_address }}`.
+1. Tapez *User Name* et saisissez `forward`.
+1. Tapez *Port* et saisissez `{{ ssh_port }}`.
+   * Le port `443` est disponible en option de recharge si vous êtes sur un réseau qui restreint l'accès au port SSH par défaut.
+1. Tapez *Private Key File* et sélectionnez le fichier `streisand_rsa` que vous avez copié sur votre téléphone.
+1. Tapez *Dynamic Forward Port* et saisissez `1080`.
+1. Tapez *Forwards* et saisissez `L8888=localhost:8888`.
+1. Retourner et tapez le bouton *Connect Tunnel*.
+1. Vérifiez que les empreintes numériques correspondent à l'un des éléments ci-dessous:
+
+   `{{ ssh_server_fingerprints.results[0].stdout }}`
+
+   `{{ ssh_server_fingerprints.results[1].stdout }}`
+
+Vous êtes maintenant prêt à configurer vos applications pour acheminer leur trafic via le tunnel SSH fourni par SPT.
+
+#### Configuration d'Android pour acheminer la plupart du trafic via SPT ####
+Ces étapes ne fonctionneront que si vous êtes connecté via WiFi. Ils doivent également être appliqués individuellement sur tous les réseaux WiFi auxquels vous vous connectez. La plupart des applications respecteront ces paramètres, y compris le navigateur par défaut, Chrome, YouTube et bien d'autres.
+
+1. Ouvrez les paramètres de votre téléphone.
+2. Tapez *Wi-Fi* dans la section *Sans fil et réseaux*.
+3. Appuyez longuement sur le réseau WiFi auquel vous êtes actuellement connecté. Un menu contextuel apparaîtra.
+4. Tapez *Modifier le réseau*.
+5. Tapez *Options avancées*.
+6. Sélectionnez *Manuel* dans la section proxy.
+7. Tapez *Nom d'hôte du proxy* et saisissez `127.0.0.1`.
+8. Tapez *Port du proxy* et saisissez `8888`.
+9. Tapez *Enregistrer*.
+
+Certaines applications vous permettent de rendre ces paramètres persistants pour tous les réseaux. Twitter pour Android et Firefox pour Android peut acheminer son trafic via le tunnel SPT SSH indépendamment de votre connexion actuelle (WiFi, 3G, HSPA +, LTE, etc.).
+
+#### Configuration de Twitter pour Android pour utiliser SPT ####
+1. Ouvrez Twitter.
+2. Appuyez sur les trois points en haut à droite de l'écran.
+3. Sélectionnez *Paramètres*.
+4. Tapez *Général*.
+5. Tapez *Proxy*.
+6. Cocher *Activer le proxy HTTP*.
+7. Tapez *Hôte du proxy* et saisissez `127.0.0.1`.
+8. Tapez *Port du proxy* et saisissez `8888`.
+
+#### Configuration de Firefox pour Android pour utiliser SPT ####
+1. Ouvrez Firefox.
+2. Tapez `about:config` dans la barre d'adresse et appuyez sur le bouton 'Go' de votre clavier.
+3. Tapez `proxy` dans la barre de recherche.
+4. Définissez la valeur de *network.proxy.socks* à `127.0.0.1`.
+5. Définissez la valeur de *network.proxy.socks\_port* à `1080`.
+6. Définissez la valeur de *network.proxy.socks\_remote\_dns* à `true`.
+7. Définissez la valeur de *network.proxy.type* à `1`.
+{% endif %}
+
+<a name="notes"></a>
+1. Si vous voyez le message "This account is for port forwarding only", assurez-vous de configurer votre client SSH pour ne pas exécuter les commandes shell sur le serveur distant (`-N`).

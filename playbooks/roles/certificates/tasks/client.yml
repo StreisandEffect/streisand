@@ -1,0 +1,56 @@
+---
+- name: Create directories for clients
+  file:
+    path: "{{ tls_client_path }}/{{ client_name.stdout }}"
+    state: directory
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Generate the private keys for the client certificates
+  command: openssl genrsa -out client.key {{ tls_key_size }}
+  args:
+    chdir: "{{ tls_client_path }}/{{ client_name.stdout }}"
+    creates: client.key
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Set the proper permissions on all private client keys
+  file:
+    path: "{{ ca_path }}"
+    recurse: yes
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Generate CSRs for the clients
+  command: openssl req -new -extensions client -key client.key -out client.csr -subj "{{ tls_request_subject }}/CN={{ client_name.stdout }}" -config {{ ca_path }}/openssl.cnf
+  args:
+    chdir: "{{ tls_client_path }}/{{ client_name.stdout }}"
+    creates: client.csr
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Generate certificates for the clients
+  command: openssl x509 -extensions client -CA {{ tls_ca }}.crt -CAkey {{ tls_ca }}.key -CAcreateserial -req -days {{ tls_days_valid }} -in client.csr -out client.crt -extfile {{ ca_path }}/openssl.cnf
+  args:
+    chdir: "{{ tls_client_path }}/{{ client_name.stdout }}"
+    creates: client.crt
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Authorize certificates via /etc/allowed_vpn_certs
+  template:
+    src: allowed_vpn_certs.j2
+    dest: /etc/allowed_vpn_certs
+    owner: root
+    group: root
+    mode: 0644

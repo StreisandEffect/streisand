@@ -1,4 +1,5 @@
-- include: python.yml
+---
+- import_playbook: python.yml
 
 - name: Prepare the vagrant VM for Ansible
 # =========================================
@@ -6,7 +7,9 @@
   remote_user: "root"
   become: true
 
-  tasks:
+  # Use pre_tasks to run these before the roles, since the role expects keys to
+  # exist.
+  pre_tasks:
     # Ansible uses `ip -4 route get 8.8.8.8` to set the `ansible_default_ipv4`
     # fact with an interface's details. Without the below route being added this
     # results in enp0s3 being used when we want enp0s8 to be used. We work
@@ -17,4 +20,23 @@
         executable: /bin/bash
       when: ansible_default_ipv4.alias != "enp0s8"
 
-- include: streisand.yml
+    # We need a throwaway key pair created in the location expected by
+    # {{ streisand_ssh_private_key }}.
+    - name: Create throwaway SSH key pair directory.
+      file:
+        path: "{{ streisand_ssh_private_key | expanduser | dirname }}"
+        state: directory
+        mode: 0700
+        recurse: yes
+
+    - name: Create throwaway SSH key pair.
+      shell: "ssh-keygen -h -t rsa -f {{ streisand_ssh_private_key }} -N ''"
+      args:
+        creates: "{{ streisand_ssh_private_key }}"
+
+  roles:
+    - validation
+
+- import_playbook: ssh-setup.yml
+- import_playbook: streisand.yml
+...

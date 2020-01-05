@@ -1,0 +1,80 @@
+---
+# Check SSH key exists
+- include: ssh.yml
+
+- name: Validate that OpenVPN optional variables are rational
+  fail:
+    msg: "stunnel cannot be enabled if openvpn is disabled"
+  when: not streisand_openvpn_enabled and streisand_stunnel_enabled
+
+- name: Validate that Tinyproxy optional variables are rational
+  fail:
+    msg: "tinyproxy cannot be enabled if ssh forward user is disabled"
+  when: not streisand_ssh_forward_enabled and streisand_tinyproxy_enabled
+
+- name: Validate that sshutle optional variables are rational
+  fail:
+    msg: "streisand_sshuttle_enabled cannot be enabled if ssh forward user is disabled"
+  when: not streisand_ssh_forward_enabled and streisand_sshuttle_enabled
+
+# tl;dr: increase vpn_clients beyond 20 at your own risk.
+#
+# We currently *support* up to 20 VPN client credentials. If you'd
+# like more, raising the limit might even work!  20 is conservative,
+# 50 is probably OK.  If you'd like to help us increase it, success
+# stories at https://github.com/StreisandEffect/discussions would be
+# nice. We can raise the limit after sufficient testing with each of
+# the VPN types.
+#
+# Places you'll run into trouble if you use more:
+#
+# * Generated documentation will become unwieldy.
+#
+# * OpenVPN, OpenConnect, and WireGuard each use /24 networks
+#   internally. Addresses 0, 1, and 255 are unavailable, leaving 253
+#   remaining.
+#
+#   o  OpenVPN and OpenConnect dynamically allocate addresses, so
+#      that's just a limit on concurrent users.
+#
+#   o  WireGuard permanently associates an IP address per client
+#      credential, so that's a hard limit of 253 generated
+#      certificates.
+#
+# * Generated client names are not checked/generated for
+#   uniqueness. (This will be fixed.)  Duplicates will cause
+#   mysterious failures. At 20 generated names, this essentially
+#   doesn't happen, but because of the birthday paradox, 200 users
+#   gives odds of 0.5%, I think.
+#
+# * There may be other resource exhaustion issues with large numbers
+#   of concurrent users.
+#
+#   Protocols like SSH and Shadowsocks don't have per-user
+#   credentials, so changing vpn_clients doesn't affect them. However,
+#   the vpn_clients value is our guess for what's safe for them.
+#
+#   Streisand operates over difficult-to-debug networks. The
+#   possibility of resource exhaustion may make troubleshooting other
+#   problems harder.
+#
+# Summary: When reporting problems, please try to reproduce them with
+# vpn_clients set to 20 or less. 50 is probably fine. 254 will fail to
+# deploy.
+
+- name: Validate that the maximum number of clients is set to a reasonable amount
+  when: (vpn_clients > 20) or (vpn_clients < 1)
+  fail:
+    msg: |-
+      Too many VPN clients specified. vpn_clients must be between 1 and 20.
+
+         See playbooks/roles/validation/tasks/main.yml.
+- name: Validate that at least one VPN is specified
+  fail:
+    msg: "At least one Streisand VPN service must be enabled."
+  when: (not streisand_openconnect_enabled)
+    and (not streisand_openvpn_enabled)
+    and (not streisand_shadowsocks_enabled)
+    and (not streisand_ssh_forward_enabled)
+    and (not streisand_tor_enabled)
+    and (not streisand_wireguard_enabled)

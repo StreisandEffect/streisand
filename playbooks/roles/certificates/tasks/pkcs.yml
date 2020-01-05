@@ -1,0 +1,45 @@
+---
+- name: "Generate a random password that will be used during the PKCS #12 conversion"
+  shell: "{{ streisand_word_gen.weak_password | trim }} > {{ tls_client_path }}/{{ client_name.stdout }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password"
+  args:
+    creates: "{{ tls_client_path }}/{{ client_name.stdout }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: "Set permissions on the PKCS #12 password file"
+  file:
+    path: "{{ tls_client_path }}/{{ client_name.stdout }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password"
+    owner: root
+    group: root
+    mode: 0600
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: "Register the PKCS #12 passwords"
+  command: cat {{ tls_client_path }}/{{ client_name.stdout }}/{{ vpn_name }}-{{ client_name.stdout }}-pkcs12-password
+  register: "vpn_client_pkcs12_password_list"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+  changed_when: False
+
+- name: "Convert the {{ vpn_name }} client keys and certificates into PKCS #12 format"
+  command: >
+    openssl pkcs12 -export
+    -in {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.crt
+    -inkey {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.key
+    -name {{ vpn_client_password.client_name.stdout }}
+    -out {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/{{ vpn_client_password.client_name.stdout }}.p12
+    -certfile {{ tls_client_path }}/ca.crt
+    -passout pass:"{{ vpn_client_password.stdout }}"
+  args:
+    creates: "{{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/{{ vpn_client_password.client_name.stdout }}.p12"
+  with_items: "{{ vpn_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "vpn_client_password"
+    label: "{{ vpn_client_password.client_name.item }}"

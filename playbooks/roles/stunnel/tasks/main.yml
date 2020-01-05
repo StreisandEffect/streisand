@@ -1,15 +1,15 @@
 ---
 - name: Install stunnel
   apt:
-    name: stunnel4
+    package: stunnel4
 
 - name: Generate the stunnel private key
   command: openssl genrsa -out {{ stunnel_key }} {{ stunnel_key_size }}
   args:
     creates: "{{ stunnel_key }}"
 
-- name: Generate the stunnel certificate and combine it with a unique Diffie-Hellman group
-  shell: openssl req -new -nodes -x509 -key {{ stunnel_key}} -days {{ stunnel_days_valid }} -subj "{{ stunnel_request_subject }}/CN=stunnel" | cat - {{ dhparams_location }} > {{ stunnel_cert }}
+- name: Generate the stunnel certificate.
+  shell: openssl req -new -nodes -x509 -key {{ stunnel_key}} -days {{ stunnel_days_valid }} -subj "{{ stunnel_request_subject }}/CN=stunnel" > {{ stunnel_cert }}
   args:
     creates: "{{ stunnel_cert }}"
 
@@ -25,12 +25,6 @@
     group: root
     mode: 0600
 
-- name: Configure stunnel to start at boot
-  lineinfile:
-    dest: /etc/default/stunnel4
-    regexp: "^ENABLED"
-    line: "ENABLED=1"
-
 - name: Generate remote stunnel configuration file (for the server)
   template:
     src: stunnel-remote.conf.j2
@@ -41,3 +35,28 @@
   template:
     src: stunnel-local.conf.j2
     dest: "{{ openvpn_gateway_location }}/stunnel.conf"
+
+- name: Stop (init.d's) stunnel4
+  systemd:
+    name: stunnel4.service
+    state: stopped
+    masked: yes
+
+- name: Copy the stunnel system unit file
+  template:
+    src: stunnel.service.j2
+    dest: /etc/systemd/system/stunnel.service
+    mode: "0644"
+
+- name: Enable the stunnel service
+  systemd:
+    daemon_reload: yes
+    name: stunnel.service
+    enabled: yes
+    state: restarted
+
+# Set up the stunnel firewall rules
+- import_tasks: firewall.yml
+
+# Mirror the stunnel client
+- import_tasks: mirror.yml

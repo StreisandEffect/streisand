@@ -22,7 +22,7 @@
       "13": "canadaeast"
       "14": "canadacentral"
       "15": "brazilsouth"
-      "16": "southeastssia"
+      "16": "southeastasia"
       "17": "eastasia"
       "18": "chinaeast"
       "19": "chinanorth"
@@ -35,21 +35,25 @@
       "26": "southindia"
       "27": "australiaeast"
       "28": "australiasoutheast"
-      "29": "northeurope"
-      "30": "westeurope"
-      "31": "germanycentral"
-      "32": "germanynortheast"
-      "33": "ukwest"
-      "34": "uksouth"
+      "29": "australiacentral"
+      "30": "australiacentral2"
+      "31": "northeurope"
+      "32": "westeurope"
+      "33": "germanycentral"
+      "34": "germanynortheast"
+      "35": "ukwest"
+      "36": "uksouth"
+      "37": "francecentral"
+      "38": "francesouth"
 
   # These variable files are included so the azure-security-group role
   # knows which ports to open
   vars_files:
     - roles/openconnect/defaults/main.yml
-    - roles/l2tp-ipsec/defaults/main.yml
     - roles/openvpn/defaults/main.yml
     - roles/shadowsocks/defaults/main.yml
     - roles/ssh/defaults/main.yml
+    - roles/lets-encrypt/vars/main.yml
     - roles/streisand-gateway/defaults/main.yml
     - roles/stunnel/defaults/main.yml
     - roles/tor-bridge/defaults/main.yml
@@ -94,15 +98,20 @@
 
           Australia:
             27: Australia East      (New South Wales)
-            28: Australia Southeast (Victoria)
+            28: Australia Southeast     (Victoria)
+            29: Austrailia Central       (Canberra)
+            30: Austrailia Central 2    (Canberra)
 
           Europe:
-            29: North Europe        (Ireland)
-            30: West Europe         (Netherlands)
-            31: Germany Central     (Frankfurt)
-            32: Germany Northeast   (Magdeburg)
-            33: UK West             (Cardiff)
-            34: UK South            (London)
+            31: North Europe        (Ireland)
+            32: West Europe         (Netherlands)
+            33: Germany Central     (Frankfurt)
+            34: Germany Northeast   (Magdeburg)
+            35: UK West             (Cardiff)
+            36: UK South            (London)
+            37: France Central    (Paris)
+            38: France South      (Marseille)
+
         Please choose the number of your region: Press enter for default (#1) region.
       default: "1"
       private: no
@@ -113,7 +122,7 @@
       private: no
 
     - name: "confirmation_credentials"
-      prompt: "\nEnsure that you have the azure credentials file: ~/.azure/credentials \nDetails on generating this can be found at https://github.com/jlund/streisand/blob/master/documentation/AZURE.md"
+      prompt: "\nEnsure that you have the azure credentials file: ~/.azure/credentials \nDetails on generating this can be found at https://github.com/StreisandEffect/streisand/blob/master/documentation/AZURE.md"
 
     - name: "confirmation"
       prompt: "\nStreisand will now set up your server: This process usually takes around ten minutes: Press Enter to begin setup...\n"
@@ -130,5 +139,7 @@
   roles:
     - genesis-azure
 
-- include: cloud-status.yml
-- include: streisand.yml
+- import_playbook: ssh-setup.yml
+- import_playbook: cloud-status.yml
+- import_playbook: streisand.yml
+...

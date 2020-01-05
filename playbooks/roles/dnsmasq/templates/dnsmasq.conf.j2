@@ -1,4 +1,11 @@
-listen-address=127.0.0.1,{{ dnsmasq_openvpn_tcp_ip }},{{ dnsmasq_openvpn_udp_ip }},{{ dnsmasq_wireguard_ip }}
+# Explicitly listen on localhost. This is required since config fragments in
+# `/etc/dnsmasq.d` may add additional `listen-address` values and the man page
+# says:
+#   Note that if no --interface option is given, but --listen-address is,
+#   dnsmasq will not automatically listen on the loopback interface. To achieve
+#   this, its IP address, 127.0.0.1, must be explicitly given as
+#   a --listen-address option.
+listen-address=127.0.0.1
 
 # Never forward plain names (without a dot or domain part)
 domain-needed

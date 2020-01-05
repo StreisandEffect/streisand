@@ -15,10 +15,29 @@ export ANSIBLE_CONFIG=$DIR/ansible.cfg
 # Include the check_ansible function from ansible_check.sh
 source util/ansible_check.sh
 
+# Use packages installed by snap first
+PATH=$PATH:/snap/bin:/var/lib/snapd/snap/bin
+export PATH
+
 function run_playbook {
   PLAYBOOK="$1"
+  # shellcheck disable=SC2206
   EXTRA_FLAGS=(${@:2})
-  ansible-playbook -i "$DIR/inventory" "$PLAYBOOK" "${EXTRA_FLAGS[@]}"
+  # Special case: If $SITE is "random" then we mix things up
+  if [[ "$SITE" = "random" ]]; then
+    SITE="tests/site_vars/random.yml"
+    "$DIR/randomize_sitevars.sh" "$SITE"
+  fi
+  SITE_DECL=""
+  if [ -n "$SITE" ]; then
+    SITE_DECL="--extra-vars=@${SITE}"
+  fi
+
+  ansible-playbook \
+    -i "$DIR/inventory" \
+    --extra-vars=@global_vars/globals.yml \
+    $SITE_DECL \
+    "$PLAYBOOK" "${EXTRA_FLAGS[@]}"
 }
 
 # syntax_check runs `ansible-playbook` with `--syntax-check` to vet Ansible
@@ -32,7 +51,7 @@ function dev_setup {
 }
 
 function run_tests {
-  run_playbook "$DIR/run.yml" -e streisand_ci=true "$1"
+  run_playbook "$DIR/run.yml" --extra-vars=@"$DIR/vars_ci.yml" "$1"
 }
 
 function ci_tests {
@@ -46,29 +65,42 @@ function ci_tests_verbose {
 # Make sure the system is ready for the Streisand playbooks
 check_ansible
 
-case $1 in
-  # Setup only prepares the local environment for running a Streisand LXC
-  "setup")
+# Allow overriding the RUN env var by providing an arg to the script
+if [ -n "$1" ]; then
+  RUN="$1"
+fi
+
+# Setup prepares the local environment for running a Streisand LXC
+if [[ "$RUN" =~ "setup" ]] ; then
     dev_setup
-    ;;
-  # Syntax only checks for Ansible syntax errors
-  "syntax")
+fi
+
+# Syntax checks for Ansible syntax errors
+if [[ "$RUN" =~ "syntax" ]] ; then
     syntax_check
-    ;;
-  # Run will run CI tests assuming the local environment is already prepared
-  "run")
-    run_tests
-    ;;
-  # CI will setup the local environment and then run tests
-  "ci")
-    ci_tests
-    ;;
-  # Full will do the same as "ci" but with verbose output
-  "full")
-    ci_tests_verbose
-    ;;
-  # By default, just run a syntax_check
-  *)
-    syntax_check
-    ;;
-esac
+fi
+
+# Shellcheck checks for bash/sh errors/pitfalls
+if [[ "$RUN" =~ "shellcheck" ]] ; then
+  ./tests/shellcheck.sh
+fi
+
+# Yamlcheck checks for general YAML best practices
+if [[ "$RUN" =~ "yamlcheck" ]] ; then
+  ./tests/yamlcheck.sh
+fi
+
+# Run will run CI tests assuming the local environment is already prepared
+if [[ "$RUN" =~ "run" ]] ; then
+  run_tests
+fi
+
+# CI will setup the local environment and then run tests
+if [[ "$RUN" =~ "ci" ]] ; then
+  ci_tests
+fi
+
+# Full will do the same as "ci" but with verbose output
+if [[ "$RUN" =~ "full" ]] ; then
+  ci_tests_verbose
+fi

@@ -1,40 +1,78 @@
-# SSL Gateway
+# Setup an http -> https redirect
 server {
-  listen 127.0.0.1:{{ nginx_port }} default_server ssl;
+  listen 80;
 
-  ssl_certificate      {{ nginx_self_signed_certificate }};
-  ssl_certificate_key  {{ nginx_private_key }};
-  add_header Strict-Transport-Security max-age=631138519;
+  {% if streisand_le_enabled %}
+  server_name {{ streisand_domain }};
+  # Allow ACME challenge requests by the ACME server (letsencrypt)
+  location /.well-known/acme-challenge/ {
+    # This directory is intentionally set to be different
+    # than the Streisand gateway directory. We want to avoid any
+    # chance of leaking gateway credentials/pages over port 80.
+    root {{ nginx_default_html_path }};
+    allow all;
+  }
+  {% else %}
+  server_name {{ streisand_ipv4_address }};
+  {% endif %}
 
-  auth_basic            "Authorization Required";
-  auth_basic_user_file  {{ streisand_gateway_htpasswd_file }};
-
-  ssl_dhparam {{ dhparams_location }};
-
-  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-  ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
-  ssl_prefer_server_ciphers on;
+  location / {
+    return 301 https://$server_name$request_uri;
+  }
 
   # Disable all logging
+  # Comment these lines out if you want to verify the letsencrypt
+  # ACME challenge/response process is working for debugging purposes.
   access_log /dev/null;
   error_log  /dev/null crit;
-
-  root  {{ streisand_gateway_location }};
-  index index.html index.htm;
-
-  location /monit/ {
-    rewrite ^/monit/(.*) /$1 break;
-    proxy_ignore_client_abort on;
-    proxy_pass   http://localhost:2812;
-  }
 }
 
-# Tor Hidden Service Gateway
+# Catch-all server to prevent requests that either change the HOST header
+# or request an invalid domain/subdomain.
 server {
-  listen {{ nginx_internal_hidden_service_address }};
+  listen 80 default_server;
+  server_name _;
+  return 444; # "Connection closed without response"
+}
+
+# SSL Gateway
+server {
+  listen 127.0.0.1:{{ nginx_port }} default_server ssl http2;
+
+{% if le_ok %}
+  ssl_certificate         {{ le_certificate }};
+  ssl_certificate_key     {{ le_private_key }};
+  ssl_trusted_certificate {{ le_chain }};
+  ssl_stapling on;
+  ssl_stapling_verify on;
+  # resolver
+  resolver {{ upstream_dns_servers | join(' ') }} valid=300s;
+  resolver_timeout 5s;
+  # It'd be great to include HSTS in non-LE installs too, but
+  # HSTS disables "clicking through" the HTTPS error pages.
+  add_header Strict-Transport-Security max-age=63072000;
+{% else %}
+  ssl_certificate      {{ nginx_self_signed_certificate }};
+  ssl_certificate_key  {{ nginx_private_key }};
+{% endif %}
 
   auth_basic            "Authorization Required";
   auth_basic_user_file  {{ streisand_gateway_htpasswd_file }};
+
+  ssl_protocols TLSv1.2;
+  ssl_prefer_server_ciphers on;
+  ssl_ciphers '{{ streisand_tls_ciphers }}';
+  ssl_ecdh_curve auto;
+  ssl_session_timeout  10m;
+  ssl_session_cache shared:SSL:10m;
+  ssl_session_tickets off;
+
+  # headers
+  add_header X-Frame-Options DENY;
+  add_header X-Content-Type-Options nosniff;
+  add_header X-XSS-Protection "1; mode=block";
+  add_header X-Robots-Tag none;
+  add_header Referrer-Policy "no-referrer";
 
   # Disable all logging
   access_log /dev/null;
@@ -42,4 +80,9 @@ server {
 
   root  {{ streisand_gateway_location }};
   index index.html index.htm;
+  
+  location / {
+    autoindex off; 
+  }
+
 }

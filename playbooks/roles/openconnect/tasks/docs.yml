@@ -1,0 +1,38 @@
+---
+- name: Create the OpenConnect/AnyConnect Gateway directory
+  file:
+    path: "{{ ocserv_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- name: Copy the CA certificate file to the OpenConnect Gateway directory
+  command: cp {{ ocserv_ca_certificate_file }} {{ ocserv_gateway_location }}
+  args:
+    creates: "{{ ocserv_gateway_location }}/ca-cert.pem"
+
+- name: "Copy the client PKCS #12 files to the OpenConnect Gateway directory"
+  command: cp {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}/{{ ocserv_client_password.client_name.stdout }}.p12 {{ ocserv_gateway_location }}
+  args:
+    creates: "{{ ocserv_gateway_location }}/{{ ocserv_client_password.client_name.stdout }}.p12"
+  with_items: "{{ vpn_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "ocserv_client_password"
+    label: "{{ ocserv_client_password.client_name.item }}"
+
+- name: "Copy the client .mobileconfig files to the OpenConnect Gateway directory"
+  command: cp {{ ocserv_path }}/{{ ocserv_client_password.client_name.stdout }}/{{ ocserv_client_password.client_name.stdout }}.mobileconfig {{ ocserv_gateway_location }}
+  args:
+    creates: "{{ ocserv_gateway_location }}/{{ ocserv_client_password.client_name.stdout }}.mobileconfig"
+  with_items: "{{ vpn_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "ocserv_client_password"
+    label: "{{ ocserv_client_password.client_name.item }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "OpenConnect/AnyConnect"
+    input_template_name: "instructions"
+    i18n_location: "{{ ocserv_gateway_location }}"

@@ -1,46 +1,22 @@
 ---
 ocserv_path: "/etc/ocserv"
-ocserv_config_file: "{{ ocserv_path }}/config"
-ocserv_firewall_rule: "iptables -t nat -A POSTROUTING -j MASQUERADE"
+ocserv_ca: "{{ ocserv_path }}/ca"
+ocserv_config_file: "{{ ocserv_path }}/ocserv.conf"
+ocserv_firewall_rule: "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -j MASQUERADE"
 
 ocserv_days_valid: "1825"
-ocserv_dependencies:
-  - autogen
-  - gnutls-bin
-  - libev-dev
-  - libgnutls-dev
-  - libgnutls30
-  - libnl-route-3-dev
-  - libpam0g-dev
-  - libreadline-dev
-  - libseccomp-dev
-  - libwrap0-dev
-  - pkg-config
-ocserv_checksum: "sha256:93055ec3b889da680a79c4a51f0efc1b84255e8e2b9c642c5ed1a6f07425b259"
-ocserv_version: "0.11.7"
-ocserv_compilation_directory: "/usr/local/src/ocserv-{{ ocserv_version }}"
-ocserv_source_filename: "ocserv-{{ ocserv_version }}.tar.xz"
-ocserv_source_location: "/usr/local/src/{{ ocserv_source_filename }}"
-
-ocserv_pid_file: "/var/run/ocserv.pid"
+ocserv_pid_file:    "/var/run/ocserv.pid"
 ocserv_socket_file: "/var/run/ocserv-socket"
+ocserv_ca_certificate_file: "{{ ocserv_path }}/ca.crt"
+ocserv_ca_key_file:         "{{ ocserv_path }}/ca.key"
 
-ocserv_ca_certificate_file: "{{ ocserv_path }}/ca-cert.pem"
-ocserv_ca_key_file: "{{ ocserv_path }}/ca-key.pem"
-ocserv_ca_template_file: "{{ ocserv_path }}/ca.tmpl"
+ocserv_server_certificate_file: "{{ ocserv_path }}/server.crt"
+ocserv_server_key_file:         "{{ ocserv_path }}/server.key"
 
-ocserv_server_certificate_file: "{{ ocserv_path }}/server-cert.pem"
-ocserv_server_key_file: "{{ ocserv_path }}/server-key.pem"
-ocserv_server_template_file: "{{ ocserv_path }}/server.tmpl"
+ocserv_hashed_password_file:    "{{ ocserv_path }}/ocpasswd"
+ocserv_password_file:           "{{ ocserv_path }}/ocserv-password"
+ocserv_server_common_name_file: "{{ ocserv_path }}/ocserv_server_common_name"
 
 ocserv_client_name: "streisand-openconnect-{{ streisand_ipv4_address }}"
-ocserv_client_certificate_file: "{{ ocserv_path }}/client-cert.pem"
-ocserv_client_key_file: "{{ ocserv_path }}/client-key.pem"
-ocserv_client_template_file: "{{ ocserv_path }}/client.tmpl"
-ocserv_client_pkcs12_file: "{{ ocserv_path }}/client.p12"
-
-ocserv_hashed_password_file: "{{ ocserv_path }}/ocpasswd"
-ocserv_password_file: "{{ ocserv_path }}/ocserv-password"
-ocserv_pkcs12_password_file: "{{ ocserv_path }}/ocserv-pkcs12-password"
 
 ocserv_gateway_location: "{{ streisand_gateway_location }}/openconnect"

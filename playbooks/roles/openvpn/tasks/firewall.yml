@@ -1,0 +1,43 @@
+---
+- name: Allow OpenVPN through the firewall
+  command: "{{ item }}"
+  with_items: "{{ openvpn_firewall_rules }}"
+
+- name: Ensure UFW allows DNS requests from OpenVPN clients
+  ufw:
+    to_port: "53"
+    proto: "udp"
+    rule: "allow"
+    from_ip: "10.8.0.0/24"
+
+- name: Ensure UFW allows DNS requests from OpenVPN UDP clients
+  ufw:
+    to_port: "53"
+    proto: "udp"
+    rule: "allow"
+    from_ip: "10.9.0.0/24"
+
+- name: Ensure UFW allows OpenVPN
+  ufw:
+    to_port: "{{ openvpn_port }}"
+    proto: "tcp"
+    rule: "allow"
+
+- name: Ensure UFW allows OpenVPN over UDP
+  ufw:
+    to_port: "{{ openvpn_port_udp }}"
+    proto: "udp"
+    rule: "allow"
+
+- name: Install the OpenVPN iptables service file
+  template:
+    src: openvpn-iptables.service.j2
+    dest: /etc/systemd/system/openvpn-iptables.service
+    mode: 0644
+
+- name: Enable the openvpn-iptables service
+  systemd:
+    daemon_reload: yes
+    name: openvpn-iptables.service
+    enabled: yes
+    state: started

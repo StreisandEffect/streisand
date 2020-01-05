@@ -1,0 +1,18 @@
+[Unit]
+Description=tinyproxy - a light-weight HTTP/HTTPS proxy daemon for POSIX operating systems
+After=network-online.target sshd.service
+Documentation=man:tinyproxy(8)
+Documentation=https://www.banu.com/tinyproxy/
+
+[Service]
+Type=forking
+PIDFile={{ tinyproxy_pid_file }}
+ExecStart=/usr/sbin/tinyproxy -c {{ tinyproxy_conf_file }}
+ExecStop=/usr/bin/killall -9 tinyproxy
+ExecReload=/bin/kill -HUP $MAINPID
+PrivateTmp=true
+RestartSec=5s
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

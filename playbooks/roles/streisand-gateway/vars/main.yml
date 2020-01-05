@@ -4,18 +4,17 @@ streisand_gateway_url: "https://{{ streisand_ipv4_address }}"
 streisand_gateway_htpasswd_file: "/etc/nginx/htpasswd"
 streisand_gateway_password_file: "/etc/nginx/gateway-password.txt"
 streisand_gateway_password_localpath: "../{{ streisand_local_directory }}/gateway-password.txt"
+streisand_temp_gateway_path: "/var/local/streisand.gateway"
 
 openssl_ca_base: "/root/ca"
 openssl_ca_private_dir: "{{ openssl_ca_base }}/private"
 openssl_ca_newcerts_dir: "{{ openssl_ca_base }}/newcerts"
 openssl_ca_key: "{{ openssl_ca_private_dir }}/cakey.pem"
 openssl_ca_certificate: "{{ openssl_ca_base }}/cacert.pem"
-
+openssl_ca_default_md: "sha256"
 
 nginx_days_valid: "1825"
 
 nginx_self_signed_certificate: "/etc/ssl/certs/{{ streisand_server_name }}.crt"
 nginx_self_signed_certificate_request: "/etc/ssl/certs/{{ streisand_server_name }}.csr"
 nginx_private_key: "/etc/ssl/private/{{ streisand_server_name }}.key"
-
-nginx_internal_hidden_service_address: "127.0.0.1:8181"

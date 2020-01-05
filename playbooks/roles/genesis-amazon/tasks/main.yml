@@ -1,4 +1,12 @@
 ---
+- set_fact:
+    streisand_genesis_role: "genesis-amazon"
+
+- name: "Get the {{ streisand_ssh_private_key }}.pub contents"
+  command: "cat {{ streisand_ssh_private_key }}.pub"
+  register: ssh_key
+  changed_when: False
+
 - name: Remove the 'streisand' SSH key from Amazon if it already exists. This is to prevent problems if two people with two different keys are sharing the same AWS account.
   ec2_key:
     name: streisand-ssh
@@ -7,10 +15,6 @@
     aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ aws_region }}"
     wait: yes
-
-- name: Get the default SSH key
-  command: cat ~/.ssh/id_rsa.pub
-  register: ssh_key
 
 - name: Add the SSH key to Amazon under the name of 'streisand-ssh'
   ec2_key:
@@ -22,15 +26,13 @@
     wait: yes
 
 - name: Determine which AMI to use
-  ec2_ami_find:
+  ec2_ami_facts:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
-    owner: "{{ aws_ami_owner }}"
+    owners: "{{ aws_ami_owner }}"
     region: "{{ aws_region }}"
-    name: "{{ aws_ami_name }}"
-    sort: name
-    sort_order: descending
-    sort_end: 1
+    filters:
+      name: "{{ aws_ami_name }}"
   register: ami
 
 - name: Create the EC2 instance
@@ -38,10 +40,10 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     instance_type: "{{ aws_instance_type }}"
-    image: "{{ ami.results[0].ami_id }}"
+    image: "{{ ami.images|sort(reverse=True,attribute='name')|map(attribute='image_id')|first }}"
     region: "{{ aws_region }}"
     vpc_subnet_id: "{{ aws_vpc_subnet_id | default(omit) }}"
-    assign_public_ip: "{{ aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '' }}"
+    assign_public_ip: "{{ (aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '') or omit }}"
     key_name: streisand-ssh
     group: "{{ aws_security_group }}"
     instance_tags:
@@ -100,7 +102,3 @@
 - name: Set the streisand_server_name variable
   set_fact:
     streisand_server_name: "{{ aws_instance_name | regex_replace('\\s', '_') }}"
-
-- name: New EC2 servers are occasionally slow to process incoming SSH connections even after the OpenSSH daemon has started up. Pause for 90 seconds.
-  pause:
-    seconds: 90

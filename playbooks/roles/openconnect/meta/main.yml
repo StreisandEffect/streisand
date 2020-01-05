@@ -1,5 +1,4 @@
 ---
 dependencies:
+  - { role: ufw }
   - { role: ip-forwarding }
-  - { role: rc-local }
-  - { role: rsyslog }

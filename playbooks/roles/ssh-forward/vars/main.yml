@@ -1,0 +1,11 @@
+---
+forward_location: "/home/forward"
+ssh_force_command: "echo 'This account is for port forwarding only.'"
+
+sshuttle_location: "/home/sshuttle"
+
+ssh_gateway_location: "{{ streisand_gateway_location }}/ssh"
+
+ssh_rsa_key: "{{ ssh_gateway_location }}/streisand_rsa"
+ssh_putty_rsa_key: "{{ ssh_gateway_location }}/streisand_rsa.ppk"
+ssh_known_hosts: "{{ ssh_gateway_location }}/streisand.known_hosts"

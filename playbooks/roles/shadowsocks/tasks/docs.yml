@@ -1,0 +1,20 @@
+---
+- name: Create the Shadowsocks Gateway directory
+  file:
+    path: "{{ shadowsocks_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "Shadowsocks"
+    i18n_location: "{{ shadowsocks_gateway_location }}"
+    input_template_name: "instructions"
+
+- name: Generate the Shadowsocks QR code
+  # The ss:// URI format is documented here:
+  #   http://shadowsocks.org/en/config/quick-guide.html
+  shell: echo -n '{{ shadowsocks_encryption_method }}:{{ shadowsocks_password.stdout }}@{{ streisand_ipv4_address }}:{{ shadowsocks_server_port }}' | base64 --wrap=0 | sed 's/^/ss:\/\//' | qrencode -s 8 -o {{ shadowsocks_qr_code }}

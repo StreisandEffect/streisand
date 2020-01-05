@@ -1,0 +1,42 @@
+---
+- name: Include the SSH mirror variables
+  include_vars: mirror.yml
+
+- name: Make the directory where the SSH client mirrored files will be stored
+  file:
+    path: "{{ ssh_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0755
+    state: directory
+
+- block:
+    - name: Mirror shuttle if enabled
+      get_url:
+        url: "{{ sshuttle_url }}"
+        dest: "{{ ssh_mirror_location }}/{{ sshuttle_filename }}"
+        checksum: "{{ sshuttle_checksum }}"
+        owner: www-data
+        group: www-data
+        mode: 0644
+      when: streisand_sshuttle_enabled
+
+    - include_role:
+        name: download-and-verify
+      vars:
+        project_name: "PuTTY"
+        project_download_baseurl: "{{ putty_base_download_url }}"
+        project_download_files: "{{ putty_download_files }}"
+        project_download_location: "{{ ssh_mirror_location }}"
+        project_signer_keyid: "{{ putty_gpg_keyid }}"
+  rescue:
+    - name: "{{ streisand_mirror_warning }}"
+      pause:
+        seconds: "{{ streisand_mirror_warning_seconds }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "SSH mirror"
+    i18n_location: "{{ ssh_mirror_location }}"
+    input_template_name: "mirror"

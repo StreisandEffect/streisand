@@ -1,0 +1,34 @@
+---
+- name: Add the repo for getting the latest version of Go
+  apt_repository:
+    repo: 'ppa:longsleep/golang-backports'
+  register: golang_add_apt_repository
+  until: not golang_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
+
+- name: Install golang-go
+  apt:
+    package: "golang-go"
+
+# Temporary workaround for insecure v2ray.com redirection
+# see https://github.com/StreisandEffect/streisand/issues/1642
+# for more info. We clone the v2ray-core repository to avoid
+# the "go get" command failing with an "insecure redirect" error.
+- file:
+    path: "{{ go_path }}/src/v2ray.com"
+    state: directory
+
+- name: "[Temporary] Clone v2ray-core repository manually to GOPATH"
+  git:
+    repo: "{{ v2ray_core_github }}"
+    dest: "{{ go_path }}/src/v2ray.com/core"
+
+- name: Get V2Ray-plugin
+  shell: "go get {{ v2ray_github }}"
+  environment:
+    GOPATH: "{{ go_path }}"
+
+- name: Copying v2ray-plugin to shadowsocks-libev directory
+  shell: "cp -rf {{ v2ray_location }}/v2ray-plugin {{ shadowsocks_location }}"
+...

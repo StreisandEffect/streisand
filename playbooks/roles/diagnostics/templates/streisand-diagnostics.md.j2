@@ -1,0 +1,63 @@
+<!--
+
+Please share the contents of this file when you open a new Streisand issue
+https://github.com/StreisandEffect/streisand-discussions/issues/ 
+
+It will help the developers reproduce your problem and provide a fix.
+-->
+
+### Ansible Information
+
+{% if 'localhost' in hostvars %}
+{% if 'ansible_version' in hostvars['localhost'] %}
+* Ansible version: {{ hostvars['localhost']['ansible_version']['full'] }}
+{% else %}
+* Ansible version: Unknown
+{% endif %}
+{% if 'ansible_system' in hostvars['localhost'] %}
+* Ansible system: {{ hostvars['localhost']['ansible_system'] }}
+{% else %}
+* Ansible system: Unknown
+{% endif %}
+{% if 'ansible_distribution' in hostvars['localhost'] %}
+* Host OS: {{ hostvars['localhost']['ansible_distribution'] }}
+{% else %}
+* Host OS: Unknown
+{% endif %}
+{% if 'ansible_distribution_version' in hostvars['localhost'] %}
+* Host OS version:  {{ hostvars['localhost']['ansible_distribution_version'] }}
+{% else %}
+* Host OS version: Unknown
+{% endif %}
+{% if 'ansible_python_interpreter' in hostvars['localhost'] %}
+* Python interpreter: {{ hostvars['localhost']['ansible_python_interpreter'] }}
+{% else %}
+* Python interpreter: Unknown
+{% endif %}
+{% if 'ansible_python_version' in hostvars['localhost'] %}
+* Python version: {{ hostvars['localhost']['ansible_python_version'] }}
+{% else %}
+* Python version: Unknown
+{% endif %}
+{% else %}
+* No 'localhost' in hostvars. Ansible information unknown.
+{% endif %}
+
+### Streisand Information
+
+* Streisand Git revision: {{ streisand_diagnostics_git_rev.stdout }}
+* Streisand Git clone has untracked changes: {{ streisand_diagnostics_git_untracked.stdout }}
+* Genesis role: {{ streisand_genesis_role | default("None") }}
+* Custom SSH key: {{ streisand_ssh_private_key != "~/.ssh/id_rsa" }}
+
+### Enabled Roles
+
+* Shadowsocks enabled:  {{ streisand_shadowsocks_enabled }}
+* Wireguard enabled: {{ streisand_wireguard_enabled }}
+* OpenVPN enabled: {{ streisand_openvpn_enabled }}
+* stunnel enabled: {{ streisand_stunnel_enabled }}
+* Tor enabled: {{ streisand_tor_enabled }}
+* Openconnect enabled: {{ streisand_openconnect_enabled }}
+* TinyProxy enabled: {{ streisand_tinyproxy_enabled }}
+* SSH forward user enabled: {{ streisand_ssh_forward_enabled }}
+* Configured number of VPN clients: {{ vpn_clients }}

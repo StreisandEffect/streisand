@@ -1,0 +1,64 @@
+---
+- name: "Download the Linux Shadowsocks client zip to the client machine"
+  get_url:
+    url: "{{ gateway_shadowsocks_client }}"
+    dest: "{{ shadowsocks_client_zip }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Extract the Shadowsocks client on the client machine"
+  # NOTE(@cpu): It's tempting to try and use the `unarchive` module here but with
+  # a brief test it seemed to barf trying to use `unzip` on a `.gz` file. This
+  # isn't a `tar.gz` and is probably too edge-case for `unarchive` so `command`
+  # it is!
+  command: "gunzip -f {{ shadowsocks_client_zip }}"
+  args:
+    chdir: "/root"
+    creates: "{{ shadowsocks_client }}"
+
+- name: "Set executable mode on Shadowsocks client"
+  file:
+    path: "{{ shadowsocks_client }}"
+    mode: 0700
+
+- name: "Remove existing Shadowsocks QR code from client if required"
+  file:
+    path: "{{ shadowsocks_qr_file }}"
+    state: absent
+
+- name: "Download the Shadowsocks QR code to the client machine"
+  get_url:
+    url: "{{ gateway_shadowsocks_qr }}"
+    dest: "{{ shadowsocks_qr_file }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Install zbar-tools"
+  apt:
+    package: zbar-tools
+    force: yes
+
+- name: "Copy Shadowsocks QR code parser tool to client machine"
+  copy:
+    src: shadowsocks-qr-decode.py
+    dest: "{{ test_script_dir }}/shadowsocks-qr-decode"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Install Shadowsocks test script"
+  template:
+    src: "streisand-shadowsocks-forward-test.sh.j2"
+    dest: "{{ test_script_dir }}/streisand-shadowsocks-forward-test"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Run Shadowsocks test script"
+  command: "streisand-shadowsocks-forward-test"

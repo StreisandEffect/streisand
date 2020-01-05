@@ -1,0 +1,16 @@
+---
+tls_key_country:  "US"
+tls_key_province: "California"
+tls_key_city:     "Beverly Hills"
+tls_key_org:      "ACME CORPORATION"
+tls_key_ou:       "Anvil Department"
+tls_days_valid:   "1825"
+tls_default_md:   "sha256"
+tls_key_size:     "4096"
+
+# What type of certificates to be generated
+# must be explicitly set by playbooks that
+# include the certificates role
+generate_ca_server: no
+generate_client:    no
+generate_pkcs:      no

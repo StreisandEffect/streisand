@@ -1,0 +1,41 @@
+---
+- name: Include the OpenVPN mirror variables
+  include_vars: mirror.yml
+
+- name: Make the directory where OpenVPN's mirrored files will be stored
+  file:
+    path: "{{ openvpn_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0755
+    state: directory
+
+- block:
+    - name: Mirror Tunnelblick for macOS
+      get_url:
+        url: "{{ tunnelblick_url }}"
+        dest: "{{ openvpn_mirror_location }}"
+        checksum: "{{ tunnelblick_checksum }}"
+        owner: www-data
+        group: www-data
+        mode: 0644
+
+    - include_role:
+        name: download-and-verify
+      vars:
+        project_name: "OpenVPN Community"
+        project_download_baseurl: "{{ openvpn_base_download_url }}"
+        project_download_files: "{{ openvpn_download_files }}"
+        project_download_location: "{{ openvpn_mirror_location }}"
+        project_signer_keyid: "{{ openvpn_gpg_keyid }}"
+  rescue:
+    - name: "{{ streisand_mirror_warning }}"
+      pause:
+        seconds: "{{ streisand_mirror_warning_seconds }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "OpenVPN mirror"
+    i18n_location: "{{ openvpn_mirror_location }}"
+    input_template_name: "mirror"

@@ -3,3 +3,8 @@
   service:
     name: ocserv
     state: restarted
+
+- name: Restart rsyslog for OpenConnect
+  service:
+    name: rsyslog
+    state: restarted

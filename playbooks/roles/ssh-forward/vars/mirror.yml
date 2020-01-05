@@ -1,0 +1,23 @@
+---
+# SSH Client Download variables
+# -----------------------------
+ssh_mirror_location: "{{ streisand_mirror_location }}/ssh"
+ssh_mirror_href_base: "/mirror/ssh"
+
+putty_base_download_url: "https://the.earth.li/~sgtatham/putty/latest/w32"
+
+putty_filename: "putty.exe"
+putty_sig_filename: "{{ putty_filename }}.gpg"
+putty_href: "{{ ssh_mirror_href_base }}/{{ putty_filename }}"
+# download-and-verify.yml renames files with non-standard extensions
+putty_sig_href: "{{ ssh_mirror_href_base }}/{{ putty_filename }}.asc"
+
+putty_gpg_keyid: "4AE8DA82"
+putty_download_files:
+  - { "file": "{{ putty_filename }}", "sig": "{{ putty_sig_filename }}" }
+
+sshuttle_version: "0.78.0"
+sshuttle_filename: "sshuttle-{{ sshuttle_version }}.tar.gz"
+sshuttle_href: "{{ ssh_mirror_href_base }}/{{ sshuttle_filename }}"
+sshuttle_url: "https://codeload.github.com/sshuttle/sshuttle/tar.gz/v{{ sshuttle_version }}"
+sshuttle_checksum: "sha256:0742e3e670c8df629ae702a32cfad96c7c4e8f7ab8f66c26d94c55d42b01e4b4"

@@ -1,5 +1,0 @@
----
-dependencies:
-  - { role: ip-forwarding }
-  - { role: rc-local }
-  - { role: rsyslog }

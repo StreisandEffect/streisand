@@ -1,0 +1,26 @@
+---
+- name: Ensure UFW allows DNS requests from OpenConnect clients
+  ufw:
+    to_port: "53"
+    proto: "udp"
+    rule: "allow"
+    from_ip: "192.168.1.0/24"
+
+- name: Ensure UFW allows OpenConnect (ocserv)
+  ufw:
+    to_port: "{{ ocserv_port }}"
+    proto: "any"
+    rule: "allow"
+
+- name: Install the ocserv iptables service file
+  template:
+    src: ocserv-iptables.service.j2
+    dest: /etc/systemd/system/ocserv-iptables.service
+    mode: 0644
+
+- name: Enable the ocserv-iptables service
+  systemd:
+    daemon_reload: yes
+    name: ocserv-iptables.service
+    enabled: yes
+    state: started

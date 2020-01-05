@@ -1,0 +1,27 @@
+---
+# Tor download variables
+# ----------------------
+
+# Windows
+tor_browser_bundle_windows_filename: "{{ tor_windows_filename_base }}_{{ locale }}.exe"
+tor_browser_bundle_windows_sig_filename: "{{ tor_browser_bundle_windows_filename }}.asc"
+
+# macOS
+tor_browser_bundle_macos_filename: "{{ tor_macos_filename_base }}_{{ locale }}.dmg"
+tor_browser_bundle_macos_sig_filename: "{{ tor_browser_bundle_macos_filename }}.asc"
+
+# Linux 32bit
+tor_browser_bundle_linux32_filename: "{{ tor_linux32_filename_base }}_{{ locale }}.tar.xz"
+tor_browser_bundle_linux32_sig_filename: "{{ tor_browser_bundle_linux32_filename }}.asc"
+
+# Linux 64bit
+tor_browser_bundle_linux64_filename: "{{ tor_linux64_filename_base }}_{{ locale }}.tar.xz"
+tor_browser_bundle_linux64_sig_filename: "{{ tor_browser_bundle_linux64_filename }}.asc"
+
+tor_signer_keyid: "D9FF06E2"
+
+tor_download_files:
+  - { "file": "{{ tor_browser_bundle_windows_filename }}", "sig": "{{ tor_browser_bundle_windows_sig_filename }}" }
+  - { "file": "{{ tor_browser_bundle_macos_filename }}", "sig": "{{ tor_browser_bundle_macos_sig_filename  }}" }
+  - { "file": "{{ tor_browser_bundle_linux32_filename }}", "sig": "{{ tor_browser_bundle_linux32_sig_filename  }}" }
+  - { "file": "{{ tor_browser_bundle_linux64_filename }}", "sig": "{{ tor_browser_bundle_linux64_sig_filename  }}" }

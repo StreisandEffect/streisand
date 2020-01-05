@@ -1,0 +1,28 @@
+---
+# Tor mirror variables
+# --------------------
+tor_mirror_location: "{{ streisand_mirror_location }}/tor"
+
+tor_windows_filename_base: "torbrowser-install-{{ tor_browser_bundle_version }}"
+tor_windows_filename_template: "{{ tor_windows_filename_base }}_locale.exe"
+tor_windows_sig_filename_template: "{{ tor_windows_filename_template }}.asc"
+tor_windows_href: "{{ tor_mirror_href_base }}/{{ tor_windows_filename_template }}"
+tor_windows_sig_href: "{{ tor_mirror_href_base }}/{{ tor_windows_sig_filename_template }}"
+
+tor_macos_filename_base: "TorBrowser-{{ tor_browser_bundle_version }}-osx64"
+tor_macos_filename_template: "{{ tor_macos_filename_base }}_locale.dmg"
+tor_macos_sig_filename_template: "{{ tor_macos_filename_template }}.asc"
+tor_macos_href: "{{ tor_mirror_href_base }}/{{ tor_macos_filename_template }}"
+tor_macos_sig_href: "{{ tor_mirror_href_base }}/{{ tor_macos_sig_filename_template }}"
+
+tor_linux32_filename_base: "tor-browser-linux32-{{ tor_browser_bundle_version }}"
+tor_linux32_filename_template: "{{ tor_linux32_filename_base }}_locale.tar.xz"
+tor_linux32_sig_filename_template: "{{ tor_linux32_filename_template }}.asc"
+tor_linux32_href: "{{ tor_mirror_href_base }}/{{ tor_linux32_filename_template }}"
+tor_linux32_sig_href: "{{ tor_mirror_href_base }}/{{ tor_linux32_sig_filename_template }}"
+
+tor_linux64_filename_base: "tor-browser-linux64-{{ tor_browser_bundle_version }}"
+tor_linux64_filename_template: "{{ tor_linux64_filename_base }}_locale.tar.xz"
+tor_linux64_sig_filename_template: "{{ tor_linux64_filename_template }}.asc"
+tor_linux64_href: "{{ tor_mirror_href_base }}/{{ tor_linux64_filename_template }}"
+tor_linux64_sig_href: "{{ tor_mirror_href_base }}/{{ tor_linux64_sig_filename_template }}"

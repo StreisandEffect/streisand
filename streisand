@@ -6,54 +6,124 @@ set -e
 
 echo -e "\n\033[38;5;255m\033[48;5;234m\033[1m  S T R E I S A N D  \033[0m\n"
 
-# Update the PYTHONPATH to include the monkey patch directory for Streisand
-# workarounds packaged as Python monkey patches
+# This is where Ansible looks for local modules. Disable it, in the
+# interests of consistency between installs.
+export ANSIBLE_LIBRARY=
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
-export PYTHONPATH="$SCRIPT_DIR/monkey:$PYTHONPATH"
+
+DEFAULT_SITE_VARS="$SCRIPT_DIR/global_vars/default-site.yml"
+GLOBAL_VARS="$SCRIPT_DIR/global_vars/globals.yml"
+HOME_DIR="$HOME/.streisand"
+SITE_VARS="$HOME_DIR/site.yml"
 
 # Include the check_ansible function from ansible_check.sh
 source util/ansible_check.sh
 
+function init_homedir() {
+  if [ ! -d "$HOME_DIR" ]; then
+    mkdir "$HOME_DIR"
+    echo "Created new Streisand home directory: $HOME_DIR"
+  fi
+  if [ ! -f "$SITE_VARS" ]; then
+    cp "$DEFAULT_SITE_VARS" "$SITE_VARS"
+    echo "Created new Streisand site vars file: $SITE_VARS"
+  fi
+}
+
 # check_python checks whether the 'python' interpreter is Python 2 or Python 3.
 # If it is Python 2 then the inventory file is updated to set the
 # ansible_interpretter host var explicitly
-function check_python() {
-  local PYTHON_VERSION
-  PYTHON_VERSION="$(python --version 2>/dev/null)"
+# function check_python() {
+#     return 0
+#   local PYTHON_VERSION
+#   PYTHON_VERSION="$(python --version 2>/dev/null)"
+#
+#   if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 3\..* ]]; then
+#     local INVENTORY_DIR="$SCRIPT_DIR/inventories/"
+#     for INV_FILE in "$INVENTORY_DIR"/*; do
+#       sed "s|=python\$|=$(type python)|" "$INV_FILE" > "$INV_FILE.new"
+#       mv "$INV_FILE.new" "$INV_FILE"
+#       git -C "$INVENTORY_DIR" update-index --assume-unchanged "$INV_FILE" 2>/dev/null || true
+#     done
+#   fi
+# }
 
-  if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 2\..* ]]; then
-    local INVENTORY_DIR="$SCRIPT_DIR/inventories/"
-    for INV_FILE in $INVENTORY_DIR/*; do
-      sed 's/=python$/=python2/' "$INV_FILE" > "$INV_FILE.new"
-      mv "$INV_FILE.new" "$INV_FILE"
-      git -C "$INVENTORY_DIR" update-index --assume-unchanged "$INV_FILE" 2>/dev/null || true
-    done
+# validate runs the validation role to check the consistency of the Streisand
+# service vars (e.g. that at least one service is enabled after customization of
+# $SITE_VARS).
+function validate() {
+  local NEW_SERVER_PROVISIONING=$1
+  if [ -z "${NEW_SERVER_PROVISIONING}" ]; then
+    NEW_SERVER_PROVISIONING=true
   fi
+  
+  echo; echo; ansible-playbook \
+    --extra-vars="@$GLOBAL_VARS" \
+    --extra-vars="@$DEFAULT_SITE_VARS" \
+    --extra-vars="@$SITE_VARS" \
+    --extra-vars="streisand_new_server_provisioning=$NEW_SERVER_PROVISIONING" \
+    playbooks/validate.yml
 }
 
-# check_ssh_key checks that there is a `~/.ssh/id_rsa.pub` file present.
-# Streisand requires this key be present.
-function check_ssh_key() {
-  local STREISAND_SSH_KEY="$HOME/.ssh/id_rsa.pub"
+# customize prompts the user to decide if they want to customize the Streisand
+# installation. If the user wishes, the playbooks/customize.yml role is used to
+# change the base installation by rewriting the $SITE_VARS file.
+function customize() {
+  read -r -p "
+Do you wish to customize which services Streisand will install?
+By saying 'no' Streisand will use the settings configured in $SITE_VARS
 
-  if [ ! -f "$STREISAND_SSH_KEY" ]
-  then
-    echo "
-Streisand requires a RSA SSH key be present at '$HOME/.ssh/id_rsa.pub'.
-Please create this keypair by running 'ssh-keygen'"
-    exit 1
-  fi
+Press enter to customize your installation: " confirm
+  case "$confirm" in
+    no) echo; echo "Installing Streisand services specified in $SITE_VARS";;
+     *) echo; echo "Confirmed. Customizing Streisand services.";
+         # NOTE(@cpu): We don't pass the other `--extra-vars` here because the
+         # customize `vars_prompt` will only happen if the vars aren't already
+         # set. If you pass the site/defaults in no prompting will happen.
+         echo; echo; ansible-playbook \
+           --extra-vars="@$GLOBAL_VARS" \
+           playbooks/customize.yml;;
+  esac
 }
 
 # run_genesis invokes the genesis playbook file specified by the first argument
-# to the function, or `streisand.yml` if none is provided. It uses the default
-# `inventory` file from the inventories directory as the Ansible inventory.
+# to the function, or `streisand.yml` if none is provided. It uses the second
+# argument to the function as the inventory or `inventories/inventory` if none
+# is provided.
 function run_genesis() {
   local GENESIS_PLAYBOOK=$1
+  local ASK_BECOME=""
   if [ -z "${GENESIS_PLAYBOOK}" ]; then
     GENESIS_PLAYBOOK=streisand.yml
   fi
-  echo; echo; ansible-playbook -i inventories/inventory "playbooks/$GENESIS_PLAYBOOK"
+  local GENESIS_INVENTORY=$2
+  if [ -z "${GENESIS_INVENTORY}" ]; then
+    GENESIS_INVENTORY=inventories/inventory
+  fi
+  # Customize the Streisand services that will be installed
+  customize
+  # Ensure that the customization hasn't resulted in something inconsistent
+  # NEW_SERVER_PROVISIONING can be False or True (0 or 1), tests if we need 
+  # to check existence of SSH public key
+  if [ "$GENESIS_PLAYBOOK" != "existing-server.yml" ] && [ "$GENESIS_PLAYBOOK" != "localhost.yml" ]; then
+    validate true
+  else
+    validate false
+  fi
+  
+  if [ -n "${SSH_USER}" ] && [ "$SSH_USER" != "root" ]; then
+    ASK_BECOME="--ask-become-pass"
+  fi
+  
+  # Run the specified genesis playbook with the specified Ansible inventory
+  echo; echo; ansible-playbook \
+    -i $GENESIS_INVENTORY \
+    --extra-vars="@$GLOBAL_VARS" \
+    --extra-vars="@$DEFAULT_SITE_VARS" \
+    --extra-vars="@$SITE_VARS" \
+    $ASK_BECOME \
+    "playbooks/$GENESIS_PLAYBOOK"
 }
 
 # be_careful_friend asks you to pay attention because you're about to do
@@ -78,8 +148,7 @@ ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
 
 Please enter the word 'streisand' to continue: "
 
-  check_python
-  echo; echo; ansible-playbook -i inventories/inventory-local-provision playbooks/localhost.yml
+  run_genesis localhost.yml inventories/inventory-local-provision
 }
 
 function existing_server() {
@@ -105,25 +174,21 @@ Please enter the word 'streisand' to continue: "
   # Create an inventory file string on the fly
   read -r -d '' TEMPL << EOF || true
 [localhost]
-localhost ansible_connection=local ansible_python_interpreter=python
+localhost ansible_connection=local ansible_python_interpreter=python3
 [streisand-host]
 $SERVER_IP ansible_user=$SSH_USER
 EOF
 
-  # Test a SSH connection to the server using the key Streisand assumes will be
-  # used for server access
-  ssh -i ~/.ssh/id_rsa "$SSH_USER@$SERVER_IP" -o BatchMode=yes -t true
-
   # Create the inventory file
   echo "$TEMPL" > inventories/inventory-existing
-  check_python
   # Invoke the Streisand playbook on the existing server inventory
-  echo; echo; ansible-playbook -i inventories/inventory-existing playbooks/existing-server.yml
+  run_genesis existing-server.yml inventories/inventory-existing
 }
 
 # Make sure the system is ready for the Streisand playbooks
+init_homedir
+# check_python
 check_ansible
-check_ssh_key
 
 # Figure out which genesis role to invoke
 read -r -p "Which provider are you using?
@@ -133,7 +198,7 @@ read -r -p "Which provider are you using?
   4. Google
   5. Linode
   6. Rackspace
-  7. Localhost (Advanced)
+  7. localhost (Advanced)
   8. Existing Server (Advanced)
 : " reply
 

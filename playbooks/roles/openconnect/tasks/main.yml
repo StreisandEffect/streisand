@@ -1,35 +1,14 @@
 ---
-- name: Install the ocserv dependencies
-  apt:
-    name: "{{ item }}"
-  with_items: "{{ ocserv_dependencies }}"
+# Download, compile and install ocserv and its dependencies
+- import_tasks: install.yml
 
-- name: Retrieve the ocserv source code
-  get_url:
-    # This CDN mirrors the ocserv source code, and helps
-    # mitigate connection errors that were occurring when
-    # using the project's official download location.
-    url: https://d25kfp60e9u1dw.cloudfront.net/{{ ocserv_source_filename }}
-    dest: "{{ ocserv_source_location }}"
-    checksum: "{{ ocserv_checksum }}"
+- name: Create ocserv's PAM control
+  copy:
+    src: ocserv-pam
+    dest: /etc/pam.d/ocserv
     owner: root
     group: root
     mode: 0644
-
-- name: Extract the ocserv source code
-  unarchive:
-    copy: no
-    src: "{{ ocserv_source_location }}"
-    dest: /usr/local/src
-    owner: root
-    group: root
-    creates: "{{ ocserv_compilation_directory }}/README.md"
-
-- name: Compile and install ocserv
-  shell: ./configure && make -j {{ ansible_processor_cores }} && make install
-  args:
-    chdir: "{{ ocserv_compilation_directory }}"
-    creates: "{{ ocserv_compilation_directory }}/config.log"
 
 - name: Create the ocserv configuration directory
   file:
@@ -39,100 +18,67 @@
     mode: 0750
     state: directory
 
-- name: Generate the ocserv init script
-  template:
-    src: ocserv-init.j2
-    dest: /etc/init.d/ocserv
-    owner: root
-    group: root
-    mode: 0755
+- include_role:
+    name: certificates
+  vars:
+    ca_path:            "{{ ocserv_path }}"
+    tls_ca:             "{{ ocserv_ca }}"
+    tls_client_path:    "{{ ocserv_path }}"
+    tls_key_ou:         "{{ ocserv_key_ou }}"
+    vpn_name:           "ocserv"
+    generate_ca_server: yes
+    generate_client:    yes
+    generate_pkcs:      yes
+    tls_server_common_name_file: "{{ ocserv_server_common_name_file }}"
+    tls_sans:
+      - "{{ streisand_ipv4_address }}"
 
-- name: Enable the ocserv init script so the service will start at boot
-  command: update-rc.d ocserv defaults
-  args:
-    creates: /etc/rc0.d/K20ocserv
+- name: Base64 encode the client PKCS12 file(s)
+  command: "openssl base64 -in {{ ocserv_path }}/{{ client_name.stdout }}/{{ client_name.stdout }}.p12"
+  register: ocserv_clients_base64
+  changed_when: False
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
 
-- name: Generate the CA template file
+- name: Generate a UUID for .mobileconfig client PKCS12 certificate
+  command: uuid -v4
+  register: ocserv_client_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig vpn payload identifier
+  command: uuid -v4
+  register: ocserv_payload_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig config payload identifier
+  command: uuid -v4
+  register: ocserv_config_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig global identifier
+  command: uuid -v4
+  register: ocserv_global_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate the iOS client mobileconfig file(s)
   template:
-    src: ca.tmpl.j2
-    dest: "{{ ocserv_ca_template_file }}"
+    src: client.mobileconfig.j2
+    dest: "{{ ocserv_path }}/{{ client_content[0].stdout }}/{{ client_content[0].stdout }}.mobileconfig"
     owner: root
     group: root
     mode: 0600
-
-- name: Generate the CA key
-  command: certtool --generate-privkey --outfile {{ ocserv_ca_key_file }}
-  args:
-    creates: "{{ ocserv_ca_key_file }}"
-
-- name: Generate the self-signed CA certificate
-  command: certtool --generate-self-signed --load-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_ca_template_file }} --outfile {{ ocserv_ca_certificate_file }}
-  args:
-    creates: "{{ ocserv_ca_certificate_file }}"
-
-- name: Generate the server template file
-  template:
-    src: server.tmpl.j2
-    dest: "{{ ocserv_server_template_file }}"
-    owner: root
-    group: root
-    mode: 0600
-
-- name: Generate the server key
-  command: certtool --generate-privkey --outfile {{ ocserv_server_key_file }}
-  args:
-    creates: "{{ ocserv_server_key_file }}"
-
-- name: Generate the server certificate
-  command: certtool --generate-certificate --load-privkey {{ ocserv_server_key_file }} --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_server_template_file }} --outfile {{ ocserv_server_certificate_file }}
-  args:
-    creates: "{{ ocserv_server_certificate_file }}"
-
-- name: Generate the client template file
-  template:
-    src: client.tmpl.j2
-    dest: "{{ ocserv_client_template_file }}"
-    owner: root
-    group: root
-    mode: 0600
-
-- name: Generate the client key
-  command: certtool --generate-privkey --outfile {{ ocserv_client_key_file }}
-  args:
-    creates: "{{ ocserv_client_key_file }}"
-
-- name: Generate the client certificate
-  command: certtool --generate-certificate --load-privkey {{ ocserv_client_key_file }} --load-ca-certificate {{ ocserv_ca_certificate_file }} --load-ca-privkey {{ ocserv_ca_key_file }} --template {{ ocserv_client_template_file }} --outfile {{ ocserv_client_certificate_file }}
-  args:
-    creates: "{{ ocserv_client_certificate_file }}"
-
-- name: "Generate a random password that will be used during the PKCS #12 conversion"
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /-/g' > {{ ocserv_pkcs12_password_file }}
-  args:
-    creates: "{{ ocserv_pkcs12_password_file }}"
-
-- name: "Set permissions on the PKCS #12 password file"
-  file:
-    path: "{{ ocserv_pkcs12_password_file }}"
-    owner: root
-    group: root
-    mode: 0600
-
-- name: "Register the PKCS #12 password"
-  command: cat {{ ocserv_pkcs12_password_file }}
-  register: ocserv_pkcs12_password
-
-- name: "Convert the key and certificate into PKCS #12 format"
-  expect:
-    command: certtool --to-p12 --load-privkey {{ ocserv_client_key_file }} --pkcs-cipher 3des-pkcs12 --load-certificate {{ ocserv_client_certificate_file }} --outfile {{ ocserv_client_pkcs12_file }} --outder
-    responses:
-      "Enter a name for the key": "{{ ocserv_client_name }}"
-      "Enter password": "{{ ocserv_pkcs12_password.stdout }}"
-      "Confirm password": "{{ ocserv_pkcs12_password.stdout }}"
-    creates: "{{ ocserv_client_pkcs12_file }}"
+  with_together:
+    - "{{ vpn_client_names.results }}"
+    - "{{ ocserv_clients_base64.results }}"
+    - "{{ vpn_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "client_content"
+    label: "{{ client_content[0].item }}"
 
 - name: Generate a random ocserv password
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 4 | xargs | sed -e 's/ /-/g' > {{ ocserv_password_file }}
+  shell: "{{ streisand_word_gen.psk | trim }} > {{ ocserv_password_file }}"
   args:
     creates: "{{ ocserv_password_file }}"
 
@@ -146,6 +92,7 @@
 - name: Register the ocserv password
   command: cat {{ ocserv_password_file }}
   register: ocserv_password
+  changed_when: False
 
 - name: Create an ocpasswd credentials file
   expect:
@@ -162,35 +109,31 @@
     owner: root
     group: root
     mode: 0600
-  notify: Restart ocserv
 
-- name: Enable NAT
-  command: "{{ ocserv_firewall_rule }}"
-
-- name: Create the OpenConnect/AnyConnect Gateway directory
-  file:
-    path: "{{ ocserv_gateway_location }}"
-    owner: www-data
-    group: www-data
-    mode: 0750
-    state: directory
-
-- name: Copy the CA certificate file to the OpenConnect Gateway directory
-  command: cp {{ ocserv_ca_certificate_file }} {{ ocserv_gateway_location }}
-  args:
-    creates: "{{ ocserv_gateway_location }}/ca-cert.pem"
-
-- name: "Copy the client PKCS #12 file to the OpenConnect Gateway directory"
-  command: cp {{ ocserv_client_pkcs12_file }} {{ ocserv_gateway_location }}
-  args:
-    creates: "{{ ocserv_gateway_location }}/client.p12"
-
-- name: Generate the Markdown OpenConnect/AnyConnect instructions
+- name: Generate the ocserv systemd service file
   template:
-    src: instructions{{ item.value.file_suffix }}.md.j2
-    dest: "{{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
+    src: ocserv.service.j2
+    dest: /etc/systemd/system/ocserv.service
+    mode: 0644
 
-- name: Convert the Markdown OpenConnect/AnyConnect instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ ocserv_gateway_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
+- name: Stop and disable ocserv.socket
+  systemd:
+    name: ocserv.socket
+    state: stopped
+    enabled: no
+
+- name: Enable the ocserv service
+  systemd:
+    daemon_reload: yes
+    name: ocserv.service
+    enabled: yes
+    state: restarted
+
+# Set up the openconnect firewall rules
+- import_tasks: firewall.yml
+
+# Generate Gateway documentation
+- import_tasks: docs.yml
+
+# Mirror the OpenConnect clients
+- import_tasks: mirror.yml

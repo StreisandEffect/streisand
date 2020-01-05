@@ -1,0 +1,55 @@
+---
+- name: Add the SSH forwarding user and generate a key
+  user:
+    name: forward
+    generate_ssh_key: yes
+    ssh_key_bits: "{{ ssh_rsa_host_key_size }}"
+    ssh_key_comment: streisand
+    home: "{{ forward_location }}"
+    shell: /bin/bash
+    comment: "SSH Forwarding User"
+
+- name: Register the forwarding user's public SSH key
+  command: cat {{ forward_location }}/.ssh/id_rsa.pub
+  register: ssh_forward_key
+  changed_when: False
+
+- name: Authorize the forward users's key for accessing the forward user
+  authorized_key:
+    user: forward
+    key: 'command="{{ ssh_force_command }}" {{ ssh_forward_key.stdout }}'
+
+- name: Add the sshuttle user and generate a key
+  user:
+    name: sshuttle
+    generate_ssh_key: yes
+    ssh_key_bits: "{{ ssh_rsa_host_key_size }}"
+    ssh_key_comment: streisand-sshuttle
+    home: "{{ sshuttle_location }}"
+    shell: /bin/bash
+    comment: "sshuttle User"
+  when: streisand_sshuttle_enabled
+
+- name: Register the sshuttle user's public SSH key
+  command: cat {{ sshuttle_location }}/.ssh/id_rsa.pub
+  register: sshuttle_forward_key
+  changed_when: False
+  when: streisand_sshuttle_enabled
+
+- name: Authorize the sshuttle users's key for accessing the sshuttle user
+  authorized_key:
+    user: sshuttle
+    # NOTE(@cpu): Unlike the forward user the sshuttle user does not have
+    # a ssh_force_comamnd in the ssh authorized keys file. This means the
+    # sshuttle user is a *full* shell user and can SSH in. They don't have root
+    # but this is a more significant foothold on a server than is offered by the
+    # ssh fowrarding user. This is why by default Streisand no longer enables
+    # sshuttle by default.
+    key: '{{ ssh_forward_key.stdout }}'
+  when: streisand_sshuttle_enabled
+
+# Generate the gateway documentation for the SSH forward user
+- import_tasks: docs.yml
+
+# Mirror Putty for SSH forwarding from Windows
+- import_tasks: mirror.yml

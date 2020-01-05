@@ -1,15 +1,33 @@
 ---
 - name: Ensure that BIND is not installed in order to avoid conflicts with dnsmasq
   apt:
-    name: bind9
+    package: bind9
     state: absent
 
 - name: Install dnsmasq
   apt:
-    name: dnsmasq
+    package: dnsmasq
 
 - name: Generate the dnsmasq configuration file
   template:
     src: dnsmasq.conf.j2
     dest: /etc/dnsmasq.conf
   notify: Restart dnsmasq
+
+- name: Create the dnsmasq systemd drop-in configuration directory
+  file:
+    path: "{{ dnsmasq_systemd_service_path }}"
+    state: directory
+
+- name: Generate the dnsmasq systemd drop-in service file
+  template:
+    src: dnsmasq.service.j2
+    dest: "{{ dnsmasq_systemd_service_path }}/10-restart-failure.conf"
+    mode: 0644
+
+- name: Enable the dnsmasq service
+  systemd:
+    daemon_reload: yes
+    name: dnsmasq.service
+    enabled: yes
+    state: restarted

@@ -1,0 +1,18 @@
+extends: default
+
+rules:
+  # Presently there are a large number of files that break the line-length
+  # limit.This changes the limit to a warning until we are ready to try and
+  # tackle these legacy files.
+  line-length:
+    max: 280
+    level: warning
+  # We allow a few rules for now to accept the "pretty" layout existing files
+  # use. It may be worth revisiting these in the future.
+  # Accept:
+  # * "too many spaces after colon"
+  # * "too many spaces inside braces"
+  # * "too many spaces after comma"
+  colons: disable
+  braces: disable
+  commas: disable

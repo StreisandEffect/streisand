@@ -4,7 +4,10 @@
 
 # Settings for the provisioning process
 [localhost]
-localhost ansible_connection=local ansible_python_interpreter=python
+
+# This must specify the Python interpreter when provisioning, because
+# "python" may be in, for example, a virtualenv without python-apt.
+localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python
 
 # Settings for the Streisand host that will be provisioned
 [streisand-host]

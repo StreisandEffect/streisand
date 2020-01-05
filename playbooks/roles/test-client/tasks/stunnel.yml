@@ -1,0 +1,80 @@
+---
+
+# Import the Streisand OpenVPN playbook vars
+- include_vars: "../../openvpn/vars/main.yml"
+
+- name: "Install stunnel and openvpn"
+  apt:
+    package:
+      - "stunnel"
+      - "openvpn"
+
+- name: "Ensure the stunnel service is stopped and disabled"
+  # We need to stop the stunnel service & disable it. By default the Ubuntu 16.04
+  # stunnel package enables & boots the service after being installed.
+  service:
+    name: stunnel4
+    state: stopped
+    enabled: no
+
+- name: "Remove existing stunnel test state from client if required"
+  file:
+    path: "{{ stunnel_dir }}"
+    state: absent
+  with_items:
+    - "{{ openvpn_profile_addons }}"
+    - "{{ openvpn_pid_file }}"
+    - "{{ stunnel_dir }}"
+
+- name: "Create stunnel test dir"
+  file:
+    path: "{{ stunnel_dir }}"
+    state: directory
+
+- name: "Download stunnel client configuration from the Streisand server gateway"
+  get_url:
+    url: "{{ gateway_stunnel_conf }}"
+    dest: "{{ stunnel_conf }}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Add a pidfile option to the client configuration"
+  lineinfile:
+    path: "{{ stunnel_conf }}"
+    line: "pid = {{ stunnel_pid_file }}"
+    state: present
+    insertbefore: BOF
+
+- name: "Generate a file with OpenVPN commands required to customize the profile for the test-client"
+  template:
+    src: "openvpn-profile-addons.j2"
+    dest: "{{ openvpn_profile_addons }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: "Start the stunnel daemon for testing"
+  block:
+    - name: "Start the stunnel daemon"
+      command: "stunnel4 {{ stunnel_conf }}"
+
+    - name: "Read the stunnel daemon PID file into a var"
+      command: "cat {{ stunnel_pid_file }}"
+      register: stunnel_pid_output
+      changed_when: False
+
+    - name: "Download and test each OpenVPN stunnel profile"
+      include_tasks: openvpn-test.yml
+      vars:
+        openvpn_profile_type: "stunnel"
+
+    - name: "Stop the stunnel daemon"
+      command: "kill -INT {{ stunnel_pid_output.stdout }}"
+
+  rescue:
+    - name: "kill stunnel instances"
+      command: "killall stunnel4"
+      ignore_errors: "yes"

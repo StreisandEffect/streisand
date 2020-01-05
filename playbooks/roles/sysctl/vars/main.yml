@@ -1,0 +1,29 @@
+---
+sysctl_values:
+  - { key: kernel.sysrq, value: 0 }
+  - { key: kernel.core_uses_pid, value: 1 }
+  - { key: net.ipv4.tcp_syncookies, value: 1 }
+  - { key: kernel.msgmnb, value: 65536 }
+  - { key: kernel.msgmax, value: 65536 }
+  - { key: kernel.shmmax, value: 68719476736 }
+  - { key: kernel.shmall, value: 4294967296 }
+  - { key: net.ipv4.conf.all.accept_source_route, value: 0 }
+  - { key: net.ipv4.conf.default.accept_source_route, value: 0 }
+  - { key: net.ipv4.conf.all.log_martians, value: 1 }
+  - { key: net.ipv4.conf.default.log_martians, value: 1 }
+  - { key: net.ipv4.conf.all.accept_redirects, value: 0 }
+  - { key: net.ipv4.conf.default.accept_redirects, value: 0 }
+  - { key: net.ipv4.conf.all.send_redirects, value: 0 }
+  - { key: net.ipv4.conf.default.send_redirects, value: 0 }
+  - { key: net.ipv4.conf.all.rp_filter, value: 0 }
+  - { key: net.ipv4.conf.default.rp_filter, value: 0 }
+  - { key: net.ipv4.icmp_echo_ignore_broadcasts, value: 1 }
+  - { key: net.ipv4.icmp_ignore_bogus_error_responses, value: 1 }
+  - { key: net.ipv4.conf.all.secure_redirects, value: 0 }
+  - { key: net.ipv4.conf.default.secure_redirects, value: 0 }
+  - { key: kernel.randomize_va_space, value: 1 }
+  - { key: net.core.wmem_max, value: 12582912 }
+  - { key: net.core.rmem_max, value: 12582912 }
+  - { key: fs.suid_dumpable, value: 0 }
+  - { key: fs.protected_hardlinks, value: 1 }
+  - { key: fs.protected_symlinks, value: 1 }

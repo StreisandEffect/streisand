@@ -1,7 +1,11 @@
 ---
-- name: Get the default SSH key
-  command: cat ~/.ssh/id_rsa.pub
+- set_fact:
+    streisand_genesis_role: "genesis-google"
+
+- name: "Get the {{ streisand_ssh_private_key }}.pub contents"
+  command: "cat {{ streisand_ssh_private_key }}.pub"
   register: ssh_key
+  changed_when: False
 
 - name: Create the GCE instance
   gce:
@@ -14,7 +18,7 @@
     service_account_email: "{{ gce_service_account_email }}"
     image: "{{ gce_image }}"
     tags: "{{ gce_server_name }}"
-    metadata: '{"sshKeys":"root:{{ ssh_key.stdout }}"}'
+    metadata: '{"ssh-keys":"ubuntu:{{ ssh_key.stdout }}"}'
   register: streisand_server
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections

@@ -8,8 +8,7 @@ persist-tun
 remote-cert-tls server
 verify-x509-name {{ openvpn_server_common_name.stdout }} name
 tls-version-min 1.2
-comp-lzo
-key-direction 1
+compress
 verb 3
 route {{ streisand_ipv4_address }} 255.255.255.255 net_gateway
 
@@ -25,6 +24,6 @@ route {{ streisand_ipv4_address }} 255.255.255.255 net_gateway
 {{ item[2].stdout }}
 </key>
 
-<tls-auth>
+<tls-crypt>
 {{ openvpn_hmac_firewall_contents.stdout }}
-</tls-auth>
+</tls-crypt>

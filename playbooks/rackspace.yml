@@ -45,6 +45,7 @@
   roles:
     - genesis-rackspace
 
-
-- include: cloud-status.yml
-- include: streisand.yml
+- import_playbook: ssh-setup.yml
+- import_playbook: cloud-status.yml
+- import_playbook: streisand.yml
+...

@@ -1,0 +1,42 @@
+---
+- name: Create the WireGuard Gateway directory
+  file:
+    path: "{{ wireguard_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- name: Copy the client configuration files to the WireGuard Gateway directory
+  command: "cp {{ wireguard_client_path }}/{{ client_name.stdout }}/client.conf {{ wireguard_gateway_location }}/{{ client_name.stdout }}.conf"
+  args:
+    creates: "{{ wireguard_gateway_location }}/{{ client_name.stdout }}.conf"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Generate the client configuration QR codes in the WireGuard Gateway directory
+  shell: "qrencode -s 6 -o {{ wireguard_gateway_location }}/{{ client_name.stdout }}.png < {{ wireguard_gateway_location }}/{{ client_name.stdout }}.conf"
+  args:
+    creates: "{{ wireguard_gateway_location }}/{{ client_name.stdout }}.png"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Copy the client OpenWrt configuration fragments to the WireGuard Gateway directory
+  command: "cp {{ wireguard_client_path }}/{{ client_name.stdout }}/client-openwrt.txt {{ wireguard_gateway_location }}/{{ client_name.stdout }}-openwrt.txt"
+  args:
+    creates: "{{ wireguard_gateway_location }}/{{ client_name.stdout }}-openwrt.txt"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "WireGuard"
+    i18n_location: "{{ wireguard_gateway_location }}"
+    input_template_name: "instructions"

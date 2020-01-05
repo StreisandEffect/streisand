@@ -6,49 +6,17 @@
     state: present
   when: ansible_virtualization_type != 'lxc'
 
-- name: Install the shadowsocks-libev dependencies
+- name: Add the Shadowsocks PPA
+  apt_repository:
+    repo: 'ppa:max-c-lv/shadowsocks-libev'
+  register: shadowsocks_add_apt_repository
+  until: not shadowsocks_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
+
+- name: Install shadowsocks-libev
   apt:
-    name: "{{ item }}"
-    install_recommends: no
-  with_items: "{{ shadowsocks_dependencies }}"
-
-- name: Clone the shadowsocks-libev source code at tag {{ shadowsocks_version }}
-  git:
-    repo: "https://github.com/shadowsocks/shadowsocks-libev.git"
-    dest: "{{ shadowsocks_compilation_directory }}"
-    version: "v{{shadowsocks_version}}"
-
-- name: Update the shadowsocks-libev source code submodules
-  command: git submodule update --init --recursive
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    # if one of the submodules (libbloom) has been populated we assume all of
-    # the submodules were updated.
-    creates: "{{ shadowsocks_compilation_directory }}/libbloom/Makefile.am"
-
-- name: Autogen shadowsocks-libev {{ shadowsocks_version }} source
-  command: ./autogen.sh
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    creates: "{{ shadowsocks_compilation_directory }}/configure"
-
-- name: Configure shadowsocks-libev {{ shadowsocks_version }} source
-  command: ./configure {{ shadowsocks_configure_flags }}
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    creates: "{{ shadowsocks_compilation_directory }}/Makefile"
-
-- name: Compile shadowsocks-libev {{ shadowsocks_version }} source
-  command: make -j{{ ansible_processor_cores }}
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    creates: "{{ shadowsocks_compilation_directory }}/src/ss-server"
-
-- name: Install shadowsocks-libev {{ shadowsocks_version }} binaries
-  command: make install
-  args:
-    chdir: "{{ shadowsocks_compilation_directory }}"
-    creates: "/usr/local/bin/ss-server"
+    package: "shadowsocks-libev"
 
 - name: Create the shadowsocks-libev config directory
   file:
@@ -60,15 +28,6 @@
     # file and config file are not
     mode: 0755
     state: directory
-
-- name: Copy the shadowsocks-libev systemd service in place
-  copy:
-    src: "{{ shadowsocks_compilation_directory }}/debian/shadowsocks-libev.service"
-    dest: "/lib/systemd/system/shadowsocks-libev.service"
-    # Using remote_src=true since we are copying files from the remote host to
-    # another place on the remote host. NOTE: requires Ansible 2.0+
-    remote_src: true
-    mode: 0644
 
 - name: Populate the shadowsocks-libev systemd defaults
   template:
@@ -91,9 +50,11 @@
 - name: Register Shadowsocks password
   command: cat {{ shadowsocks_password_file }}
   register: shadowsocks_password
+  changed_when: False
 
-# Add simple-obfs task file
-- include: simple-obfs.yml
+# Add V2ray support
+- import_tasks: v2ray.yml
+  when: streisand_shadowsocks_v2ray_enabled|bool
 
 - name: Generate Shadowsocks config file
   template:
@@ -103,11 +64,23 @@
     group: nogroup
     mode: 0640
 
+- name: Create the shadowsocks systemd configuration directory
+  file:
+    path: "{{ shadowsocks_systemd_service_path }}"
+    state: directory
+
+- name: Generate the nginx systemd service file
+  template:
+    src: shadowsocks-libev.service.j2
+    dest: "{{ shadowsocks_systemd_service_path }}/10-restart-failure.conf"
+    mode: 0644
+
 - name: Enable the Shadowsocks service so it starts at boot, and bring it up
   systemd:
-    name: shadowsocks-libev
+    name: shadowsocks-libev.service
+    daemon_reload: yes
     enabled: yes
-    state: started
+    state: restarted
 
 # For some providers (e.g. GCE/AWS) the streisand_ipv4_address != the
 # ansible_default_ipv4.address, and the Shadowsocks service is bound to the
@@ -130,25 +103,11 @@
         state: started
         timeout: 30
 
-- name: Create the Shadowsocks Gateway directory
-  file:
-    path: "{{ shadowsocks_gateway_location }}"
-    owner: www-data
-    group: www-data
-    mode: 0750
-    state: directory
+# Apply the Shadowsocks firewall rules
+- import_tasks: firewall.yml
 
-- name: Generate the Markdown Shadowsocks instructions
-  template:
-    src: instructions{{ item.value.file_suffix }}.md.j2
-    dest: "{{ shadowsocks_gateway_location }}/index{{ item.value.file_suffix }}.md"
-  with_dict: "{{ streisand_languages }}"
+# Generate the Shadowsocks gateway docs & client QR code
+- import_tasks: docs.yml
 
-- name: Convert the Markdown Shadowsocks instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ shadowsocks_gateway_location }}/index{{ item.value.file_suffix }}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ shadowsocks_gateway_location }}/index{{ item.value.file_suffix }}.html
-  with_dict: "{{ streisand_languages }}"
-
-- name: Generate the Shadowsocks QR code
-  # The ss:// URI format is documented here:
-  #   http://shadowsocks.org/en/config/quick-guide.html
-  shell: echo -n '{{ shadowsocks_encryption_method }}:{{ shadowsocks_password.stdout }}@{{ streisand_ipv4_address }}:{{ shadowsocks_server_port }}' | base64 --wrap=0 | sed 's/^/ss:\/\//' | qrencode -s 8 -o {{ shadowsocks_qr_code }}
+# Mirror the Shadowsocks clients
+- import_tasks: mirror.yml

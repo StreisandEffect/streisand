@@ -1,0 +1,67 @@
+---
+- name: "Generate the private keys for the CA and Server certificates"
+  command: openssl genrsa -out {{ item }}.key {{ tls_key_size }}
+  args:
+    chdir: "{{ ca_path }}"
+    creates: "{{ item }}.key"
+  with_items:
+    - ca
+    - server
+
+- name: Set the proper permissions on all the private keys
+  file:
+    path: "{{ ca_path }}"
+    recurse: yes
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Generate CA certificate
+  command: openssl req -nodes -batch -new -x509 -key {{ tls_ca }}.key -days {{ tls_days_valid }} -out {{ tls_ca }}.crt -subj "{{ tls_request_subject }}/CN=ca-certificate"
+  args:
+    creates: "{{ tls_ca }}.crt"
+
+- name: Generate a random server common name
+  shell: "{{ streisand_word_gen.long_identifier | trim }} > {{ tls_server_common_name_file }}"
+  args:
+    creates: "{{ tls_server_common_name_file }}"
+
+- name: Set permissions on the TLS server common name file
+  file:
+    path: "{{ tls_server_common_name_file }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Register the TLS server common name
+  command: cat "{{ tls_server_common_name_file }}"
+  register: tls_server_common_name
+  changed_when: False
+
+- name: Generate the OpenSSL configuration that will be used for the server certificate's req and ca commands
+  template:
+    src: openssl.cnf.j2
+    dest: "{{ ca_path }}/openssl.cnf"
+
+- name: Seed a blank database file that will be used when generating the Server's certificate
+  file:
+    path: "{{ ca_path }}/index.txt"
+    state: touch
+
+- name: Seed a serial file that will be used when generating the Server's certificate
+  copy:
+    content: "01"
+    dest: "{{ ca_path }}/serial"
+
+- name: Generate CSR for the Server
+  command: openssl req -batch -extensions server -new -key server.key -out server.csr -config {{ ca_path }}/openssl.cnf
+  args:
+    chdir: "{{ ca_path }}"
+    creates: server.csr
+
+- name: Generate certificate for the Server
+  command: openssl ca -batch -extensions server -in server.csr -out server.crt -config openssl.cnf
+  args:
+    chdir: "{{ ca_path }}"
+    creates: server.crt

@@ -3,19 +3,35 @@ enable-auth = "certificate"
 tcp-port = {{ ocserv_port }}
 udp-port = {{ ocserv_port }}
 run-as-user = nobody
-run-as-group = nogroup
+run-as-group = {{ ocserv_key_ou }}
 socket-file = {{ ocserv_socket_file }}
 server-cert = {{ ocserv_server_certificate_file }}
 server-key = {{ ocserv_server_key_file }}
 ca-cert = {{ ocserv_ca_certificate_file }}
 isolate-workers = true
+
+# The anyconnect client issues a bye and expects for the session to
+# be usable afterwards, however ocserv on a bye packet invalidates the
+# session. Use 'persistent-cookies = true' to force the server keep
+# these sessions even after disconnect.
+persistent-cookies = true
+
 keepalive = 32400
 dpd = 240
 mobile-dpd = 1800
 try-mtu-discovery = true
 cert-user-oid = 2.5.4.3
 cert-group-oid = 2.5.4.11
-tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-VERS-SSL3.0"
+
+# https://gnutls.org/manual/gnutls.html#Priority-Strings
+# SECURE192: All known to be secure ciphersuites that offer a security level 192-bit or more.
+# %SERVER_PRECEDENCE: The ciphersuite will be selected according to server priorities and not the client’s.
+# %LATEST_RECORD_VERSION: Use the latest TLS version record version in client hello.
+# -VERS-ALL: Disable all TLS/DTLS versions
+# +VERS-TLS1.2: Allow TLSv1.2
+# +VERS-DTLS1.2: Allow DLSv1.2
+tls-priorities = "SECURE192:%SERVER_PRECEDENCE:%LATEST_RECORD_VERSION:-VERS-ALL:+VERS-TLS1.2:+VERS-DTLS1.2"
+
 auth-timeout = 40
 min-reauth-time = 300
 max-ban-score = 50
@@ -33,7 +49,18 @@ ipv4-network = 192.168.1.0
 ipv4-netmask = 255.255.255.0
 ping-leases = false
 cisco-client-compat = true
+max-clients = {{ vpn_clients + 1 }}
+
+# Limit the number of identical clients (i.e., users connecting
+# multiple times). Unset or set to zero for unlimited. 
+max-same-clients = 1
+
+# Whether to tunnel all DNS queries via the VPN. This is the default
+# when a default route is set.
+tunnel-all-dns = true
 
 {% for item in upstream_dns_servers %}
 dns = {{ item }}
 {% endfor %}
+
+acct = pam

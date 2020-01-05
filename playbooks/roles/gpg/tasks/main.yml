@@ -1,0 +1,98 @@
+---
+- name: "Install GnuPG 2, dirmngr and gpgv2"
+  apt:
+    package:
+      - gnupg2
+      - dirmngr
+      - gpgv2
+
+- name: "Create the GPG directory"
+  file:
+    path: "{{ root_gpg_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+- name: "Create the Streisand GPG directory"
+  file:
+    path: "{{ streisand_gpg_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+- name: "Create the Streisand GPG keys directory"
+  file:
+    path: "{{ streisand_gpg_dir }}/keys"
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+- name: "Write the Streisand GPG dirmngr config"
+  template:
+    src: "dirmngr.conf.j2"
+    dest: "{{ root_gpg_dir }}/dirmngr.conf"
+    owner: root
+    group: root
+    mode: 0750
+
+- name: "Ensure a GPG agent is running"
+  command: "gpgconf --launch gpg-agent"
+
+- name: "Reload gpg-agent to pick up configuration changes"
+  command: "gpgconf --reload gpg-agent"
+
+# It turns out that "--reload" doesn't work on dirmngr.
+- name: "Kill any existing dirmngr"
+  command: "gpgconf --kill dirmngr"
+- name: "Start a new dirmngr with our config changes"
+  command: "gpgconf --launch dirmngr"
+
+- name: "Wait for the GPG agent and dirmngr control sockets"
+  wait_for:
+    path: "{{ root_gpg_dir }}/{{ item }}"
+    state: present
+    sleep: 5
+    timeout: 60
+  with_items:
+    - "S.dirmngr"
+    - "S.gpg-agent"
+
+- name: "Create the Streisand GPG keyring"
+  command: "gpg2 {{ streisand_default_gpg_flags }} --fingerprint"
+  args:
+    creates: "{{ streisand_gpg_keyring }}"
+
+- name: "Copy the bootstrap GPG public keys to the Streisand instance"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ streisand_gpg_dir }}/keys/{{ item }}"
+  with_items: "{{ streisand_bootstrap_gpg_keys }}"
+
+- name: "Import the bootstrap GPG public keys to the Streisand GPG keyring"
+  command: "gpg2 {{ streisand_default_gpg_flags }} --import {{ streisand_gpg_dir }}/keys/{{ item }}"
+  with_items: "{{ streisand_bootstrap_gpg_keys }}"
+
+- name: "Refresh the Streisand GPG keyring with keyserver information"
+  command: "gpg2 {{ streisand_default_gpg_flags }} {{ streisand_default_key_import_flags }} --refresh"
+  register: gpg2_refresh_result
+  until: "gpg2_refresh_result is success"
+  retries: 10
+  delay: 5
+  # NOTE(@cpu): We skip the keyring refresh in CI so that when the static keys
+  # in the repo become too stale to be used without successsful refresh the
+  # maintainers will notice failed builds and fix them by refreshing their own
+  # keyrings and updating the static repo keys until the build passes again.
+  when: not streisand_ci
+
+- name: "Set up a daily cronjob to refresh the Streisand GPG keyring"
+  template:
+    src: "streisand-gpg-refresh.j2"
+    dest: "/etc/cron.daily/streisand-gpg-refresh"
+    owner: root
+    group: root
+    mode: 0755
+  # There's no point installing a cronjob in CI
+  when: not streisand_ci

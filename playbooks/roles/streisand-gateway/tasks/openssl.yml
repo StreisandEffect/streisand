@@ -1,0 +1,96 @@
+- name: Make the necessary directories for the certificate authority
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
+  with_items:
+    - "{{ openssl_ca_base }}"
+    - "{{ openssl_ca_private_dir }}"
+    - "{{ openssl_ca_newcerts_dir }}"
+
+- name: Generate a local openssl.cnf
+  template:
+    src: openssl-local.cnf.j2
+    dest: "{{ openssl_ca_base }}/openssl-local.cnf"
+
+- name: Create private key and self-signed certificate for Nginx Certificate Authority.
+  command:
+    openssl req -new -nodes -x509
+    -config "{{ openssl_ca_base }}/openssl-local.cnf"
+    -days {{ nginx_days_valid }}
+    -extensions v3_ca
+    -newkey rsa:{{ streisand_gateway_rsa_key_size }}
+    -keyout {{ openssl_ca_key }}
+    -out {{ openssl_ca_certificate }}
+    -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}/CN=Streisand {{ streisand_ipv4_address }} Root CA"
+  args:
+    creates: "{{ openssl_ca_certificate }}"
+
+- name: Create a certificate signing request for a leaf certificate issued by the Nginx CA
+  command:
+    openssl req -new -nodes
+    -config "{{ openssl_ca_base }}/openssl-local.cnf"
+    -days {{ nginx_days_valid }}
+    -newkey rsa:{{ streisand_gateway_rsa_key_size }}
+    -keyout {{ nginx_private_key }}
+    -out {{ nginx_self_signed_certificate_request }}
+    -reqexts v3_ca_req
+    -subj "/C={{ nginx_key_country }}/ST={{ nginx_key_province }}/L={{ nginx_key_city }}/O={{ nginx_key_org }}/OU={{ nginx_key_ou }}/CN=Streisand at {{ streisand_ipv4_address }}"
+  args:
+    creates: "{{ nginx_self_signed_certificate_request }}"
+
+- name: Set permissions on the SSL private key
+  file:
+    path: "{{ nginx_private_key }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Seed a blank database file that will be used when generating the self-signed certificate
+  file:
+    path: "{{ openssl_ca_base }}/index.txt"
+    state: touch
+
+- name: Process certificate signing request with the Nginx CA to create leaf certificate
+  command:
+    openssl ca
+    -batch
+    -create_serial
+    -config "{{ openssl_ca_base }}/openssl-local.cnf"
+    -extensions v3_req
+    -days {{ nginx_days_valid }}
+    -in {{ nginx_self_signed_certificate_request }}
+    -out {{ nginx_self_signed_certificate }}
+  args:
+    creates: "{{ nginx_self_signed_certificate }}"
+
+- name: Remove the CA private key. It has signed its first and last certificate.
+  file:
+    path: "{{ openssl_ca_key }}"
+    state: absent
+
+- name: Register MITM mitigation fact (leaf certificate serial number)
+  command:
+    openssl x509
+    -in {{ nginx_self_signed_certificate }}
+    -noout
+    -serial
+  register: ssl_certificate_serial_number
+
+- name: Register more MITM mitigation facts (fingerprints)
+  command:
+    openssl x509
+    -{{ item }}
+    -in {{ nginx_self_signed_certificate }}
+    -noout -fingerprint
+  with_items:
+    - sha256
+    - sha1
+    - md5
+  register: ssl_certificate_fingerprints
+
+- name: Convert the CA certificate into the right format for a data uri
+  command: base64 --wrap=0 {{ openssl_ca_certificate }}
+  register: streisand_certificate_data_uri

@@ -1,0 +1,40 @@
+---
+# Shadowsocks Download variables
+# ------------------------------
+shadowsocks_mirror_location: "{{ streisand_mirror_location }}/shadowsocks"
+shadowsocks_mirror_href_base: "/mirror/shadowsocks"
+
+# Android
+shadowsocks_android_version: "4.3.2"
+shadowsocks_android_filename: "shadowsocks-nightly-{{ shadowsocks_android_version }}.apk"
+shadowsocks_android_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_android_filename }}"
+shadowsocks_android_url: "https://github.com/shadowsocks/shadowsocks-android/releases/download/v{{ shadowsocks_android_version }}/shadowsocks-nightly-{{ shadowsocks_android_version }}.apk"
+shadowsocks_android_checksum: "sha256:333833ed934a22767e19ebf468f51e59fff16f9d12ca2cf223b8d1e0eedd5895"
+
+# Windows
+shadowsocks_gui_version: "4.0.6"
+shadowsocks_gui_filename: "Shadowsocks-{{ shadowsocks_gui_version }}.zip"
+shadowsocks_gui_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_gui_filename }}"
+shadowsocks_gui_url: "https://github.com/shadowsocks/shadowsocks-windows/releases/download/{{ shadowsocks_gui_version }}/{{ shadowsocks_gui_filename }}"
+shadowsocks_gui_checksum: "sha256:4f932e61afb6bd1dd8b5c4c25c715f1623d3f574637d8154256531b4ef5000ac"
+
+# macOS
+shadowsocks_x_ng_version: "1.6.1"
+shadowsocks_x_ng_filename: "ShadowsocksX-NG.{{ shadowsocks_x_ng_version }}.zip"
+shadowsocks_x_ng_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_ng_filename }}"
+shadowsocks_x_ng_url: "https://github.com/shadowsocks/ShadowsocksX-NG/releases/download/v{{ shadowsocks_x_ng_version }}/{{ shadowsocks_x_ng_filename }}"
+shadowsocks_x_ng_checksum: "sha256:dad30943ad569d6f3a7f1b9925b45b9082ef5f5e855d2fcad2c18a0554187281"
+
+# Linux (x64)
+# NOTE(@cpu): if 32bit Linux clients are to be supported then we should add `shadowsocks2-linux-x86.gz`
+shadowsocks_go_version: "0.0.9"
+shadowsocks_go_filename: "shadowsocks2-linux-x64.gz"
+shadowsocks_go_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_go_filename }}"
+shadowsocks_go_url: "https://github.com/riobard/go-shadowsocks2/releases/download/v{{ shadowsocks_go_version }}/{{ shadowsocks_go_filename }}"
+shadowsocks_go_checksum: "sha256:9c08118a0caa60acdb6764112fd181513dbaa2c85d63e7b4b333895b7fe225e9"
+
+shadowsocks_download_urls:
+  - { url: "{{ shadowsocks_android_url }}", checksum: "{{ shadowsocks_android_checksum }}" }
+  - { url: "{{ shadowsocks_gui_url }}",     checksum: "{{ shadowsocks_gui_checksum }}" }
+  - { url: "{{ shadowsocks_x_ng_url }}",    checksum: "{{ shadowsocks_x_ng_checksum }}" }
+  - { url: "{{ shadowsocks_go_url }}",      checksum: "{{ shadowsocks_go_checksum }}" }

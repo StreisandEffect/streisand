@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Set errexit option to exit immediately on any non-zero status return
+# Set errexit option to exit immediately on any non-zero status return.
 set -e
 
 # check_ansible checks that Ansible is installed on the local system
 # and that it is a supported version.
 function check_ansible() {
-  local REQUIRED_ANSIBLE_VERSION="2.3.0"
+  local REQUIRED_ANSIBLE_VERSION="2.8.4"
 
   if ! command -v ansible > /dev/null 2>&1; then
     echo "

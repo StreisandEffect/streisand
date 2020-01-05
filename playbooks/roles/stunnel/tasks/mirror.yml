@@ -1,0 +1,45 @@
+---
+- name: Include the stunnel mirror variables
+  include_vars: mirror.yml
+
+- name: Make the directory where the stunnel mirrored files will be stored
+  file:
+    path: "{{ stunnel_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0755
+    state: directory
+
+- block:
+    - include_role:
+        name: download-and-verify
+      vars:
+        project_name: "stunnel"
+        project_signer: "Michal Trojnara"
+        project_download_baseurl: "{{ stunnel_base_download_url }}"
+        project_download_files: "{{ stunnel_download_files }}"
+        project_download_location: "{{ stunnel_mirror_location }}"
+        project_signer_keyid: "{{ stunnel_gpg_keyid }}"
+
+  rescue:
+    - name: "{{ streisand_mirror_warning }}"
+      pause:
+        seconds: "{{ streisand_mirror_warning_seconds }}"
+
+- name: Get the current stunnel version from the downloaded source file
+  shell: ls *.tar.gz | tail -n 1 | sed -e 's/stunnel-\(.*\)\.tar\.gz/\1/'
+  args:
+    chdir: "{{ stunnel_mirror_location }}"
+  register: stunnel_latest_check
+  changed_when: False
+
+- name: Set the target stunnel version
+  set_fact:
+    stunnel_version: "{{ stunnel_latest_check.stdout }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "stunnel mirror"
+    i18n_location: "{{ stunnel_mirror_location }}"
+    input_template_name: "mirror"

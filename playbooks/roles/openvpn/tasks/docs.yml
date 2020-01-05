@@ -1,0 +1,33 @@
+---
+- name: Create the OpenVPN Gateway directory
+  file:
+    path: "{{ openvpn_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- name: Copy the client files to the OpenVPN Gateway directory
+  command: cp --recursive {{ openvpn_path }}/{{ client_name.stdout }} {{ openvpn_gateway_location }}
+  args:
+    creates: "{{ openvpn_gateway_location }}/{{ client_name.stdout }}/ca.crt"
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "OpenVPN"
+    input_template_name: "instructions"
+    i18n_location: "{{ openvpn_gateway_location }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "OpenVPN stunnel"
+    input_template_name: "stunnel-instructions"
+    output_file_name: "stunnel"
+    i18n_location: "{{ openvpn_gateway_location }}"
+  when: streisand_stunnel_enabled

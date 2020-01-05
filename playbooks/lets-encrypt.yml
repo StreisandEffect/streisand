@@ -1,0 +1,69 @@
+---
+# lets-encrypt.yml asks questions about Streisand instance domain name, which
+# is used to request TLS certificates from Let's Encrypt. If user fails to
+# answer these questions, lets-encrypt role would not be run, and self-signed
+# certificates are generated and used instead.
+- name: Collect information about the Streisand domain
+# =========================================
+  hosts: streisand-host
+  gather_facts: no
+
+  vars_files:
+    - roles/lets-encrypt/vars/main.yml
+
+  vars_prompt:
+    - name: "streisand_domain_var"
+      prompt: |
+        Do you have a fully qualified domain pointed at your Streisand server?
+
+        This is an optional question. If you have a domain that points to your
+        Streisand server, the installation scripts can request a Let's Encrypt
+        HTTPS certificate for you automatically.  If you do not provide one or
+        the request fails, a self-signed certificate will be used instead.
+
+        If you have just created a new cloud server in previous steps now is a
+        good time to point your fully qualified domain to your server's public
+        address. Make sure the fully qualified domain resolves to the correct IP
+        address before proceeding.
+
+        Please type your fully qualified domain below. Press enter to skip.
+      private: no
+
+    - name: "streisand_admin_email_var"
+      prompt: |
+        Which email address do you want to use as a contact for the Streisand
+        server's Let's Encrypt certificate?
+
+        This is an optional question. If you supply an email address Let's
+        Encrypt will send you important (but infrequent) notifications about
+        your certificate. These messages include any upcoming certificate
+        expirations, and important changes to the Let's Encrypt service.
+        The email provided will not be used for anything else or shared with the
+        Streisand developers.
+
+        Please type your contact email below. Press enter to skip.
+      private: no
+
+  pre_tasks:
+    - name: Set Streisand domain
+      set_fact:
+        streisand_domain: "{{ streisand_domain_var }}"
+      when: streisand_domain_var != ""
+
+    - name: Set Streisand admin email
+      set_fact:
+        streisand_admin_email: "{{ streisand_admin_email_var }}"
+
+    - name: Enable Let's Encrypt role
+      set_fact:
+        streisand_le_enabled: yes
+      when: streisand_domain_var != ""
+
+    - name: Disable Let's Encrypt role
+      set_fact:
+        streisand_le_enabled: no
+        streisand_domain: ""
+        streisand_admin_email: ""
+        le_ok: False
+      when: streisand_domain_var == ""
+...

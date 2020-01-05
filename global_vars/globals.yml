@@ -1,0 +1,13 @@
+---
+
+# If using regular cleartext DNS then dnsmasq will set these upstream DNS servers
+upstream_dns_servers:
+  - 1.1.1.1
+  - 1.0.0.1
+
+# If using DNS-over-HTTPS with cloudflared then the upstream servers and queries can be set in:
+# playbooks/roles/cloudflared/defaults/main.yml
+
+streisand_client_test: no
+
+streisand_site_vars: "{{ lookup('env','HOME') }}/.streisand/site.yml"

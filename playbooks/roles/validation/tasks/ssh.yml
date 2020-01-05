@@ -1,0 +1,24 @@
+---
+- block:
+    - name: "Stat the Streisand SSH private key"
+      stat:
+        path: "{{ streisand_ssh_private_key }}"
+      register: streisand_ssh_private_key_status
+    - name: "Fail if the Streisand SSH private key file doesn't exist"
+      fail:
+        msg: "The Streisand SSH private key \"{{ streisand_ssh_private_key }}\" does not exist."
+      when: streisand_ssh_private_key_status.stat.exists == False
+    - name: "Stat the Streisand SSH public key"
+      stat:
+        path: "{{ streisand_ssh_private_key }}.pub"
+      register: streisand_ssh_key_status
+      when: streisand_new_server_provisioning
+    - name: "Fail if the Streisand SSH public key file doesn't exist"
+      fail:
+        msg: "The Streisand SSH public key \"{{ streisand_ssh_private_key }}.pub\" does not exist."
+      when:
+        - streisand_new_server_provisioning
+        - not streisand_ssh_key_status.stat.exists
+  rescue:
+    - fail:
+        msg: "Ensure you specified an existing SSH private key file. Ensure a corresponding SSH public key file exists if you are setting up a new server.\n Try using `ssh-keygen -f {{ streisand_ssh_private_key }} to generate your key if it does not exist\n"

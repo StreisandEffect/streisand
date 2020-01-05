@@ -1,23 +1,28 @@
 ---
 - name: Ensure that the Apache web server is not installed in order to avoid conflicts with Nginx
   apt:
-    name: "{{ item }}"
+    package: "{{ apache_packages_to_remove }}"
     state: absent
-  with_items: "{{ apache_packages_to_remove }}"
 
-- name: Add the official Nginx APT key
+- name: "Add the official Nginx APT key; hiding 25 lines of log..."
   apt_key:
     id: 7BD9BF62
     data: "{{ item }}"
   with_file: nginx_signing.key
+  no_log: True
 
 - name: Add the official Nginx repository
   apt_repository:
     repo: "deb https://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_lsb.codename }} nginx"
+  register: nginx_add_apt_repository
+  until: not nginx_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
+
 
 - name: Install Nginx
   apt:
-    name: nginx
+    package: nginx
 
 - name: Update Nginx configuration
   copy:
@@ -26,7 +31,6 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart Nginx
 
 - name: Set up Nginx vhost directories
   file:
@@ -35,3 +39,39 @@
   with_items:
     - sites-available
     - sites-enabled
+
+- name: Create the nginx systemd configuration directory
+  file:
+    path: "{{ nginx_systemd_service_path }}"
+    state: directory
+
+- name: Generate the nginx systemd service file
+  template:
+    src: nginx.service.j2
+    dest: "{{ nginx_systemd_service_path }}/10-restart-failure.conf"
+    mode: 0644
+
+# This directory is used to create ACME challenge responses when using letsencrypt.
+# N.B.: this should be different from streisand's gateway path to avoid any
+# chance of leaking gateway files (VPN credentials, configs, etc.) over port 80.
+# The nginx rules do redirect http to https, with the only exception
+# being requests to /.well-known/acme-challenge for letsencrypt.
+# So there is probably a low risk of that ever happening,
+# but still, keeping them separate can't hurt.
+- name: Ensure the default nginx HTML directory is empty
+  file:
+    state: absent
+    path: "{{ nginx_default_html_path }}/"
+  when: streisand_le_enabled
+
+- file:
+    state: directory
+    path: "{{ nginx_default_html_path }}"
+  when: streisand_le_enabled
+
+- name: Enable the nginx service
+  systemd:
+    daemon_reload: yes
+    name: nginx.service
+    enabled: yes
+    state: restarted

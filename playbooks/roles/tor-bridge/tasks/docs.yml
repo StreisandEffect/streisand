@@ -1,0 +1,18 @@
+---
+- name: Create the Tor Gateway directory
+  file:
+    path: "{{ tor_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+
+- name: Generate the Tor obfs4 QR code
+  shell: echo -n '{{ tor_obfs4_bridge_line }}' | qrencode -s 6 -o {{ tor_obfs4_qr_code }}
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "Tor"
+    i18n_location: "{{ tor_gateway_location }}"
+    input_template_name: "instructions"

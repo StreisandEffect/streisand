@@ -1,0 +1,28 @@
+---
+# Tor common variables
+# --------------------
+
+tor_project_name: "Tor Browser Bundle"
+
+tor_mirror_location: "{{ streisand_mirror_location }}/tor"
+tor_mirror_href_base: "/mirror/tor"
+
+tor_base_download_url: "https://dist.torproject.org/torbrowser/{{ tor_browser_bundle_version }}"
+
+tor_available_locales:
+  - ar
+  - de
+  - en-US
+  - es-ES
+  - fa
+  - fr
+  - it
+  - ja
+  - ko
+  - nl
+  - pl
+  - pt-BR
+  - ru
+  - tr
+  - vi
+  - zh-CN

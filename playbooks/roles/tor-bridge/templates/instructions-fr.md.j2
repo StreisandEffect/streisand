@@ -1,15 +1,17 @@
+{% include "languages.md.j2" %}
+
 Pont Tor
 --------
 
 ---
 * Plateformes
   * [Ordinateurs de bureau](#desktops)
-  * [Androïde](#android)
+  * [Android](#android)
   * [iOS](#ios)
 
 <a name="desktops"></a>
 ### Ordinateurs de bureau ###
-1. Téléchargez le [Tor Browser Bundle](/mirror/index-fr.html#tor) Pour votre plate-forme de choix. Le transport enfichable Obfsproxy obfs4 qu'il inclut vous permettra d'utiliser le réseau Tor, même si votre FAI effectue activement une inspection Deep Packet afin de bloquer votre trafic Tor.
+1. Téléchargez le [Tor Browser Bundle](/mirror/tor/index-fr.html) Pour votre plate-forme de choix. Le transport enfichable Obfsproxy obfs4 qu'il inclut vous permettra d'utiliser le réseau Tor, même si votre FAI effectue activement une inspection Deep Packet afin de bloquer votre trafic Tor.
 1. Lancez Tor Browser Bundle.
 1. Cliquez le bouton *Configurer* sous le texte qui lit *La connexion Internet de cet ordinateur est censurée ou relayée*.
 1. Choisissez *Oui* pour la question *Votre fournisseur d'accès à Internet (FAI) bloque-t-il ou censure-t-il vos connexions au réseau Tor?*
@@ -22,7 +24,7 @@ Pont Tor
 Vous êtes prêt à partir! Tor est connecté au serveur de pont *{{ tor_bridge_nickname.stdout }}*, et votre trafic Tor crypté est totalement obscurci par obfsproxy afin qu'il ne ressemble pas au trafic Tor!
 
 <a name="android"></a>
-### Androïde ###
+### Android ###
 1. Téléchargez [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android&hl=fr) et lancez-le.
 1. Tapez le bouton *Menu*.
 1. Tapdz *QR Codes*.
@@ -46,7 +48,7 @@ Vous êtes maintenant prêt à configurer Twitter et Firefox pour acheminer leur
 1. Tapez *Hôte du proxy* et entrez `127.0.0.1`.
 1. Tapez *Port du proxy* et entrez `8118`.
 
-#### Configuration de Firefox pour Androïde pour utiliser Orbot ####
+#### Configuration de Firefox pour Android pour utiliser Orbot ####
 1. Ouvrez Firefox.
 2. Tapez `about:config` dans la barre d'adresse et appuyez sur le bouton 'Go' de votre clavier.
 3. Tapez `proxy` dans la barre de recherche.

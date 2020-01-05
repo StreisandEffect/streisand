@@ -1,0 +1,14 @@
+---
+- name: Perform global variables validation
+# =========================================
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_files:
+    - ../global_vars/globals.yml
+
+  roles:
+    - validation
+
+...

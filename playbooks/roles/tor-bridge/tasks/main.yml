@@ -1,33 +1,42 @@
 ---
-- name: Add the Tor APT key
+- name: "Add the Tor APT key"
   apt_key:
-    id: 886DDD89
-    data: "{{ item }}"
-  with_file: tor-signing.key
+    url: "https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc"
+    state: present
 
 - name: Add the Tor repository
   apt_repository:
     repo: 'deb https://deb.torproject.org/torproject.org {{ ansible_lsb.codename }} main'
+  register: tor_add_apt_repository
+  until: not tor_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
 
 - name: Install the package to keep the Tor signing key current
   apt:
-    name: deb.torproject.org-keyring
+    package: deb.torproject.org-keyring
 
 - name: Install obfs4 and Tor
   apt:
-    name: "{{ item }}"
-  with_items:
-    - obfs4proxy
-    - tor
+    package:
+      - obfs4proxy
+      - tor
+
+# Update the firewall to allow Tor and obfs4proxy
+# NOTE(@cpu): we do this early in the role because the Tor daemon will check if
+# the obfs4proxy port is externally accessible during startup and we want to
+# make sure it is.
+- import_tasks: firewall.yml
 
 - name: Generate a random Nickname for the bridge
-  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ //' | cut -c 1-16 > {{ tor_bridge_nickname_file }}
+  shell: "{{ streisand_word_gen.tor_nickname | trim }} > {{ tor_bridge_nickname_file }}"
   args:
     creates: "{{ tor_bridge_nickname_file }}"
 
 - name: Register the bridge's random Nickname
   command: cat {{ tor_bridge_nickname_file }}
   register: tor_bridge_nickname
+  changed_when: False
 
 - name: Generate the bridge config file
   template:
@@ -72,42 +81,60 @@
 
 - name: Wait until obfs4proxy information has shown up in its state file
   wait_for:
-    path: /var/lib/tor/pt_state/obfs4_state.json
+    path: "{{ tor_obfs_state_directory }}/obfs4_state.json"
     search_regex: "node-id"
 
 - name: Wait until the hidden service is online
   wait_for:
     path: "{{ tor_hidden_service_directory }}/hostname"
 
+- name: Wait until the server fingerprint file is generated
+  wait_for:
+    path: "{{ tor_state_directory }}/fingerprint"
+
 - name: Register the Tor Hidden Service hostname
   command: cat {{ tor_hidden_service_directory }}/hostname
-  register: tor_hidden_service_hostname
+  register: tor_hidden_service_hostname_output
+  changed_when: False
+
+- name: Register the Tor Hidden Service URL fact
+  set_fact:
+    tor_hidden_service_url: "http://{{ tor_hidden_service_hostname_output.stdout }}"
+
+- name: Generate the hidden service virtual host and restart Nginx if it is updated
+  template:
+    src: hidden-service-vhost.j2
+    dest: /etc/nginx/sites-available/streisand-hidden-service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Nginx for the Tor hidden service vhost
+
+- name: Enable the virtual host
+  file:
+    path: /etc/nginx/sites-enabled/streisand-hidden-service
+    src: /etc/nginx/sites-available/streisand-hidden-service
+    state: link
 
 - name: Discover the server fingerprint
-  command: awk '{ print $2 }' /var/lib/tor/fingerprint
+  command: "awk '{ print $2 }' {{ tor_state_directory }}/fingerprint"
   register: tor_fingerprint
 
 - name: Discover the obfs4 certificate details
-  shell: cat /var/lib/tor/pt_state/obfs4_bridgeline.txt | grep 'Bridge obfs4' | sed -e 's/^.*cert=\(.*\) .*$/\1/'
+  shell: cat "{{ tor_obfs_state_directory }}/obfs4_bridgeline.txt" | grep 'Bridge obfs4' | sed -e 's/^.*cert=\(.*\) .*$/\1/'
   register: tor_obfs4_certificate
+  changed_when: False
 
-- name: Create the Tor Gateway directory
-  file:
-    path: "{{ tor_gateway_location }}"
-    owner: www-data
-    group: www-data
-    mode: 0750
-    state: directory
+# Generate the docs gateway page
+- import_tasks: docs.yml
 
-- name: Generate the Tor obfs4 QR code
-  shell: echo -n '{{ tor_obfs4_bridge_line }}' | qrencode -s 6 -o {{ tor_obfs4_qr_code }}
+# This needs to be done after the docs folder structure is generated
+- name: Copy the hidden service hostname to the webroot when in test client mode
+  copy:
+    src: "{{ tor_hidden_service_directory }}/hostname"
+    remote_src: yes
+    dest: "{{ tor_gateway_location }}/hidden-service-hostname.txt"
+    force: yes
 
-- name: Generate the Markdown Tor instructions
-  template:
-    src: instructions{{ item.value.file_suffix }}.md.j2
-    dest: "{{ tor_gateway_location }}/index{{ item.value.file_suffix}}.md"
-  with_dict: "{{ streisand_languages }}"
-
-- name: Convert the Markdown Tor instructions into HTML and surround them with the header and footer template
-  shell: markdown {{ tor_gateway_location }}/index{{ item.value.file_suffix}}.md | cat {{ streisand_i18n_header_template }} - {{ streisand_footer_template }} > {{ tor_gateway_location }}/index{{ item.value.file_suffix}}.html
-  with_dict: "{{ streisand_languages }}"
+# Mirror the Tor browser bundle
+- import_tasks: mirror.yml

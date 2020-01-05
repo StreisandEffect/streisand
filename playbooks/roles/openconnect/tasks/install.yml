@@ -1,0 +1,36 @@
+---
+
+# It *shouldn't* be necessary to run this particular apt_repository
+# call in a "retry" loop; enabling Universe doesn't reach out to the
+# network, so this shouldn't have transient failures. For the sake of
+# consistency with the other apt_repository calls, it does retry.
+
+- name: Enable the Universe repository
+  apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} universe"
+    state: present
+  register: openconnect_add_apt_repository
+  until: not openconnect_add_apt_repository.failed
+  retries: "{{ apt_repository_retries }}"
+  delay: "{{ apt_repository_delay }}"
+
+- name: Install ocserv
+  apt:
+    package: ocserv
+
+- name: Create the OpenConnect rsyslog configuration directory
+  file:
+    path: /etc/rsyslog.d/openconnect.d/
+    owner: root
+    group: root
+    mode: 0644
+    state: directory
+
+- name: Copy the modified rsyslog configuration into place that prevents OpenConnect traffic from being logged
+  copy:
+    src: openconnect.conf
+    dest: /etc/rsyslog.d/openconnect.d/openconnect.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart rsyslog for OpenConnect

@@ -1,0 +1,51 @@
+---
+# detect-public-ip.yml will attempt to identify whether the server's public
+# IP address is different from what is visible on the host and, if
+# successfully detected, ask to update the address for documentation and
+# configuration profiles
+- name: "Install dns module"
+  apt:
+    package: dnsutils
+
+- name: "Initialize lookup variable"
+  set_fact:
+    external_ipv4_address: "presumed_failed"
+
+- name: "Check external IP Address through Google"
+  command: dig -4 +short myip.opendns.com @resolver1.opendns.com A
+  register: dig_output
+
+- name: "Set the variable to the value"
+  set_fact:
+    external_ipv4_address: "{{ dig_output.stdout | regex_replace('\"', '') }}"
+    when: (dig_output.rc == 0)
+
+# Enter this block only when when the IPs are different and query user for updating
+# to public ip
+- block:
+    - name: "Initialize the prompt"
+      set_fact:
+        prompt_external_ip: |
+          We have found another public IP address of your server
+
+          Some cloud providers use load balancers or SDN to make servers externally
+          reachable. It seems
+          - {{ external_ipv4_address }} is publicly visible
+          - {{ streisand_ipv4_address }} is visible on the server
+
+          Type 'yes' to use {{ external_ipv4_address }} for the VPN
+          Hit 'enter' to skip and use {{ streisand_ipv4_address }}.
+
+          Skip with 'enter' if you do not know {{ external_ipv4_address }}
+
+    - name: "Ask user to update to public IP address"
+      pause:
+        prompt: "{{ prompt_external_ip }}"
+      register: publish_external
+
+    - name: "Change streisand_ipv4_address to public if requested"
+      set_fact:
+        streisand_ipv4_address: "{{ external_ipv4_address }}"
+      when: ((publish_external.user_input == "yes") or (publish_external.user_input == "Yes") or (publish_external.user_input == "YES") or (publish_external.user_input == "Y") or (publish_external.user_input == "y"))
+  when: (external_ipv4_address != "presumed_failed") and (streisand_ipv4_address != external_ipv4_address)
+...

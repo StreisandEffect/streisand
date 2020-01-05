@@ -1,0 +1,121 @@
+---
+
+- name: "Install tor and obs4proxy"
+  apt:
+    package:
+      - "tor"
+      - "obfs4proxy"
+
+- name: "Remove stale test state if required"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ tor_config }}"
+    - "{{ tor_obfs4_qr }}"
+    - "{{ tor_pid_file }}"
+
+- name: "Ensure the tor service is stopped and disabled"
+  # We need to stop the tor service & disable it. By default the Ubuntu 16.04
+  # tor package enables & boots the service after being installed.
+  service:
+    name: tor
+    state: stopped
+    enabled: no
+
+- name: "Download tor obfs4 proxy QR code from the Streisand gateway"
+  get_url:
+    url: "{{ gateway_tor_qr }}"
+    dest: "{{ tor_obfs4_qr}}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Download tor hidden service hostname from the Streisand gateway"
+  get_url:
+    url: "{{ gateway_tor_hidden_service_hostname }}"
+    dest: "{{ tor_hidden_service_hostname}}"
+    force_basic_auth: yes
+    url_username: "{{ gateway_test_user }}"
+    url_password: "{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }}"
+    validate_certs: no
+    mode: 0600
+
+- name: "Read the tor hidden service hostname into a var"
+  command: "cat {{ tor_hidden_service_hostname }}"
+  register: tor_hidden_service_hostname_output
+  changed_when: False
+
+- name: "Extract the Streisand server obfs4 proxy info from the QR code"
+  # NOTE(@cpu) - zbarimg prefixes the data with "QR-Code" so we strip it with
+  # sed before registering the output
+  shell: >
+    zbarimg -q {{ tor_obfs4_qr }} | \
+    sed 's/^QR-Code://'
+  register: tor_obfs4_qr_contents
+
+- name: "Install the Streiand obfs4 relay client torrc"
+  template:
+    src: obfs4.relay.client.torrc.j2
+    dest: "{{ tor_config }}"
+
+- name: "Test Streisand tor relay with obfs4proxy obfuscation"
+  block:
+    - name: "Start the tor daemon"
+      command: "tor -f {{ tor_config }}"
+
+    - name: "Read the tor daemon PID file into a var"
+      command: "cat {{ tor_pid_file }}"
+      register: tor_pid_output
+      changed_when: False
+
+    - name: "Access a test URL through the tor SOCKS proxy"
+      command: "curl --socks5-hostname localhost:{{ tor_socks_port }} {{ external_test_url }}"
+      # Don't warn about using command to execute curl - the get_url module
+      # doesn't support specifying a socks5 proxy
+      args:
+        warn: no
+      register: tor_socks_check
+      # NOTE(@cpu): Tor and hidden services can be a little bit flaky. We give
+      # things a few tries before giving up entirely
+      retries: 3
+      delay: 3
+      until: tor_socks_check.rc == 0
+
+    - name: "Check the Streisand server hidden service is up & requires auth"
+      shell: >
+        curl -I \
+          --socks5-hostname localhost:{{ tor_socks_port }} \
+          --connect-timeout 20 \
+          http://{{ tor_hidden_service_hostname_output.stdout }} 2> /dev/null | \
+          grep -q "Authorization Required"
+      register: tor_hs_auth_reject
+      args:
+        warn: no
+      retries: 3
+      delay: 3
+      until: tor_hs_auth_reject.rc == 0
+
+    - name: "Check the Streisand server hidden service is up & accessible with correct auth"
+      shell: >
+        curl --socks5-hostname localhost:{{ tor_socks_port }} \
+        --connect-timeout 20 \
+        -u {{ gateway_test_user }}:{{ lookup('file', '{{ streisand_gateway_password_localpath }}') }} \
+        http://{{ tor_hidden_service_hostname_output.stdout }} 2> /dev/null | \
+        grep -q "Streisand"
+      register: tor_hs_auth_accept
+      args:
+        warn: no
+      retries: 3
+      delay: 3
+      until: tor_hs_auth_accept.rc == 0
+
+    - name: "Stop tor"
+      command: "kill -INT {{ tor_pid_output.stdout }}"
+
+  rescue:
+    - name: "kill tor instances"
+      command: "killall tor"
+      ignore_errors: "yes"

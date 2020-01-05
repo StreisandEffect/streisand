@@ -1,138 +1,107 @@
 ---
-- hosts: localhost
-  gather_facts: no
-  remote_user: root
-  become: yes
-  pre_tasks:
-    - name:
-      raw:  sudo apt update && apt install python python-apt aptitude -y
+# NOTE(@craun): Removed the "install python" steps for local dev setup. In order to even run this playbook ansible
+# already needs to be installed, which, implies that python is also installed.
 
 - hosts: localhost
   gather_facts: yes
   remote_user: root
   become: yes
-  tasks:
-    - name: Install lxc ppa key
+  pre_tasks:
+    # NOTE(@alimakki): Due to key rotation, we pre-emptivley
+    # add the Google linux apt signing key required by some
+    # packages
+    - name: Add an Apt signing key, uses whichever key is at the URL
       apt_key:
-        id: 7635B973
-        url: "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xD5495F657635B973"
+        url: https://dl-ssl.google.com/linux/linux_signing_key.pub
         state: present
-
-    # NOTE(@cpu): We use the `command` module with the `add-apt-repository`
-    # command here because the `apt_repository` Ansible module at the time of
-    # writing will error on the ubuntu-lxc repo in some instances if a mirror is
-    # missing 32bit binary builds even though CI uses a 64bit architecture.
-    - name: Install LXC ppa
-      command: add-apt-repository ppa:ubuntu-lxc/lxd-stable
-
+  tasks:
     - name: Ensure consistent & clean apt state
-      shell: "{{ item }}"
+      apt:
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+        purge: yes
+
+    - name: Remove old LXD/LXC from distro
+      apt:
+        name:
+          - lxd*
+          - lxc*
+        state: absent
+        autoremove: yes
+        purge: yes
+
+    - name: Install snapd
+      apt:
+        name: snapd
+
+    - name: Install LXD snap
+      snap:
+        name: lxd
+
+    - name: Connect LXD plug to slots
+      command: "{{ item }}"
       with_items:
-        - "apt-get clean"
-        - "apt-get update"
+        - "snap connect lxd:lxd-support"
+        - "snap connect lxd:network"
 
-    # Since LXC loads kernal modules from the host, we need to ensure libreswan is compiled and installed
-    - name: Install the Libreswan dependencies that are required for compilation
-      apt:
-        name: "{{ item }}"
-      with_items: "{{ libreswan_compilation_dependencies_trusty }}"
-      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+    - name: Start lxd
+      command: "snap start lxd"
 
-    - name: Include Libreswan vars
-      include_vars: "../playbooks/roles/l2tp-ipsec/vars/main.yml"
+    - name: Wait for the LXD socket
+      wait_for:
+        path: "/var/snap/lxd/common/lxd/unix.socket"
+        state: present
+        sleep: 5
 
-    - name: Install the Libreswan dependencies that are required for compilation
-      apt:
-        name: "{{ item }}"
-      with_items: "{{ libreswan_compilation_dependencies }}"
-      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
-
-    - name: Install xmlto (without the extraordinarily large number of packages it normally recommends)
-      apt:
-        name: xmlto
-        install_recommends: no
-
-    - name: Retrieve the Libreswan source code
-      include_role:
-        name: download-and-verify
-      vars:
-        project_name: "The Libreswan Project"
-        project_signer: "The Libreswan team"
-        project_signing_key: "{{ libreswan_developers_key_id }}"
-        project_expected_fingerprint: "{{ libreswan_developers_expected_fingerprint }}"
-        project_download_location: "{{ libreswan_src_directory }}"
-        project_download_urls: "{{ libreswan_download_urls }}"
-
-    - name: Extract the Libreswan source code
-      unarchive:
-        copy: no
-        src: "{{ libreswan_source_location }}"
-        dest: /usr/local/src
-        owner: root
-        group: root
-        creates: "{{ libreswan_compilation_directory }}/README"
-
-    - name: Compile and install Libreswan (this will take a while)
-      shell: make -j {{ ansible_processor_cores }} programs && make install
+    - name: lxd init config
+      command: lxd init --auto --storage-backend dir
       args:
-        chdir: "{{ libreswan_compilation_directory }}"
+        creates: /var/snap/lxd/common/lxd/storage-pools/default
 
-    - name: Start ipsec
-      service:
-        name: ipsec
-        state: started
-        enabled: yes
-      register: ipsec_start
+    - name: lxd create network
+      command: lxc network create testbr0
+      args:
+        creates: /var/snap/lxd/common/lxd/networks/testbr0
 
-    - name: Pause for a few seconds to let ipsec start
-      pause:
-        seconds: 5
+    - name: Retrieve the Ubuntu Xenial AMD64 LXC image fingerprint
+      uri:
+        url: https://images.linuxcontainers.org/1.0/images/aliases/ubuntu/xenial/amd64
+        return_content: yes
+      register: xenial_fingerprint
 
-    - name: Install lxd
-      apt:
-        name: lxd
-        state: latest
-
-    - name: lxd new group
-      shell: newgrp lxd
-
-    - block:
-        - name: lxd init config
-          shell: lxd init --auto --storage-backend dir
-
-        - name: lxd create network
-          shell: lxc network create testbr0
-
-        - name: lxd attach network to default profile
-          shell: lxc network attach-profile testbr0 default eth0
-      ignore_errors: yes
-
-    - name: restart lxd
-      service:
-        name: lxd
-        state: restarted
-
-    - name: pause
-      pause:
-        seconds: 10
-
-    - name: set permission on lxd daemon
-      file:
-        path: /var/lib/lxd/unix.socket
-        mode: "0777"
-
-    - name: Launch streisand container(This will take a while)
+    - name: Launch streisand container (this will take a while)
       lxd_container:
         name: streisand
         state: started
+        url: "unix:/var/snap/lxd/common/lxd/unix.socket"
         source:
           type: image
           mode: pull
           server: https://images.linuxcontainers.org
           protocol: lxd
-          alias: ubuntu/xenial/amd64
+          # Use the retrieved alias to fetch the image
+          alias: "{{ xenial_fingerprint['json']['metadata']['target'] }}"
         profiles: ["default"]
         config:
           security.privileged: "true"
         wait_for_ipv4_addresses: true
         timeout: 300
+
+    # TODO(@cpu): Why this is required is a mystery to me. Everything in
+    # development-setup.yml is able to access the unix socket without error.
+    # Without this gross chmod the LXD connection used to run the Streisand
+    # playbooks on the container fails with an access error. It would be nice to
+    # reduce these permissions. It's likely dangerous in a non-CI environment
+    - name: Open the permissions on the LXD socket
+      command: chmod 777 /var/snap/lxd/common/lxd/unix.socket
+
+    - name: Install python in container
+      delegate_to: streisand
+      raw: apt-get install -y python3 python3-apt python3-pip
+
+    - name: Set python3 as the default
+      raw: update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+
+    - name: Set python3-pip as the default
+      raw: update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1

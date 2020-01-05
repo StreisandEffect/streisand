@@ -1,5 +1,0 @@
----
-go_tarball: "go1.7.1.linux-amd64.tar.gz"
-go_tarball_checksum: "sha256:43ad621c9b014cde8db17393dc108378d37bc853aa351a6c74bf6432c1bbd182"
-go_version_target: "go version go1.7.1 linux/amd64"
-set_go_path: true

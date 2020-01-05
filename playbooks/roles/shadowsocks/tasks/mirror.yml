@@ -1,0 +1,33 @@
+---
+- name: Include the Shadowsocks mirror variables
+  include_vars: mirror.yml
+
+- name: Make the directory where the Shadowsocks mirrored files will be stored
+  file:
+    path: "{{ shadowsocks_mirror_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0755
+    state: directory
+
+- block:
+    - name: Mirror the Shadowsocks clients
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ shadowsocks_mirror_location }}"
+        checksum: "{{ item.checksum }}"
+        owner: www-data
+        group: www-data
+        mode: 0644
+      with_items: "{{ shadowsocks_download_urls }}"
+  rescue:
+    - name: "{{ streisand_mirror_warning }}"
+      pause:
+        seconds: "{{ streisand_mirror_warning_seconds }}"
+
+- include_role:
+    name: i18n-docs
+  vars:
+    title: "Shadowsocks mirror"
+    i18n_location: "{{ shadowsocks_mirror_location }}"
+    input_template_name: "mirror"

@@ -1,0 +1,17 @@
+{% include "languages.md.j2" %}
+
+<a name="tor"></a>
+### Tor Browser Bundle (localisé en français) ###
+
+**Linux**
+
+* [{{ tor_linux32_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_linux32_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_linux32_sig_href | regex_replace('locale', item.value.tor_locale) }}))
+* [{{ tor_linux64_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_linux64_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_linux64_sig_href | regex_replace('locale', item.value.tor_locale) }}))
+
+**macOS**
+
+* [{{ tor_macos_filename_template | regex_replace('locale', item.value.tor_locale) }}]({{ tor_macos_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_macos_sig_href | regex_replace('locale', item.value.tor_locale) }}))
+
+**Windows**
+
+* [{{ tor_windows_filename_template |  regex_replace('locale', item.value.tor_locale) }}]({{ tor_windows_href | regex_replace('locale', item.value.tor_locale) }}) ([sig]({{ tor_windows_sig_href | regex_replace('locale', item.value.tor_locale) }}))
