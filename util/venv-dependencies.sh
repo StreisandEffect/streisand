@@ -207,11 +207,13 @@ created. './venv' is a good choice if it doesn't exist.
 fi
 
 sudo_pip () {
+    # shellcheck disable=SC2086
     # pip complains loudly about directory permissions when sudo without -H.
     $sudo_for_pip_install pip3 $quiet "$@"
 }
 
 our_pip () {
+    # shellcheck disable=SC2086
     pip3 $quiet "$@"
 }
 
@@ -221,6 +223,7 @@ our_pip_install () {
 
 NO_SITE_PACKAGES=""
 
+# shellcheck disable=SC2086
 if ! $python -m venv --clear $NO_SITE_PACKAGES "$1"; then
     parent_dirname="$(dirname "$1")"
     echo "

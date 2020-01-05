@@ -52,9 +52,6 @@
 - name: Include run.yml
   import_playbook: run.yml
 
-- name: Include development-setup.yml
-  import_playbook: development-setup.yml
-
 # Explicity include each role to ensure all roles are tested
 - hosts: localhost
   remote_user: root
