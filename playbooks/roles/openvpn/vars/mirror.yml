@@ -11,7 +11,7 @@ openvpn_source_sig_filename:  "{{ openvpn_source_filename }}.asc"
 openvpn_source_href:          "{{ openvpn_mirror_href_base }}/{{ openvpn_source_filename }}"
 openvpn_source_sig_href:      "{{ openvpn_mirror_href_base }}/{{ openvpn_source_sig_filename }}"
 
-openvpn_windows_installer_filename:     "openvpn-install-latest-stable.exe"
+openvpn_windows_installer_filename:     "openvpn-install-latest-stable-win10.exe"
 openvpn_windows_installer_sig_filename: "{{ openvpn_windows_installer_filename }}.asc"
 openvpn_windows_installer_href:         "{{ openvpn_mirror_href_base }}/{{ openvpn_windows_installer_filename }}"
 openvpn_windows_installer_sig_href:     "{{ openvpn_mirror_href_base }}/{{ openvpn_windows_installer_sig_filename }}"

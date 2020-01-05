@@ -21,9 +21,7 @@ Usage: $0 ./venv
 This script creates an isolated Python virtualenv at './venv', and
 installs Ansible and dependencies into it.
 
-The script depends on Python 2.7, and on a functional 'pip' command.
-This script can install 'virtualenv' for you, but this may require
-sudo/root access.
+The script depends on Python 3.5 or later.
 
 If this system is running Debian or Ubuntu, this script will also
 check for other packages needed to install.
@@ -40,6 +38,8 @@ if [ "$(id -u)" == "0" ]; then
     is_root=1
 fi
 
+
+python="python3"
 sudo_command="sudo"
 sudo_for_pip_install="sudo -H"
 
@@ -49,54 +49,65 @@ if [ -n "$is_root" ]; then
     sudo_for_pip_install=""
 fi
 
-invocation_problems=
-if [ "$#" -ne 1 ]; then
-   usage
-   invocation_problems=1
-fi
-
-# Some systems have a pip2.7 but no pip.
-PIP="pip"
-
-if ! "$PIP" --version >/dev/null 2>&1; then
-    echo "could not find pip, trying pip2.7"
-    PIP="pip2.7"
-fi
-
-# Hopefully $PIP should be pointing at an appropriate executable name.
-# We just checked if the pip command is broken; let's see if it
-# points to the wrong spot.
-if "$PIP" --version 2>/dev/null | grep -q 'python 3'; then
+request_python_3 () {
     echo "
-
-On your system, 'pip' appears to invoke Python 3's pip. This might cause problems.
-This script will try switching to 'pip2.7', but your pip2.7 install might be broken too.
-
-"
-    PIP="pip2.7"
-fi
-
-if ! "$PIP" --version >/dev/null 2>&1; then
-   echo "
-You need a working pip command. To get one:
-
 On Debian, Ubuntu, and WSL:
-   $sudo_command apt-get install python-pip
+   $sudo_command apt install python3 python3-pip python3-virtualenv
 
 On macOS:
    # If you haven't, install homebrew from https://brew.sh/
    brew install python
 
 On other systems: please see your OS documentation on how to install
-pip.
+Python 3.
+"
+    exit 1
+}
+
+ensure_python_3_5 () {
+    python_version=$($python --version 2>&1)
+    if [[ $python_version < "Python 3.5" ]]; then
+	echo "
+
+The $python command invokes $python_version. Python 3.5 or later is
+required.
+"
+	return 1
+    fi
+    return 0
+}
+
+if [ "$#" -ne 1 ]; then
+   usage
+   exit 1
+fi
+
+if type -p $python >/dev/null; then
+    echo "Found a python3 command...."
+    if ! ensure_python_3_5; then
+	request_python_3
+	exit 1
+    fi
+else
+    echo "The command 'python3' doesn't appear to exist. Trying 'python'..."
+    python='python'
+    if ! type -p $python >/dev/null; then
+	echo "
+
+On your system, neither 'python3' or 'python' exist as commands. Please
+install Python 3.5 or later.
 
 "
-   invocation_problems=1
+	request_python_3
+	exit 1
+    fi
+    if ! ensure_python_3_5; then
+	request_python_3
+	exit 1
+    fi
 fi
 
-if [ -n "$invocation_problems" ]; then
-    exit 1
-fi
+# Whew. We now have a working Python 3.5 or later in $python.
 
 hard_detect_dpkg () {
     dpkg-query --status "$1" 2>/dev/null | grep '^Status:.* installed' >/dev/null
@@ -144,6 +155,19 @@ die () {
     exit 1
 }
 
+if ! $python -m venv -h >/dev/null; then
+    echo "
+
+The command 'python -m venv -h' failed. The venv module is a standard
+part of Python, and this script can't proceeed without it. Please
+report details of your system to the authors of this package if stuck.
+The output of 'python -m venv' is:
+
+"
+    $python -m venv -h
+    exit 1
+fi
+
 # We want to run some tests on the parent of the path on the command
 # line.
 parent_dirname="$(dirname "$1")"
@@ -183,12 +207,14 @@ created. './venv' is a good choice if it doesn't exist.
 fi
 
 sudo_pip () {
+    # shellcheck disable=SC2086
     # pip complains loudly about directory permissions when sudo without -H.
-    $sudo_for_pip_install "$PIP" $quiet "$@"
+    $sudo_for_pip_install pip3 $quiet "$@"
 }
 
 our_pip () {
-    "$PIP" $quiet "$@"
+    # shellcheck disable=SC2086
+    pip3 $quiet "$@"
 }
 
 our_pip_install () {
@@ -197,30 +223,14 @@ our_pip_install () {
 
 NO_SITE_PACKAGES=""
 
-# An easy way to see if Homebrew is installed and vaguely working.
-
-if brew command command >/dev/null 2>&1; then
-    # If it is, we get our virtualenv as a regular user
-    our_pip_install virtualenv
-    # Homebrew's virtualenv defaults to using site-wide settings.
-    # We don't want this. But --no-site-packages is deprecated, so
-    # we should only set it for Homebrew.
-    NO_SITE_PACKAGES="--no-site-packages"
-else
-    # We may not need this installed as root; we just need it on
-    # $PATH somewhere. But do root for now.
-    sudo_pip install virtualenv
-fi
-
-# In case we have a new virtualenv executable.
-hash -r
-
-if ! virtualenv --python=python2.7 --clear $NO_SITE_PACKAGES "$1"; then
+# shellcheck disable=SC2086
+if ! $python -m venv --clear $NO_SITE_PACKAGES "$1"; then
     parent_dirname="$(dirname "$1")"
     echo "
-virtualenv failed to create directory '$1'
-using 'virtualenv --python=python2.7 $1'. Note that $1 must not exist, but
-its parent ($parent_dirname) must exist.
+'python -m venv' failed to create directory '$1'
+
+Note that $1 must not exist, but its parent ($parent_dirname) must
+exist.
 
 The first argument, 'new-directory', must be somewhere you can write
 to. A good place is './venv'. If it already exists, please delete the
