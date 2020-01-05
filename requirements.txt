@@ -8,13 +8,7 @@
 #
 ansible[azure]==2.8.4
 
-# Multiple packages depend on SecretStorage, and versions >= 3 require
-# Python 3. Until we're ready for Python 3, specify the earlier rev.
-#
-# If we end up pinning more package versions, we should consider using
-# pip constraints files instead of forcing installation.
-#
-SecretStorage<3.0
+SecretStorage
 
 # AWS
 boto

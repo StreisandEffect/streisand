@@ -1,44 +1,56 @@
 - import_tasks: install.yml
-
-- name: Prepare response file directory
-  file:
-    path: "{{ le_base }}/conf"
-    state: directory
-    recurse: yes
-
-- name: Query Let's Encrypt to find the current subscriber agreement URL
-  uri:
-    url: "{{ le_api_endpoint }}"
-    body_format: json
-  register: http_body
-
-- name: Extract Let's Encrypt subscriber agreement URL
-  set_fact:
-    le_agreements: "{{ http_body['json']['meta']['terms-of-service'] }}"
-
-- name: Put reponse file in place
-  template:
-    src: response.yaml.j2
-    dest: "{{ le_base }}/conf/responses"
-
-- name: Perform initial configuration of acmetool
-  command: acmetool quickstart
-  args:
-    creates: "{{ le_base }}/conf/target"
-
-# acmetool should now run in redirector mode listening on 80/tcp for HTTP
-# requests (including ACME chanllenges). All HTTP requests are simply
-# redirected to their HTTPS counterparts.
-
 - import_tasks: firewall.yml
 
 # Now we try to request a certificate. If it fails. We print a warning and
 # fall back to self-signed certificates.
 - block:
+    - set_fact:
+        le_email_flag: "--email {{ streisand_admin_email }}"
+      when: streisand_admin_email != ""
+    - set_fact:
+        le_email_flag: "--register-unsafely-without-email"
+      when: streisand_admin_email == ""
+
     - name: Request initial certificate from Let's Encrypt
-      command: "acmetool want {{ streisand_domain }}"
+      # Use certbot's "standalone" plugin to listen on port 80 for the initial
+      # challenge request/response. After this role runs, the nginx config
+      # handles port 80 requests, and whitelists the ACME challenge response dir.
+      command: |-
+        certbot certonly --standalone -d {{ streisand_domain }}
+        {{ le_email_flag }} --agree-tos --non-interactive
+        --rsa-key-size {{ le_rsa_key_size }}
+        --server {{ le_api_endpoint }}
       args:
         creates: "{{ le_certificate }}"
+
+    # We modify certbot's renewal config file to use the "webroot" plugin.
+    # By default, certbot uses the same options during the initial cert request
+    # when doing renewals. This would cause port conflicts since nginx will
+    # be listening on 80 (for 80->443 redirects, and allowing ACME challenges).
+    # We could technically let certbot restart/modify nginx temporarily for
+    # port 80 during renewal, but using "webroot" helps avoid downtime, since
+    # it just needs to write to the webroot directory to complete the challenge.
+    - name: Modify certbot renewal options to use webroot authenticator
+      ini_file:
+        path: "/etc/letsencrypt/renewal/{{ streisand_domain }}.conf"
+        section: renewalparams
+        option: authenticator
+        value: webroot
+
+    - name: Point webroot to the right directory where nginx will serve challenge responses.
+      ini_file:
+        path: "/etc/letsencrypt/renewal/{{ streisand_domain }}.conf"
+        section: renewalparams
+        option: webroot_path
+        value: "{{ nginx_default_html_path }}"
+
+    - name: Setup deploy hook to reload nginx after successful auto renewal
+      copy:
+        src: 01-reload-nginx.sh
+        dest: "{{ le_base }}/renewal-hooks/deploy/01-reload-nginx.sh"
+        owner: root
+        group: root
+        mode: 0750
 
     - set_fact:
         le_ok: True
