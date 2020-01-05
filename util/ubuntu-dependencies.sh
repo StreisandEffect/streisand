@@ -31,28 +31,39 @@ quiet=
 # this function and comment the next.
 
 #function our_pip_install () {
-#    pip install --user --upgrade "$@"
+#    pip3 install --user --upgrade "$@"
 #}
 
 function our_pip_install () {
-    sudo -H pip install --upgrade "$@"
+    $sudo_for_pip_install pip3 install --upgrade "$@"
 }
 
 ### No options below this line. ###
 
-sudo apt-get update
-sudo apt-get $quiet upgrade
+sudo_command="sudo"
+sudo_for_pip_install="sudo -H"
+
+# If we're root, get rid of sudo--it may not be there...
+if [ "$(id -u)" == "0" ]; then
+    sudo_command=""
+    sudo_for_pip_install=""
+fi
+
+$sudo_command apt-get update
+# shellcheck disable=SC2086
+$sudo_command apt-get $quiet upgrade
 
 # Prefer binaries distributed by upstream OS over those in the pip
 # repository.
 
 # We explicitly want word splitting.
-# shellcheck disable=SC2046
-sudo apt-get $quiet install $(cat ./util/dependencies.txt)
+# shellcheck disable=SC2046,SC2086
+$sudo_command apt-get $quiet install $(cat ./util/dependencies.txt)
 
 # Debian doesn't have python-nacl. We'll have to accept the pip
 # version.
-if ! sudo apt-get $quiet install python-nacl libssl-dev; then
+# shellcheck disable=SC2086
+if ! $sudo_command apt-get $quiet install python-nacl libssl-dev; then
     our_pip_install pynacl
 fi
 

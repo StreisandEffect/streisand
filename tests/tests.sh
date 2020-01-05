@@ -15,8 +15,13 @@ export ANSIBLE_CONFIG=$DIR/ansible.cfg
 # Include the check_ansible function from ansible_check.sh
 source util/ansible_check.sh
 
+# Use packages installed by snap first
+PATH=$PATH:/snap/bin:/var/lib/snapd/snap/bin
+export PATH
+
 function run_playbook {
   PLAYBOOK="$1"
+  # shellcheck disable=SC2206
   EXTRA_FLAGS=(${@:2})
   # Special case: If $SITE is "random" then we mix things up
   if [[ "$SITE" = "random" ]]; then
@@ -27,11 +32,6 @@ function run_playbook {
   if [ -n "$SITE" ]; then
     SITE_DECL="--extra-vars=@${SITE}"
   fi
-
-  # The `development-setup.yml` playbook will use snap to install LXD. We need
-  # to make sure the snap installed binaries are on the $PATH for Ansible
-  PATH=$PATH:/snap/bin:/var/lib/snapd/snap/bin
-  export PATH
 
   ansible-playbook \
     -i "$DIR/inventory" \
