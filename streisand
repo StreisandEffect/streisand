@@ -34,19 +34,20 @@ function init_homedir() {
 # check_python checks whether the 'python' interpreter is Python 2 or Python 3.
 # If it is Python 2 then the inventory file is updated to set the
 # ansible_interpretter host var explicitly
-function check_python() {
-  local PYTHON_VERSION
-  PYTHON_VERSION="$(python --version 2>/dev/null)"
-
-  if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 2\..* ]]; then
-    local INVENTORY_DIR="$SCRIPT_DIR/inventories/"
-    for INV_FILE in "$INVENTORY_DIR"/*; do
-      sed 's/=python$/=python2.7/' "$INV_FILE" > "$INV_FILE.new"
-      mv "$INV_FILE.new" "$INV_FILE"
-      git -C "$INVENTORY_DIR" update-index --assume-unchanged "$INV_FILE" 2>/dev/null || true
-    done
-  fi
-}
+# function check_python() {
+#     return 0
+#   local PYTHON_VERSION
+#   PYTHON_VERSION="$(python --version 2>/dev/null)"
+#
+#   if [[ -n $PYTHON_VERSION && ! $PYTHON_VERSION =~ ^Python\ 3\..* ]]; then
+#     local INVENTORY_DIR="$SCRIPT_DIR/inventories/"
+#     for INV_FILE in "$INVENTORY_DIR"/*; do
+#       sed "s|=python\$|=$(type python)|" "$INV_FILE" > "$INV_FILE.new"
+#       mv "$INV_FILE.new" "$INV_FILE"
+#       git -C "$INVENTORY_DIR" update-index --assume-unchanged "$INV_FILE" 2>/dev/null || true
+#     done
+#   fi
+# }
 
 # validate runs the validation role to check the consistency of the Streisand
 # service vars (e.g. that at least one service is enabled after customization of
@@ -173,7 +174,7 @@ Please enter the word 'streisand' to continue: "
   # Create an inventory file string on the fly
   read -r -d '' TEMPL << EOF || true
 [localhost]
-localhost ansible_connection=local ansible_python_interpreter=python
+localhost ansible_connection=local ansible_python_interpreter=python3
 [streisand-host]
 $SERVER_IP ansible_user=$SSH_USER
 EOF
@@ -186,7 +187,7 @@ EOF
 
 # Make sure the system is ready for the Streisand playbooks
 init_homedir
-check_python
+# check_python
 check_ansible
 
 # Figure out which genesis role to invoke
