@@ -33,6 +33,7 @@ IAM Policy Setup
                 "ec2:DescribeImages",
                 "ec2:DescribeInstances",
                 "ec2:DescribeKeyPairs",
+                "ec2:DescribeSubnets",
                 "ec2:RevokeSecurityGroupEgress",
                 "ec2:RevokeSecurityGroupIngress",
                 "ec2:RunInstances",

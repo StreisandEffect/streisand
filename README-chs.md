@@ -6,7 +6,7 @@
 [English](README.md), [Français](README-fr.md), [简体中文](README-chs.md), [Русский](README-ru.md) | [Mirror](https://gitlab.com/alimakki/streisand)
 - - -
 
-[![Build Status](https://travis-ci.org/StreisandEffect/streisand.svg?branch=master)](https://travis-ci.org/StreisandEffect/streisand)
+[![Build Status](https://github.com/StreisandEffect/streisand/workflows/Streisand/badge.svg)](https://github.com/StreisandEffect/streisand/actions)
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/espadrine.svg?style=social&label=Follow%20%40StreisandVPN)](https://twitter.com/StreisandVPN)
 
 Streisand
@@ -133,9 +133,6 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
   * 微软云服务
 
         sudo pip install ansible[azure]
-  * DigitalOcean
-
-        sudo pip install dopy==0.3.5
   * Google
 
         sudo pip install "apache-libcloud>=1.17.0"

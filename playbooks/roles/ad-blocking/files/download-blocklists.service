@@ -1,0 +1,7 @@
+[Unit]
+Description=Download blocklists
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/download-blocklists
+
