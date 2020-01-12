@@ -36,7 +36,7 @@
   register: ami
 
 - name: Create the EC2 instance
-  ec2:
+  ec2_instance:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     instance_type: "{{ aws_instance_type }}"
