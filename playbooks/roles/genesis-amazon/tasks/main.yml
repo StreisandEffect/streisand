@@ -40,7 +40,7 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     instance_type: "{{ aws_instance_type }}"
-    image: "{{ ami.images|sort(reverse=True,attribute='name')|map(attribute='image_id')|first }}"
+    image_id: "{{ ami.images|sort(reverse=True,attribute='name')|map(attribute='image_id')|first }}"
     region: "{{ aws_region }}"
     vpc_subnet_id: "{{ aws_vpc_subnet_id | default(omit) }}"
     assign_public_ip: "{{ (aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '') or omit }}"
