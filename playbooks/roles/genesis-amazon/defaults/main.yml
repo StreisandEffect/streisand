@@ -1,5 +1,5 @@
 ---
-aws_instance_type: "t2.micro"
+aws_instance_type: "t3.micro"
 # Search AMIs owned by this owner. This is the Amazon owner ID.
 aws_ami_owner: "099720109477"
 # Find AMIs matching this name
