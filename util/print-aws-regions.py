@@ -22,6 +22,7 @@ names = (
     ("ap-east-1",      "Asia Pacific", "Hong Kong"),
     ("eu-north-1",     "EU",           "Stockholm"),
     ("sa-east-1",      "South America", "São Paulo"),
+    ("me-south-1",     "Middle East",  "Bahrain"),
 )
 
 sorted_names = sorted(names)
