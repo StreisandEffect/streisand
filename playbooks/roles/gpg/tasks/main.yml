@@ -50,6 +50,18 @@
 - name: "Start a new dirmngr with our config changes"
   command: "gpgconf --launch dirmngr"
 
+- name: "create S.dirmngr directory if it does not exist "
+  file:
+    path: /root/.gnupg/S.dirmngr
+    state: directory
+    mode: '0755'
+    
+- name: "create S.gpg-agent directory if it does not exist "
+  file:
+    path: /root/.gnupg/S.gpg-agent
+    state: directory
+    mode: '0755'
+
 - name: "Wait for the GPG agent and dirmngr control sockets"
   wait_for:
     path: "{{ root_gpg_dir }}/{{ item }}"
