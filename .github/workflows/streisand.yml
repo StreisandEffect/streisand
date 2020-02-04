@@ -39,6 +39,9 @@ jobs:
           sudo apt-get purge -yqq shellcheck
           sudo dpkg -l linux-{image,headers}-* | awk '/^ii/{print $2}' | egrep '[0-9]+\.[0-9]+\.[0-9]+' | grep -v $(uname -r | cut -d- -f-2) | xargs sudo apt-get -yqq purge
           sudo apt-get --purge autoremove -yqq
+      - name: Update Yarn Debian key
+        run: |
+          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
       - name: Install additonal deps
         run: |
           sudo apt-get install ca-certificates
