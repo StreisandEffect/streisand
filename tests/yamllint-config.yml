@@ -12,7 +12,8 @@ rules:
   # Accept:
   # * "too many spaces after colon"
   # * "too many spaces inside braces"
-  # * "too many spaces after comma"
+  # * "truthy value should be one of [false, true] but we use [no, yes]"
   colons: disable
   braces: disable
   commas: disable
+  truthy: disable
