@@ -11,11 +11,25 @@ An [experimental configuration for OpenWrt/LEDE](#openwrt) 17.01.4 (or later) is
 
 ---
 * Platforms
+  * [Windows](#windows)
   * [Android](#android)
   * [iOS](#ios)
   * [Linux](#linux)
   * [macOS](#macos)
   * [OpenWrt](#openwrt)
+
+<a name="windows"></a>
+### Windows ###
+1. [Install WireGuard for Windows](https://www.wireguard.com/install/)
+1. Download one of the client configuration files. **Only one computer can use a profile at a time**. For this example we'll assume you downloaded {{ vpn_client_names.results[0].stdout }}:
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.conf)
+{% endfor %}
+1. Launch the app, and choose *Add Tunnel → Import tunnel(s) from file…*, select the downloaded file, then click *Open*.
+1. Select the imported tunnel and click *Activate* to connect.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+---
 
 <a name="android"></a>
 ### Android ###
