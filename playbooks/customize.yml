@@ -57,8 +57,8 @@
       default: "yes"
       private: no
     - name: streisand_cloudflared_enabled
-      prompt: "Enable DNS-over-HTTPS (cloudflared)? Press enter for default "
-      default: "yes"
+      prompt: "[BROKEN ON SOME PROVIDERS, including AWS] Enable DNS-over-HTTPS (cloudflared)? Press enter for default "
+      default: "no"
       private: no
 
   tasks:
