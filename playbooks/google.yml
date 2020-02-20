@@ -35,20 +35,23 @@
       "26": "asia-east1-a"
       "27": "asia-east1-b"
       "28": "asia-east1-c"
-      "29": "asia-northeast1-a"
-      "30": "asia-northeast1-b"
-      "31": "asia-northeast1-c"
-      "32": "asia-south1-a"
-      "33": "asia-south1-b"
-      "34": "asia-south1-c"
-      "35": "asia-southeast1-a"
-      "36": "asia-southeast1-b"
-      "37": "australia-southeast1-a"
-      "38": "australia-southeast1-b"
-      "39": "australia-southeast1-c"
-      "40": "southamerica-east1-a"
-      "41": "southamerica-east1-b"
-      "42": "southamerica-east1-c"
+      "29": "asia-east2-a"
+      "30": "asia-east2-b"
+      "31": "asia-east2-c"
+      "32": "asia-northeast1-a"
+      "33": "asia-northeast1-b"
+      "34": "asia-northeast1-c"
+      "35": "asia-south1-a"
+      "36": "asia-south1-b"
+      "37": "asia-south1-c"
+      "38": "asia-southeast1-a"
+      "39": "asia-southeast1-b"
+      "40": "australia-southeast1-a"
+      "41": "australia-southeast1-b"
+      "42": "australia-southeast1-c"
+      "43": "southamerica-east1-a"
+      "44": "southamerica-east1-b"
+      "45": "southamerica-east1-c"
 
   # These variable files are included so the gce-network role
   # knows which ports to open
@@ -95,20 +98,23 @@
           26. East Asia            (Taiwan A)
           27. East Asia            (Taiwan B)
           28. East Asia            (Taiwan C)
-          29. Northeast Asia       (Tokyo A)
-          30. Northeast Asia       (Tokyo B)
-          31. Northeast Asia       (Tokyo C)
-          32. South Asia           (Mumbai A)
-          33. South Asia           (Mumbai B)
-          34. South Asia           (Mumbai C)
-          35. Southeast Asia       (Singapore A)
-          36. Southeast Asia       (Singapore B)
-          37. Southeast Australia  (Sydney A)
-          38. Southeast Australia  (Sydney B)
-          39. Southeast Australia  (Sydney C)
-          40. South America        (São Paulo A)
-          41. South America        (São Paulo B)
-          42. South America        (São Paulo C)
+          29. East Asia            (Hong Kong A)
+          30. East Asia            (Hong Kong B)
+          31. East Asia            (Hong Kong C)
+          32. Northeast Asia       (Tokyo A)
+          33. Northeast Asia       (Tokyo B)
+          34. Northeast Asia       (Tokyo C)
+          35. South Asia           (Mumbai A)
+          36. South Asia           (Mumbai B)
+          37. South Asia           (Mumbai C)
+          38. Southeast Asia       (Singapore A)
+          39. Southeast Asia       (Singapore B)
+          40. Southeast Australia  (Sydney A)
+          41. Southeast Australia  (Sydney B)
+          42. Southeast Australia  (Sydney C)
+          43. South America        (São Paulo A)
+          44. South America        (São Paulo B)
+          45. South America        (São Paulo C)
         Please choose the number of your zone. Press enter for default (#3) zone.
       default: "3"
       when: gce_zone is not defined
