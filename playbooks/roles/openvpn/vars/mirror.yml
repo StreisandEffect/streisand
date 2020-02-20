@@ -22,9 +22,9 @@ openvpn_download_files:
   - { "file": "{{ openvpn_windows_installer_filename }}", "sig": "{{ openvpn_windows_installer_sig_filename }}" }
 
 # macOS
-tunnelblick_version:  "3.7.6a"
-tunnelblick_build:    "5080"
+tunnelblick_version:  "3.8.1"
+tunnelblick_build:    "5400"
 tunnelblick_filename: "Tunnelblick_{{ tunnelblick_version }}_build_{{ tunnelblick_build }}.dmg"
 tunnelblick_href:     "{{ openvpn_mirror_href_base }}/{{ tunnelblick_filename }}"
 tunnelblick_url:      "https://tunnelblick.net/release/{{ tunnelblick_filename }}"
-tunnelblick_checksum: "sha256:42b50bd09296f98e55bdf4262a33d42067d1922157b010a02976cc74f514b677"
+tunnelblick_checksum: "sha256:a619a1c01a33a8618fc2489a43241e95c828dcdb7f7c56cfc883dcbb22644693"
