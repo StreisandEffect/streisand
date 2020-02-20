@@ -5,7 +5,7 @@ Services Provided
 
 * [OpenSSH](https://www.openssh.com/)
   * Windows and Android SSH tunnels are also supported, and a copy of the keypair is exported in the `.ppk` format that PuTTY requires.
-  * [Tinyproxy](https://banu.com/tinyproxy/) can be installed and bound to localhost. It can be accessed over an SSH tunnel by programs that do not natively support SOCKS and that require an HTTP proxy, such as Twitter for Android.
+  * [Tinyproxy](https://tinyproxy.github.io/) can be installed and bound to localhost. It can be accessed over an SSH tunnel by programs that do not natively support SOCKS and that require an HTTP proxy, such as Twitter for Android.
   * An unprivileged forwarding user and SSH keypair can be generated for [sshuttle](https://github.com/sshuttle/sshuttle) and SOCKS capabilities.
 * [OpenConnect](https://ocserv.gitlab.io/www/index.html) / [Cisco AnyConnect](https://www.cisco.com/c/en/us/products/security/anyconnect-secure-mobility-client/index.html)
   * OpenConnect (ocserv) is an extremely high-performance and lightweight VPN server that also features full compatibility with the official Cisco AnyConnect clients.
