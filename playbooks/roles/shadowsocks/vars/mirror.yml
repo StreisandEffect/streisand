@@ -12,11 +12,11 @@ shadowsocks_android_url: "https://github.com/shadowsocks/shadowsocks-android/rel
 shadowsocks_android_checksum: "sha256:333833ed934a22767e19ebf468f51e59fff16f9d12ca2cf223b8d1e0eedd5895"
 
 # Windows
-shadowsocks_gui_version: "4.0.6"
+shadowsocks_gui_version: "4.1.9.2"
 shadowsocks_gui_filename: "Shadowsocks-{{ shadowsocks_gui_version }}.zip"
 shadowsocks_gui_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_gui_filename }}"
 shadowsocks_gui_url: "https://github.com/shadowsocks/shadowsocks-windows/releases/download/{{ shadowsocks_gui_version }}/{{ shadowsocks_gui_filename }}"
-shadowsocks_gui_checksum: "sha256:4f932e61afb6bd1dd8b5c4c25c715f1623d3f574637d8154256531b4ef5000ac"
+shadowsocks_gui_checksum: "sha256:7a52b4827a4dac14ccd0c8a05a46c7debafca33672285e7630ee8f8e54387738"
 
 # macOS
 shadowsocks_x_ng_version: "1.9.4"
