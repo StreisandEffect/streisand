@@ -12,18 +12,18 @@ shadowsocks_android_url: "https://github.com/shadowsocks/shadowsocks-android/rel
 shadowsocks_android_checksum: "sha256:333833ed934a22767e19ebf468f51e59fff16f9d12ca2cf223b8d1e0eedd5895"
 
 # Windows
-shadowsocks_gui_version: "4.0.6"
+shadowsocks_gui_version: "4.1.9.2"
 shadowsocks_gui_filename: "Shadowsocks-{{ shadowsocks_gui_version }}.zip"
 shadowsocks_gui_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_gui_filename }}"
 shadowsocks_gui_url: "https://github.com/shadowsocks/shadowsocks-windows/releases/download/{{ shadowsocks_gui_version }}/{{ shadowsocks_gui_filename }}"
-shadowsocks_gui_checksum: "sha256:4f932e61afb6bd1dd8b5c4c25c715f1623d3f574637d8154256531b4ef5000ac"
+shadowsocks_gui_checksum: "sha256:7a52b4827a4dac14ccd0c8a05a46c7debafca33672285e7630ee8f8e54387738"
 
 # macOS
-shadowsocks_x_ng_version: "1.6.1"
+shadowsocks_x_ng_version: "1.9.4"
 shadowsocks_x_ng_filename: "ShadowsocksX-NG.{{ shadowsocks_x_ng_version }}.zip"
 shadowsocks_x_ng_href: "{{ shadowsocks_mirror_href_base }}/{{ shadowsocks_x_ng_filename }}"
 shadowsocks_x_ng_url: "https://github.com/shadowsocks/ShadowsocksX-NG/releases/download/v{{ shadowsocks_x_ng_version }}/{{ shadowsocks_x_ng_filename }}"
-shadowsocks_x_ng_checksum: "sha256:dad30943ad569d6f3a7f1b9925b45b9082ef5f5e855d2fcad2c18a0554187281"
+shadowsocks_x_ng_checksum: "sha256:dc06a995b63f8e32be9b86c265fd2979a6d73d4742d0ff16e1b2bb8f538d77a3"
 
 # Linux (x64)
 # NOTE(@cpu): if 32bit Linux clients are to be supported then we should add `shadowsocks2-linux-x86.gz`
