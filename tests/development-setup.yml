@@ -98,7 +98,7 @@
 
     - name: Install python in container
       delegate_to: streisand
-      raw: apt-get install -y python3 python3-apt python3-pip
+      raw: apt-get update && apt-get install -y python3 python3-apt python3-pip
 
     - name: Set python3 as the default
       raw: update-alternatives --install /usr/bin/python python /usr/bin/python3 1
