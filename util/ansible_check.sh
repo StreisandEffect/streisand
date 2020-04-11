@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 # This is included by the main streisand script.
 
 # check_ansible checks that Ansible is installed on the local system
