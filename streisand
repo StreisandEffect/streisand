@@ -129,7 +129,11 @@ function run_genesis() {
 # be_careful_friend asks you to pay attention because you're about to do
 # something that might be impossible to undo!
 function be_careful_friend() {
-  read -r -p "$1" confirm
+  echo "$1
+
+ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
+"
+  read -r -p "Please enter the word 'streisand' to continue: " confirm
   case "$confirm" in
     streisand) echo; echo "Confirmed. Continuing";;
     *) echo; echo "Cancelling & exiting."; exit 1;;
@@ -143,10 +147,7 @@ function be_careful_friend() {
 function local_provision() {
   be_careful_friend "
 LOCAL PROVISIONING WILL OVERWRITE CONFIGURATION ON **THIS** MACHINE.
-THE MACHINE YOU ARE CURRENTLY EXECUTING THIS SHELL SCRIPT ON.
-ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
-
-Please enter the word 'streisand' to continue: "
+THE MACHINE YOU ARE CURRENTLY EXECUTING THIS SHELL SCRIPT ON."
 
   run_genesis localhost.yml inventories/inventory-local-provision
 }
@@ -157,11 +158,7 @@ function existing_server() {
   be_careful_friend "
 THIS WILL OVERWRITE CONFIGURATION ON THE EXISTING SERVER.
 STREISAND ASSUMES $SERVER_IP IS A BRAND NEW UBUNTU INSTANCE AND WILL
-NOT PRESERVE EXISTING CONFIGURATION OR DATA.
-
-ARE YOU 100% SURE THAT YOU WISH TO CONTINUE?
-
-Please enter the word 'streisand' to continue: "
+NOT PRESERVE EXISTING CONFIGURATION OR DATA."
 
   # If ANSIBLE_SSH_USER is empty, default to root
   if [ -z "${ANSIBLE_SSH_USER}" ]; then
