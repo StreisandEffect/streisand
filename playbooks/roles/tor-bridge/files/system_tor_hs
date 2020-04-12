@@ -1,0 +1,22 @@
+# vim:syntax=apparmor
+#include <tunables/global>
+
+profile system_tor_hs flags=(attach_disconnected) {
+  #include <abstractions/tor>
+
+  owner /var/lib/tor-hidden-service/** rwk,
+  owner /var/lib/tor-hidden-service/ r,
+  owner /var/log/tor-hidden-service/* w,
+
+  # During startup, tor (as root) tries to open various things such as
+  # directories via check_private_dir().  Let it.
+  /var/lib/tor-hidden-service/** r,
+
+  /{,var/}run/tor-hidden-service/ r,
+  /{,var/}run/tor-hidden-service/control w,
+  /{,var/}run/tor-hidden-service/socks w,
+  /{,var/}run/tor-hidden-service/tor.pid w,
+  /{,var/}run/tor-hidden-service/control.authcookie w,
+  /{,var/}run/tor-hidden-service/control.authcookie.tmp rw,
+  /{,var/}run/systemd/notify w,
+}

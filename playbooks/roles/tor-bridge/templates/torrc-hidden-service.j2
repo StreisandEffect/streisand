@@ -1,0 +1,19 @@
+# Use the local bridge to connect to the Tor network as a hidden service.
+# We also use a separate tor process to host the hidden service, instead of
+# hosting both the Streisand bridge and Streisand gateway hidden service
+# on the same tor process. Otherwise, we risk leaking a lot of information
+# about our hidden service possibly leading to deanonymization.
+# see https://trac.torproject.org/projects/tor/ticket/8742
+UseBridges 1
+Bridge 127.0.0.1:{{ tor_orport }}
+SocksPort 0
+User {{ tor_hidden_service_user }}
+
+HiddenServiceDir {{ tor_hidden_service_directory }}
+HiddenServicePort 80 {{ tor_internal_hidden_service_address }}
+
+DataDirectory {{ tor_hidden_service_state_directory }}
+PidFile {{ tor_hidden_service_run_directory }}/tor.pid
+
+ControlSocket {{ tor_hidden_service_run_directory }}/control GroupWritable RelaxDirModeCheck
+CookieAuthFile {{ tor_hidden_service_run_directory }}/control.authcookie

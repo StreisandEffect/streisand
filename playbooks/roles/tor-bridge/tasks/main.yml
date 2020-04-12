@@ -16,11 +16,13 @@
   apt:
     package: deb.torproject.org-keyring
 
-- name: Install obfs4 and Tor
+- name: Install obfs4, Tor, and virtualenv
   apt:
     package:
       - obfs4proxy
       - tor
+      # Vanguards dependency
+      - python-virtualenv
 
 # Update the firewall to allow Tor and obfs4proxy
 # NOTE(@cpu): we do this early in the role because the Tor daemon will check if
@@ -45,6 +47,145 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Generate the hidden service torrc config file
+  template:
+    src: torrc-hidden-service.j2
+    dest: /etc/tor/torrc-hidden-service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Generate the vanguards config file
+  template:
+    src: vanguards.conf.j2
+    dest: "{{ tor_vanguards_config }}"
+    owner: root
+    group: root
+    mode: 0644
+
+# We have to setup an apparmor profile for the tor hidden service
+# since we're trying to use the non-default tor data directories,
+# control socket, PID file, etc.
+- name: Copy Tor Hidden Service AppArmor profile
+  copy:
+    src: system_tor_hs
+    dest: /etc/apparmor.d/system_tor_hs
+    owner: root
+    group: root
+    mode: 0644
+
+# Permissions are handled by the tor-hidden-service.service file
+# (systemd) each time the service is started/restarted.
+- name: Create hidden service data directory
+  file:
+    path: "{{ tor_hidden_service_state_directory }}"
+    state: directory
+
+- name: Generate the hidden service systemd file
+  template:
+    src: tor-hidden-service.service.j2
+    dest: /etc/systemd/system/tor-hidden-service.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Generate the vanguards service systemd file
+  template:
+    src: vanguards.service.j2
+    dest: /etc/systemd/system/vanguards.service
+    owner: root
+    group: root
+    mode: 0644
+
+# Run tor processes as separate users locally. By default,
+# tor runs as "debian-tor". Since we're running the hidden service
+# and bridge as separate tor processes, it makes sense to run
+# these under separate user accounts as well.
+- name: Create local hidden service user
+  user:
+    name: "{{ tor_hidden_service_user }}"
+    shell: /bin/false
+    system: yes
+    create_home: False
+    # the "home" folder for debian-tor by default is
+    # set to /var/lib/tor, since we aren't using that dir
+    # here we set debian-tor-hs home to the new HS data dir
+    home: "{{ tor_hidden_service_state_directory }}"
+
+- name: Start tor hidden service
+  service:
+    name: tor-hidden-service
+    enabled: true
+    state: started
+
+# Clone the vanguards repo for hardening the Tor hidden service
+# See https://blog.torproject.org/announcing-vanguards-add-onion-services
+# and https://github.com/mikeperry-tor/vanguards
+# Installation instructions recommend doing this via git, as deb/rpm packages
+# aren't as generally available yet (checking xenial proved fruitless for example,
+# it looks like vanguards is only in ubuntu's apt repos for newer releases).
+- name: Clone vanguards onion services add-on
+  git:
+    repo: "{{ tor_vanguards_repo_url }}"
+    dest: "{{ tor_vanguards_addon_directory }}"
+    # Keep a separate git directory to keep failed verifications/pulls/etc. from messing
+    # up anything in the working tree. Just suffixed with .git in the same dir.
+    separate_git_dir: "{{ tor_vanguards_addon_directory }}.git"
+
+- name: Find latest vanguards add-on git tag
+  # Find latest available tag by sorting by "taggerdate" (date tag was created)
+  # We also want to avoid ever checking out an alpha/beta/dev tag and only use "stable" tags
+  shell: git tag -l --sort=-taggerdate | grep -v "alpha\|beta\|dev\|test" | head -n 1
+  args:
+    chdir: "{{ tor_vanguards_addon_directory }}.git"
+  register: tor_vanguard_git_tag
+
+- name: Checkout latest git tag in vanguard repo
+  command: "git checkout {{ tor_vanguard_git_tag.stdout }}"
+  args:
+    chdir: "{{ tor_vanguards_addon_directory }}"
+
+# Tell git to use gpg2 when verifying tags/commits
+- shell: "git config --global gpg.program $(which gpg2)"
+
+# Grab the signing key.
+- name: Grab Vanguards add-on PGP signing key
+  command: "gpg2 {{ streisand_default_gpg_flags }} {{ streisand_default_key_import_flags}} --recv-keys {{ tor_vanguards_addon_gpg_key }}"
+
+# Now, finally, we can run the gpg verify
+# We tell git (or really, gpg) where Streisand's default keyring is located by using
+# the env variable $GNUPGHOME. This way, when git makes a call to gpg2 it uses the right
+# keyring and can find the public key associated with the tag/commit.
+- name: Verify vanguard add-on git signature
+  git:
+    repo: "{{ tor_vanguards_repo_url }}"
+    dest: "{{ tor_vanguards_addon_directory }}"
+    version: "{{ tor_vanguard_git_tag.stdout }}"
+    verify_commit: yes
+  environment:
+    GNUPGHOME: "{{ streisand_gpg_dir }}"
+  register: tor_vanguard_git_verify_results
+
+- name: Setup vanguards virtualenv/install
+  command: "{{ tor_vanguards_addon_directory }}/setup.sh"
+  args:
+    chdir: "{{ tor_vanguards_addon_directory }}"
+
+- name: Install cronjob to auto-update and verify vanguards
+  template:
+    src: "tor-vanguards-update-and-verify.sh.j2"
+    dest: "/etc/cron.daily/tor-vanguards-update-and-verify.sh"
+    owner: root
+    group: root
+    mode: 0755
+  when: not streisand_ci
+
+- name: Start the vanguards service
+  service:
+    name: vanguards
+    enabled: true
+    state: started
 
 # TODO(@cpu) - This should be removed once it isn't required, maybe in the next
 # release after tor 0.3.0.9
