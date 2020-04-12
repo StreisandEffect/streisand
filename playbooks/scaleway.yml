@@ -1,0 +1,53 @@
+---
+- name: Provision the Scaleway Server
+# ===================================
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+
+  vars:
+    regions:
+      "1":  "fr-par-1"
+      "2":  "nl-ams-1"
+
+  vars_prompt:
+    - name: "scaleway_region"
+      prompt: >
+        What region should the server be located in?
+          1.  fr-par-1 (Paris)
+          2.  nl-ams-1 (Amsterdam)
+        Please choose the number of your region. Press enter for default (#1) region.
+      default: "1"
+      private: no
+
+    - name: "scaleway_server_name"
+      prompt: "\nWhat should the server be named? Press enter for default (streisand).\n"
+      default: "streisand"
+      private: no
+
+    - name: "scaleway_token"
+      prompt: |
+
+          Tokens allow Streisand to create a Scaleway instance for you.
+          New Personal Access Tokens can be generated in the Scaleway console.
+          To generate a new token please do the following:
+                * Go to https://console.scaleway.com/account/credentials
+                * Click 'Generate New Token'
+                * Give the token a purpose (it is arbitrary)
+                * Copy the long string that is generated and paste it below.
+                * Click 'Generate Token'
+          If this field is left blank, the environment variable SCW_TOKEN will be used.
+
+          What is your Scaleway Token?
+      private: no
+
+    - name: "confirmation"
+      prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
+
+  roles:
+    - genesis-scaleway
+
+- import_playbook: ssh-setup.yml
+- import_playbook: cloud-status.yml
+- import_playbook: streisand.yml
+...

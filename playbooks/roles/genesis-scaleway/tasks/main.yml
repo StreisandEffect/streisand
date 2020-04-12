@@ -1,0 +1,61 @@
+---
+- set_fact:
+    streisand_genesis_role: "genesis-scaleway"
+
+- name: "Get the {{ streisand_ssh_private_key }}.pub contents"
+  command: "cat {{ streisand_ssh_private_key }}.pub"
+  register: ssh_key
+  changed_when: False
+
+- name: Set the Scaleway Token fact to the value that was entered, or attempt to retrieve it from the environment if the entry is blank
+  set_fact:
+    scaleway_token: "{{ scaleway_token | default( lookup('env', 'SCW_TOKEN') ) }}"
+
+- block:
+    - name: Add the SSH key to Scaleway if it does not already exist
+      scaleway_sshkey:
+        ssh_pub_key: "{{ ssh_key.stdout }}"
+        state: present
+      register: scaleway_ssh_key
+  rescue:
+    - fail:
+        msg: "* The SSH key may already exist in the Scaleway console under a different name."
+
+- block:
+    - name: "Fetch image id for Ubuntu Bionic"
+      scaleway_image_facts:
+        region: "{{ regions[scaleway_region] }}"
+        name: Ubuntu Bionic
+      register: image
+
+    - name: Create a Scaleway instance
+      scaleway_compute:
+        name: "{{ scaleway_server_name }}"
+        commercial_type: "{{ scaleway_commercial_type }}"
+        region: "{{ regions[scaleway_region] }}"
+        image: "{{ image[0].id }}"
+        wait: yes
+      register: streisand_server
+  rescue:
+    - fail:
+        msg: "Unable to create the Scaleway server."
+
+- name: Wait until the server has finished booting and OpenSSH is accepting connections
+  wait_for:
+    host: "{{ streisand_server.ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+
+- name: Create the in-memory inventory group
+  add_host:
+    name: "{{ streisand_server.ip_address }}"
+    groups: streisand-host
+
+- name: Set the streisand_ipv4_address variable
+  set_fact:
+    streisand_ipv4_address: "{{ streisand_server.ip_address }}"
+
+- name: Set the streisand_server_name variable
+  set_fact:
+    streisand_server_name: "{{ scaleway_server_name | regex_replace('\\s', '_') }}"

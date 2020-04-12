@@ -9,7 +9,7 @@
 #
 # Usage:
 # streisand-new-cloud-server \
-#   --provider [amazon|azure|digitalocean|google|linode|rackspace] \
+#   --provider [amazon|azure|digitalocean|google|linode|rackspace|scaleway] \
 #   --site-config path/to/digitalocean-site.yml
 #
 
@@ -19,7 +19,7 @@ set -o nounset
 DIR="$( cd "$( dirname "$0" )" && pwd)"
 PROJECT_DIR="${DIR}/.."
 
-VALID_PROVIDERS="amazon|azure|digitalocean|google|linode|rackspace"
+VALID_PROVIDERS="amazon|azure|digitalocean|google|linode|rackspace|scaleway"
 export DEFAULT_SITE_VARS="${PROJECT_DIR}/global_vars/default-site.yml"
 export GLOBAL_VARS="${PROJECT_DIR}/global_vars/globals.yml"
 
