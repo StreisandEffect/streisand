@@ -11,6 +11,9 @@
   vars_files:
     - roles/lets-encrypt/vars/main.yml
 
+  # FIXME: "ansible_play_hosts[0]" is a confusing way of writing
+  # "the address streisand-host points at".
+
   vars_prompt:
     - name: "streisand_domain_var"
       prompt: |
@@ -25,6 +28,9 @@
         good time to point your fully qualified domain to your server's public
         address. Make sure the fully qualified domain resolves to the correct IP
         address before proceeding.
+
+        If Streisand has created a new server for you, its IP address is
+        {{ ansible_play_hosts[0] }}
 
         Please type your fully qualified domain below. Press enter to skip.
       private: no
