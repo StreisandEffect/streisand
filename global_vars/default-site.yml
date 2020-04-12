@@ -25,3 +25,6 @@ streisand_tinyproxy_enabled: yes
 streisand_tor_enabled: no
 streisand_wireguard_enabled: yes
 streisand_cloudflared_enabled: no
+
+# Simple /robots.txt; can also be used for health checks
+streisand_gateway_robots_txt_enabled: no

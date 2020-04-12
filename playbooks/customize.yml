@@ -60,6 +60,10 @@
       prompt: "[BROKEN ON SOME PROVIDERS, including AWS] Enable DNS-over-HTTPS (cloudflared)? Press enter for default "
       default: "no"
       private: no
+    - name: streisand_gateway_robots_txt_enabled
+      prompt: "Enable a minimal /robots.txt in the UI; also useful for remote health checks "
+      default: "no"
+      private: no
 
   tasks:
     - lineinfile:
@@ -118,3 +122,7 @@
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_cloudflared_enabled: (?:yes|no|True|False)$"
         line: "streisand_cloudflared_enabled: {{ streisand_cloudflared_enabled|bool }}"
+    - lineinfile:
+        path: "{{ streisand_site_vars }}"
+        regexp: "^streisand_gateway_robots_txt_enabled: (?:yes|no|True|False)$"
+        line: "streisand_gateway_robots_txt_enabled: {{ streisand_gateway_robots_txt_enabled }}"

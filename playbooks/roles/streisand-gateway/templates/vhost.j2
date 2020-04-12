@@ -80,9 +80,17 @@ server {
 
   root  {{ streisand_gateway_location }};
   index index.html index.htm;
-  
+
   location / {
-    autoindex off; 
+    autoindex off;
   }
 
+{% if streisand_gateway_robots_txt_enabled %}
+  # Simple /robots.txt; can also be used for health checks
+  location = /robots.txt {
+    auth_basic off;
+    add_header Content-Type text/plain;
+    return 200 "User-agent: *\nDisallow: /\n";
+  }
+{% endif %}
 }
