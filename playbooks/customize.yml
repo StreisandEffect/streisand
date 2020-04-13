@@ -57,8 +57,8 @@
       default: "yes"
       private: no
     - name: streisand_cloudflared_enabled
-      prompt: "Enable DNS-over-HTTPS (cloudflared)? Press enter for default "
-      default: "yes"
+      prompt: "[BROKEN ON SOME PROVIDERS, including AWS] Enable DNS-over-HTTPS (cloudflared)? Press enter for default "
+      default: "no"
       private: no
 
   tasks:
@@ -72,49 +72,49 @@
         line: "vpn_clients: {{ vpn_clients }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_ad_blocking_enabled: (?:yes|no)$"
-        line: "streisand_ad_blocking_enabled: {{ streisand_ad_blocking_enabled }}"
+        regexp: "^streisand_ad_blocking_enabled: (?:yes|no|True|False)$"
+        line: "streisand_ad_blocking_enabled: {{ streisand_ad_blocking_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_openconnect_enabled: (?:yes|no)$"
-        line: "streisand_openconnect_enabled: {{ streisand_openconnect_enabled }}"
+        regexp: "^streisand_openconnect_enabled: (?:yes|no|True|False)$"
+        line: "streisand_openconnect_enabled: {{ streisand_openconnect_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_openvpn_enabled: (?:yes|no)$"
-        line: "streisand_openvpn_enabled: {{ streisand_openvpn_enabled }}"
+        regexp: "^streisand_openvpn_enabled: (?:yes|no|True|False)$"
+        line: "streisand_openvpn_enabled: {{ streisand_openvpn_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_shadowsocks_enabled: (?:yes|no)$"
-        line: "streisand_shadowsocks_enabled: {{ streisand_shadowsocks_enabled }}"
+        regexp: "^streisand_shadowsocks_enabled: (?:yes|no|True|False)$"
+        line: "streisand_shadowsocks_enabled: {{ streisand_shadowsocks_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_shadowsocks_v2ray_enabled: (?:yes|no)$"
-        line: "streisand_shadowsocks_v2ray_enabled: {{ streisand_shadowsocks_v2ray_enabled }}"
+        regexp: "^streisand_shadowsocks_v2ray_enabled: (?:yes|no|True|False)$"
+        line: "streisand_shadowsocks_v2ray_enabled: {{ streisand_shadowsocks_v2ray_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_ssh_forward_enabled: (?:yes|no)$"
-        line: "streisand_ssh_forward_enabled: {{ streisand_ssh_forward_enabled }}"
+        regexp: "^streisand_ssh_forward_enabled: (?:yes|no|True|False)$"
+        line: "streisand_ssh_forward_enabled: {{ streisand_ssh_forward_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_sshuttle_enabled: (?:yes|no)$"
-        line: "streisand_sshuttle_enabled: {{ streisand_sshuttle_enabled }}"
+        regexp: "^streisand_sshuttle_enabled: (?:yes|no|True|False)$"
+        line: "streisand_sshuttle_enabled: {{ streisand_sshuttle_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_stunnel_enabled: (?:yes|no)$"
-        line: "streisand_stunnel_enabled: {{ streisand_stunnel_enabled }}"
+        regexp: "^streisand_stunnel_enabled: (?:yes|no|True|False)$"
+        line: "streisand_stunnel_enabled: {{ streisand_stunnel_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_tinyproxy_enabled: (?:yes|no)$"
-        line: "streisand_tinyproxy_enabled: {{ streisand_tinyproxy_enabled }}"
+        regexp: "^streisand_tinyproxy_enabled: (?:yes|no|True|False)$"
+        line: "streisand_tinyproxy_enabled: {{ streisand_tinyproxy_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_tor_enabled: (?:yes|no)$"
-        line: "streisand_tor_enabled: {{ streisand_tor_enabled }}"
+        regexp: "^streisand_tor_enabled: (?:yes|no|True|False)$"
+        line: "streisand_tor_enabled: {{ streisand_tor_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_wireguard_enabled: (?:yes|no)$"
-        line: "streisand_wireguard_enabled: {{ streisand_wireguard_enabled }}"
+        regexp: "^streisand_wireguard_enabled: (?:yes|no|True|False)$"
+        line: "streisand_wireguard_enabled: {{ streisand_wireguard_enabled|bool }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_cloudflared_enabled: (?:yes|no)$"
-        line: "streisand_cloudflared_enabled: {{ streisand_cloudflared_enabled }}"
+        regexp: "^streisand_cloudflared_enabled: (?:yes|no|True|False)$"
+        line: "streisand_cloudflared_enabled: {{ streisand_cloudflared_enabled|bool }}"
