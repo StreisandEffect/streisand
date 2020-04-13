@@ -36,17 +36,18 @@
   register: ami
 
 - name: Create the EC2 instance
-  ec2:
+  ec2_instance:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     instance_type: "{{ aws_instance_type }}"
-    image: "{{ ami.images|sort(reverse=True,attribute='name')|map(attribute='image_id')|first }}"
+    image_id: "{{ ami.images|sort(reverse=True,attribute='name')|map(attribute='image_id')|first }}"
     region: "{{ aws_region }}"
     vpc_subnet_id: "{{ aws_vpc_subnet_id | default(omit) }}"
-    assign_public_ip: "{{ (aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '') or omit }}"
+    network:
+      assign_public_ip: "{{ (aws_vpc_subnet_id is defined and aws_vpc_subnet_id != '') or omit }}"
     key_name: streisand-ssh
-    group: "{{ aws_security_group }}"
-    instance_tags:
+    security_group: "{{ aws_security_group }}"
+    tags:
       Name: "{{ aws_instance_name }}"
     wait: yes
   register: streisand_server
@@ -67,14 +68,14 @@
     period: 60
     evaluation_periods: 2
     dimensions:
-      InstanceId: "{{ streisand_server.instances[0].id }}"
+      InstanceId: "{{ streisand_server.instances[0].instance_id }}"
     alarm_actions:
       - "arn:aws:automate:{{ aws_region }}:ec2:recover"
-  when: aws_instance_type.startswith(("t2", "c3", "c4", "m3", "m4", "r3", "x1"))
+  when: aws_instance_type.startswith(("t2", "t3", "c3", "c4", "m3", "m4", "r3", "x1"))
 
 - name: Wait until the server has finished booting and OpenSSH is accepting connections
   wait_for:
-    host: "{{ streisand_server.instances[0].public_ip }}"
+    host: "{{ streisand_server.instances[0].public_ip_address }}"
     port: 22
     search_regex: OpenSSH
     timeout: 600
@@ -84,7 +85,7 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ aws_region }}"
-    device_id: "{{ streisand_server.instances[0].id }}"
+    device_id: "{{ streisand_server.instances[0].instance_id }}"
     in_vpc: "{{ aws_vpc_id is defined and aws_vpc_id != '' }}"
   register: instance_eip
 

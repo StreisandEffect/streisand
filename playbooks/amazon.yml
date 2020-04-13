@@ -64,6 +64,7 @@
           16. us-east-2       US East        (Ohio)
           17. us-west-1       US West        (N. California)
           18. us-west-2       US West        (Oregon)
+
         Please choose the number of your region. Press enter for default (#16) region.
       default: "16"
       private: no
