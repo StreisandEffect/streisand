@@ -1,10 +1,14 @@
 # See documentation/testing.md for instructions on using this Vagrantfile
 #
-Vagrant.require_version ">= 1.9.0"
+Vagrant.require_version ">= 2.0.0"
 
 Vagrant.configure(2) do |config|
 
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/bionic64"
+
+  config.vm.provision "shell",
+    inline: "sudo apt install ifupdown"
+  #end
 
   config.vm.define "streisand-host", primary: true do |streisand|
     streisand.vm.hostname = "streisand-host"

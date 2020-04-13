@@ -18,6 +18,10 @@ bogus-priv
 # uncomment this.
 no-resolv
 
-{% for item in upstream_dns_servers %}
-server={{ item }}
-{% endfor %}
+bind-interfaces
+
+server=127.0.0.53
+
+#{% for item in upstream_dns_servers %}
+#server={{ item }}
+#{% endfor %}

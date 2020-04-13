@@ -3,4 +3,4 @@ aws_instance_type: "t2.micro"
 # Search AMIs owned by this owner. This is the Amazon owner ID.
 aws_ami_owner: "099720109477"
 # Find AMIs matching this name
-aws_ami_name: "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"
+aws_ami_name: "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"

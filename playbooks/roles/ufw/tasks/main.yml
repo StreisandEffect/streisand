@@ -21,11 +21,11 @@
     proto: "tcp"
     rule: "allow"
 
-- name: Ensure UFW is enabled and denies by default
-  ufw:
-    state: "enabled"
-    policy: "deny"
-    direction: "incoming"
+#- name: Ensure UFW is enabled and denies by default
+#  ufw:
+#    state: "enabled"
+#    policy: "deny"
+#    direction: "incoming"
 
 - name: Ensure UFW allows nginx
   ufw:

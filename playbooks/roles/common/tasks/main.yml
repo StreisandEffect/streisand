@@ -1,8 +1,8 @@
 ---
-- name: Warn users if the server's Linux distribution is not Ubuntu 16.04
+- name: Warn users if the server's Linux distribution is not Ubuntu 18.04
   pause:
-    prompt: "Ubuntu 16.04 is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
-  when: not streisand_noninteractive and (ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04")
+    prompt: "Ubuntu 18.04 is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
+  when: not streisand_noninteractive and (ansible_distribution != "Ubuntu" or ansible_distribution_version != "18.04")
 
 # Set default variables
 - import_tasks: set-default-variables.yml
@@ -26,6 +26,17 @@
 - name: Perform a full system upgrade
   apt:
     upgrade: "safe"
+
+- name: Generate the custom resolvd.conf file
+  template:
+    src: resolvd.conf.j2
+    dest: "/etc/systemd/resolved.conf"
+
+- name: Restart systemd-resolve for settings to take effect
+  systemd:
+    name: "systemd-resolved.service"
+    daemon_reload: yes
+    state: restarted
 
 - name: Copy the English BIP-0039 wordlist
   copy:

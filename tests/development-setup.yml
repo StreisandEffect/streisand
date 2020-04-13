@@ -64,11 +64,14 @@
       args:
         creates: /var/snap/lxd/common/lxd/networks/testbr0
 
-    - name: Retrieve the Ubuntu Xenial AMD64 LXC image fingerprint
+    #- name: lxd attach network to default profile
+    #  command: lxc network attach-profile testbr0 default eth0
+
+    - name: Retrieve the Ubuntu Bionic AMD64 LXC image fingerprint
       uri:
-        url: https://images.linuxcontainers.org/1.0/images/aliases/ubuntu/xenial/amd64
+        url: https://images.linuxcontainers.org/1.0/images/aliases/ubuntu/bionic/amd64
         return_content: yes
-      register: xenial_fingerprint
+      register: bionic_fingerprint
 
     - name: Launch streisand container (this will take a while)
       lxd_container:
@@ -81,7 +84,7 @@
           server: https://images.linuxcontainers.org
           protocol: lxd
           # Use the retrieved alias to fetch the image
-          alias: "{{ xenial_fingerprint['json']['metadata']['target'] }}"
+          alias: "{{ bionic_fingerprint['json']['metadata']['target'] }}"
         profiles: ["default"]
         config:
           security.privileged: "true"

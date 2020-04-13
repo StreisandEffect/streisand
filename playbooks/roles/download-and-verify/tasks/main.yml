@@ -55,15 +55,14 @@
 - name: "Verify the {{ project_name }} download signatures were from the correct keys"
   assert:
     that:
-      # By default gpgv outputs to stderr. For a good signature the first line
-      # always ends being like:
-      # "gpgv: Signature made Fri 16 Mar 2018 11:16:40 PM UTC using RSA key ID
-      #   C3C07136"
+      # By default gpgv outputs to stderr. For a good signature the second line
+      # will contain the key ID:
+      # "gpgv:                using RSA key 2BC7E4E67E3CC0C1BEA72F8C2EFC7FF0D416E014"
       # Since we've already verified the gpgv2 return code we can just check for
       # the presence of the key ID we expect in the first line of stderr output
       # and be confident we saw a valid signature from the expected key ID and
       # not another unrelated key in the Streisand keyring.
-      - "'key ID {{ project_signer_keyid }}' in '{{ item.stderr_lines[0] }}'"
+      - "'{{ project_signer_keyid }}' in '{{ item.stderr_lines[1] }}'"
     msg: "The GPG signature on {{ item.item.file }} was not from {{ project_signer_keyid }}"
   with_items: "{{ gpg_verification_results.results }}"
   loop_control:

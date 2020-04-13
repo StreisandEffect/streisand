@@ -18,8 +18,8 @@ Streisand
 
 Streisand介绍
 ---------------------
-* 只需要一个简单的脚本，就能在全新的 Ubuntu 16.04 服务器上运行[多个不同的科学上网工具](#提供的服务)，它们能够让你匿名并且加密所有的网络流量。
-* Streisand 原生支持多个 VPS 供应商，其中包括[亚马逊EC2](https://aws.amazon.com/ec2/)，[微软云服务](https://azure.microsoft.com)，[DigitalOcean](https://www.digitalocean.com/)，[Google云计算](https://cloud.google.com/compute/)，[Linode](https://www.linode.com/)和[Rackspace](https://www.rackspace.com/)；随着软件的开发还将支持更多云和VPS——只要运行的是 Ubuntu 16.04 ，不论提供商是谁还是有**成百个**实例都能用这个方法部署。
+* 只需要一个简单的脚本，就能在全新的 Ubuntu 18.04 服务器上运行[多个不同的科学上网工具](#提供的服务)，它们能够让你匿名并且加密所有的网络流量。
+* Streisand 原生支持多个 VPS 供应商，其中包括[亚马逊EC2](https://aws.amazon.com/ec2/)，[微软云服务](https://azure.microsoft.com)，[DigitalOcean](https://www.digitalocean.com/)，[Google云计算](https://cloud.google.com/compute/)，[Linode](https://www.linode.com/)和[Rackspace](https://www.rackspace.com/)；随着软件的开发还将支持更多云和VPS——只要运行的是 Ubuntu 18.04 ，不论提供商是谁还是有**成百个**实例都能用这个方法部署。
 * 整个部署过程顺利的话大概在10分钟左右搞定。试想一个没有系统管理能力的人可能要花数天来完成其中一项工作，而我们用 Streisand 让你获得获得开箱既得的畅快体验。
 * 一旦部署完成，你可以将使用指南发送给你的朋友，家人和你觉得对你重要的人**（译者注：原文是社会活动家）**。在这个指南中包含唯一的一个 SSL 证书，这也意味着你发送给他们的只是一个简单的文件而已。
 * 部署好网关中包含了用户需要的一切内容，例如设置向导，所支持操作系统需要的客户端。即使无法下载到官方客户端的朋友都可以在网关中的镜像里下载到需要的最新版本客户端。
@@ -173,7 +173,7 @@ Streisand 运行在**你自己的计算机上时（或者你电脑的虚拟机�
 
 ### 在其他的 VPS 供应商上运行 （高级使用）###
 
-你同样可以将 Streisand 运行在其他 VPS 供应商（提供更好的硬件也没问题，奇葩的 VPS 供应商也行）的 16.04 Ubuntu 上，只需要你在运行 ./streisand 的时候选择菜单中的 "Existing Server (Advanced)" 就可以。你需要提供这个 VPS 的 IP 地址。
+你同样可以将 Streisand 运行在其他 VPS 供应商（提供更好的硬件也没问题，奇葩的 VPS 供应商也行）的 18.04 Ubuntu 上，只需要你在运行 ./streisand 的时候选择菜单中的 "Existing Server (Advanced)" 就可以。你需要提供这个 VPS 的 IP 地址。
 
 这个 VPS 必须使用 `$HOME/.ssh/id_rsa` 来储存 SSH key，并且可以使用 **root** 作为默认用户登录 VPS，如果提供商没有给你 root 用户作为默认用户登录，而是别的用户名，比如：`ubuntu` ，那么在运行 `./streisand` 之前需要额外配置 `ANSIBLE_SSH_USER` 环境变量，比如修改为：`ANSIBLE_SSH_USER=ubuntu` 。
 

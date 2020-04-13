@@ -5,7 +5,12 @@ tinyproxy_port: 8888
 tinyproxy_listen_address: "127.0.0.1"
 tinyproxy_log_level: "Critical"
 
-tinyproxy_pid_dir: "/var/run/tinyproxy"
+tinyproxy_systemd_service_path: "/etc/systemd/system/tinyproxy.service.d"
+
+tinyproxy_log_dir: "/var/log/tinyproxy"
+tinyproxy_log_file: "{{ tinyproxy_log_dir }}/tinyproxy.log"
+
+tinyproxy_pid_dir: "/run/tinyproxy"
 tinyproxy_pid_file: "{{ tinyproxy_pid_dir }}/tinyproxy.pid"
 
 tinyproxy_conf_dir: "/etc/tinyproxy"
