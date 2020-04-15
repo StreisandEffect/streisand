@@ -1,5 +1,11 @@
 server 10.8.0.0 255.255.255.0
 push "dhcp-option DNS {{ dnsmasq_openvpn_tcp_ip }}"
-proto tcp
+proto tcp6
+
+{% if streisand_ipv6_address is defined %}
+server-ipv6 2001:db8:0:124::/64
+push "dhcp-option DNS6 {{ dnsmasq_openvpn_tcp_ipv6 }}"
+{% endif %}
+
 port {{ openvpn_port }}
 {% include "etc_openvpn_server_common.j2" %}

@@ -1,4 +1,6 @@
 client
-remote {{ openvpn_server }} {{ openvpn_port_sslh }}
-proto tcp
+{% if streisand_ipv6_address is defined %}
+remote {{ streisand_ipv6_address }} {{ openvpn_port_sslh }} tcp6
+{% endif %}
+remote {{ openvpn_server }} {{ openvpn_port_sslh }} tcp
 {% include "client-common.j2" %}

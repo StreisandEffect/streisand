@@ -4,7 +4,11 @@
     to_port: "53"
     proto: "udp"
     rule: "allow"
-    from_ip: "192.168.1.0/24"
+    from_ip: "{{ item.addr }}"
+  with_items:
+    - { addr: "{{ ocserv_ipv4_network }}" }
+    - { addr: "{{ ocserv_ipv6_network }}", create: "{{ streisand_ipv6_enabled }}" }
+  when: item.create | default(True) | bool
 
 - name: Ensure UFW allows OpenConnect (ocserv)
   ufw:

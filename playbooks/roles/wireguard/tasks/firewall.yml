@@ -1,28 +1,43 @@
 ---
-- name: Ensure UFW allows DNS requests from WireGuard clients
+- name: "Ensure UFW allows DNS requests from WireGuard clients"
   ufw:
     to_port: "53"
     proto: "udp"
     rule: "allow"
     from_ip: "10.192.122.0/24"
 
-- name: Ensure UFW allows WireGuard
+- name: "Ensure UFW allows DNS requests from WireGuard IPv6 clients"
+  ufw:
+    to_port: "53"
+    proto: "udp"
+    rule: "allow"
+    from_ip: "fde9:7496:c3d7:a47f::/64"
+  when: streisand_ipv6_address is defined
+
+- name: "Ensure UFW allows WireGuard"
   ufw:
     to_port: "{{ wireguard_port }}"
     proto: "udp"
     rule: "allow"
 
-- name: Allow WireGuard through the firewall
+- name: "Allow WireGuard through the firewall"
   command: "{{ item }}"
   with_items: "{{ wireguard_firewall_rules }}"
 
-- name: "Add WireGuard firewall persistence service to init"
-  template:
-    src: streisand-wireguard-service.sh.j2
-    dest: /etc/init.d/streisand-wireguard
-    mode: 0755
+- name: "Allow WireGuard over IPv6 through the firewall"
+  command: "{{ item }}"
+  with_items: "{{ wireguard_firewallv6_rules }}"
+  when: streisand_ipv6_address is defined
 
-- name: "Enable the streisand-wireguard init service"
-  service:
-    name: streisand-wireguard
+- name: "Add WireGuard firewall persistence service"
+  template:
+    src: wireguard-iptables.service.j2
+    dest: /etc/systemd/system/wireguard-iptables.service
+    mode: 0644
+
+- name: "Enable the wireguard-iptables service"
+  systemd:
+    daemon_reload: yes
+    name: wireguard-iptables.service
     enabled: yes
+    state: started

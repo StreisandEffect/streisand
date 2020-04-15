@@ -1,0 +1,19 @@
+[Unit]
+Description=Firewall rules required for WireGuard
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+{% for rule in wireguard_firewall_rules %}
+ExecStart=/sbin/{{ rule }}
+{% endfor %}
+
+{% if streisand_ipv6_address is defined %}
+{% for rule in wireguard_firewallv6_rules %}
+ExecStart=/sbin/{{ rule }}
+{% endfor %}
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target
