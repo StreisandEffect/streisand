@@ -5,8 +5,7 @@
     description: Security group for Streisand
     region: "{{ aws_region }}"
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
+    profile: "{{ aws_profile }}"
 
 - name: Pause for fifteen seconds to ensure the EC2 security group has been created
   pause:
@@ -18,8 +17,7 @@
     description: Security group for Streisand
     region: "{{ aws_region }}"
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
+    profile: "{{ aws_profile }}"
     rules:
       # Nginx
       # ---
@@ -53,8 +51,7 @@
     description: Security group for Streisand
     region: "{{ aws_region }}"
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
+    profile: "{{ aws_profile }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -80,8 +77,7 @@
     description: Security group for Streisand
     region: "{{ aws_region }}"
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
+    profile: "{{ aws_profile }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -107,8 +103,7 @@
     description: Security group for Streisand
     region: "{{ aws_region }}"
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
+    profile: "{{ aws_profile }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -128,8 +123,7 @@
     description: Security group for Streisand
     region: "{{ aws_region }}"
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
+    profile: "{{ aws_profile }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -155,8 +149,7 @@
     description: Security group for Streisand
     region: "{{ aws_region }}"
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
+    profile: "{{ aws_profile }}"
     purge_rules: no
     purge_rules_egress: no
     rules:
@@ -182,8 +175,7 @@
     description: Security group for Streisand
     region: "{{ aws_region }}"
     vpc_id: "{{ aws_vpc_id | default(omit) }}"
-    aws_access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
+    profile: "{{ aws_profile }}"
     purge_rules: no
     purge_rules_egress: no
     rules:

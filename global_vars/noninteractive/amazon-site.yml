@@ -42,8 +42,7 @@ aws_vpc_subnet_id_var: ""
 aws_instance_name: streisand
 
 # The AWS credentials to use.
-aws_access_key: ""
-aws_secret_key: ""
+aws_profile: ""
 
 # Definitions needed for Let's Encrypt HTTPS (or TLS) certificate setup.
 #
