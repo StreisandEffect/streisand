@@ -27,7 +27,7 @@ There's a [list of supported cloud providers](#cloud-providers); experts may be 
 
 ## VPN services
 
-One type of tool that people use to avoid network censorship is a Virtual Private Network (VPN). There are many kinds of VPNs.
+A Virtual Private Network (VPN) is a tool used to avoid network censorship. There are many kinds of VPNs.
 
 Not all network censorship is alike; in some places, it changes from day to day. Streisand provides many different VPN services to try. (You don't have to install them all, though.)
 
