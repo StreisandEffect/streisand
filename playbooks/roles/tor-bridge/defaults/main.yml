@@ -1,7 +1,7 @@
 ---
-tor_orport: 8443
-tor_obfs4_port: 9443
-
+tor_orport: "{{ lookup('file', lookup('env','HOME') + '/.streisand/tor-orport') or 0 }}"
+tor_obfs4_port: "{{ lookup('file', lookup('env','HOME') + '/.streisand/tor-obfs4-port') or 0 }}"
+tor_internal_hidden_service_port: 8181
 # By default Streisand does *not* publish the Tor relay's service descriptor to
 # the tor network. Using a value of 0 ensures the relay is private to the
 # streisand operator and their users. See the Tor documentation[0] for more

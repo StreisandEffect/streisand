@@ -1,4 +1,8 @@
 ---
+# Randomize Tor's ORPort and obfs4 port if Tor is enabled.
+# We do this early so gce-network knows Tor's port
+- import_playbook: tor-setup.yml
+
 - name: Provision the GCE Server
 # =======================================
   hosts: localhost

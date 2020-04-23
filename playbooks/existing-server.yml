@@ -3,6 +3,9 @@
 # role to create a new server and instead applies Streisand to an existing
 # remote server.
 
+# Randomize Tor's ORPort and obfs4 port if Tor is enabled.
+- import_playbook: tor-setup.yml
+
 - name: Register the genesis role in use
   hosts: localhost
   gather_facts: yes

@@ -1,4 +1,7 @@
 ---
+# Randomize Tor's ORPort and obfs4 port if Tor is enabled.
+- import_playbook: tor-setup.yml
+
 - name: Provision the DigitalOcean Server
 # =======================================
   hosts: localhost
