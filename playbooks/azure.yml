@@ -39,12 +39,20 @@
       "30": "australiacentral2"
       "31": "northeurope"
       "32": "westeurope"
-      "33": "germanycentral"
+      "33": "germanywesstcentral"
       "34": "germanynortheast"
       "35": "ukwest"
       "36": "uksouth"
       "37": "francecentral"
       "38": "francesouth"
+      "39": "norwaywest"
+      "40": "norwayeast"
+      "41": "switzerlandwest"
+      "42": "switzerlandnorth"
+      "43": "uaecentral"
+      "44": "uaenorth"
+      "45": "southafricanorth"
+      "46": "southafricawest"
 
   # These variable files are included so the azure-security-group role
   # knows which ports to open
@@ -65,52 +73,63 @@
         What region should the server be located in?
 
           North America:
-             1: East US             (Virginia)
-             2: East US 2           (Virginia)
-             3: Central US          (Iowa)
-             4: North Central US    (Illinois)
-             5: South Central US    (Texas)
-             6: West Central US     (West Central US)
-             7: West US             (California)
-             8: West US 2           (West US 2)
-             9: US Gov Virginia     (Virginia)
-            10: US Gov Iowa         (Iowa)
-            11: US DoD East         (US DoD East)
-            12: US DoD Central      (US DoD Central)
-            13: Canada East         (Quebec City)
-            14: Canada Central      (Toronto)
+             1: East US                 (Virginia)
+             2: East US 2               (Virginia)
+             3: Central US              (Iowa)
+             4: North Central US        (Illinois)
+             5: South Central US        (Texas)
+             6: West Central US         (West Central US)
+             7: West US                 (California)
+             8: West US 2               (West US 2)
+             9: US Gov Virginia         (Virginia)
+            10: US Gov Iowa             (Iowa)
+            11: US DoD East             (US DoD East)
+            12: US DoD Central          (US DoD Central)
+            13: Canada East             (Quebec City)
+            14: Canada Central          (Toronto)
 
           South America:
-            15: Brazil South        (Sao Paulo State)
+            15: Brazil South            (Sao Paulo State)
 
           Asia:
-            16: Southeast Asia      (Singapore)
-            17: East Asia           (Hong Kong)
-            18: China East          (Shanghai)
-            19: China North         (Beijing)
-            20: Japan East          (Tokyo, Saitama)
-            21: Japan West          (Osaka)
-            22: Korea Central       (Seoul)
-            23: Korea South         (Busan)
-            24: Central India       (Pune)
-            25: West India          (Mumbai)
-            26: South India         (Chennai)
+            16: Southeast Asia          (Singapore)
+            17: East Asia               (Hong Kong)
+            18: China East              (Shanghai)
+            19: China North             (Beijing)
+            20: Japan East              (Tokyo, Saitama)
+            21: Japan West              (Osaka)
+            22: Korea Central           (Seoul)
+            23: Korea South             (Busan)
+            24: Central India           (Pune)
+            25: West India              (Mumbai)
+            26: South India             (Chennai)
 
           Australia:
-            27: Australia East      (New South Wales)
+            27: Australia East          (New South Wales)
             28: Australia Southeast     (Victoria)
-            29: Austrailia Central       (Canberra)
+            29: Austrailia Central      (Canberra)
             30: Austrailia Central 2    (Canberra)
 
           Europe:
-            31: North Europe        (Ireland)
-            32: West Europe         (Netherlands)
-            33: Germany Central     (Frankfurt)
-            34: Germany Northeast   (Magdeburg)
-            35: UK West             (Cardiff)
-            36: UK South            (London)
-            37: France Central    (Paris)
-            38: France South      (Marseille)
+            31: North Europe            (Ireland)
+            32: West Europe             (Netherlands)
+            33: Germany West Central    (Frankfurt)
+            34: Germany Northeast       (Magdeburg)
+            35: UK West                 (Cardiff)
+            36: UK South                (London)
+            37: France Central          (Paris)
+            38: France South            (Marseille)
+            39: Norway West             (Stavanger)
+            40: Norway East             (Oslo)
+            41: Switzerland West        (Geneva)
+            42: Switzerland North       (Zurich)
+
+          Africa/Middle East:
+            43:UAE Central              (Abu Dhabi)    
+            44:UAE North                (Dubai)
+            45:South Africa North       (Johannesburg)
+            46:South Africa West        (Cape Town)
+
 
         Please choose the number of your region: Press enter for default (#1) region.
       default: "1"
