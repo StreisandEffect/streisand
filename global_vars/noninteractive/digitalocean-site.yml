@@ -43,8 +43,9 @@ streisand_wireguard_enabled: yes
 # 8.  New York         (Datacenter 3)
 # 9.  San Francisco    (Datacenter 1)
 # 10. San Francisco    (Datacenter 2)
-# 11. Singapore
-# 12. Toronto
+# 11. San Francisco    (Datacenter 3)
+# 12. Singapore
+# 13. Toronto
 #
 # Note: do_region must be a number in quotes, e.g. "2" not 2.
 do_region: "2"
