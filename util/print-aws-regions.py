@@ -13,6 +13,7 @@ names = (
     ("eu-west-1",      "EU",           "Ireland"),
     ("eu-west-2",      "EU",           "London"),
     ("eu-west-3",      "EU",           "Paris"),
+    ("af-south-1",    "Africa",       "Cape Town"),
     ("ap-northeast-1", "Asia Pacific", "Tokyo"),
     ("ap-northeast-2", "Asia Pacific", "Seoul"),
     ("ap-northeast-3", "Asia Pacific", "Osaka-Local"),
