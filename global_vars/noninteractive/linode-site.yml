@@ -26,23 +26,25 @@ streisand_tor_enabled: no
 streisand_wireguard_enabled: yes
 
 # Choose the server location.
-# 1. Atlanta
+# 1. Toronto
 # 2. Dallas
-# 3. Frankfurt
-# 4. Fremont
-# 5. London
-# 6. Newark
+# 3. Fremont
+# 4. Atlanta
+# 5. Newark
+# 6. London
 # 7. Singapore
-# 8. Tokyo
-# 9. Tokyo 2
+# 8. Frankfurt
+# 9. Tokyo
+# 10. Mumbai
+# 11. Sydney
 #
 # Note: linode_datacenter must be a number in quotes, e.g. "7" not 7.
 linode_datacenter: "7"
 
 linode_server_name: streisand
 
-# Obtain the API key from the Linode Manager console.
-linode_api_key: ""
+# Obtain the API key from the Linode Manager.
+linode_api_token: ""
 
 # Definitions needed for Let's Encrypt HTTPS (or TLS) certificate setup.
 #
