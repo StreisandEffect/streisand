@@ -6,7 +6,7 @@
 
 # Core with Azure dependencies
 #
-ansible[azure]==2.8.4
+ansible[azure]==2.10.2
 
 SecretStorage
 
