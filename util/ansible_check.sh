@@ -5,7 +5,7 @@
 # check_ansible checks that Ansible is installed on the local system
 # and that it is a supported version.
 function check_ansible() {
-  local REQUIRED_ANSIBLE_VERSION="2.8.4"
+  local REQUIRED_ANSIBLE_VERSION="2.10.2"
 
   if ! command -v ansible > /dev/null 2>&1; then
     echo "
