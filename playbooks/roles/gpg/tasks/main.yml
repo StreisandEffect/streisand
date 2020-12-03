@@ -85,7 +85,7 @@
   # in the repo become too stale to be used without successsful refresh the
   # maintainers will notice failed builds and fix them by refreshing their own
   # keyrings and updating the static repo keys until the build passes again.
-  when: not streisand_ci
+  when: False
 
 - name: "Set up a daily cronjob to refresh the Streisand GPG keyring"
   template:
