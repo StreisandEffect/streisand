@@ -100,3 +100,17 @@ sudo yum -y update && sudo yum install -y \
 You should keep a copy of the `generated-docs` directory for the life of the server.
 
 Remember to save your `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub` SSH keys too. You'll need them in case you want to troubleshoot or perform maintenance on your server later.
+
+## Run with Docker!
+```bash
+# Make a bindmount location to use pre-made id_rsa ssh key
+mkdir ./secrets
+
+# Build the Image
+docker build -t streisand .
+
+# Run the built container and remove it on exit
+docker run -ti --rm -v "$(pwd)"/secrets:/root/.ssh" streisand
+
+# TODO: save contents of `generated-docs` to bindmount directory to save after destruction of container
+```
