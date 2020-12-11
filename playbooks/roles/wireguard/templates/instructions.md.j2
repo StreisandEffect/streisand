@@ -11,11 +11,25 @@ An [experimental configuration for OpenWrt/LEDE](#openwrt) 17.01.4 (or later) is
 
 ---
 * Platforms
+  * [Windows](#windows)
   * [Android](#android)
   * [iOS](#ios)
   * [Linux](#linux)
   * [macOS](#macos)
   * [OpenWrt](#openwrt)
+
+<a name="windows"></a>
+### Windows ###
+1. [Install WireGuard for Windows](https://www.wireguard.com/install/)
+1. Download one of the client configuration files. **Only one computer can use a profile at a time**. For this example we'll assume you downloaded {{ vpn_client_names.results[0].stdout }}:
+{% for client in vpn_client_names.results %}
+   * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.conf)
+{% endfor %}
+1. Launch the app, and choose *Add Tunnel → Import tunnel(s) from file…*, select the downloaded file, then click *Open*.
+1. Select the imported tunnel and click *Activate* to connect.
+1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
+
+---
 
 <a name="android"></a>
 ### Android ###
@@ -85,30 +99,14 @@ Each client configuration profile includes a `DNS` command that uses resolvconf 
 **WARNING**: The macOS WireGuard client is in early stages of development and still considered experimental. It may be unstable or buggy.
 
 
-1. Install [Homebrew](https://brew.sh/), if you haven't already.
-1. Install the WireGuard tools using Homebrew:
-
-   `brew install wireguard-tools`
+1. [Install the macOS WireGuard App](https://itunes.apple.com/us/app/wireguard/id1451685025) from the Mac App Store
 1. Download one of the client configuration files. **Only one computer can use a profile at a time**. For this example we'll assume you downloaded {{ vpn_client_names.results[0].stdout }}:
 {% for client in vpn_client_names.results %}
    * [{{ client.stdout }}](/wireguard/{{ client.stdout }}.conf)
 {% endfor %}
-1. Move the client configuration file into the WireGuard configuration directory. The following command assumes you downloaded the configuration file into your `Downloads` folder. (If that's not the case, modify it accordingly):
-
-`sudo sh -c 'umask 077 && mkdir -p /etc/wireguard/ && cat ~/Downloads/{{ vpn_client_names.results[0].stdout }}.conf > /etc/wireguard/{{ vpn_client_names.results[0].stdout }}.conf'`
-
-1. Use the `wg-quick` utility to bring up the WireGuard interface:
-
-   `sudo wg-quick up {{ vpn_client_names.results[0].stdout }}`
-
-
+1. Launch the WireGuard app, click *Import tunnel(s) from file* and choose the file downloaded in the previous step. If this is your first time using WireGuard on your macOS device, you will be prompted allow 'WireGuard' to add VPN Configurations.
+1. Click *Activate* to enable the VPN.
 1. You should be good to go! You can verify that your traffic is being routed properly by [looking up your IP address on DuckDuckGo]({{ streisand_my_ip_url }}). It should say *Your public IP address is {{ streisand_ipv4_address }}*.
-1. You can check the vpn status at any time using `wg`:
-   `sudo wg show`
-
-1. To stop routing your traffic through WireGuard, simply bring the interface back down:
-
-   `sudo wg-quick down {{ vpn_client_names.results[0].stdout }}`
 
 ---
 
