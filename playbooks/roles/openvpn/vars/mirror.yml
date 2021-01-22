@@ -22,8 +22,8 @@ openvpn_download_files:
   - { "file": "{{ openvpn_windows_installer_filename }}", "sig": "{{ openvpn_windows_installer_sig_filename }}" }
 
 # macOS
-tunnelblick_version:  "3.8.1"
-tunnelblick_build:    "5400"
+tunnelblick_version:  "3.8.4a"
+tunnelblick_build:    "5601"
 tunnelblick_filename: "Tunnelblick_{{ tunnelblick_version }}_build_{{ tunnelblick_build }}.dmg"
 tunnelblick_href:     "{{ openvpn_mirror_href_base }}/{{ tunnelblick_filename }}"
 tunnelblick_url:      "https://tunnelblick.net/release/{{ tunnelblick_filename }}"
