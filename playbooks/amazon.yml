@@ -26,6 +26,7 @@
       "16": "us-east-2"
       "17": "us-west-1"
       "18": "us-west-2"
+      "19": "af-south-1"
 
   # These variable files are included so the ec2-security-group role
   # knows which ports to open
@@ -64,6 +65,7 @@
           16. us-east-2       US East        (Ohio)
           17. us-west-1       US West        (N. California)
           18. us-west-2       US West        (Oregon)
+          19. af-south-1      Africa         (Cape Town)
         Please choose the number of your region. Press enter for default (#16) region.
       default: "16"
       private: no
