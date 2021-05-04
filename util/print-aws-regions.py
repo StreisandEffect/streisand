@@ -4,6 +4,7 @@
 # Generate code fragments for amazon.yml
 
 names = (
+    ("af-south-1",     "Africa",       "Cape Town"),
     ("us-east-1",      "US East",      "N. Virginia"),
     ("us-east-2",      "US East",      "Ohio"),
     ("us-west-1",      "US West",      "N. California"),
